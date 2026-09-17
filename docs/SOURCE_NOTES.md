@@ -1,0 +1,1 @@
+Public setup references show the MTTL-W01 setup AP on the 192.168.1.x subnet, TCP setup endpoint 192.168.1.1:30300, and the text provisioning commands `up:ip:<controller>`, `up:connect:<ssid>:<password>`, and `up:reboot:0`. FG Machines RCK keeps its own Android implementation and adds Android-specific network selection/binding needed for no-Internet setup APs.
