@@ -2,9 +2,11 @@ package com.fgmachines.rck;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int SETUP_MODE_SINGLE_PHONE = 2;
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
+    private static final String FG_MACHINES_FACEBOOK_URL = "https://www.facebook.com/share/1Hx66RKhd2/";
+    private static final String ALAA_MOHAMED_FACEBOOK_URL = "https://www.facebook.com/share/1DGDH6q8xV/";
 
     private TextInputEditText ipInput;
     private TextInputEditText setupSsidInput;
@@ -62,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton openHotspotButton;
     private MaterialButton refreshHotspotButton;
     private MaterialButton openWifiButton;
+    private MaterialButton fgMachinesFacebookButton;
+    private MaterialButton alaaMohamedFacebookButton;
     private Spinner languageSpinner;
     private Spinner setupModeSpinner;
     private TextView setupModeDescription;
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         configureSetupModeSelector();
         configureOutletControls();
         configureSetupWorkflow();
+        configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
         updateHotspotStatus(false);
@@ -158,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         openHotspotButton = findViewById(R.id.openHotspotButton);
         refreshHotspotButton = findViewById(R.id.refreshHotspotButton);
         openWifiButton = findViewById(R.id.openWifiButton);
+        fgMachinesFacebookButton = findViewById(R.id.fgMachinesFacebookButton);
+        alaaMohamedFacebookButton = findViewById(R.id.alaaMohamedFacebookButton);
         languageSpinner = findViewById(R.id.languageSpinner);
         setupModeSpinner = findViewById(R.id.setupModeSpinner);
         setupModeDescription = findViewById(R.id.setupModeDescription);
@@ -192,8 +201,14 @@ public class MainActivity extends AppCompatActivity {
         if (page < 0 || page >= pages.length) return;
         currentPage = page;
         for (int i = 0; i < pages.length; i++) {
-            pages[i].setVisibility(i == page ? View.VISIBLE : View.GONE);
-            navButtons[i].setAlpha(i == page ? 1f : 0.58f);
+            boolean selected = i == page;
+            pages[i].setVisibility(selected ? View.VISIBLE : View.GONE);
+            navButtons[i].setAlpha(selected ? 1f : 0.62f);
+            navButtons[i].animate()
+                    .scaleX(selected ? 1.04f : 0.96f)
+                    .scaleY(selected ? 1.04f : 0.96f)
+                    .setDuration(140)
+                    .start();
         }
     }
 
@@ -204,6 +219,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    private void configureAboutLinks() {
+        fgMachinesFacebookButton.setOnClickListener(v -> openExternalUrl(FG_MACHINES_FACEBOOK_URL));
+        alaaMohamedFacebookButton.setOnClickListener(v -> openExternalUrl(ALAA_MOHAMED_FACEBOOK_URL));
+    }
+
+    private void openExternalUrl(String url) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (RuntimeException error) {
+            Snackbar.make(alaaMohamedFacebookButton,
+                    getString(R.string.open_link_failed), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void configureSetupWorkflow() {
