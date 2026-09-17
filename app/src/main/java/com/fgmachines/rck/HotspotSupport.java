@@ -15,6 +15,8 @@ import java.util.Locale;
 
 /** Helpers for running FG Machines RCK with the phone acting as the local Wi-Fi AP/controller. */
 final class HotspotSupport {
+    private static final String ACTION_TETHER_SETTINGS = "android.settings.TETHER_SETTINGS";
+
     private HotspotSupport() { }
 
     static boolean supportsSamePhoneProvisioning(Context context) {
@@ -58,7 +60,7 @@ final class HotspotSupport {
 
     static void openSystemHotspotSettings(Activity activity) {
         try {
-            activity.startActivity(new Intent(Settings.ACTION_TETHER_SETTINGS));
+            activity.startActivity(new Intent(ACTION_TETHER_SETTINGS));
         } catch (ActivityNotFoundException error) {
             activity.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
         }
