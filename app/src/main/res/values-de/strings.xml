@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FG Machines RCK</string>
+    <string name="app_subtitle">Intelligente MTTL-W01-Steuerung</string>
+    <string name="brand_tagline">Handel, Technik und intelligente Steuerung</string>
+    <string name="brand_badge">MTTL-W01 · Wi‑Fi 2.4 GHz</string>
+    <string name="language">Sprache</string>
+    <string name="research_mode">LOKALES STEUERUNGSLABOR</string>
+    <string name="research_note">Die lokale Gerätesuche ist aktiv. Das Schalten der Relais bleibt aus Sicherheitsgründen gesperrt, bis die Steuertelegramme des MTTL-W01 an echter Hardware verifiziert sind.</string>
+    <string name="device_discovery">Gerätesuche</string>
+    <string name="ip_hint">IP-Adresse des MTTL-W01</string>
+    <string name="scan">LAN SCANNEN</string>
+    <string name="probe">30300 PRÜFEN</string>
+    <string name="idle">Bereit zum Scannen</string>
+    <string name="scan_explanation">Durchsucht das lokale /24-Netz nach dem MTTL-W01-TCP-Dienst auf Port 30300.</string>
+    <string name="scanning">Lokales Netzwerk wird gescannt…</string>
+    <string name="not_found">Kein Gerät erkannt</string>
+    <string name="service_detected">MTTL-Dienst erkannt</string>
+    <string name="probing">Gerät wird geprüft…</string>
+    <string name="offline">Gerät nicht erreichbar</string>
+    <string name="scan_none">In %1$s hat kein Host auf TCP 30300 geantwortet. Sie können eine IP-Adresse manuell eingeben.</string>
+    <string name="scan_found">%1$d Host(s) in %2$s gefunden. %3$s wurde ausgewählt.</string>
+    <string name="multiple_hosts">%1$d Hosts stellen Port 30300 bereit. Prüfen Sie die ausgewählte IP-Adresse.</string>
+    <string name="probe_success">%1$s hat eine TCP-Verbindung auf Port 30300 angenommen. Es wurden keine Befehlsdaten gesendet.</string>
+    <string name="probe_failed">%1$s hat auf TCP-Port 30300 nicht geantwortet.</string>
+    <string name="protocol_locked">Sicherheitssperre: Nicht verifizierte Relaisbefehle werden nicht übertragen.</string>
+    <string name="enter_ip">IP-Adresse eingeben</string>
+    <string name="outlets">Steckdosen</string>
+    <string name="outlets_subtitle">Unabhängige Steuerung der vier MTTL-W01-Steckdosen</string>
+    <string name="outlet_1">Steckdose 1</string>
+    <string name="outlet_2">Steckdose 2</string>
+    <string name="outlet_3">Steckdose 3</string>
+    <string name="outlet_4">Steckdose 4</string>
+    <string name="locked">Protokollprüfung ausstehend</string>
+    <string name="about_line">FG Machines RCK · MTTL-W01 · Lokale Steuerung zuerst</string>
+</resources>
