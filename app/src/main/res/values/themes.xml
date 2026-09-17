@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.FGMachineRCK" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/fg_gold</item>
-        <item name="colorOnPrimary">@color/fg_black</item>
-        <item name="colorSecondary">@color/fg_blue</item>
+        <item name="colorPrimary">@color/fg_blue</item>
+        <item name="colorOnPrimary">@color/fg_text</item>
+        <item name="colorSecondary">@color/fg_green</item>
+        <item name="colorOnSecondary">@color/fg_black</item>
+        <item name="colorTertiary">@color/fg_silver</item>
         <item name="colorSurface">@color/fg_surface</item>
+        <item name="colorSurfaceVariant">@color/fg_surface_2</item>
         <item name="colorOnSurface">@color/fg_text</item>
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
