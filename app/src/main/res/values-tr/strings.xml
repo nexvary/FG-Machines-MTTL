@@ -20,18 +20,18 @@
 
     <string name="setup_wizard">Cihaz kurulumu</string>
     <string name="setup_wizard_note">Şeridi kurulum moduna alın, geçici TONLY_TAP/ONLY_TAP SSID’sini girin ve bağlanacağı 2.4 GHz Wi‑Fi ağını seçin. Denetleyici adresi normalde bu telefona aittir.</string>
-    <string name="setup_single_phone_note">İkinci telefona gerek yoktur. Uygulama önce gelecekteki hotspot adresini kaydeder, geçici olarak şeridin kurulum Wi‑Fi ağına bağlanır, hotspot bilgilerini yazar ve sonra hotspotu yeniden açmanızı ister.</string>
-    <string name="step_1">1 · Telefon hotspotunu hazırlayın</string>
-    <string name="step_2">2 · Şerit kurulum Wi‑Fi ağına bağlanın</string>
-    <string name="step_3">3 · Aynı telefondan yapılandırın</string>
-    <string name="capture_hotspot">HOTSPOT IP KAYDET</string>
+    <string name="setup_single_phone_note">Önce ağ yöntemini seçin. Önerilen: yönlendirici Wi‑Fi veya yönlendirici yoksa iki telefon. Tek telefon hotspot modu deneyseldir.</string>
+    <string name="step_1">1 · Hedef ağı ve denetleyiciyi hazırlayın</string>
+    <string name="step_2">2 · Hedef ağı ve priz kurulum Wi‑Fi ağını girin</string>
+    <string name="step_3">3 · TONLY_TAP ağına bağlanıp ayarları yazın</string>
+    <string name="capture_hotspot">DENETLEYİCİ IP’SİNİ KAYDET</string>
     <string name="open_wifi_settings">WI‑FI AYARLARINI AÇ</string>
     <string name="sequential_provision">TONLY_TAP’A BAĞLANDIM — DEVAM</string>
-    <string name="automatic_provision">Otomatik bağlantı (uyumlu telefonlar)</string>
-    <string name="manual_connected_note">Hotspot IP’sini kaydettikten sonra hotspotu kapatın, TONLY_TAP/ONLY_TAP ağına elle bağlanın, uygulamaya dönüp Devam’a basın. Uygulama 192.168.1.1:30300 üzerinden yapılandırır.</string>
-    <string name="hotspot_status">Geçerli yerel IPv4: %1$s\nKaydedilmiş hotspot denetleyici IPv4: %2$s</string>
-    <string name="hotspot_ip_saved">Hotspot denetleyici adresi kaydedildi: %1$s</string>
-    <string name="hotspot_ip_missing">Yerel hotspot IPv4 algılanmadı. Önce hotspotu açın, sonra adresi kaydedin.</string>
+    <string name="automatic_provision">Otomatik kurulum (deneysel)</string>
+    <string name="manual_connected_note">Devam’a basmadan önce kurulum telefonu TONLY_TAP/ONLY_TAP ağına bağlı olmalıdır. Hedef ağ bir yönlendirici veya başka bir telefonun 2.4 GHz hotspot’u olabilir.</string>
+    <string name="hotspot_status">Geçerli yerel IPv4: %1$s\nKayıtlı denetleyici IPv4: %2$s</string>
+    <string name="hotspot_ip_saved">Denetleyici IPv4 kaydedildi: %1$s</string>
+    <string name="hotspot_ip_missing">Özel IPv4 algılanmadı. Denetleyici telefonu hedef yönlendiriciye bağlayın veya hotspot’u açın, sonra adresi kaydedin.</string>
     <string name="sequential_success">Ayarlar şeride yazıldı. Hotspot ayarları şimdi açılıyor. Aynı 2.4 GHz hotspotu hemen açın ve şeridin TCP 10086’ya bağlanmasını bekleyin.</string>
     <string name="setup_ssid_hint">Şerit kurulum SSID’si, ör. TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">Hedef 2.4 GHz Wi‑Fi / telefon hotspot SSID’si</string>
@@ -93,4 +93,18 @@
     <string name="about_body">FG Machines RCK, uyumlu LG U+ / TONLY akıllı priz şeritleri için bağımsız bir yerel denetleyicidir. Resmî LG U+ uygulaması değildir. Proje yerel Wi‑Fi çalışmasına, anlaşılır tanılamaya ve güvenli röle kontrolüne öncelik verir.</string>
     <string name="supported_models_title">Uyumluluk</string>
     <string name="supported_models_body">Birincil doğrulanmış aile: MTTL-W01. Bilinen sertifika revizyonları HU04139-17002A/B/C/D/E. TONLY_TAP_* ve ONLY_TAP_* imzaları tanınır ve röle kontrolleri etkinleşmeden önce protokol doğrulanır.</string>
+    <string name="setup_method_title">Kurulum yöntemini seçin</string>
+    <string name="setup_recommended">ÖNERİLEN</string>
+    <string name="setup_experimental">DENEYSEL</string>
+    <string name="setup_mode_router_desc">En iyi seçenek. Bu telefonu 2.4 GHz yönlendiriciye bağlayıp IPv4 adresini kaydedin, sonra TONLY_TAP ağına bağlanıp yönlendirici bilgilerini yazın. Kurulumdan sonra aynı yönlendiriciye tekrar bağlanın.</string>
+    <string name="setup_mode_two_phone_desc">Yönlendirici yoksa en iyi seçenek. Telefon A 2.4 GHz hotspot’u ve FG Machines RCK’yi açık tutar. Telefon B TONLY_TAP ağına bağlanıp Telefon A’nın hotspot bilgilerini ve denetleyici IPv4 adresini yazar.</string>
+    <string name="setup_mode_single_desc">Kurulum ve hotspot için aynı telefonu kullanır. Bazı Android telefonlar hotspot açıldığında Wi‑Fi’yi kapatır; yalnızca uyumlu cihazlarda kullanın.</string>
+    <string name="router_success">Ayarlar yazıldı. Bu telefonu hedef yönlendiriciye yeniden bağlayın. FG Machines RCK, TCP 10086 üzerinden prizi bekleyecek.</string>
+    <string name="two_phone_success">Ayarlar yazıldı. Telefon A hotspot’unu açık tutun ve Telefon A’ya dönün. Priz hotspot’a ve FG Machines RCK’ye bağlanmalıdır.</string>
+    <string name="single_phone_success">Ayarlar yazıldı. Aynı 2.4 GHz hotspot’u şimdi yeniden açın ve prizin FG Machines RCK’ye bağlanmasını bekleyin.</string>
+    <string-array name="setup_mode_labels">
+        <item>Yönlendirici Wi‑Fi (önerilen)</item>
+        <item>İki telefon (yönlendiricisiz)</item>
+        <item>Tek telefon (deneysel)</item>
+    </string-array>
 </resources>
