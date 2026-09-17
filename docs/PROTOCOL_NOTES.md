@@ -83,6 +83,7 @@ long getinfo record across CRLF boundaries, so the FG parser permits safe bounde
 Public and certification material consistently identifies the retail model as `MTTL-W01`. The
 following safety-certificate revisions have been observed while retaining the same model number:
 
+- `HU04139-17002A`
 - `HU04139-17002B`
 - `HU04139-17002C`
 - `HU04139-17002D`
@@ -93,6 +94,7 @@ Firmware families seen in public local-control work include:
 - `1.0.66` — stock/original reference
 - `1.0.68` — patched/direct-local variant in one public project
 - `1.0.106` — custom telemetry-capable variant reported by another local-control project
+- `1.0.110` — standalone local firmware with push state events and local OTA support
 
 No credible public evidence reviewed so far establishes separate retail models named MTTL-W02 or
 MTTL-W03. FG Machines RCK therefore uses capability/signature detection in addition to the sticker
@@ -109,6 +111,8 @@ OUI ownership is not sufficient to identify an MTTL device.
 - https://github.com/ttaengz/mttl-w01-matterbridge
 - https://github.com/af950833/mttl_w01
 - https://github.com/HW-YUN/MTTL-W01-local
+- https://github.com/sosohage2/mttl-w01-standalone-110
+- https://github.com/omarKmekkawy/Korean_LG_TCL_MTTL-w01_power-strip
 - https://github.com/ommeq/voltra-home-assistant
 - https://hackaday.io/project/202043-lg-smart-power-plug-mttl-w01
 
