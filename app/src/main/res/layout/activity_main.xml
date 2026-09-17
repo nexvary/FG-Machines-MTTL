@@ -1,399 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fg_black"
-    android:fillViewport="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="18dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="18dp"
-        android:paddingBottom="28dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/fg_black_soft"
-            app:cardCornerRadius="22dp"
-            app:strokeColor="@color/fg_blue"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_fg_logo" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/app_name"
-                        android:textAlignment="viewStart"
-                        android:textColor="@color/fg_text"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/app_subtitle"
-                        android:textAlignment="viewStart"
-                        android:textColor="@color/fg_blue_bright"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:text="@string/brand_tagline"
-                        android:textAlignment="viewStart"
-                        android:textColor="@color/fg_text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="14dp"
+        app:cardBackgroundColor="@color/fg_black_soft"
+        app:cardCornerRadius="20dp"
+        app:strokeColor="@color/fg_blue"
+        app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="14dp">
 
-            <TextView
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_fg_logo" />
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:text="@string/brand_badge"
-                android:textAlignment="viewStart"
-                android:textColor="@color/fg_green"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/language"
-                android:textColor="@color/fg_silver"
-                android:textSize="12sp" />
-
-            <Spinner
-                android:id="@+id/languageSpinner"
-                android:layout_width="128dp"
-                android:layout_height="44dp"
-                android:backgroundTint="@color/fg_blue"
-                android:popupBackground="@color/fg_surface_2" />
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/fg_surface"
-            app:cardCornerRadius="18dp"
-            app:strokeColor="@color/fg_green_dark"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/research_mode"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/fg_green"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:lineSpacingExtra="3dp"
-                    android:text="@string/research_note"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text_secondary"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/fg_surface"
-            app:cardCornerRadius="20dp"
-            app:strokeColor="@color/fg_green"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/setup_wizard"
+                    android:maxLines="1"
+                    android:text="@string/app_name"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_text"
-                    android:textSize="20sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:lineSpacingExtra="3dp"
-                    android:text="@string/setup_wizard_note"
+                    android:layout_marginTop="2dp"
+                    android:maxLines="2"
+                    android:text="@string/app_subtitle"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text_secondary"
-                    android:textSize="13sp" />
+                    android:textColor="@color/fg_green"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <FrameLayout
+        android:id="@+id/pageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/pageHome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/mobile_hotspot_mode"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/home_title"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_blue_bright"
-                    android:textSize="13sp"
+                    android:textColor="@color/fg_text"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/mobile_hotspot_note"
+                    android:text="@string/home_subtitle"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/hotspotStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/hotspot_runtime_note"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/fg_green"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/openHotspotButton"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:text="@string/open_hotspot_settings"
-                        android:textColor="@color/fg_text"
-                        app:backgroundTint="@color/fg_blue"
-                        app:cornerRadius="14dp" />
-
-                    <Space
-                        android:layout_width="8dp"
-                        android:layout_height="1dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/refreshHotspotButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:text="@string/refresh_hotspot"
-                        android:textColor="@color/fg_green"
-                        app:cornerRadius="14dp"
-                        app:strokeColor="@color/fg_green" />
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="@string/setup_ssid_hint"
-                    app:boxStrokeColor="@color/fg_blue"
-                    app:hintTextColor="@color/fg_text_secondary">
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/setupSsidInput"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/fg_text"
-                        android:textDirection="ltr" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/target_wifi_ssid_hint"
-                    app:boxStrokeColor="@color/fg_green"
-                    app:hintTextColor="@color/fg_text_secondary">
+                        <TextView
+                            android:id="@+id/deviceState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/idle"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/targetWifiSsidInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/fg_text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/target_wifi_password_hint"
-                    app:boxStrokeColor="@color/fg_green"
-                    app:endIconMode="password_toggle"
-                    app:hintTextColor="@color/fg_text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/targetWifiPasswordInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:singleLine="true"
-                        android:textColor="@color/fg_text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/controller_ip_hint"
-                    app:boxStrokeColor="@color/fg_silver"
-                    app:hintTextColor="@color/fg_text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/controllerIpInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/fg_text"
-                        android:textDirection="ltr" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/provisionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/provision_device"
-                    android:textColor="@color/fg_black"
-                    app:backgroundTint="@color/fg_green"
-                    app:cornerRadius="15dp" />
-
-                <TextView
-                    android:id="@+id/provisionStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/hotspot_runtime_note"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text_secondary"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/fg_surface"
-            app:cardCornerRadius="20dp"
-            app:strokeColor="@color/fg_blue"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:contentDescription="@string/device_discovery"
-                        android:src="@drawable/ic_network_scan" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="@string/device_discovery"
-                        android:textAlignment="viewStart"
-                        android:textColor="@color/fg_text"
-                        android:textSize="19sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:hint="@string/ip_hint"
-                    app:boxStrokeColor="@color/fg_blue"
-                    app:hintTextColor="@color/fg_text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ipInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/fg_text"
-                        android:textDirection="ltr" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <TextView
+                            android:id="@+id/discoveryDetail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="@string/locked"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -402,141 +148,740 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/scanButton"
+                        android:id="@+id/homeToSetup"
                         android:layout_width="0dp"
                         android:layout_height="52dp"
                         android:layout_weight="1"
-                        android:text="@string/scan"
-                        android:textColor="@color/fg_text"
-                        app:backgroundTint="@color/fg_blue"
+                        android:text="@string/quick_setup"
+                        android:textColor="@color/fg_black"
+                        app:backgroundTint="@color/fg_green"
                         app:cornerRadius="14dp"
-                        app:icon="@drawable/ic_network_scan"
-                        app:iconTint="@color/fg_text" />
+                        app:icon="@drawable/ic_setup"
+                        app:iconTint="@color/fg_black" />
 
                     <Space
                         android:layout_width="10dp"
                         android:layout_height="1dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/probeButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:id="@+id/homeToScan"
                         android:layout_width="0dp"
                         android:layout_height="52dp"
                         android:layout_weight="1"
-                        android:text="@string/probe"
-                        android:textColor="@color/fg_green"
+                        android:text="@string/quick_scan"
+                        android:textColor="@color/fg_text"
+                        app:backgroundTint="@color/fg_blue"
                         app:cornerRadius="14dp"
-                        app:icon="@drawable/ic_probe"
-                        app:iconTint="@color/fg_green"
-                        app:strokeColor="@color/fg_green" />
+                        app:icon="@drawable/ic_network_scan"
+                        app:iconTint="@color/fg_text" />
                 </LinearLayout>
 
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="12dp"
-                    android:visibility="invisible"
-                    app:indicatorColor="@color/fg_green"
-                    app:trackColor="@color/fg_surface_3" />
-
-                <TextView
-                    android:id="@+id/deviceState"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/idle"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_green_dark"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/outlets"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/outlets_subtitle"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/outlet1"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/outlet_1"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/outlet2"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:text="@string/outlet_2"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/outlet3"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:text="@string/outlet_3"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/outlet4"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:text="@string/outlet_4"
+                            android:textColor="@color/fg_text" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/pageSetup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="18dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/setup_wizard"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_green"
-                    android:textSize="16sp"
+                    android:textColor="@color/fg_text"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/discoveryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/scan_explanation"
+                    android:text="@string/setup_single_phone_note"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_text_secondary"
                     android:textSize="13sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/step_1"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/hotspotStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/hotspot_runtime_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/openHotspotButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/open_hotspot_settings"
+                                android:textColor="@color/fg_text"
+                                android:textSize="11sp"
+                                app:backgroundTint="@color/fg_blue"
+                                app:cornerRadius="13dp" />
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/refreshHotspotButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/capture_hotspot"
+                                android:textColor="@color/fg_black"
+                                android:textSize="11sp"
+                                app:backgroundTint="@color/fg_green"
+                                app:cornerRadius="13dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/step_2"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="@string/setup_ssid_hint"
+                            app:boxStrokeColor="@color/fg_blue">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/setupSsidInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/target_wifi_ssid_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/targetWifiSsidInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/target_wifi_password_hint"
+                            app:boxStrokeColor="@color/fg_green"
+                            app:endIconMode="password_toggle">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/targetWifiPasswordInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/controller_ip_hint"
+                            app:boxStrokeColor="@color/fg_silver">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/controllerIpInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/openWifiButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/open_wifi_settings"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="13dp"
+                            app:strokeColor="@color/fg_blue" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/step_3"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/manual_connected_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/manualProvisionButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/sequential_provision"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="15dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/provisionButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/automatic_provision"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_blue" />
+
+                        <TextView
+                            android:id="@+id/provisionStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="@string/hotspot_runtime_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
 
-        <TextView
+        <ScrollView
+            android:id="@+id/pageScan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:text="@string/outlets"
-            android:textAlignment="viewStart"
-            android:textColor="@color/fg_text"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="18dp"
+            android:visibility="gone">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="@string/outlets_subtitle"
-            android:textAlignment="viewStart"
-            android:textColor="@color/fg_text_secondary"
-            android:textSize="12sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/fg_surface"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="@color/fg_blue"
-            app:strokeWidth="1dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="68dp" android:gravity="center_vertical" android:orientation="horizontal" android:paddingHorizontal="14dp">
-                <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_power_outlet" android:contentDescription="@string/outlet_1" app:tint="@color/fg_blue" />
-                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/outlet1" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="10dp" android:layout_weight="1" android:enabled="false" android:text="@string/outlet_1" android:textColor="@color/fg_text" app:switchMinWidth="52dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/device_discovery"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/scan_explanation"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="13sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:hint="@string/ip_hint"
+                            app:boxStrokeColor="@color/fg_blue">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/ipInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionDone"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/scanButton"
+                                android:layout_width="0dp"
+                                android:layout_height="52dp"
+                                android:layout_weight="1"
+                                android:text="@string/scan"
+                                android:textColor="@color/fg_text"
+                                app:backgroundTint="@color/fg_blue"
+                                app:cornerRadius="14dp"
+                                app:icon="@drawable/ic_network_scan"
+                                app:iconTint="@color/fg_text" />
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/probeButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="52dp"
+                                android:layout_weight="1"
+                                android:text="@string/probe"
+                                android:textColor="@color/fg_green"
+                                app:cornerRadius="14dp"
+                                app:icon="@drawable/ic_probe"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+                        </LinearLayout>
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progress"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:layout_marginTop="12dp"
+                            android:visibility="invisible"
+                            app:indicatorColor="@color/fg_green"
+                            app:trackColor="@color/fg_surface_2" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" app:cardBackgroundColor="@color/fg_surface" app:cardCornerRadius="16dp" app:strokeColor="@color/fg_green_dark" app:strokeWidth="1dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="68dp" android:gravity="center_vertical" android:orientation="horizontal" android:paddingHorizontal="14dp">
-                <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_power_outlet" android:contentDescription="@string/outlet_2" app:tint="@color/fg_green" />
-                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/outlet2" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="10dp" android:layout_weight="1" android:enabled="false" android:text="@string/outlet_2" android:textColor="@color/fg_text" app:switchMinWidth="52dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" app:cardBackgroundColor="@color/fg_surface" app:cardCornerRadius="16dp" app:strokeColor="@color/fg_silver_dark" app:strokeWidth="1dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="68dp" android:gravity="center_vertical" android:orientation="horizontal" android:paddingHorizontal="14dp">
-                <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_power_outlet" android:contentDescription="@string/outlet_3" app:tint="@color/fg_silver" />
-                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/outlet3" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="10dp" android:layout_weight="1" android:enabled="false" android:text="@string/outlet_3" android:textColor="@color/fg_text" app:switchMinWidth="52dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" app:cardBackgroundColor="@color/fg_surface" app:cardCornerRadius="16dp" app:strokeColor="@color/fg_blue_bright" app:strokeWidth="1dp">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="68dp" android:gravity="center_vertical" android:orientation="horizontal" android:paddingHorizontal="14dp">
-                <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_power_outlet" android:contentDescription="@string/outlet_4" app:tint="@color/fg_blue_bright" />
-                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/outlet4" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="10dp" android:layout_weight="1" android:enabled="false" android:text="@string/outlet_4" android:textColor="@color/fg_text" app:switchMinWidth="52dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
+        <ScrollView
+            android:id="@+id/pageSettings"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/locked"
-            android:textAlignment="viewStart"
-            android:textColor="@color/fg_warning"
-            android:textSize="12sp" />
+            android:layout_height="match_parent"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="18dp"
+            android:visibility="gone">
 
-        <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/settings_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_silver"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/language"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/languageSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/settings_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/pageAbout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:gravity="center"
-            android:text="@string/about_line"
-            android:textColor="@color/fg_silver_dark"
-            android:textSize="11sp" />
+            android:layout_height="match_parent"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="18dp"
+            android:visibility="gone">
 
-    </LinearLayout>
-</ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/about_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <ImageView
+                            android:layout_width="92dp"
+                            android:layout_height="92dp"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_fg_logo" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/about_line"
+                            android:textAlignment="center"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:lineSpacingExtra="3dp"
+                            android:text="@string/about_body"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/supported_models_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/supported_models_body"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/fg_black_soft"
+        app:cardCornerRadius="22dp"
+        app:strokeColor="@color/fg_surface_2"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navHome"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_home"
+                android:textColor="@color/fg_blue_bright"
+                android:textSize="9sp"
+                app:icon="@drawable/ic_home"
+                app:iconGravity="textTop"
+                app:iconSize="20dp"
+                app:iconTint="@color/fg_blue_bright" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navSetup"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_setup"
+                android:textColor="@color/fg_green"
+                android:textSize="9sp"
+                app:icon="@drawable/ic_setup"
+                app:iconGravity="textTop"
+                app:iconSize="20dp"
+                app:iconTint="@color/fg_green" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navScan"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_scan"
+                android:textColor="@color/fg_blue_bright"
+                android:textSize="9sp"
+                app:icon="@drawable/ic_network_scan"
+                app:iconGravity="textTop"
+                app:iconSize="20dp"
+                app:iconTint="@color/fg_blue_bright" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navSettings"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_settings"
+                android:textColor="@color/fg_silver"
+                android:textSize="9sp"
+                app:icon="@drawable/ic_settings"
+                app:iconGravity="textTop"
+                app:iconSize="20dp"
+                app:iconTint="@color/fg_silver" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navAbout"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_about"
+                android:textColor="@color/fg_green"
+                android:textSize="9sp"
+                app:icon="@drawable/ic_info"
+                app:iconGravity="textTop"
+                app:iconSize="20dp"
+                app:iconTint="@color/fg_green" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

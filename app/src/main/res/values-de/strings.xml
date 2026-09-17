@@ -8,35 +8,58 @@
     <string name="research_mode">LOKALE STEUERUNGSENGINE</string>
     <string name="research_note">Die Open-Source-Recherche hat die lokalen MTTL-Steuerbefehle bestätigt. Die Steckdosenschalter werden erst aktiv, wenn sich eine kompatible Leiste über TCP 10086 bei diesem Telefon identifiziert; jede Hardware-Revision muss weiterhin praktisch geprüft werden.</string>
 
+    <string name="nav_home">Start</string>
+    <string name="nav_setup">Einrichten</string>
+    <string name="nav_scan">Scan</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_about">Info</string>
+    <string name="home_title">Hauptübersicht</string>
+    <string name="home_subtitle">Verbindungsstatus und direkte Steuerung der vier MTTL-Steckdosen.</string>
+    <string name="quick_setup">Gerät einrichten</string>
+    <string name="quick_scan">Netzwerk scannen</string>
+
     <string name="setup_wizard">Geräteeinrichtung</string>
-    <string name="setup_wizard_note">Versetzen Sie die Steckdosenleiste in den Einrichtungsmodus, geben Sie ihre temporäre TONLY_TAP/ONLY_TAP-SSID ein und wählen Sie das 2,4-GHz-Wi‑Fi, mit dem sie sich verbinden soll. Die Controller-Adresse gehört normalerweise zu diesem Telefon.</string>
-    <string name="setup_ssid_hint">Einrichtungs-SSID, z. B. TONLY_TAP_XXXXXXX</string>
-    <string name="target_wifi_ssid_hint">Ziel-2,4-GHz-Wi‑Fi / Telefon-Hotspot-SSID</string>
-    <string name="target_wifi_password_hint">Wi‑Fi-/Hotspot-Passwort</string>
-    <string name="controller_ip_hint">Controller-IPv4 dieses Telefons</string>
+    <string name="setup_wizard_note">Versetzen Sie die Leiste in den Einrichtungsmodus, geben Sie die temporäre TONLY_TAP/ONLY_TAP-SSID ein und wählen Sie das 2,4-GHz-WLAN, dem sie beitreten soll. Die Controller-Adresse gehört normalerweise zu diesem Telefon.</string>
+    <string name="setup_single_phone_note">Ein zweites Telefon ist nicht nötig. Die App speichert zuerst die künftige Hotspot-Adresse, verbindet sich vorübergehend mit dem Setup-WLAN der Leiste, schreibt die Hotspot-Daten und fordert Sie anschließend auf, den Hotspot wieder einzuschalten.</string>
+    <string name="step_1">1 · Telefon-Hotspot vorbereiten</string>
+    <string name="step_2">2 · Mit dem Setup-WLAN verbinden</string>
+    <string name="step_3">3 · Mit diesem Telefon konfigurieren</string>
+    <string name="capture_hotspot">HOTSPOT-IP SPEICHERN</string>
+    <string name="open_wifi_settings">WLAN-EINSTELLUNGEN ÖFFNEN</string>
+    <string name="sequential_provision">MIT TONLY_TAP VERBUNDEN — WEITER</string>
+    <string name="automatic_provision">Automatische Verbindung (kompatible Telefone)</string>
+    <string name="manual_connected_note">Nach dem Speichern der Hotspot-IP den Hotspot ausschalten, manuell TONLY_TAP/ONLY_TAP beitreten, zur App zurückkehren und Weiter drücken. Die App konfiguriert über 192.168.1.1:30300.</string>
+    <string name="hotspot_status">Aktuelle lokale IPv4: %1$s\nGespeicherte Hotspot-Controller-IPv4: %2$s</string>
+    <string name="hotspot_ip_saved">Hotspot-Controller-Adresse gespeichert: %1$s</string>
+    <string name="hotspot_ip_missing">Keine lokale Hotspot-IPv4 erkannt. Zuerst den Hotspot einschalten und dann die Adresse speichern.</string>
+    <string name="sequential_success">Die Einstellungen wurden in die Leiste geschrieben. Jetzt werden die Hotspot-Einstellungen geöffnet. Schalten Sie sofort denselben 2,4-GHz-Hotspot ein und warten Sie auf die Verbindung zu TCP 10086.</string>
+    <string name="setup_ssid_hint">Setup-SSID der Leiste, z. B. TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">Ziel-SSID 2,4-GHz-WLAN / Telefon-Hotspot</string>
+    <string name="target_wifi_password_hint">WLAN-/Hotspot-Passwort</string>
+    <string name="controller_ip_hint">Gespeicherte Hotspot-/Controller-IPv4</string>
     <string name="provision_device">KOPPELN / EINRICHTEN</string>
-    <string name="provisioning">Steckdosenleiste wird eingerichtet…</string>
+    <string name="provisioning">Leiste wird eingerichtet…</string>
     <string name="provision_complete">Einrichtung abgeschlossen</string>
-    <string name="provision_complete_detail">Die Steckdosenleiste startet neu. Lassen Sie das Ziel-Wi‑Fi oder den Telefon-Hotspot aktiv und warten Sie auf die Verbindung zu TCP 10086.</string>
+    <string name="provision_complete_detail">Die Leiste startet neu. Lassen Sie Ziel-WLAN oder Telefon-Hotspot aktiv und warten Sie auf die Verbindung zu TCP 10086.</string>
     <string name="provision_failed">Einrichtung fehlgeschlagen: %1$s</string>
-    <string name="wifi_permission_required">Für die Geräteeinrichtung ist die Berechtigung für Wi‑Fi-Geräte in der Nähe erforderlich.</string>
-    <string name="missing_setup_fields">Geben Sie Einrichtungs-SSID, Ziel-Wi‑Fi-SSID und Controller-IPv4-Adresse ein.</string>
+    <string name="wifi_permission_required">Für die Geräteeinrichtung ist die Berechtigung für WLAN-Geräte in der Nähe erforderlich.</string>
+    <string name="missing_setup_fields">Setup-SSID, Ziel-WLAN/Hotspot-SSID und gespeicherte Controller-IPv4 eingeben.</string>
 
     <string name="mobile_hotspot_mode">TELEFON-HOTSPOT-MODUS</string>
-    <string name="mobile_hotspot_note">In Wohnungen ohne Router kann dieses Telefon gleichzeitig lokaler Controller und Wi‑Fi-Zugangspunkt sein. Stellen Sie den Hotspot auf 2,4 GHz. Internetfreigabe ist optional, weil die MTTL-Steuerung lokal erfolgt.</string>
+    <string name="mobile_hotspot_note">In Haushalten ohne Router kann dieses Telefon lokaler Controller und WLAN-Zugangspunkt sein. Hotspot auf 2,4 GHz stellen. Internetfreigabe ist optional, da die MTTL-Steuerung lokal ist.</string>
     <string name="open_hotspot_settings">HOTSPOT-EINSTELLUNGEN ÖFFNEN</string>
     <string name="refresh_hotspot">TELEFON-IP AKTUALISIEREN</string>
-    <string name="hotspot_single_phone_supported">Dieser Wi‑Fi-Chipsatz unterstützt die Einrichtung mit demselben Telefon (STA- + AP-Gleichzeitigkeit). Controller-IP: %1$s</string>
-    <string name="hotspot_second_device_required">Dieses Telefon kann den Hotspot nicht aktiv halten und gleichzeitig dem Einrichtungsnetz der Steckdosenleiste beitreten. Verwenden Sie einmalig ein zweites Telefon/Notebook zur Einrichtung; danach kann dieses Telefon als Hotspot/Controller laufen. Controller-IP: %1$s</string>
-    <string name="hotspot_ip_unknown">noch nicht erkannt</string>
-    <string name="hotspot_runtime_note">Nach der Einrichtung kommunizieren Steckdosenleiste und App lokal über den Telefon-Hotspot auf TCP 10086.</string>
+    <string name="hotspot_single_phone_supported">Der WLAN-Chipsatz meldet STA+AP-Unterstützung; das reale Herstellerverhalten kann dennoch abweichen.</string>
+    <string name="hotspot_second_device_required">Verwenden Sie die sequenzielle Ein-Telefon-Einrichtung, wenn Hotspot und Setup-WLAN nicht gleichzeitig funktionieren.</string>
+    <string name="hotspot_ip_unknown">nicht erkannt</string>
+    <string name="hotspot_runtime_note">Nach der Einrichtung kommunizieren Leiste und App lokal über den Telefon-Hotspot auf TCP 10086.</string>
 
-    <string name="device_discovery">Einrichtungsdiagnose</string>
+    <string name="device_discovery">Scan und Diagnose</string>
     <string name="ip_hint">IP-Adresse des MTTL-W01</string>
     <string name="scan">LAN SCANNEN</string>
     <string name="probe">30300 PRÜFEN</string>
     <string name="idle">Controller wird gestartet…</string>
-    <string name="scan_explanation">TCP 30300 wird bei bekannter Firmware für Einrichtung und Provisionierung verwendet. Die normale Steckdosensteuerung läuft über die Geräte-Controller-Sitzung auf TCP 10086.</string>
+    <string name="scan_explanation">TCP 30300 wird während Einrichtung/Provisionierung verwendet. Die normale Steckdosensteuerung läuft über die Geräte-Controller-Sitzung auf TCP 10086.</string>
     <string name="scanning">Lokales Netzwerk wird gescannt…</string>
     <string name="not_found">Kein Einrichtungsdienst erkannt</string>
     <string name="service_detected">MTTL-Einrichtungsdienst erkannt</string>
@@ -47,7 +70,7 @@
     <string name="multiple_hosts">%1$d Hosts stellen Port 30300 bereit. Prüfen Sie die ausgewählte IP-Adresse.</string>
     <string name="probe_success">%1$s hat eine TCP-Verbindung auf Einrichtungsport 30300 angenommen. Es wurden keine Befehle gesendet.</string>
     <string name="probe_failed">%1$s hat auf TCP 30300 nicht geantwortet. Außerhalb des Einrichtungsmodus kann das normal sein.</string>
-    <string name="protocol_locked">Einrichtungsport erkannt. Die Relaissteuerung wartet auf eine kompatible MTTL-Controller-Sitzung auf Port 10086.</string>
+    <string name="protocol_locked">Einrichtungsport erkannt. Die Relaissteuerung wartet auf eine kompatible MTTL-Sitzung auf Port 10086.</string>
     <string name="enter_ip">IP-Adresse eingeben</string>
     <string name="controller_listening">Lokaler Controller lauscht auf TCP 10086</string>
     <string name="controller_connected">Verbunden: %1$s · Firmware %2$s</string>
@@ -62,5 +85,12 @@
     <string name="outlet_3">Steckdose 3</string>
     <string name="outlet_4">Steckdose 4</string>
     <string name="locked">Warten auf eine kompatible Leiste am Controller-Port 10086</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_note">Sprachänderungen werden sofort übernommen. Die Netzwerk-Provisionierung bleibt lokal und benötigt keinen koreanischen Abonnementdienst.</string>
+    <string name="about_title">Info</string>
     <string name="about_line">FG Machines RCK · MTTL-Familie · Lokale Steuerung zuerst</string>
+    <string name="about_body">FG Machines RCK ist ein unabhängiger lokaler Controller für kompatible LG U+ / TONLY Smart-Steckdosenleisten. Es ist keine offizielle LG-U+-App. Das Projekt priorisiert lokalen WLAN-Betrieb, klare Diagnose und sichere Relaissteuerung.</string>
+    <string name="supported_models_title">Kompatibilität</string>
+    <string name="supported_models_body">Primär verifizierte Familie: MTTL-W01. Bekannte Zertifikatsrevisionen HU04139-17002A/B/C/D/E. TONLY_TAP_* und ONLY_TAP_* werden erkannt; vor Aktivierung der Relaissteuerung wird das Protokoll geprüft.</string>
 </resources>
