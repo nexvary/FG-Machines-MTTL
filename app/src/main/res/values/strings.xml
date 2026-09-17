@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FG Machines RCK</string>
+    <string name="app_subtitle">MTTL-W01 Local Controller</string>
+    <string name="research_mode">INTEROPERABILITY MODE</string>
+    <string name="research_note">Local discovery is active. Relay switching remains locked until control frames are verified on real MTTL-W01 hardware.</string>
+    <string name="device_discovery">Device discovery</string>
+    <string name="ip_hint">MTTL-W01 IP address</string>
+    <string name="scan">SCAN LAN</string>
+    <string name="probe">PROBE 30300</string>
+    <string name="idle">Ready to scan</string>
+    <string name="scan_explanation">Searching the local /24 network for the MTTL-W01 TCP service on port 30300.</string>
+    <string name="scanning">Scanning local network…</string>
+    <string name="not_found">No device detected</string>
+    <string name="service_detected">MTTL service detected</string>
+    <string name="probing">Probing device…</string>
+    <string name="offline">Device not reachable</string>
+    <string name="scan_none">No host answered on TCP 30300 in %1$s. You can enter an IP manually.</string>
+    <string name="scan_found">Found %1$d host(s) on %2$s. Selected %3$s.</string>
+    <string name="multiple_hosts">%1$d hosts expose port 30300. Verify the selected IP.</string>
+    <string name="probe_success">%1$s accepted a TCP connection on port 30300. No command bytes were sent.</string>
+    <string name="probe_failed">%1$s did not answer on TCP port 30300.</string>
+    <string name="protocol_locked">Safety lock: unverified relay commands are not transmitted.</string>
+    <string name="enter_ip">Enter an IP address</string>
+    <string name="outlets">Power outlets</string>
+    <string name="outlet_1">Outlet 1</string>
+    <string name="outlet_2">Outlet 2</string>
+    <string name="outlet_3">Outlet 3</string>
+    <string name="outlet_4">Outlet 4</string>
+    <string name="locked">Protocol pending verification</string>
+    <string name="about_line">FG Machines RCK · MTTL-W01 · Local-first controller</string>
+</resources>

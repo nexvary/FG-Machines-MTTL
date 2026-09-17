@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fg_black">#0B0F14</color>
+    <color name="fg_surface">#121A22</color>
+    <color name="fg_surface_2">#18232D</color>
+    <color name="fg_gold">#D4AF37</color>
+    <color name="fg_blue">#4DB6FF</color>
+    <color name="fg_green">#39D98A</color>
+    <color name="fg_orange">#FF9F43</color>
+    <color name="fg_red">#FF5D5D</color>
+    <color name="fg_text">#F4F7FA</color>
+    <color name="fg_text_secondary">#A8B2BD</color>
+</resources>

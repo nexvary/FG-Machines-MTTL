@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FG Machines RCK</string>
+    <string name="app_subtitle">ريموت محلي للمشترك MTTL-W01</string>
+    <string name="research_mode">وضع التوافق المحلي</string>
+    <string name="research_note">اكتشاف الجهاز عبر الشبكة المحلية يعمل الآن. التحكم في الريليهات سيظل مقفلاً حتى يتم التحقق من أوامر MTTL-W01 على الجهاز الحقيقي.</string>
+    <string name="device_discovery">اكتشاف المشترك</string>
+    <string name="ip_hint">عنوان IP للمشترك</string>
+    <string name="scan">فحص الشبكة</string>
+    <string name="probe">فحص 30300</string>
+    <string name="idle">جاهز للفحص</string>
+    <string name="scan_explanation">يتم البحث داخل الشبكة المحلية عن خدمة MTTL-W01 على منفذ TCP رقم 30300.</string>
+    <string name="scanning">جارٍ فحص الشبكة المحلية…</string>
+    <string name="not_found">لم يتم العثور على الجهاز</string>
+    <string name="service_detected">تم اكتشاف خدمة MTTL</string>
+    <string name="probing">جارٍ فحص الجهاز…</string>
+    <string name="offline">الجهاز غير متصل</string>
+    <string name="scan_none">لم يستجب أي جهاز على منفذ 30300 داخل %1$s. يمكنك إدخال عنوان IP يدويًا.</string>
+    <string name="scan_found">تم العثور على %1$d جهاز/أجهزة داخل %2$s. تم اختيار %3$s.</string>
+    <string name="multiple_hosts">يوجد %1$d أجهزة تفتح منفذ 30300. تحقق من عنوان IP المختار.</string>
+    <string name="probe_success">الجهاز %1$s قبل اتصال TCP على منفذ 30300 ولم يتم إرسال أي أوامر إليه.</string>
+    <string name="probe_failed">الجهاز %1$s لم يستجب على منفذ TCP 30300.</string>
+    <string name="protocol_locked">قفل أمان: لن يتم إرسال أوامر ريليه غير مؤكدة.</string>
+    <string name="enter_ip">أدخل عنوان IP</string>
+    <string name="outlets">مخارج الكهرباء</string>
+    <string name="outlet_1">المخرج 1</string>
+    <string name="outlet_2">المخرج 2</string>
+    <string name="outlet_3">المخرج 3</string>
+    <string name="outlet_4">المخرج 4</string>
+    <string name="locked">في انتظار التحقق من البروتوكول</string>
+    <string name="about_line">FG Machines RCK · MTTL-W01 · تحكم محلي أولاً</string>
+</resources>
