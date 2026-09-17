@@ -9,8 +9,9 @@ import java.util.Locale;
  * Compatibility signatures for LG U+ / TONLY smart-tap hardware.
  *
  * The catalog intentionally distinguishes the retail model number from KC/safety
- * certificate revisions. Current public certification records consistently identify
- * the hardware as MTTL-W01 while showing multiple HU04139-17002* revisions.
+ * certificate revisions. Current public certification and reverse-engineering records
+ * consistently identify the hardware as MTTL-W01 while showing multiple
+ * HU04139-17002* revisions.
  */
 public final class ModelCatalog {
     public static final String PRIMARY_MODEL = "MTTL-W01";
@@ -26,6 +27,7 @@ public final class ModelCatalog {
 
     private static final List<String> CERTIFICATE_REVISIONS = Collections.unmodifiableList(
             Arrays.asList(
+                    "HU04139-17002A",
                     "HU04139-17002B",
                     "HU04139-17002C",
                     "HU04139-17002D",
@@ -40,7 +42,7 @@ public final class ModelCatalog {
 
     // Firmware families observed in public local-control projects.
     private static final List<String> KNOWN_FIRMWARES = Collections.unmodifiableList(
-            Arrays.asList("1.0.66", "1.0.68", "1.0.106")
+            Arrays.asList("1.0.66", "1.0.68", "1.0.106", "1.0.110")
     );
 
     private ModelCatalog() {}
