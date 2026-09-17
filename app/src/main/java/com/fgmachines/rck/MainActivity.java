@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_HOTSPOT_IP = "hotspot_controller_ip";
     private static final String PREF_TARGET_SSID = "target_ssid";
     private static final String PREF_SETUP_SSID = "setup_ssid";
+    private static final String PREF_SETUP_MODE = "setup_mode";
+    private static final int SETUP_MODE_ROUTER = 0;
+    private static final int SETUP_MODE_TWO_PHONE = 1;
+    private static final int SETUP_MODE_SINGLE_PHONE = 2;
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
 
@@ -59,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton refreshHotspotButton;
     private MaterialButton openWifiButton;
     private Spinner languageSpinner;
+    private Spinner setupModeSpinner;
+    private TextView setupModeDescription;
+    private TextView setupModeBadge;
     private MaterialSwitch[] outletSwitches;
     private View[] pages;
     private MaterialButton[] navButtons;
@@ -106,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         provisioner = new MttlProvisioner(this);
         configureNavigation();
         configureLanguageSelector();
+        configureSetupModeSelector();
         configureOutletControls();
         configureSetupWorkflow();
         restoreSetupProfile();
@@ -151,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
         refreshHotspotButton = findViewById(R.id.refreshHotspotButton);
         openWifiButton = findViewById(R.id.openWifiButton);
         languageSpinner = findViewById(R.id.languageSpinner);
+        setupModeSpinner = findViewById(R.id.setupModeSpinner);
+        setupModeDescription = findViewById(R.id.setupModeDescription);
+        setupModeBadge = findViewById(R.id.setupModeBadge);
         outletSwitches = new MaterialSwitch[]{
                 findViewById(R.id.outlet1), findViewById(R.id.outlet2),
                 findViewById(R.id.outlet3), findViewById(R.id.outlet4)
@@ -209,12 +220,19 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.setText(prefs.getString(PREF_TARGET_SSID, ""));
         String savedIp = prefs.getString(PREF_HOTSPOT_IP, "");
         if (savedIp != null && !savedIp.isEmpty()) controllerIpInput.setText(savedIp);
+        if (setupModeSpinner != null) {
+            int savedMode = prefs.getInt(PREF_SETUP_MODE, SETUP_MODE_ROUTER);
+            if (savedMode < SETUP_MODE_ROUTER || savedMode > SETUP_MODE_SINGLE_PHONE) savedMode = SETUP_MODE_ROUTER;
+            setupModeSpinner.setSelection(savedMode, false);
+            applySetupMode(savedMode);
+        }
     }
 
     private void persistSetupProfile() {
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                 .putString(PREF_SETUP_SSID, textOf(setupSsidInput))
                 .putString(PREF_TARGET_SSID, textOf(targetWifiSsidInput))
+                .putInt(PREF_SETUP_MODE, setupModeSpinner == null ? SETUP_MODE_ROUTER : setupModeSpinner.getSelectedItemPosition())
                 .apply();
     }
 
@@ -259,7 +277,8 @@ public class MainActivity extends AppCompatActivity {
         persistSetupProfile();
         setProvisionBusy(true);
         provisionStatus.setText(R.string.provisioning);
-        MttlProvisioner.Callback callback = provisionCallback(sequential);
+        int setupMode = setupModeSpinner == null ? SETUP_MODE_ROUTER : setupModeSpinner.getSelectedItemPosition();
+        MttlProvisioner.Callback callback = provisionCallback(sequential, setupMode);
         if (sequential) {
             provisioner.provisionCurrentWifi(setupSsid, wifiSsid, wifiPassword, controllerIp, callback);
         } else {
@@ -267,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private MttlProvisioner.Callback provisionCallback(boolean sequential) {
+    private MttlProvisioner.Callback provisionCallback(boolean sequential, int setupMode) {
         return new MttlProvisioner.Callback() {
             @Override public void onStatus(String status) {
                 runOnUiThread(() -> provisionStatus.setText(status));
@@ -277,13 +296,19 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     setProvisionBusy(false);
                     provisionStatus.setText(sequential
-                            ? R.string.sequential_success
+                            ? successMessageForMode(setupMode)
                             : R.string.provision_complete_detail);
                     deviceState.setText(R.string.provision_complete);
                     discoveryDetail.setText(sequential
-                            ? R.string.sequential_success
+                            ? successMessageForMode(setupMode)
                             : R.string.provision_complete_detail);
-                    if (sequential) HotspotSupport.openSystemHotspotSettings(MainActivity.this);
+                    if (sequential) {
+                        if (setupMode == SETUP_MODE_ROUTER) {
+                            HotspotSupport.openWifiSettings(MainActivity.this);
+                        } else if (setupMode == SETUP_MODE_SINGLE_PHONE) {
+                            HotspotSupport.openSystemHotspotSettings(MainActivity.this);
+                        }
+                    }
                 });
             }
 
@@ -335,6 +360,56 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.setEnabled(!busy);
         targetWifiPasswordInput.setEnabled(!busy);
         controllerIpInput.setEnabled(!busy);
+    }
+
+    private void configureSetupModeSelector() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.setup_mode_labels, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setupModeSpinner.setAdapter(adapter);
+
+        int savedMode = getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getInt(PREF_SETUP_MODE, SETUP_MODE_ROUTER);
+        if (savedMode < SETUP_MODE_ROUTER || savedMode > SETUP_MODE_SINGLE_PHONE) {
+            savedMode = SETUP_MODE_ROUTER;
+        }
+        setupModeSpinner.setSelection(savedMode, false);
+        applySetupMode(savedMode);
+        setupModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position < SETUP_MODE_ROUTER || position > SETUP_MODE_SINGLE_PHONE) return;
+                getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                        .putInt(PREF_SETUP_MODE, position).apply();
+                applySetupMode(position);
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+    }
+
+    private void applySetupMode(int mode) {
+        if (setupModeDescription == null || setupModeBadge == null) return;
+        if (mode == SETUP_MODE_TWO_PHONE) {
+            setupModeDescription.setText(R.string.setup_mode_two_phone_desc);
+            setupModeBadge.setText(R.string.setup_recommended);
+            openHotspotButton.setVisibility(View.GONE);
+            provisionButton.setVisibility(View.GONE);
+        } else if (mode == SETUP_MODE_SINGLE_PHONE) {
+            setupModeDescription.setText(R.string.setup_mode_single_desc);
+            setupModeBadge.setText(R.string.setup_experimental);
+            openHotspotButton.setVisibility(View.VISIBLE);
+            provisionButton.setVisibility(View.VISIBLE);
+        } else {
+            setupModeDescription.setText(R.string.setup_mode_router_desc);
+            setupModeBadge.setText(R.string.setup_recommended);
+            openHotspotButton.setVisibility(View.GONE);
+            provisionButton.setVisibility(View.GONE);
+        }
+    }
+
+    private int successMessageForMode(int mode) {
+        if (mode == SETUP_MODE_TWO_PHONE) return R.string.two_phone_success;
+        if (mode == SETUP_MODE_SINGLE_PHONE) return R.string.single_phone_success;
+        return R.string.router_success;
     }
 
     private void configureLanguageSelector() {
