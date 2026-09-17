@@ -23,9 +23,13 @@ This project controls mains-powered hardware. The default Android implementation
 
 ## Build
 
+Current repository setup uses Gradle 8.9 directly (the wrapper will be added after the first CI build is verified):
+
 ```bash
-./gradlew assembleDebug
+gradle --no-daemon :app:assembleDebug
 ```
+
+Or open the repository in Android Studio and build the `app` module.
 
 APK output:
 
@@ -35,4 +39,14 @@ app/build/outputs/apk/debug/app-debug.apk
 
 ## Status
 
-Initial Android application scaffold and LAN discovery/probe are under active development.
+Implemented in the initial Android baseline:
+
+- Professional dark industrial UI.
+- Arabic/English resources with RTL support.
+- Manual MTTL-W01 IP entry.
+- Non-destructive TCP 30300 probe.
+- Local `/24` discovery for hosts exposing port 30300.
+- Four outlet controls displayed but intentionally safety-locked until the relay protocol is verified.
+- GitHub Actions lint/build workflow.
+
+See `docs/PROTOCOL_NOTES.md` for the verified protocol research baseline.
