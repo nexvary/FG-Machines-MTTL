@@ -7,6 +7,30 @@
     <string name="language">Sprache</string>
     <string name="research_mode">LOKALE STEUERUNGSENGINE</string>
     <string name="research_note">Die Open-Source-Recherche hat die lokalen MTTL-Steuerbefehle bestätigt. Die Steckdosenschalter werden erst aktiv, wenn sich eine kompatible Leiste über TCP 10086 bei diesem Telefon identifiziert; jede Hardware-Revision muss weiterhin praktisch geprüft werden.</string>
+
+    <string name="setup_wizard">Geräteeinrichtung</string>
+    <string name="setup_wizard_note">Versetzen Sie die Steckdosenleiste in den Einrichtungsmodus, geben Sie ihre temporäre TONLY_TAP/ONLY_TAP-SSID ein und wählen Sie das 2,4-GHz-Wi‑Fi, mit dem sie sich verbinden soll. Die Controller-Adresse gehört normalerweise zu diesem Telefon.</string>
+    <string name="setup_ssid_hint">Einrichtungs-SSID, z. B. TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">Ziel-2,4-GHz-Wi‑Fi / Telefon-Hotspot-SSID</string>
+    <string name="target_wifi_password_hint">Wi‑Fi-/Hotspot-Passwort</string>
+    <string name="controller_ip_hint">Controller-IPv4 dieses Telefons</string>
+    <string name="provision_device">KOPPELN / EINRICHTEN</string>
+    <string name="provisioning">Steckdosenleiste wird eingerichtet…</string>
+    <string name="provision_complete">Einrichtung abgeschlossen</string>
+    <string name="provision_complete_detail">Die Steckdosenleiste startet neu. Lassen Sie das Ziel-Wi‑Fi oder den Telefon-Hotspot aktiv und warten Sie auf die Verbindung zu TCP 10086.</string>
+    <string name="provision_failed">Einrichtung fehlgeschlagen: %1$s</string>
+    <string name="wifi_permission_required">Für die Geräteeinrichtung ist die Berechtigung für Wi‑Fi-Geräte in der Nähe erforderlich.</string>
+    <string name="missing_setup_fields">Geben Sie Einrichtungs-SSID, Ziel-Wi‑Fi-SSID und Controller-IPv4-Adresse ein.</string>
+
+    <string name="mobile_hotspot_mode">TELEFON-HOTSPOT-MODUS</string>
+    <string name="mobile_hotspot_note">In Wohnungen ohne Router kann dieses Telefon gleichzeitig lokaler Controller und Wi‑Fi-Zugangspunkt sein. Stellen Sie den Hotspot auf 2,4 GHz. Internetfreigabe ist optional, weil die MTTL-Steuerung lokal erfolgt.</string>
+    <string name="open_hotspot_settings">HOTSPOT-EINSTELLUNGEN ÖFFNEN</string>
+    <string name="refresh_hotspot">TELEFON-IP AKTUALISIEREN</string>
+    <string name="hotspot_single_phone_supported">Dieser Wi‑Fi-Chipsatz unterstützt die Einrichtung mit demselben Telefon (STA- + AP-Gleichzeitigkeit). Controller-IP: %1$s</string>
+    <string name="hotspot_second_device_required">Dieses Telefon kann den Hotspot nicht aktiv halten und gleichzeitig dem Einrichtungsnetz der Steckdosenleiste beitreten. Verwenden Sie einmalig ein zweites Telefon/Notebook zur Einrichtung; danach kann dieses Telefon als Hotspot/Controller laufen. Controller-IP: %1$s</string>
+    <string name="hotspot_ip_unknown">noch nicht erkannt</string>
+    <string name="hotspot_runtime_note">Nach der Einrichtung kommunizieren Steckdosenleiste und App lokal über den Telefon-Hotspot auf TCP 10086.</string>
+
     <string name="device_discovery">Einrichtungsdiagnose</string>
     <string name="ip_hint">IP-Adresse des MTTL-W01</string>
     <string name="scan">LAN SCANNEN</string>

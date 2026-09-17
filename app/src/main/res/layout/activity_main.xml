@@ -47,29 +47,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/fg_text"
                         android:textSize="25sp"
-                        android:textStyle="bold"
-                        android:textAlignment="viewStart" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/app_subtitle"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/fg_blue_bright"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textAlignment="viewStart" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:text="@string/brand_tagline"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/fg_text_secondary"
-                        android:textSize="12sp"
-                        android:textAlignment="viewStart" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -86,10 +86,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/brand_badge"
+                android:textAlignment="viewStart"
                 android:textColor="@color/fg_green"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:textAlignment="viewStart" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,10 +126,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/research_mode"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/fg_green"
                     android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -137,9 +137,202 @@
                     android:layout_marginTop="6dp"
                     android:lineSpacingExtra="3dp"
                     android:text="@string/research_note"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/fg_text_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/fg_surface"
+            app:cardCornerRadius="20dp"
+            app:strokeColor="@color/fg_green"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setup_wizard"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:lineSpacingExtra="3dp"
+                    android:text="@string/setup_wizard_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/mobile_hotspot_mode"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_blue_bright"
                     android:textSize="13sp"
-                    android:textAlignment="viewStart" />
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/mobile_hotspot_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/hotspotStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/hotspot_runtime_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_green"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/openHotspotButton"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text="@string/open_hotspot_settings"
+                        android:textColor="@color/fg_text"
+                        app:backgroundTint="@color/fg_blue"
+                        app:cornerRadius="14dp" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/refreshHotspotButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text="@string/refresh_hotspot"
+                        android:textColor="@color/fg_green"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_green" />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:hint="@string/setup_ssid_hint"
+                    app:boxStrokeColor="@color/fg_blue"
+                    app:hintTextColor="@color/fg_text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/setupSsidInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text"
+                        android:textDirection="ltr" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/target_wifi_ssid_hint"
+                    app:boxStrokeColor="@color/fg_green"
+                    app:hintTextColor="@color/fg_text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/targetWifiSsidInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/target_wifi_password_hint"
+                    app:boxStrokeColor="@color/fg_green"
+                    app:endIconMode="password_toggle"
+                    app:hintTextColor="@color/fg_text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/targetWifiPasswordInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/controller_ip_hint"
+                    app:boxStrokeColor="@color/fg_silver"
+                    app:hintTextColor="@color/fg_text_secondary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/controllerIpInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text"
+                        android:textDirection="ltr" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/provisionButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/provision_device"
+                    android:textColor="@color/fg_black"
+                    app:backgroundTint="@color/fg_green"
+                    app:cornerRadius="15dp" />
+
+                <TextView
+                    android:id="@+id/provisionStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/hotspot_runtime_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="12sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -176,10 +369,10 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:text="@string/device_discovery"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/fg_text"
                         android:textSize="19sp"
-                        android:textStyle="bold"
-                        android:textAlignment="viewStart" />
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -253,10 +446,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="@string/idle"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/fg_green"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textAlignment="viewStart" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/discoveryDetail"
@@ -264,9 +457,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@string/scan_explanation"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/fg_text_secondary"
-                    android:textSize="13sp"
-                    android:textAlignment="viewStart" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -275,19 +468,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:text="@string/outlets"
+            android:textAlignment="viewStart"
             android:textColor="@color/fg_text"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAlignment="viewStart" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="@string/outlets_subtitle"
+            android:textAlignment="viewStart"
             android:textColor="@color/fg_text_secondary"
-            android:textSize="12sp"
-            android:textAlignment="viewStart" />
+            android:textSize="12sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -332,9 +525,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/locked"
+            android:textAlignment="viewStart"
             android:textColor="@color/fg_warning"
-            android:textSize="12sp"
-            android:textAlignment="viewStart" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="match_parent"

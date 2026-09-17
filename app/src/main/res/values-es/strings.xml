@@ -7,6 +7,30 @@
     <string name="language">Idioma</string>
     <string name="research_mode">MOTOR DE CONTROL LOCAL</string>
     <string name="research_note">La investigación de código abierto confirmó los comandos de control local MTTL. Los controles de las tomas solo se activan cuando una regleta compatible se identifica ante este teléfono por TCP 10086; cada revisión física aún requiere validación.</string>
+
+    <string name="setup_wizard">Configuración del dispositivo</string>
+    <string name="setup_wizard_note">Ponga la regleta en modo de configuración, introduzca su SSID temporal TONLY_TAP/ONLY_TAP y elija la red Wi‑Fi de 2.4 GHz a la que debe conectarse. La dirección del controlador normalmente pertenece a este teléfono.</string>
+    <string name="setup_ssid_hint">SSID de configuración, p. ej. TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">SSID Wi‑Fi 2.4 GHz / punto de acceso del teléfono</string>
+    <string name="target_wifi_password_hint">Contraseña Wi‑Fi / punto de acceso</string>
+    <string name="controller_ip_hint">IPv4 del controlador en este teléfono</string>
+    <string name="provision_device">EMPAREJAR / CONFIGURAR</string>
+    <string name="provisioning">Configurando la regleta…</string>
+    <string name="provision_complete">Configuración completada</string>
+    <string name="provision_complete_detail">La regleta se está reiniciando. Mantenga activa la red Wi‑Fi o el punto de acceso del teléfono y espere la conexión a TCP 10086.</string>
+    <string name="provision_failed">Error de configuración: %1$s</string>
+    <string name="wifi_permission_required">Se requiere permiso para dispositivos Wi‑Fi cercanos para configurar el dispositivo.</string>
+    <string name="missing_setup_fields">Introduzca el SSID de configuración, el SSID Wi‑Fi de destino y la dirección IPv4 del controlador.</string>
+
+    <string name="mobile_hotspot_mode">MODO PUNTO DE ACCESO DEL TELÉFONO</string>
+    <string name="mobile_hotspot_note">En hogares sin router, este teléfono puede ser a la vez el controlador local y el punto de acceso Wi‑Fi. Configure el punto de acceso en 2.4 GHz. Compartir Internet es opcional porque el control MTTL es local.</string>
+    <string name="open_hotspot_settings">ABRIR AJUSTES DEL PUNTO DE ACCESO</string>
+    <string name="refresh_hotspot">ACTUALIZAR IP DEL TELÉFONO</string>
+    <string name="hotspot_single_phone_supported">Este chipset Wi‑Fi admite configuración con el mismo teléfono (concurrencia STA + AP). IP del controlador: %1$s</string>
+    <string name="hotspot_second_device_required">Este teléfono no puede mantener el punto de acceso y conectarse a la red de configuración de la regleta al mismo tiempo. Use un segundo teléfono/portátil una vez para configurarla; después este teléfono puede funcionar como punto de acceso/controlador. IP del controlador: %1$s</string>
+    <string name="hotspot_ip_unknown">todavía no detectada</string>
+    <string name="hotspot_runtime_note">Después de la configuración, la regleta y la app se comunican localmente por el punto de acceso del teléfono mediante TCP 10086.</string>
+
     <string name="device_discovery">Diagnóstico de configuración</string>
     <string name="ip_hint">Dirección IP del MTTL-W01</string>
     <string name="scan">ESCANEAR LAN</string>

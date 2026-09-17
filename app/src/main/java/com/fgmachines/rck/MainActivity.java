@@ -1,8 +1,11 @@
 package com.fgmachines.rck;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -29,13 +33,23 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS = "fg_rck_settings";
     private static final String PREF_LANGUAGE = "language";
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
+    private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
 
     private TextInputEditText ipInput;
+    private TextInputEditText setupSsidInput;
+    private TextInputEditText targetWifiSsidInput;
+    private TextInputEditText targetWifiPasswordInput;
+    private TextInputEditText controllerIpInput;
     private TextView deviceState;
     private TextView discoveryDetail;
+    private TextView hotspotStatus;
+    private TextView provisionStatus;
     private LinearProgressIndicator progress;
     private MaterialButton scanButton;
     private MaterialButton probeButton;
+    private MaterialButton provisionButton;
+    private MaterialButton openHotspotButton;
+    private MaterialButton refreshHotspotButton;
     private Spinner languageSpinner;
     private MaterialSwitch[] outletSwitches;
 
@@ -43,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private volatile String activeMac;
     private volatile boolean applyingDeviceState;
     private MttlControllerServer controllerServer;
+    private MttlProvisioner provisioner;
+    private Runnable pendingWifiAction;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -77,11 +93,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ipInput = findViewById(R.id.ipInput);
+        setupSsidInput = findViewById(R.id.setupSsidInput);
+        targetWifiSsidInput = findViewById(R.id.targetWifiSsidInput);
+        targetWifiPasswordInput = findViewById(R.id.targetWifiPasswordInput);
+        controllerIpInput = findViewById(R.id.controllerIpInput);
         deviceState = findViewById(R.id.deviceState);
         discoveryDetail = findViewById(R.id.discoveryDetail);
+        hotspotStatus = findViewById(R.id.hotspotStatus);
+        provisionStatus = findViewById(R.id.provisionStatus);
         progress = findViewById(R.id.progress);
         scanButton = findViewById(R.id.scanButton);
         probeButton = findViewById(R.id.probeButton);
+        provisionButton = findViewById(R.id.provisionButton);
+        openHotspotButton = findViewById(R.id.openHotspotButton);
+        refreshHotspotButton = findViewById(R.id.refreshHotspotButton);
         languageSpinner = findViewById(R.id.languageSpinner);
         outletSwitches = new MaterialSwitch[] {
                 findViewById(R.id.outlet1),
@@ -90,9 +115,12 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.outlet4)
         };
 
+        provisioner = new MttlProvisioner(this);
         configureLanguageSelector();
         configureOutletControls();
+        configureSetupWorkflow();
         startLocalController();
+        refreshHotspotStatus();
 
         scanButton.setOnClickListener(v -> startScan());
         probeButton.setOnClickListener(v -> probeCurrentHost());
@@ -103,6 +131,106 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void configureSetupWorkflow() {
+        openHotspotButton.setOnClickListener(v -> HotspotSupport.openSystemHotspotSettings(this));
+        refreshHotspotButton.setOnClickListener(v -> refreshHotspotStatus());
+        provisionButton.setOnClickListener(v -> requestWifiSetupPermission(this::provisionDevice));
+    }
+
+    private void refreshHotspotStatus() {
+        String controllerIp = HotspotSupport.findControllerIpv4();
+        String displayIp = controllerIp == null ? getString(R.string.hotspot_ip_unknown) : controllerIp;
+        boolean concurrent = HotspotSupport.supportsSamePhoneProvisioning(this);
+        hotspotStatus.setText(getString(
+                concurrent ? R.string.hotspot_single_phone_supported : R.string.hotspot_second_device_required,
+                displayIp
+        ));
+
+        if (controllerIp != null && controllerIpInput != null) {
+            String current = textOf(controllerIpInput);
+            if (current.isEmpty() || isPrivateIpv4(current)) controllerIpInput.setText(controllerIp);
+        }
+    }
+
+    private void provisionDevice() {
+        String setupSsid = textOf(setupSsidInput);
+        String wifiSsid = textOf(targetWifiSsidInput);
+        String wifiPassword = textOf(targetWifiPasswordInput);
+        String controllerIp = textOf(controllerIpInput);
+
+        if (setupSsid.isEmpty() || wifiSsid.isEmpty() || controllerIp.isEmpty()) {
+            Snackbar.make(provisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        setProvisionBusy(true);
+        provisionStatus.setText(R.string.provisioning);
+        provisioner.provision(setupSsid, wifiSsid, wifiPassword, controllerIp,
+                new MttlProvisioner.Callback() {
+                    @Override
+                    public void onStatus(String status) {
+                        runOnUiThread(() -> provisionStatus.setText(status));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        runOnUiThread(() -> {
+                            setProvisionBusy(false);
+                            provisionStatus.setText(R.string.provision_complete_detail);
+                            deviceState.setText(R.string.provision_complete);
+                            discoveryDetail.setText(R.string.provision_complete_detail);
+                        });
+                    }
+
+                    @Override
+                    public void onError(String message, Throwable error) {
+                        runOnUiThread(() -> {
+                            setProvisionBusy(false);
+                            String detail = error == null ? message : message + ": " + safeMessage(error);
+                            provisionStatus.setText(getString(R.string.provision_failed, detail));
+                            Snackbar.make(provisionButton,
+                                    getString(R.string.provision_failed, detail), Snackbar.LENGTH_LONG).show();
+                        });
+                    }
+                });
+    }
+
+    private void requestWifiSetupPermission(Runnable action) {
+        String permission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                ? Manifest.permission.NEARBY_WIFI_DEVICES
+                : Manifest.permission.ACCESS_FINE_LOCATION;
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            action.run();
+            return;
+        }
+        pendingWifiAction = action;
+        requestPermissions(new String[]{permission}, WIFI_SETUP_PERMISSION_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode != WIFI_SETUP_PERMISSION_REQUEST) return;
+        Runnable action = pendingWifiAction;
+        pendingWifiAction = null;
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (action != null) action.run();
+        } else {
+            Snackbar.make(provisionButton, R.string.wifi_permission_required, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void setProvisionBusy(boolean busy) {
+        provisionButton.setEnabled(!busy);
+        openHotspotButton.setEnabled(!busy);
+        refreshHotspotButton.setEnabled(!busy);
+        setupSsidInput.setEnabled(!busy);
+        targetWifiSsidInput.setEnabled(!busy);
+        targetWifiPasswordInput.setEnabled(!busy);
+        controllerIpInput.setEnabled(!busy);
     }
 
     private void configureLanguageSelector() {
@@ -295,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void probeCurrentHost() {
-        String host = ipInput.getText() == null ? "" : ipInput.getText().toString().trim();
+        String host = textOf(ipInput);
         if (TextUtils.isEmpty(host)) {
             ipInput.setError(getString(R.string.enter_ip));
             return;
@@ -323,6 +451,14 @@ public class MainActivity extends AppCompatActivity {
         languageSpinner.setEnabled(!busy);
     }
 
+    private static String textOf(TextInputEditText input) {
+        return input == null || input.getText() == null ? "" : input.getText().toString().trim();
+    }
+
+    private static boolean isPrivateIpv4(String value) {
+        return value.startsWith("10.") || value.startsWith("192.168.") || value.startsWith("172.");
+    }
+
     private static String safeMessage(Throwable error) {
         if (error == null) return "unknown";
         String value = error.getMessage();
@@ -330,7 +466,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (hotspotStatus != null) refreshHotspotStatus();
+    }
+
+    @Override
     protected void onDestroy() {
+        if (provisioner != null) provisioner.close();
         if (controllerServer != null) controllerServer.close();
         commandWorker.shutdownNow();
         super.onDestroy();
