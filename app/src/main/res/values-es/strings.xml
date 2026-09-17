@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FG Machines RCK</string>
+    <string name="app_subtitle">Control inteligente MTTL-W01</string>
+    <string name="brand_tagline">Comercio, tecnología y control inteligente</string>
+    <string name="brand_badge">MTTL-W01 · Wi‑Fi 2.4 GHz</string>
+    <string name="language">Idioma</string>
+    <string name="research_mode">LABORATORIO DE CONTROL LOCAL</string>
+    <string name="research_note">La detección local está activa. El control de relés permanece bloqueado por seguridad hasta verificar las tramas de control del MTTL-W01 en hardware real.</string>
+    <string name="device_discovery">Detección del dispositivo</string>
+    <string name="ip_hint">Dirección IP del MTTL-W01</string>
+    <string name="scan">ESCANEAR LAN</string>
+    <string name="probe">PROBAR 30300</string>
+    <string name="idle">Listo para escanear</string>
+    <string name="scan_explanation">Busca en la red local /24 el servicio TCP del MTTL-W01 en el puerto 30300.</string>
+    <string name="scanning">Escaneando la red local…</string>
+    <string name="not_found">No se detectó ningún dispositivo</string>
+    <string name="service_detected">Servicio MTTL detectado</string>
+    <string name="probing">Probando el dispositivo…</string>
+    <string name="offline">No se puede alcanzar el dispositivo</string>
+    <string name="scan_none">Ningún host respondió por TCP 30300 en %1$s. Puede introducir una IP manualmente.</string>
+    <string name="scan_found">Se encontraron %1$d host(s) en %2$s. Seleccionado %3$s.</string>
+    <string name="multiple_hosts">%1$d hosts exponen el puerto 30300. Verifique la IP seleccionada.</string>
+    <string name="probe_success">%1$s aceptó una conexión TCP en el puerto 30300. No se enviaron comandos.</string>
+    <string name="probe_failed">%1$s no respondió en el puerto TCP 30300.</string>
+    <string name="protocol_locked">Bloqueo de seguridad: no se transmiten comandos de relé sin verificar.</string>
+    <string name="enter_ip">Introduzca una dirección IP</string>
+    <string name="outlets">Tomas de corriente</string>
+    <string name="outlets_subtitle">Control independiente de las cuatro tomas del MTTL-W01</string>
+    <string name="outlet_1">Toma 1</string>
+    <string name="outlet_2">Toma 2</string>
+    <string name="outlet_3">Toma 3</string>
+    <string name="outlet_4">Toma 4</string>
+    <string name="locked">Pendiente de verificación del protocolo</string>
+    <string name="about_line">FG Machines RCK · MTTL-W01 · Control local primero</string>
+</resources>
