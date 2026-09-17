@@ -112,4 +112,17 @@
     <string name="fg_machines_facebook">FG Machines · Página de Facebook</string>
     <string name="alaa_mohamed_facebook">Alaa Mohamed · Perfil personal</string>
     <string name="open_link_failed">No se pudo abrir el enlace en este dispositivo.</string>
+    <string name="wizard_assistant_title">Asistente de configuración</string>
+    <string name="wizard_local_badge">LOCAL</string>
+    <string name="wizard_stage_network">Controlador</string>
+    <string name="wizard_stage_credentials">Credenciales</string>
+    <string name="wizard_stage_write">Escritura</string>
+    <string name="wizard_waiting">ESPERA</string>
+    <string name="wizard_ready">LISTO</string>
+    <string name="wizard_locked">BLOQUEADO</string>
+    <string name="wizard_done">HECHO</string>
+    <string name="wizard_need_controller">Guarda o introduce primero la IPv4 del controlador.</string>
+    <string name="wizard_need_network">Introduce el SSID de configuración y la red de destino de 2,4 GHz.</string>
+    <string name="wizard_ready_to_write">Listo. Conecta este teléfono a TONLY_TAP y pulsa Continuar.</string>
+    <string name="wizard_complete">Configuración completada. Esperando que el dispositivo se una a la red del controlador.</string>
 </resources>
