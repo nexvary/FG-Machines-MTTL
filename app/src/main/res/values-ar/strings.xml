@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FG Machines RCK</string>
-    <string name="app_subtitle">ريموت محلي للمشترك MTTL-W01</string>
-    <string name="research_mode">وضع التوافق المحلي</string>
-    <string name="research_note">اكتشاف الجهاز عبر الشبكة المحلية يعمل الآن. التحكم في الريليهات سيظل مقفلاً حتى يتم التحقق من أوامر MTTL-W01 على الجهاز الحقيقي.</string>
+    <string name="app_subtitle">ريموت ذكي للمشترك MTTL-W01</string>
+    <string name="brand_tagline">تجارة وتقنية وتحكم ذكي</string>
+    <string name="brand_badge">MTTL-W01 · واي فاي 2.4 جيجاهرتز</string>
+    <string name="language">اللغة</string>
+    <string name="research_mode">مختبر التحكم المحلي</string>
+    <string name="research_note">اكتشاف الجهاز عبر الشبكة المحلية يعمل الآن. سيظل تشغيل الريليهات مقفلاً للأمان حتى يتم التحقق من أوامر MTTL-W01 على الجهاز الحقيقي.</string>
     <string name="device_discovery">اكتشاف المشترك</string>
-    <string name="ip_hint">عنوان IP للمشترك</string>
+    <string name="ip_hint">عنوان IP للمشترك MTTL-W01</string>
     <string name="scan">فحص الشبكة</string>
     <string name="probe">فحص 30300</string>
     <string name="idle">جاهز للفحص</string>
-    <string name="scan_explanation">يتم البحث داخل الشبكة المحلية عن خدمة MTTL-W01 على منفذ TCP رقم 30300.</string>
+    <string name="scan_explanation">البحث داخل الشبكة المحلية /24 عن خدمة MTTL-W01 على منفذ TCP رقم 30300.</string>
     <string name="scanning">جارٍ فحص الشبكة المحلية…</string>
     <string name="not_found">لم يتم العثور على الجهاز</string>
     <string name="service_detected">تم اكتشاف خدمة MTTL</string>
@@ -23,6 +26,7 @@
     <string name="protocol_locked">قفل أمان: لن يتم إرسال أوامر ريليه غير مؤكدة.</string>
     <string name="enter_ip">أدخل عنوان IP</string>
     <string name="outlets">مخارج الكهرباء</string>
+    <string name="outlets_subtitle">تحكم مستقل في المخارج الأربعة للمشترك MTTL-W01</string>
     <string name="outlet_1">المخرج 1</string>
     <string name="outlet_2">المخرج 2</string>
     <string name="outlet_3">المخرج 3</string>
