@@ -107,4 +107,9 @@
         <item>هاتفان (بدون راوتر)</item>
         <item>هاتف واحد (تجريبي)</item>
     </string-array>
+    <string name="about_social_title">روابط FG Machines</string>
+    <string name="about_social_note">صفحة النشاط الرسمية والحساب الشخصي</string>
+    <string name="fg_machines_facebook">FG Machines · صفحة فيسبوك</string>
+    <string name="alaa_mohamed_facebook">علاء محمد · الحساب الشخصي</string>
+    <string name="open_link_failed">تعذر فتح الرابط على هذا الجهاز.</string>
 </resources>
