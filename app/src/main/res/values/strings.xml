@@ -7,6 +7,30 @@
     <string name="language">Language</string>
     <string name="research_mode">LOCAL CONTROL ENGINE</string>
     <string name="research_note">Open-source protocol research confirmed the MTTL local controller commands. Outlet controls activate only after a compatible strip identifies itself to this phone on TCP 10086; validation on each physical revision is still required.</string>
+
+    <string name="setup_wizard">Device setup</string>
+    <string name="setup_wizard_note">Put the strip in setup mode, enter its temporary TONLY_TAP/ONLY_TAP SSID, then choose the 2.4 GHz Wi‑Fi network the strip should join. The controller address normally belongs to this phone.</string>
+    <string name="setup_ssid_hint">Strip setup SSID, e.g. TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">Target 2.4 GHz Wi‑Fi / phone hotspot SSID</string>
+    <string name="target_wifi_password_hint">Wi‑Fi / hotspot password</string>
+    <string name="controller_ip_hint">This phone controller IPv4</string>
+    <string name="provision_device">PAIR / PROVISION</string>
+    <string name="provisioning">Provisioning strip…</string>
+    <string name="provision_complete">Provisioning complete</string>
+    <string name="provision_complete_detail">The strip is rebooting. Keep the target Wi‑Fi or phone hotspot enabled and wait for it to connect to TCP 10086.</string>
+    <string name="provision_failed">Provisioning failed: %1$s</string>
+    <string name="wifi_permission_required">Nearby Wi‑Fi permission is required for device setup.</string>
+    <string name="missing_setup_fields">Enter the setup SSID, target Wi‑Fi SSID and controller IPv4 address.</string>
+
+    <string name="mobile_hotspot_mode">PHONE HOTSPOT MODE</string>
+    <string name="mobile_hotspot_note">For homes without a router, this phone can be the local controller and Wi‑Fi access point. Set the hotspot to 2.4 GHz. Internet sharing is optional because MTTL control is local.</string>
+    <string name="open_hotspot_settings">OPEN HOTSPOT SETTINGS</string>
+    <string name="refresh_hotspot">REFRESH PHONE IP</string>
+    <string name="hotspot_single_phone_supported">Same-phone setup is supported by this Wi‑Fi chipset (STA + AP concurrency). Controller IP: %1$s</string>
+    <string name="hotspot_second_device_required">This phone cannot keep hotspot and join the strip setup AP at the same time. Use a second phone/laptop once for provisioning, then this phone can run the hotspot/controller. Controller IP: %1$s</string>
+    <string name="hotspot_ip_unknown">not detected yet</string>
+    <string name="hotspot_runtime_note">After provisioning, the strip and this app communicate locally over the phone hotspot on TCP 10086.</string>
+
     <string name="device_discovery">Setup diagnostics</string>
     <string name="ip_hint">MTTL-W01 IP address</string>
     <string name="scan">SCAN LAN</string>
