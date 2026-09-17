@@ -1,32 +1,76 @@
 # FG Machines RCK
 
-Android controller and interoperability research project for the LG U+ / TCL **MTTL-W01** smart power strip.
+Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Project goals
+## Current Android baseline — 0.3.0
 
-- Arabic/English Android controller branded **FG Machines RCK**.
-- Discover MTTL-W01 devices on the local Wi-Fi network.
-- Probe the device's known local TCP service on port `30300` without sending unsafe or unverified relay commands.
-- Provide a clean protocol-adapter boundary so verified local-control frames can be added without rewriting the UI.
-- Keep cloud/Korean-subscription dependencies optional; prioritize local LAN control when technically verified.
+- FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
+- Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
+- Correct RTL layout direction for Arabic.
+- Compatibility catalog based on model, certificate revision, setup SSID, boot signature and firmware family.
+- Setup-service diagnostics for TCP `30300`.
+- Local TCP controller on port `10086` for compatible MTTL firmware.
+- Validated parser for `bootinfo`, four-channel `getinfo` telemetry and outlet state events.
+- Independent outlet commands `1..4` are enabled only after a peer identifies itself with a valid MTTL `lgutap` boot frame.
+- Periodic local status polling and live relay-state synchronization.
+- GitHub Actions release gate: unit tests + Android lint + debug APK build.
 
-## Hardware baseline
+## Compatibility catalog
 
-- Model: `MTTL-W01`
-- Wi-Fi: 2.4 GHz 802.11 b/g/n
-- Four individually switched AC outlets
-- Local service observed by public reverse-engineering work: TCP `30300`
+The public material reviewed so far consistently identifies the retail product as `MTTL-W01`, with multiple KC/safety revisions rather than separate W02/W03 retail models.
 
-## Safety
+Observed certificate revisions:
 
-This project controls mains-powered hardware. The default Android implementation does **not** transmit guessed relay-control frames. Physical modification of the power strip is outside the Android app and should only be performed by a qualified person with the device unplugged.
+- `HU04139-17002A`
+- `HU04139-17002B`
+- `HU04139-17002C`
+- `HU04139-17002D`
+- `HU04139-17002E`
+
+Observed firmware families:
+
+- `1.0.66`
+- `1.0.68`
+- `1.0.106`
+- `1.0.110`
+
+Known setup SSID prefixes include `TONLY_TAP_` and `ONLY_TAP_`. FG Machines RCK also uses the runtime boot signature (`lgutap`) so future rebrands using the same protocol can be identified experimentally without falsely claiming an unverified sticker model is supported.
+
+## Network architecture
+
+There are two different local roles:
+
+1. **Setup / provisioning:** the strip exposes an AP and local endpoint at `192.168.1.1:30300`.
+2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines RCK now implements that controller endpoint on Android.
+
+Normal controller commands include:
+
+```text
+up:getinfo:all
+up:onoff:1:on
+up:onoff:1:off
+...
+up:onoff:4:on
+up:onoff:4:off
+```
+
+See `docs/PROTOCOL_NOTES.md` for the research evidence, firmware distinctions and validation gates.
+
+## Safety and validation
+
+This project controls mains-powered hardware. FG Machines RCK does not send outlet commands to an unidentified TCP peer. A compatible device must first supply a structurally valid boot identity with matching MAC/client ID and the expected MTTL boot model.
+
+Protocol support is tracked at two levels:
+
+- **Open-source verified:** independently corroborated by public implementations.
+- **FG hardware verified:** exercised against the exact physical hardware revision being tested.
+
+The current software implementation has passed automated build/lint gates; physical-unit validation is a separate gate.
 
 ## Build
 
-Current repository setup uses Gradle 8.9 directly (the wrapper will be added after the first CI build is verified):
-
 ```bash
-gradle --no-daemon :app:assembleDebug
+gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
 ```
 
 Or open the repository in Android Studio and build the `app` module.
@@ -36,17 +80,3 @@ APK output:
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
-
-## Status
-
-Implemented in the initial Android baseline:
-
-- Professional dark industrial UI.
-- Arabic/English resources with RTL support.
-- Manual MTTL-W01 IP entry.
-- Non-destructive TCP 30300 probe.
-- Local `/24` discovery for hosts exposing port 30300.
-- Four outlet controls displayed but intentionally safety-locked until the relay protocol is verified.
-- GitHub Actions lint/build workflow.
-
-See `docs/PROTOCOL_NOTES.md` for the verified protocol research baseline.
