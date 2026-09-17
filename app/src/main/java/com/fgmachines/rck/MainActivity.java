@@ -281,8 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean controllerReady = isValidIpv4(textOf(controllerIpInput));
         boolean networkReady = !textOf(setupSsidInput).isEmpty()
-                && !textOf(targetWifiSsidInput).isEmpty()
-                && !textOf(targetWifiPasswordInput).isEmpty();
+                && !textOf(targetWifiSsidInput).isEmpty();
         boolean readyToWrite = controllerReady && networkReady;
 
         int progressValue = 25;
