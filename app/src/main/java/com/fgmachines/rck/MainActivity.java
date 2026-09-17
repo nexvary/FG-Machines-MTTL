@@ -15,12 +15,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREFS = "fg_rck_settings";
@@ -34,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton scanButton;
     private MaterialButton probeButton;
     private Spinner languageSpinner;
+    private MaterialSwitch[] outletSwitches;
+
+    private final ExecutorService commandWorker = Executors.newSingleThreadExecutor();
+    private volatile String activeMac;
+    private volatile boolean applyingDeviceState;
+    private MttlControllerServer controllerServer;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -42,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if (language == null || language.isEmpty()) {
             language = newBase.getResources().getConfiguration().getLocales().get(0).getLanguage();
         }
-        if (!isSupportedLanguage(language)) {
-            language = "en";
-        }
+        if (!isSupportedLanguage(language)) language = "en";
         super.attachBaseContext(withLanguage(newBase, language));
     }
 
@@ -76,8 +83,16 @@ public class MainActivity extends AppCompatActivity {
         scanButton = findViewById(R.id.scanButton);
         probeButton = findViewById(R.id.probeButton);
         languageSpinner = findViewById(R.id.languageSpinner);
+        outletSwitches = new MaterialSwitch[] {
+                findViewById(R.id.outlet1),
+                findViewById(R.id.outlet2),
+                findViewById(R.id.outlet3),
+                findViewById(R.id.outlet4)
+        };
 
         configureLanguageSelector();
+        configureOutletControls();
+        startLocalController();
 
         scanButton.setOnClickListener(v -> startScan());
         probeButton.setOnClickListener(v -> probeCurrentHost());
@@ -104,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         if (selectedLanguage == null || selectedLanguage.isEmpty()) {
             selectedLanguage = getResources().getConfiguration().getLocales().get(0).getLanguage();
         }
-        int selectedIndex = languageIndex(selectedLanguage);
-        languageSpinner.setSelection(selectedIndex, false);
+        languageSpinner.setSelection(languageIndex(selectedLanguage), false);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -124,9 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Keep the current locale.
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -135,6 +147,128 @@ public class MainActivity extends AppCompatActivity {
             if (LANGUAGE_TAGS[i].equals(language)) return i;
         }
         return 1;
+    }
+
+    private void configureOutletControls() {
+        setOutletControlsEnabled(false);
+        for (int i = 0; i < outletSwitches.length; i++) {
+            final int outlet = i + 1;
+            outletSwitches[i].setOnCheckedChangeListener((button, checked) -> {
+                if (applyingDeviceState || !button.isEnabled()) return;
+                String mac = activeMac;
+                if (mac == null || controllerServer == null) return;
+                commandWorker.execute(() -> {
+                    try {
+                        controllerServer.setOutlet(mac, outlet, checked);
+                    } catch (IOException error) {
+                        runOnUiThread(() -> Snackbar.make(
+                                scanButton,
+                                getString(R.string.command_failed, safeMessage(error)),
+                                Snackbar.LENGTH_LONG
+                        ).show());
+                    }
+                });
+            });
+        }
+    }
+
+    private void startLocalController() {
+        controllerServer = new MttlControllerServer(new MttlControllerServer.Listener() {
+            @Override
+            public void onListening(int port) {
+                runOnUiThread(() -> {
+                    deviceState.setText(R.string.controller_listening);
+                    discoveryDetail.setText(R.string.scan_explanation);
+                });
+            }
+
+            @Override
+            public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
+                activeMac = bootInfo.mac;
+                runOnUiThread(() -> {
+                    setOutletControlsEnabled(true);
+                    deviceState.setText(getString(
+                            R.string.controller_connected,
+                            ModelCatalog.PRIMARY_MODEL,
+                            bootInfo.firmwareVersion
+                    ));
+                    discoveryDetail.setText(remoteAddress);
+                });
+            }
+
+            @Override
+            public void onDeviceDisconnected(String mac) {
+                if (!mac.equalsIgnoreCase(activeMac == null ? "" : activeMac)) return;
+                activeMac = null;
+                runOnUiThread(() -> {
+                    setOutletControlsEnabled(false);
+                    deviceState.setText(R.string.controller_disconnected);
+                    discoveryDetail.setText(R.string.locked);
+                });
+            }
+
+            @Override
+            public void onOutletState(String mac, MttlProtocol.OutletState state) {
+                if (!isActive(mac)) return;
+                runOnUiThread(() -> applyOutletState(state.outlet, state.on));
+            }
+
+            @Override
+            public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
+                if (!isActive(mac)) return;
+                runOnUiThread(() -> {
+                    applyingDeviceState = true;
+                    try {
+                        for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+                            if (outlet.channel >= 1 && outlet.channel <= outletSwitches.length) {
+                                outletSwitches[outlet.channel - 1].setChecked(outlet.relayOn);
+                            }
+                        }
+                    } finally {
+                        applyingDeviceState = false;
+                    }
+                });
+            }
+
+            @Override
+            public void onProtocolFrame(String mac, String frame) {
+                // Unknown frames are ignored safely; they are not reflected back to the device.
+            }
+
+            @Override
+            public void onError(String message, Throwable error) {
+                runOnUiThread(() -> {
+                    deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
+                    if (activeMac == null) setOutletControlsEnabled(false);
+                });
+            }
+        });
+
+        try {
+            controllerServer.start();
+        } catch (IOException error) {
+            deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
+            setOutletControlsEnabled(false);
+        }
+    }
+
+    private boolean isActive(String mac) {
+        return mac != null && activeMac != null && mac.equalsIgnoreCase(activeMac);
+    }
+
+    private void applyOutletState(int outlet, boolean on) {
+        if (outlet < 1 || outlet > outletSwitches.length) return;
+        applyingDeviceState = true;
+        try {
+            outletSwitches[outlet - 1].setChecked(on);
+        } finally {
+            applyingDeviceState = false;
+        }
+    }
+
+    private void setOutletControlsEnabled(boolean enabled) {
+        if (outletSwitches == null) return;
+        for (MaterialSwitch outletSwitch : outletSwitches) outletSwitch.setEnabled(enabled);
     }
 
     private void startScan() {
@@ -187,5 +321,18 @@ public class MainActivity extends AppCompatActivity {
         scanButton.setEnabled(!busy);
         probeButton.setEnabled(!busy);
         languageSpinner.setEnabled(!busy);
+    }
+
+    private static String safeMessage(Throwable error) {
+        if (error == null) return "unknown";
+        String value = error.getMessage();
+        return value == null || value.trim().isEmpty() ? error.getClass().getSimpleName() : value;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (controllerServer != null) controllerServer.close();
+        commandWorker.shutdownNow();
+        super.onDestroy();
     }
 }
