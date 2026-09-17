@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         if (mode == SETUP_MODE_TWO_PHONE) {
             setupModeDescription.setText(R.string.setup_mode_two_phone_desc);
             setupModeBadge.setText(R.string.setup_recommended);
-            openHotspotButton.setVisibility(View.GONE);
+            openHotspotButton.setVisibility(View.VISIBLE);
             provisionButton.setVisibility(View.GONE);
         } else if (mode == SETUP_MODE_SINGLE_PHONE) {
             setupModeDescription.setText(R.string.setup_mode_single_desc);
