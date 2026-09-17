@@ -115,4 +115,9 @@
         <item>Español</item>
         <item>Deutsch</item>
     </string-array>
+    <string name="about_social_title">FG Machines on Facebook</string>
+    <string name="about_social_note">Official business page and personal profile</string>
+    <string name="fg_machines_facebook">FG Machines · Facebook page</string>
+    <string name="alaa_mohamed_facebook">Alaa Mohamed · Personal profile</string>
+    <string name="open_link_failed">Could not open the link on this device.</string>
 </resources>
