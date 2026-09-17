@@ -7,6 +7,30 @@
     <string name="language">Dil</string>
     <string name="research_mode">YEREL KONTROL MOTORU</string>
     <string name="research_note">Açık kaynak araştırması MTTL yerel kontrol komutlarını doğruladı. Priz kontrolleri yalnızca uyumlu bir şerit bu telefona TCP 10086 üzerinden kendini tanıttığında etkinleşir; her donanım revizyonu için fiziksel doğrulama yine gereklidir.</string>
+
+    <string name="setup_wizard">Cihaz kurulumu</string>
+    <string name="setup_wizard_note">Prizi kurulum moduna alın, geçici TONLY_TAP/ONLY_TAP SSID’sini girin ve ardından bağlanacağı 2.4 GHz Wi‑Fi ağını seçin. Denetleyici adresi normalde bu telefona aittir.</string>
+    <string name="setup_ssid_hint">Priz kurulum SSID’si, örn. TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">Hedef 2.4 GHz Wi‑Fi / telefon erişim noktası SSID’si</string>
+    <string name="target_wifi_password_hint">Wi‑Fi / erişim noktası parolası</string>
+    <string name="controller_ip_hint">Bu telefonun denetleyici IPv4 adresi</string>
+    <string name="provision_device">EŞLEŞTİR / KUR</string>
+    <string name="provisioning">Priz yapılandırılıyor…</string>
+    <string name="provision_complete">Yapılandırma tamamlandı</string>
+    <string name="provision_complete_detail">Priz yeniden başlatılıyor. Hedef Wi‑Fi veya telefon erişim noktasını açık tutun ve TCP 10086 bağlantısını bekleyin.</string>
+    <string name="provision_failed">Yapılandırma başarısız: %1$s</string>
+    <string name="wifi_permission_required">Cihaz kurulumu için yakındaki Wi‑Fi cihazlarına erişim izni gerekir.</string>
+    <string name="missing_setup_fields">Kurulum SSID’sini, hedef Wi‑Fi SSID’sini ve denetleyici IPv4 adresini girin.</string>
+
+    <string name="mobile_hotspot_mode">TELEFON ERİŞİM NOKTASI MODU</string>
+    <string name="mobile_hotspot_note">Yönlendirici olmayan evlerde bu telefon hem yerel denetleyici hem Wi‑Fi erişim noktası olabilir. Erişim noktasını 2.4 GHz olarak ayarlayın. MTTL kontrolü yerel olduğu için internet paylaşımı isteğe bağlıdır.</string>
+    <string name="open_hotspot_settings">ERİŞİM NOKTASI AYARLARINI AÇ</string>
+    <string name="refresh_hotspot">TELEFON IP’SİNİ YENİLE</string>
+    <string name="hotspot_single_phone_supported">Bu Wi‑Fi yongası aynı telefonda kurulumu destekliyor (STA + AP eşzamanlılığı). Denetleyici IP: %1$s</string>
+    <string name="hotspot_second_device_required">Bu telefon erişim noktasını açık tutarken priz kurulum ağına bağlanamıyor. Kurulum için bir kez ikinci telefon/dizüstü kullanın; ardından bu telefon erişim noktası/denetleyici olarak çalışabilir. Denetleyici IP: %1$s</string>
+    <string name="hotspot_ip_unknown">henüz algılanmadı</string>
+    <string name="hotspot_runtime_note">Kurulumdan sonra priz ve uygulama telefon erişim noktası üzerinden TCP 10086 ile yerel olarak haberleşir.</string>
+
     <string name="device_discovery">Kurulum tanılaması</string>
     <string name="ip_hint">MTTL-W01 IP adresi</string>
     <string name="scan">AĞI TARA</string>
