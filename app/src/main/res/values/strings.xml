@@ -20,18 +20,18 @@
 
     <string name="setup_wizard">Device setup</string>
     <string name="setup_wizard_note">Put the strip in setup mode, enter its temporary TONLY_TAP/ONLY_TAP SSID, then choose the 2.4 GHz Wi‑Fi network the strip should join. The controller address normally belongs to this phone.</string>
-    <string name="setup_single_phone_note">No second phone is required. This mode saves the future hotspot address first, temporarily joins the strip setup Wi‑Fi, writes the hotspot credentials, then asks you to turn the hotspot back on.</string>
-    <string name="step_1">1 · Prepare the phone hotspot</string>
-    <string name="step_2">2 · Join the strip setup Wi‑Fi</string>
-    <string name="step_3">3 · Provision from this phone</string>
-    <string name="capture_hotspot">SAVE HOTSPOT IP</string>
+    <string name="setup_single_phone_note">Choose the network method first. Recommended: router Wi‑Fi, or two phones when there is no router. Single-phone hotspot mode is experimental.</string>
+    <string name="step_1">1 · Prepare target network and controller</string>
+    <string name="step_2">2 · Enter target network and strip setup Wi‑Fi</string>
+    <string name="step_3">3 · Connect to TONLY_TAP and write settings</string>
+    <string name="capture_hotspot">SAVE CONTROLLER IP</string>
     <string name="open_wifi_settings">OPEN WI‑FI SETTINGS</string>
     <string name="sequential_provision">I AM ON TONLY_TAP — CONTINUE</string>
-    <string name="automatic_provision">Automatic connection (compatible phones)</string>
-    <string name="manual_connected_note">After saving the hotspot IP, turn the hotspot off, join TONLY_TAP/ONLY_TAP manually, return here and press Continue. The app will configure the strip through 192.168.1.1:30300.</string>
-    <string name="hotspot_status">Current local IPv4: %1$s\nSaved hotspot controller IPv4: %2$s</string>
-    <string name="hotspot_ip_saved">Hotspot controller address saved: %1$s</string>
-    <string name="hotspot_ip_missing">No local hotspot IPv4 was detected. Turn the hotspot on first, then save its address.</string>
+    <string name="automatic_provision">Automatic setup (experimental)</string>
+    <string name="manual_connected_note">Before pressing Continue, this setup phone must be connected to TONLY_TAP/ONLY_TAP. The target network can be a router or another phone’s 2.4 GHz hotspot.</string>
+    <string name="hotspot_status">Current local IPv4: %1$s\nSaved controller IPv4: %2$s</string>
+    <string name="hotspot_ip_saved">Controller IPv4 saved: %1$s</string>
+    <string name="hotspot_ip_missing">No private IPv4 was detected. Connect the controller phone to the target router or turn on its hotspot first, then save the address.</string>
     <string name="sequential_success">Settings were written to the strip. Android hotspot settings are opening now. Turn on the same 2.4 GHz hotspot immediately and wait for the strip to connect to TCP 10086.</string>
     <string name="setup_ssid_hint">Strip setup SSID, e.g. TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">Target 2.4 GHz Wi‑Fi / phone hotspot SSID</string>
@@ -94,6 +94,20 @@
     <string name="supported_models_title">Compatibility</string>
     <string name="supported_models_body">Primary verified family: MTTL-W01. Known certificate revisions include HU04139-17002A/B/C/D/E. Setup signatures TONLY_TAP_* and ONLY_TAP_* are recognized, with protocol verification before relay controls are enabled.</string>
 
+    <string name="setup_method_title">Choose setup method</string>
+    <string name="setup_recommended">RECOMMENDED</string>
+    <string name="setup_experimental">EXPERIMENTAL</string>
+    <string name="setup_mode_router_desc">Best option. Connect this phone to the 2.4 GHz router and save its IPv4, then join TONLY_TAP and write the router credentials. After provisioning, reconnect this phone to the same router.</string>
+    <string name="setup_mode_two_phone_desc">Best option without a router. Phone A keeps a 2.4 GHz hotspot running with FG Machines RCK listening. Phone B joins TONLY_TAP and writes Phone A hotspot credentials and controller IPv4.</string>
+    <string name="setup_mode_single_desc">Uses the same phone for setup and hotspot. Some Android phones shut Wi‑Fi down when hotspot starts, so use this only on compatible devices.</string>
+    <string name="router_success">Settings written. Reconnect this phone to the target router Wi‑Fi. FG Machines RCK will wait for the strip on TCP 10086.</string>
+    <string name="two_phone_success">Settings written. Keep Phone A hotspot running and return to Phone A. The strip should join that hotspot and connect to FG Machines RCK.</string>
+    <string name="single_phone_success">Settings written. Turn the same 2.4 GHz hotspot back on now and wait for the strip to connect to FG Machines RCK.</string>
+    <string-array name="setup_mode_labels">
+        <item>Router Wi‑Fi (recommended)</item>
+        <item>Two phones (no router)</item>
+        <item>One phone (experimental)</item>
+    </string-array>
     <string-array name="language_labels">
         <item>العربية</item>
         <item>English</item>

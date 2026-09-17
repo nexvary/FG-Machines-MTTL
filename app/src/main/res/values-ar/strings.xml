@@ -20,18 +20,18 @@
 
     <string name="setup_wizard">إعداد المشترك</string>
     <string name="setup_wizard_note">ضع المشترك في وضع الإعداد، ثم أدخل اسم شبكته المؤقتة TONLY_TAP أو ONLY_TAP واختر شبكة واي فاي 2.4 جيجاهرتز التي سيتصل بها. عنوان وحدة التحكم يكون عادة عنوان هذا الهاتف.</string>
-    <string name="setup_single_phone_note">لا تحتاج هاتفًا ثانيًا. يحفظ التطبيق أولًا عنوان هوت سبوت الهاتف، ثم تتصل مؤقتًا بشبكة المشترك، فيكتب التطبيق بيانات الهوت سبوت، وبعدها يطلب منك تشغيل الهوت سبوت مرة أخرى.</string>
-    <string name="step_1">1 · تجهيز هوت سبوت الهاتف</string>
-    <string name="step_2">2 · الاتصال بشبكة إعداد المشترك</string>
-    <string name="step_3">3 · الإعداد من نفس الهاتف</string>
-    <string name="capture_hotspot">حفظ عنوان الهوت سبوت</string>
+    <string name="setup_single_phone_note">اختر طريقة الشبكة أولًا. الموصى به: راوتر واي فاي، أو هاتفان عند عدم وجود راوتر. وضع الهاتف الواحد تجريبي.</string>
+    <string name="step_1">1 · تجهيز الشبكة المستهدفة ووحدة التحكم</string>
+    <string name="step_2">2 · إدخال الشبكة المستهدفة وشبكة إعداد المشترك</string>
+    <string name="step_3">3 · الاتصال بـ TONLY_TAP وكتابة الإعدادات</string>
+    <string name="capture_hotspot">حفظ عنوان وحدة التحكم</string>
     <string name="open_wifi_settings">فتح إعدادات الواي فاي</string>
     <string name="sequential_provision">أنا متصل بـ TONLY_TAP — متابعة</string>
-    <string name="automatic_provision">اتصال تلقائي للهواتف المتوافقة</string>
-    <string name="manual_connected_note">بعد حفظ عنوان الهوت سبوت، أوقف الهوت سبوت واتصل يدويًا بشبكة TONLY_TAP أو ONLY_TAP، ثم ارجع واضغط متابعة. سيقوم التطبيق بالإعداد عبر 192.168.1.1:30300.</string>
-    <string name="hotspot_status">عنوان IPv4 المحلي الحالي: %1$s\nعنوان وحدة التحكم المحفوظ للهوت سبوت: %2$s</string>
-    <string name="hotspot_ip_saved">تم حفظ عنوان وحدة التحكم للهوت سبوت: %1$s</string>
-    <string name="hotspot_ip_missing">لم يتم اكتشاف عنوان IPv4 للهوت سبوت. شغّل الهوت سبوت أولًا ثم احفظ عنوانه.</string>
+    <string name="automatic_provision">إعداد تلقائي (تجريبي)</string>
+    <string name="manual_connected_note">قبل الضغط على متابعة يجب أن يكون هاتف الإعداد متصلًا بـ TONLY_TAP أو ONLY_TAP. الشبكة المستهدفة يمكن أن تكون راوتر أو هوت سبوت 2.4 جيجاهرتز من هاتف آخر.</string>
+    <string name="hotspot_status">عنوان IPv4 المحلي الحالي: %1$s\nعنوان وحدة التحكم المحفوظ: %2$s</string>
+    <string name="hotspot_ip_saved">تم حفظ عنوان وحدة التحكم: %1$s</string>
+    <string name="hotspot_ip_missing">لم يتم اكتشاف عنوان IPv4 خاص. وصّل هاتف وحدة التحكم بالراوتر المستهدف أو شغّل الهوت سبوت أولًا ثم احفظ العنوان.</string>
     <string name="sequential_success">تمت كتابة الإعدادات داخل المشترك. سيتم فتح إعدادات الهوت سبوت الآن. شغّل نفس الهوت سبوت 2.4 جيجاهرتز فورًا وانتظر اتصال المشترك على TCP 10086.</string>
     <string name="setup_ssid_hint">شبكة إعداد المشترك مثل TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">اسم هوت سبوت الهاتف أو شبكة واي فاي 2.4 جيجاهرتز</string>
@@ -93,4 +93,18 @@
     <string name="about_body">FG Machines RCK وحدة تحكم محلية مستقلة للمشتركات الذكية المتوافقة من LG U+ / TONLY. التطبيق ليس تطبيقًا رسميًا من LG U+. يركز المشروع على التشغيل المحلي عبر الواي فاي والتشخيص الواضح والتحكم الآمن في الريليهات.</string>
     <string name="supported_models_title">التوافق</string>
     <string name="supported_models_body">العائلة الأساسية المتحقق منها: MTTL-W01. مراجعات الشهادة المعروفة HU04139-17002A/B/C/D/E. يتعرف التطبيق على TONLY_TAP_* و ONLY_TAP_* ويتحقق من البروتوكول قبل تفعيل مفاتيح المخارج.</string>
+    <string name="setup_method_title">اختر طريقة الإعداد</string>
+    <string name="setup_recommended">موصى به</string>
+    <string name="setup_experimental">تجريبي</string>
+    <string name="setup_mode_router_desc">الخيار الأفضل. وصّل هذا الهاتف براوتر 2.4 جيجاهرتز واحفظ عنوان IPv4، ثم اتصل بـ TONLY_TAP واكتب بيانات الراوتر. بعد الإعداد أعد توصيل الهاتف بنفس الراوتر.</string>
+    <string name="setup_mode_two_phone_desc">الخيار الأفضل بدون راوتر. الهاتف A يترك هوت سبوت 2.4 جيجاهرتز يعمل وFG Machines RCK يستمع، والهاتف B يتصل بـ TONLY_TAP ويكتب بيانات هوت سبوت الهاتف A وعنوان وحدة التحكم.</string>
+    <string name="setup_mode_single_desc">يستخدم نفس الهاتف للإعداد والهوت سبوت. بعض هواتف Android تغلق الواي فاي عند تشغيل الهوت سبوت، لذلك استخدم هذا الوضع فقط على الأجهزة المتوافقة.</string>
+    <string name="router_success">تمت كتابة الإعدادات. أعد توصيل هذا الهاتف بشبكة الراوتر المستهدفة. سينتظر FG Machines RCK اتصال المشترك على TCP 10086.</string>
+    <string name="two_phone_success">تمت كتابة الإعدادات. اترك هوت سبوت الهاتف A يعمل وارجع إلى الهاتف A. يفترض أن يتصل المشترك به ثم بـ FG Machines RCK.</string>
+    <string name="single_phone_success">تمت كتابة الإعدادات. شغّل نفس هوت سبوت 2.4 جيجاهرتز الآن وانتظر اتصال المشترك بـ FG Machines RCK.</string>
+    <string-array name="setup_mode_labels">
+        <item>راوتر واي فاي (موصى به)</item>
+        <item>هاتفان (بدون راوتر)</item>
+        <item>هاتف واحد (تجريبي)</item>
+    </string-array>
 </resources>

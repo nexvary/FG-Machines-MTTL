@@ -20,18 +20,18 @@
 
     <string name="setup_wizard">Configuración del dispositivo</string>
     <string name="setup_wizard_note">Ponga la regleta en modo de configuración, introduzca su SSID temporal TONLY_TAP/ONLY_TAP y elija la red Wi‑Fi de 2.4 GHz a la que se conectará. La dirección del controlador normalmente pertenece a este teléfono.</string>
-    <string name="setup_single_phone_note">No hace falta un segundo teléfono. La app guarda primero la dirección futura del hotspot, se conecta temporalmente al Wi‑Fi de configuración de la regleta, escribe los datos del hotspot y luego le pide volver a activarlo.</string>
-    <string name="step_1">1 · Preparar el hotspot del teléfono</string>
-    <string name="step_2">2 · Conectarse al Wi‑Fi de configuración</string>
-    <string name="step_3">3 · Configurar desde este teléfono</string>
-    <string name="capture_hotspot">GUARDAR IP DEL HOTSPOT</string>
+    <string name="setup_single_phone_note">Elige primero el método de red. Recomendado: Wi‑Fi de router o dos teléfonos si no hay router. El modo de un solo teléfono es experimental.</string>
+    <string name="step_1">1 · Preparar la red de destino y el controlador</string>
+    <string name="step_2">2 · Introducir la red de destino y la Wi‑Fi de configuración</string>
+    <string name="step_3">3 · Conectarse a TONLY_TAP y escribir la configuración</string>
+    <string name="capture_hotspot">GUARDAR IP DEL CONTROLADOR</string>
     <string name="open_wifi_settings">ABRIR AJUSTES WI‑FI</string>
     <string name="sequential_provision">ESTOY EN TONLY_TAP — CONTINUAR</string>
-    <string name="automatic_provision">Conexión automática (teléfonos compatibles)</string>
-    <string name="manual_connected_note">Después de guardar la IP del hotspot, apáguelo, únase manualmente a TONLY_TAP/ONLY_TAP, vuelva aquí y pulse Continuar. La app configurará la regleta mediante 192.168.1.1:30300.</string>
-    <string name="hotspot_status">IPv4 local actual: %1$s\nIPv4 guardada del controlador del hotspot: %2$s</string>
-    <string name="hotspot_ip_saved">Dirección del controlador del hotspot guardada: %1$s</string>
-    <string name="hotspot_ip_missing">No se detectó una IPv4 local del hotspot. Active primero el hotspot y luego guarde su dirección.</string>
+    <string name="automatic_provision">Configuración automática (experimental)</string>
+    <string name="manual_connected_note">Antes de pulsar Continuar, este teléfono de configuración debe estar conectado a TONLY_TAP/ONLY_TAP. La red de destino puede ser un router o el hotspot 2.4 GHz de otro teléfono.</string>
+    <string name="hotspot_status">IPv4 local actual: %1$s\nIPv4 del controlador guardada: %2$s</string>
+    <string name="hotspot_ip_saved">IPv4 del controlador guardada: %1$s</string>
+    <string name="hotspot_ip_missing">No se detectó una IPv4 privada. Conecta el teléfono controlador al router de destino o activa su hotspot y guarda la dirección.</string>
     <string name="sequential_success">Los ajustes se escribieron en la regleta. Ahora se abrirán los ajustes del hotspot. Active inmediatamente el mismo hotspot de 2.4 GHz y espere a que la regleta se conecte a TCP 10086.</string>
     <string name="setup_ssid_hint">SSID de configuración, p. ej. TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">SSID objetivo Wi‑Fi 2.4 GHz / hotspot</string>
@@ -93,4 +93,18 @@
     <string name="about_body">FG Machines RCK es un controlador local independiente para regletas inteligentes compatibles LG U+ / TONLY. No es una aplicación oficial de LG U+. El proyecto prioriza el funcionamiento local por Wi‑Fi, diagnósticos claros y control seguro de relés.</string>
     <string name="supported_models_title">Compatibilidad</string>
     <string name="supported_models_body">Familia principal verificada: MTTL-W01. Revisiones de certificado conocidas HU04139-17002A/B/C/D/E. Se reconocen TONLY_TAP_* y ONLY_TAP_* y se verifica el protocolo antes de activar los controles de relé.</string>
+    <string name="setup_method_title">Elige el método de configuración</string>
+    <string name="setup_recommended">RECOMENDADO</string>
+    <string name="setup_experimental">EXPERIMENTAL</string>
+    <string name="setup_mode_router_desc">La mejor opción. Conecta este teléfono al router de 2.4 GHz y guarda su IPv4; después únete a TONLY_TAP y escribe las credenciales del router. Al terminar, vuelve a conectar el teléfono al mismo router.</string>
+    <string name="setup_mode_two_phone_desc">La mejor opción sin router. El teléfono A mantiene un hotspot de 2.4 GHz y FG Machines RCK activo. El teléfono B se conecta a TONLY_TAP y escribe las credenciales del hotspot del teléfono A y su IPv4 de controlador.</string>
+    <string name="setup_mode_single_desc">Usa el mismo teléfono para configurar y crear el hotspot. Algunos Android desactivan Wi‑Fi al activar el hotspot; úsalo solo en dispositivos compatibles.</string>
+    <string name="router_success">Configuración escrita. Vuelve a conectar este teléfono al router de destino. FG Machines RCK esperará al dispositivo en TCP 10086.</string>
+    <string name="two_phone_success">Configuración escrita. Mantén activo el hotspot del teléfono A y vuelve al teléfono A. El dispositivo debería conectarse a FG Machines RCK.</string>
+    <string name="single_phone_success">Configuración escrita. Activa de nuevo el mismo hotspot de 2.4 GHz y espera a que el dispositivo se conecte a FG Machines RCK.</string>
+    <string-array name="setup_mode_labels">
+        <item>Wi‑Fi de router (recomendado)</item>
+        <item>Dos teléfonos (sin router)</item>
+        <item>Un teléfono (experimental)</item>
+    </string-array>
 </resources>

@@ -20,18 +20,18 @@
 
     <string name="setup_wizard">Geräteeinrichtung</string>
     <string name="setup_wizard_note">Versetzen Sie die Leiste in den Einrichtungsmodus, geben Sie die temporäre TONLY_TAP/ONLY_TAP-SSID ein und wählen Sie das 2,4-GHz-WLAN, dem sie beitreten soll. Die Controller-Adresse gehört normalerweise zu diesem Telefon.</string>
-    <string name="setup_single_phone_note">Ein zweites Telefon ist nicht nötig. Die App speichert zuerst die künftige Hotspot-Adresse, verbindet sich vorübergehend mit dem Setup-WLAN der Leiste, schreibt die Hotspot-Daten und fordert Sie anschließend auf, den Hotspot wieder einzuschalten.</string>
-    <string name="step_1">1 · Telefon-Hotspot vorbereiten</string>
-    <string name="step_2">2 · Mit dem Setup-WLAN verbinden</string>
-    <string name="step_3">3 · Mit diesem Telefon konfigurieren</string>
-    <string name="capture_hotspot">HOTSPOT-IP SPEICHERN</string>
+    <string name="setup_single_phone_note">Wähle zuerst die Netzwerkmethode. Empfohlen: Router-Wi‑Fi oder zwei Telefone ohne Router. Der Ein-Telefon-Hotspot-Modus ist experimentell.</string>
+    <string name="step_1">1 · Zielnetz und Controller vorbereiten</string>
+    <string name="step_2">2 · Zielnetz und Setup-Wi‑Fi der Steckdosenleiste eingeben</string>
+    <string name="step_3">3 · Mit TONLY_TAP verbinden und Einstellungen schreiben</string>
+    <string name="capture_hotspot">CONTROLLER-IP SPEICHERN</string>
     <string name="open_wifi_settings">WLAN-EINSTELLUNGEN ÖFFNEN</string>
     <string name="sequential_provision">MIT TONLY_TAP VERBUNDEN — WEITER</string>
-    <string name="automatic_provision">Automatische Verbindung (kompatible Telefone)</string>
-    <string name="manual_connected_note">Nach dem Speichern der Hotspot-IP den Hotspot ausschalten, manuell TONLY_TAP/ONLY_TAP beitreten, zur App zurückkehren und Weiter drücken. Die App konfiguriert über 192.168.1.1:30300.</string>
-    <string name="hotspot_status">Aktuelle lokale IPv4: %1$s\nGespeicherte Hotspot-Controller-IPv4: %2$s</string>
-    <string name="hotspot_ip_saved">Hotspot-Controller-Adresse gespeichert: %1$s</string>
-    <string name="hotspot_ip_missing">Keine lokale Hotspot-IPv4 erkannt. Zuerst den Hotspot einschalten und dann die Adresse speichern.</string>
+    <string name="automatic_provision">Automatische Einrichtung (experimentell)</string>
+    <string name="manual_connected_note">Vor „Weiter“ muss dieses Setup-Telefon mit TONLY_TAP/ONLY_TAP verbunden sein. Das Zielnetz kann ein Router oder der 2,4-GHz-Hotspot eines anderen Telefons sein.</string>
+    <string name="hotspot_status">Aktuelle lokale IPv4: %1$s\nGespeicherte Controller-IPv4: %2$s</string>
+    <string name="hotspot_ip_saved">Controller-IPv4 gespeichert: %1$s</string>
+    <string name="hotspot_ip_missing">Keine private IPv4 erkannt. Verbinde das Controller-Telefon mit dem Zielrouter oder aktiviere dessen Hotspot und speichere dann die Adresse.</string>
     <string name="sequential_success">Die Einstellungen wurden in die Leiste geschrieben. Jetzt werden die Hotspot-Einstellungen geöffnet. Schalten Sie sofort denselben 2,4-GHz-Hotspot ein und warten Sie auf die Verbindung zu TCP 10086.</string>
     <string name="setup_ssid_hint">Setup-SSID der Leiste, z. B. TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">Ziel-SSID 2,4-GHz-WLAN / Telefon-Hotspot</string>
@@ -93,4 +93,18 @@
     <string name="about_body">FG Machines RCK ist ein unabhängiger lokaler Controller für kompatible LG U+ / TONLY Smart-Steckdosenleisten. Es ist keine offizielle LG-U+-App. Das Projekt priorisiert lokalen WLAN-Betrieb, klare Diagnose und sichere Relaissteuerung.</string>
     <string name="supported_models_title">Kompatibilität</string>
     <string name="supported_models_body">Primär verifizierte Familie: MTTL-W01. Bekannte Zertifikatsrevisionen HU04139-17002A/B/C/D/E. TONLY_TAP_* und ONLY_TAP_* werden erkannt; vor Aktivierung der Relaissteuerung wird das Protokoll geprüft.</string>
+    <string name="setup_method_title">Einrichtungsmethode wählen</string>
+    <string name="setup_recommended">EMPFOHLEN</string>
+    <string name="setup_experimental">EXPERIMENTELL</string>
+    <string name="setup_mode_router_desc">Beste Option. Dieses Telefon mit dem 2,4-GHz-Router verbinden und seine IPv4 speichern, danach TONLY_TAP beitreten und die Router-Zugangsdaten schreiben. Anschließend wieder mit demselben Router verbinden.</string>
+    <string name="setup_mode_two_phone_desc">Beste Option ohne Router. Telefon A lässt einen 2,4-GHz-Hotspot und FG Machines RCK laufen. Telefon B verbindet sich mit TONLY_TAP und schreibt die Hotspot-Daten sowie die Controller-IPv4 von Telefon A.</string>
+    <string name="setup_mode_single_desc">Dasselbe Telefon wird für Einrichtung und Hotspot verwendet. Manche Android-Geräte schalten Wi‑Fi beim Hotspotstart aus; nur auf kompatiblen Geräten verwenden.</string>
+    <string name="router_success">Einstellungen geschrieben. Dieses Telefon wieder mit dem Zielrouter verbinden. FG Machines RCK wartet auf TCP 10086.</string>
+    <string name="two_phone_success">Einstellungen geschrieben. Hotspot von Telefon A eingeschaltet lassen und zu Telefon A zurückkehren. Die Leiste sollte sich mit FG Machines RCK verbinden.</string>
+    <string name="single_phone_success">Einstellungen geschrieben. Jetzt denselben 2,4-GHz-Hotspot wieder einschalten und auf die Verbindung zu FG Machines RCK warten.</string>
+    <string-array name="setup_mode_labels">
+        <item>Router-Wi‑Fi (empfohlen)</item>
+        <item>Zwei Telefone (ohne Router)</item>
+        <item>Ein Telefon (experimentell)</item>
+    </string-array>
 </resources>
