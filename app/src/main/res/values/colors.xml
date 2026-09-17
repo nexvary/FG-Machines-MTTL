@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="fg_black">#0B0F14</color>
-    <color name="fg_surface">#121A22</color>
-    <color name="fg_surface_2">#18232D</color>
-    <color name="fg_gold">#D4AF37</color>
-    <color name="fg_blue">#4DB6FF</color>
-    <color name="fg_green">#39D98A</color>
-    <color name="fg_orange">#FF9F43</color>
-    <color name="fg_red">#FF5D5D</color>
-    <color name="fg_text">#F4F7FA</color>
-    <color name="fg_text_secondary">#A8B2BD</color>
+    <color name="fg_black">#02060A</color>
+    <color name="fg_black_soft">#071018</color>
+    <color name="fg_surface">#0B141D</color>
+    <color name="fg_surface_2">#101D28</color>
+    <color name="fg_surface_3">#142534</color>
+    <color name="fg_blue">#118CFF</color>
+    <color name="fg_blue_bright">#35C2FF</color>
+    <color name="fg_green">#86F500</color>
+    <color name="fg_green_dark">#53B900</color>
+    <color name="fg_silver">#C2CCD5</color>
+    <color name="fg_silver_dark">#71808D</color>
+    <color name="fg_warning">#FFC857</color>
+    <color name="fg_red">#FF5E66</color>
+    <color name="fg_text">#F7FAFC</color>
+    <color name="fg_text_secondary">#A7B4BF</color>
+    <color name="fg_divider">#22313E</color>
+    <color name="fg_icon_bg">#0D2334</color>
+    <color name="fg_launcher_bg">#02060A</color>
 </resources>
