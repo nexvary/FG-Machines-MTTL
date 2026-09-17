@@ -284,7 +284,126 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/fg_blue_bright"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_wizard_hero"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="34dp"
+                                android:layout_height="34dp"
+                                android:contentDescription="@string/setup_wizard"
+                                android:src="@drawable/ic_setup"
+                                app:tint="@color/fg_green" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/wizard_assistant_title"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/fg_text"
+                                    android:textSize="17sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/setupReadinessText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/wizard_need_controller"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/fg_warning"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_status_pill"
+                                android:paddingStart="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingEnd="10dp"
+                                android:paddingBottom="5dp"
+                                android:text="@string/wizard_local_badge"
+                                android:textColor="@color/fg_blue_bright"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/setupProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="7dp"
+                            android:layout_marginTop="14dp"
+                            android:max="100"
+                            android:progress="25"
+                            app:indicatorColor="@color/fg_green"
+                            app:trackColor="@color/fg_surface_3"
+                            app:trackCornerRadius="4dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/wizard_stage_network"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_silver"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/wizard_stage_credentials"
+                                android:textAlignment="center"
+                                android:textColor="@color/fg_silver"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/wizard_stage_write"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/fg_silver"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
                     app:strokeColor="@color/fg_blue"
                     app:strokeWidth="1dp">
 
@@ -351,7 +470,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
                     app:strokeColor="@color/fg_green"
                     app:strokeWidth="1dp">
 
@@ -361,14 +481,36 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/step_1"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_green"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/step_1"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_green"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/step1Status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_status_pill"
+                                android:paddingStart="9dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="9dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/wizard_waiting"
+                                android:textColor="@color/fg_silver_dark"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/hotspotStatus"
@@ -420,7 +562,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
                     app:strokeColor="@color/fg_blue"
                     app:strokeWidth="1dp">
 
@@ -430,14 +573,36 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/step_2"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_blue_bright"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/step_2"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_blue_bright"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/step2Status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_status_pill"
+                                android:paddingStart="9dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="9dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/wizard_waiting"
+                                android:textColor="@color/fg_silver_dark"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -522,7 +687,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
                     app:strokeColor="@color/fg_green"
                     app:strokeWidth="1dp">
 
@@ -532,14 +698,36 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/step_3"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_green"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/step_3"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_green"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/step3Status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_status_pill"
+                                android:paddingStart="9dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="9dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/wizard_locked"
+                                android:textColor="@color/fg_silver_dark"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
