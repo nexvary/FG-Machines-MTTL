@@ -7,6 +7,30 @@
     <string name="language">اللغة</string>
     <string name="research_mode">محرك التحكم المحلي</string>
     <string name="research_note">أكد البحث في المشاريع المفتوحة بروتوكول التحكم المحلي لعائلة MTTL. تتفعّل مفاتيح المخارج فقط بعد أن يعرّف المشترك المتوافق نفسه للهاتف على TCP 10086، مع بقاء التحقق العملي مطلوبًا لكل مراجعة عتاد.</string>
+
+    <string name="setup_wizard">إعداد المشترك</string>
+    <string name="setup_wizard_note">ضع المشترك في وضع الإعداد، ثم أدخل اسم شبكته المؤقتة TONLY_TAP أو ONLY_TAP واختر شبكة واي فاي 2.4 جيجاهرتز التي سيتصل بها. عنوان وحدة التحكم يكون عادة عنوان هذا الهاتف.</string>
+    <string name="setup_ssid_hint">شبكة إعداد المشترك مثل TONLY_TAP_XXXXXXX</string>
+    <string name="target_wifi_ssid_hint">شبكة واي فاي 2.4 جيجاهرتز أو هوت سبوت الهاتف</string>
+    <string name="target_wifi_password_hint">كلمة مرور الواي فاي أو الهوت سبوت</string>
+    <string name="controller_ip_hint">عنوان IPv4 لوحدة التحكم على هذا الهاتف</string>
+    <string name="provision_device">ربط / إعداد</string>
+    <string name="provisioning">جارٍ إعداد المشترك…</string>
+    <string name="provision_complete">اكتمل إعداد المشترك</string>
+    <string name="provision_complete_detail">سيعيد المشترك التشغيل. اترك شبكة الواي فاي أو هوت سبوت الهاتف مفعّلة وانتظر اتصاله على TCP 10086.</string>
+    <string name="provision_failed">فشل إعداد المشترك: %1$s</string>
+    <string name="wifi_permission_required">يلزم السماح بالوصول إلى أجهزة واي فاي القريبة لإعداد المشترك.</string>
+    <string name="missing_setup_fields">أدخل شبكة إعداد المشترك وشبكة الواي فاي المستهدفة وعنوان IPv4 لوحدة التحكم.</string>
+
+    <string name="mobile_hotspot_mode">وضع هوت سبوت الهاتف</string>
+    <string name="mobile_hotspot_note">في المنازل التي لا يوجد بها راوتر، يمكن لهذا الهاتف أن يكون نقطة الوصول ووحدة التحكم المحلية معًا. اضبط الهوت سبوت على 2.4 جيجاهرتز. مشاركة الإنترنت ليست مطلوبة لأن التحكم محلي.</string>
+    <string name="open_hotspot_settings">فتح إعدادات الهوت سبوت</string>
+    <string name="refresh_hotspot">تحديث عنوان الهاتف</string>
+    <string name="hotspot_single_phone_supported">هذا الهاتف يدعم تشغيل الهوت سبوت والاتصال بشبكة إعداد المشترك في الوقت نفسه. عنوان وحدة التحكم: %1$s</string>
+    <string name="hotspot_second_device_required">هذا الهاتف لا يستطيع إبقاء الهوت سبوت فعالًا أثناء الاتصال بشبكة إعداد المشترك. استخدم هاتفًا أو لابتوبًا ثانيًا مرة واحدة للإعداد، وبعد ذلك يعمل هذا الهاتف كهوت سبوت ووحدة تحكم. عنوان وحدة التحكم: %1$s</string>
+    <string name="hotspot_ip_unknown">لم يتم اكتشافه بعد</string>
+    <string name="hotspot_runtime_note">بعد الإعداد، يتواصل المشترك والتطبيق محليًا عبر هوت سبوت الهاتف على TCP 10086.</string>
+
     <string name="device_discovery">تشخيص وضع الإعداد</string>
     <string name="ip_hint">عنوان IP للمشترك MTTL-W01</string>
     <string name="scan">فحص الشبكة</string>
