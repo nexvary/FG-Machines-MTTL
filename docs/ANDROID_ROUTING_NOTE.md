@@ -1,0 +1,1 @@
+Android can display a Wi-Fi association to a no-Internet setup AP while continuing to prefer cellular for general Internet routing. FG Machines RCK 0.4.1 explicitly selects and temporarily binds to the Wi-Fi Network object during provisioning, then releases that binding before returning to normal hotspot/controller mode.

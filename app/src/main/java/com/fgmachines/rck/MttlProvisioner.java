@@ -2,9 +2,12 @@ package com.fgmachines.rck;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.LinkAddress;
+import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.net.RouteInfo;
 import android.net.wifi.WifiNetworkSpecifier;
 import android.os.Build;
 
@@ -13,6 +16,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +42,7 @@ public final class MttlProvisioner {
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final AtomicBoolean active = new AtomicBoolean(false);
     private ConnectivityManager.NetworkCallback networkCallback;
+    private volatile boolean processBoundToSetupWifi;
 
     public MttlProvisioner(Context context) {
         Context app = context.getApplicationContext();
@@ -71,8 +77,10 @@ public final class MttlProvisioner {
 
         networkCallback = new ConnectivityManager.NetworkCallback() {
             @Override public void onAvailable(Network network) {
-                callback.onStatus("Connected to strip setup AP. Writing local controller settings…");
-                worker.execute(() -> configure(network, homeSsid.trim(), safePassword(homePassword),
+                bindProcessToSetupWifi(network);
+                String setupHost = findSetupHost(network);
+                callback.onStatus("Connected to strip setup AP at " + setupHost + ". Writing local controller settings…");
+                worker.execute(() -> configure(network, setupHost, homeSsid.trim(), safePassword(homePassword),
                         controllerIp.trim(), callback));
             }
 
@@ -91,26 +99,41 @@ public final class MttlProvisioner {
     }
 
     /**
-     * Single-phone sequential path. The user first turns the hotspot off and manually joins
-     * TONLY_TAP/ONLY_TAP. We then locate the non-Internet Wi-Fi Network object and provision
-     * through 192.168.1.1:30300. The saved future hotspot/controller IP can be written even
-     * though the hotspot is temporarily off.
+     * Single-phone sequential path. The hotspot is saved first, then the user joins
+     * TONLY_TAP/ONLY_TAP manually. Android may keep cellular as the default network because
+     * the strip AP has no Internet, so this path explicitly finds the Wi-Fi transport,
+     * temporarily binds the process to it, discovers the AP gateway and provisions there.
      */
     public void provisionCurrentWifi(String setupSsid, String homeSsid, String homePassword,
                                      String controllerIp, Callback callback) {
         if (!begin(setupSsid, homeSsid, homePassword, controllerIp, callback)) return;
-        callback.onStatus("Checking the current Wi-Fi connection for the strip setup service…");
+        callback.onStatus("Detecting the current strip Wi-Fi…");
         worker.execute(() -> {
             try {
-                Network setupNetwork = findSetupWifiNetwork();
+                Network setupNetwork = findCurrentWifiTransport();
                 if (setupNetwork == null) {
                     fail(callback,
-                            "This phone is not connected to the strip setup Wi-Fi. Join TONLY_TAP/ONLY_TAP first, then return to the app.",
+                            "No active Wi-Fi transport is visible to the app. Stay connected to TONLY_TAP/ONLY_TAP and try again.",
                             null);
                     return;
                 }
-                callback.onStatus("Strip setup network detected. Writing saved hotspot and controller settings…");
-                configure(setupNetwork, homeSsid.trim(), safePassword(homePassword), controllerIp.trim(), callback);
+
+                bindProcessToSetupWifi(setupNetwork);
+                String setupHost = findSetupHost(setupNetwork);
+                callback.onStatus("Wi-Fi detected. Contacting the strip at " + setupHost + ":" + ModelCatalog.SETUP_PORT + "…");
+
+                if (!setupServiceReachable(setupNetwork, setupHost)) {
+                    fail(callback,
+                            "The phone is on Wi-Fi, but the strip setup service did not answer at "
+                                    + setupHost + ":" + ModelCatalog.SETUP_PORT
+                                    + ". Keep the strip in setup mode and try again.",
+                            null);
+                    return;
+                }
+
+                callback.onStatus("Strip setup service detected. Writing hotspot and controller settings…");
+                configure(setupNetwork, setupHost, homeSsid.trim(), safePassword(homePassword),
+                        controllerIp.trim(), callback);
             } catch (Exception error) {
                 fail(callback, "Could not use the current strip Wi-Fi connection", error);
             }
@@ -143,24 +166,91 @@ public final class MttlProvisioner {
         return true;
     }
 
-    private Network findSetupWifiNetwork() {
+    /**
+     * Chooses the active Wi-Fi network by transport/link properties rather than by first
+     * requiring port 30300 to answer. The previous behaviour mislabeled a reachable Wi-Fi AP
+     * as "not connected" whenever the setup socket probe failed.
+     */
+    private Network findCurrentWifiTransport() {
         Network[] networks = connectivity.getAllNetworks();
         if (networks == null) return null;
+
+        Network best = null;
+        int bestScore = Integer.MIN_VALUE;
         for (Network network : networks) {
             NetworkCapabilities caps = connectivity.getNetworkCapabilities(network);
             if (caps == null || !caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) continue;
-            try (Socket socket = network.getSocketFactory().createSocket()) {
-                socket.connect(new InetSocketAddress(ModelCatalog.SETUP_ADDRESS, ModelCatalog.SETUP_PORT), 2_500);
-                return network;
-            } catch (IOException ignored) { }
+
+            int score = 10;
+            if (!caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) score += 30;
+            if (!caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) score += 20;
+
+            LinkProperties links = connectivity.getLinkProperties(network);
+            if (links != null) {
+                for (LinkAddress linkAddress : links.getLinkAddresses()) {
+                    InetAddress address = linkAddress.getAddress();
+                    if (!(address instanceof Inet4Address)) continue;
+                    String host = address.getHostAddress();
+                    if (host == null) continue;
+                    if (host.startsWith("192.168.1.")) score += 120;
+                    else if (isPrivateIpv4(host)) score += 15;
+                }
+                for (RouteInfo route : links.getRoutes()) {
+                    InetAddress gateway = route.getGateway();
+                    if (!(gateway instanceof Inet4Address)) continue;
+                    String host = gateway.getHostAddress();
+                    if (ModelCatalog.SETUP_ADDRESS.equals(host)) score += 160;
+                    else if (host != null && isPrivateIpv4(host)) score += 20;
+                }
+            }
+
+            if (best == null || score > bestScore) {
+                best = network;
+                bestScore = score;
+            }
         }
-        return null;
+        return best;
     }
 
-    private void configure(Network network, String homeSsid, String homePassword,
+    private String findSetupHost(Network network) {
+        LinkProperties links = connectivity.getLinkProperties(network);
+        if (links != null) {
+            String privateGateway = null;
+            for (RouteInfo route : links.getRoutes()) {
+                InetAddress gateway = route.getGateway();
+                if (!(gateway instanceof Inet4Address)) continue;
+                String host = gateway.getHostAddress();
+                if (host == null) continue;
+                if (ModelCatalog.SETUP_ADDRESS.equals(host)) return host;
+                if (privateGateway == null && isPrivateIpv4(host)) privateGateway = host;
+            }
+            if (privateGateway != null) return privateGateway;
+        }
+        return ModelCatalog.SETUP_ADDRESS;
+    }
+
+    private boolean setupServiceReachable(Network network, String setupHost) {
+        for (int attempt = 0; attempt < 4; attempt++) {
+            try (Socket socket = network.getSocketFactory().createSocket()) {
+                socket.connect(new InetSocketAddress(setupHost, ModelCatalog.SETUP_PORT), 2_000);
+                return true;
+            } catch (IOException ignored) {
+                if (attempt < 3) {
+                    try { Thread.sleep(350L); }
+                    catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void configure(Network network, String setupHost, String homeSsid, String homePassword,
                            String controllerIp, Callback callback) {
         try (Socket socket = network.getSocketFactory().createSocket()) {
-            socket.connect(new InetSocketAddress(ModelCatalog.SETUP_ADDRESS, ModelCatalog.SETUP_PORT), 7_000);
+            socket.connect(new InetSocketAddress(setupHost, ModelCatalog.SETUP_PORT), 7_000);
             socket.setSoTimeout(3_500);
 
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
@@ -196,6 +286,27 @@ public final class MttlProvisioner {
         }
     }
 
+    private void bindProcessToSetupWifi(Network network) {
+        try {
+            processBoundToSetupWifi = connectivity.bindProcessToNetwork(network);
+        } catch (RuntimeException ignored) {
+            processBoundToSetupWifi = false;
+        }
+    }
+
+    private static boolean isPrivateIpv4(String host) {
+        if (host.startsWith("10.") || host.startsWith("192.168.")) return true;
+        if (!host.startsWith("172.")) return false;
+        String[] parts = host.split("\\.");
+        if (parts.length != 4) return false;
+        try {
+            int second = Integer.parseInt(parts[1]);
+            return second >= 16 && second <= 31;
+        } catch (NumberFormatException ignored) {
+            return false;
+        }
+    }
+
     private static String safePassword(String value) {
         return value == null ? "" : value;
     }
@@ -217,6 +328,12 @@ public final class MttlProvisioner {
     }
 
     private void finishNetwork() {
+        if (processBoundToSetupWifi) {
+            try { connectivity.bindProcessToNetwork(null); }
+            catch (RuntimeException ignored) { }
+            processBoundToSetupWifi = false;
+        }
+
         ConnectivityManager.NetworkCallback callback = networkCallback;
         networkCallback = null;
         if (callback != null) {
