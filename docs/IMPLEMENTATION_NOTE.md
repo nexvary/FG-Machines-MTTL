@@ -1,0 +1,1 @@
+The sequential setup fix deliberately relies on Android LinkProperties/NetworkCapabilities rather than treating a successful TCP probe as proof of Wi-Fi association. This keeps diagnostics accurate and makes the setup flow resilient when cellular remains Android's default validated transport.
