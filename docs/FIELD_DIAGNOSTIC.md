@@ -1,0 +1,1 @@
+When Android Settings shows `TONLY_TAP_*` as connected and the phone has a `192.168.1.x` address, FG Machines RCK should treat Wi-Fi association as established. TCP 30300 is then a separate service-health check rather than the association test itself.
