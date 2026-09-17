@@ -8,35 +8,58 @@
     <string name="research_mode">LOCAL CONTROL ENGINE</string>
     <string name="research_note">Open-source protocol research confirmed the MTTL local controller commands. Outlet controls activate only after a compatible strip identifies itself to this phone on TCP 10086; validation on each physical revision is still required.</string>
 
+    <string name="nav_home">Home</string>
+    <string name="nav_setup">Setup</string>
+    <string name="nav_scan">Scan</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about">About</string>
+    <string name="home_title">Main dashboard</string>
+    <string name="home_subtitle">Connection state and direct control of the four MTTL outlets.</string>
+    <string name="quick_setup">Setup device</string>
+    <string name="quick_scan">Scan network</string>
+
     <string name="setup_wizard">Device setup</string>
     <string name="setup_wizard_note">Put the strip in setup mode, enter its temporary TONLY_TAP/ONLY_TAP SSID, then choose the 2.4 GHz Wi‑Fi network the strip should join. The controller address normally belongs to this phone.</string>
+    <string name="setup_single_phone_note">No second phone is required. This mode saves the future hotspot address first, temporarily joins the strip setup Wi‑Fi, writes the hotspot credentials, then asks you to turn the hotspot back on.</string>
+    <string name="step_1">1 · Prepare the phone hotspot</string>
+    <string name="step_2">2 · Join the strip setup Wi‑Fi</string>
+    <string name="step_3">3 · Provision from this phone</string>
+    <string name="capture_hotspot">SAVE HOTSPOT IP</string>
+    <string name="open_wifi_settings">OPEN WI‑FI SETTINGS</string>
+    <string name="sequential_provision">I AM ON TONLY_TAP — CONTINUE</string>
+    <string name="automatic_provision">Automatic connection (compatible phones)</string>
+    <string name="manual_connected_note">After saving the hotspot IP, turn the hotspot off, join TONLY_TAP/ONLY_TAP manually, return here and press Continue. The app will configure the strip through 192.168.1.1:30300.</string>
+    <string name="hotspot_status">Current local IPv4: %1$s\nSaved hotspot controller IPv4: %2$s</string>
+    <string name="hotspot_ip_saved">Hotspot controller address saved: %1$s</string>
+    <string name="hotspot_ip_missing">No local hotspot IPv4 was detected. Turn the hotspot on first, then save its address.</string>
+    <string name="sequential_success">Settings were written to the strip. Android hotspot settings are opening now. Turn on the same 2.4 GHz hotspot immediately and wait for the strip to connect to TCP 10086.</string>
     <string name="setup_ssid_hint">Strip setup SSID, e.g. TONLY_TAP_XXXXXXX</string>
     <string name="target_wifi_ssid_hint">Target 2.4 GHz Wi‑Fi / phone hotspot SSID</string>
     <string name="target_wifi_password_hint">Wi‑Fi / hotspot password</string>
-    <string name="controller_ip_hint">This phone controller IPv4</string>
+    <string name="controller_ip_hint">Saved hotspot/controller IPv4</string>
     <string name="provision_device">PAIR / PROVISION</string>
     <string name="provisioning">Provisioning strip…</string>
     <string name="provision_complete">Provisioning complete</string>
     <string name="provision_complete_detail">The strip is rebooting. Keep the target Wi‑Fi or phone hotspot enabled and wait for it to connect to TCP 10086.</string>
     <string name="provision_failed">Provisioning failed: %1$s</string>
     <string name="wifi_permission_required">Nearby Wi‑Fi permission is required for device setup.</string>
-    <string name="missing_setup_fields">Enter the setup SSID, target Wi‑Fi SSID and controller IPv4 address.</string>
+    <string name="missing_setup_fields">Enter the setup SSID, target Wi‑Fi/hotspot SSID and saved controller IPv4 address.</string>
 
     <string name="mobile_hotspot_mode">PHONE HOTSPOT MODE</string>
     <string name="mobile_hotspot_note">For homes without a router, this phone can be the local controller and Wi‑Fi access point. Set the hotspot to 2.4 GHz. Internet sharing is optional because MTTL control is local.</string>
     <string name="open_hotspot_settings">OPEN HOTSPOT SETTINGS</string>
     <string name="refresh_hotspot">REFRESH PHONE IP</string>
-    <string name="hotspot_single_phone_supported">Same-phone setup is supported by this Wi‑Fi chipset (STA + AP concurrency). Controller IP: %1$s</string>
-    <string name="hotspot_second_device_required">This phone cannot keep hotspot and join the strip setup AP at the same time. Use a second phone/laptop once for provisioning, then this phone can run the hotspot/controller. Controller IP: %1$s</string>
-    <string name="hotspot_ip_unknown">not detected yet</string>
+    <string name="hotspot_single_phone_supported">This chipset reports STA + AP concurrency support. Actual vendor behavior can still differ.</string>
+    <string name="hotspot_second_device_required">Use the sequential single-phone setup when hotspot and setup Wi‑Fi cannot run together.</string>
+    <string name="hotspot_ip_unknown">not detected</string>
     <string name="hotspot_runtime_note">After provisioning, the strip and this app communicate locally over the phone hotspot on TCP 10086.</string>
 
-    <string name="device_discovery">Setup diagnostics</string>
+    <string name="device_discovery">Scan &amp; diagnostics</string>
     <string name="ip_hint">MTTL-W01 IP address</string>
     <string name="scan">SCAN LAN</string>
     <string name="probe">PROBE 30300</string>
     <string name="idle">Controller starting…</string>
-    <string name="scan_explanation">TCP 30300 is used by known firmware during setup/provisioning. Normal outlet control uses the device-to-controller session on TCP 10086.</string>
+    <string name="scan_explanation">TCP 30300 is used during setup/provisioning. Normal outlet control uses the device-to-controller session on TCP 10086.</string>
     <string name="scanning">Scanning local network…</string>
     <string name="not_found">No setup service detected</string>
     <string name="service_detected">MTTL setup service detected</string>
@@ -47,7 +70,7 @@
     <string name="multiple_hosts">%1$d hosts expose port 30300. Verify the selected IP.</string>
     <string name="probe_success">%1$s accepted a TCP connection on setup port 30300. No command bytes were sent.</string>
     <string name="probe_failed">%1$s did not answer on TCP 30300. This can be normal outside setup mode.</string>
-    <string name="protocol_locked">Setup port detected. Relay control waits for an authenticated MTTL-family controller session on port 10086.</string>
+    <string name="protocol_locked">Setup port detected. Relay control waits for a compatible MTTL-family controller session on port 10086.</string>
     <string name="enter_ip">Enter an IP address</string>
     <string name="controller_listening">Local controller listening on TCP 10086</string>
     <string name="controller_connected">Connected: %1$s · firmware %2$s</string>
@@ -62,7 +85,15 @@
     <string name="outlet_3">Outlet 3</string>
     <string name="outlet_4">Outlet 4</string>
     <string name="locked">Waiting for a compatible strip to connect to controller port 10086</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_note">Language changes are applied immediately. Network provisioning stays local and does not require the Korean subscription service.</string>
+    <string name="about_title">About</string>
     <string name="about_line">FG Machines RCK · MTTL family · Local-first controller</string>
+    <string name="about_body">FG Machines RCK is an independent local controller for compatible LG U+ / TONLY smart power strips. It is not an official LG U+ application. The project prioritizes local Wi‑Fi operation, clear diagnostics and safe relay control.</string>
+    <string name="supported_models_title">Compatibility</string>
+    <string name="supported_models_body">Primary verified family: MTTL-W01. Known certificate revisions include HU04139-17002A/B/C/D/E. Setup signatures TONLY_TAP_* and ONLY_TAP_* are recognized, with protocol verification before relay controls are enabled.</string>
+
     <string-array name="language_labels">
         <item>العربية</item>
         <item>English</item>

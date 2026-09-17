@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -32,6 +35,9 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     private static final String PREFS = "fg_rck_settings";
     private static final String PREF_LANGUAGE = "language";
+    private static final String PREF_HOTSPOT_IP = "hotspot_controller_ip";
+    private static final String PREF_TARGET_SSID = "target_ssid";
+    private static final String PREF_SETUP_SSID = "setup_ssid";
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
 
@@ -48,10 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton scanButton;
     private MaterialButton probeButton;
     private MaterialButton provisionButton;
+    private MaterialButton manualProvisionButton;
     private MaterialButton openHotspotButton;
     private MaterialButton refreshHotspotButton;
+    private MaterialButton openWifiButton;
     private Spinner languageSpinner;
     private MaterialSwitch[] outletSwitches;
+    private View[] pages;
+    private MaterialButton[] navButtons;
+    private int currentPage;
 
     private final ExecutorService commandWorker = Executors.newSingleThreadExecutor();
     private volatile String activeMac;
@@ -81,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static boolean isSupportedLanguage(String language) {
-        for (String tag : LANGUAGE_TAGS) {
-            if (tag.equals(language)) return true;
-        }
+        for (String tag : LANGUAGE_TAGS) if (tag.equals(language)) return true;
         return false;
     }
 
@@ -91,7 +100,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        applySystemBarInsets();
+        bindViews();
 
+        provisioner = new MttlProvisioner(this);
+        configureNavigation();
+        configureLanguageSelector();
+        configureOutletControls();
+        configureSetupWorkflow();
+        restoreSetupProfile();
+        startLocalController();
+        updateHotspotStatus(false);
+
+        scanButton.setOnClickListener(v -> startScan());
+        probeButton.setOnClickListener(v -> probeCurrentHost());
+        ipInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                probeCurrentHost();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void applySystemBarInsets() {
+        View root = findViewById(R.id.mainRoot);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return insets;
+        });
+    }
+
+    private void bindViews() {
         ipInput = findViewById(R.id.ipInput);
         setupSsidInput = findViewById(R.id.setupSsidInput);
         targetWifiSsidInput = findViewById(R.id.targetWifiSsidInput);
@@ -105,96 +146,157 @@ public class MainActivity extends AppCompatActivity {
         scanButton = findViewById(R.id.scanButton);
         probeButton = findViewById(R.id.probeButton);
         provisionButton = findViewById(R.id.provisionButton);
+        manualProvisionButton = findViewById(R.id.manualProvisionButton);
         openHotspotButton = findViewById(R.id.openHotspotButton);
         refreshHotspotButton = findViewById(R.id.refreshHotspotButton);
+        openWifiButton = findViewById(R.id.openWifiButton);
         languageSpinner = findViewById(R.id.languageSpinner);
-        outletSwitches = new MaterialSwitch[] {
-                findViewById(R.id.outlet1),
-                findViewById(R.id.outlet2),
-                findViewById(R.id.outlet3),
-                findViewById(R.id.outlet4)
+        outletSwitches = new MaterialSwitch[]{
+                findViewById(R.id.outlet1), findViewById(R.id.outlet2),
+                findViewById(R.id.outlet3), findViewById(R.id.outlet4)
         };
+        pages = new View[]{
+                findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
+                findViewById(R.id.pageScan), findViewById(R.id.pageSettings),
+                findViewById(R.id.pageAbout)
+        };
+        navButtons = new MaterialButton[]{
+                findViewById(R.id.navHome), findViewById(R.id.navSetup),
+                findViewById(R.id.navScan), findViewById(R.id.navSettings),
+                findViewById(R.id.navAbout)
+        };
+    }
 
-        provisioner = new MttlProvisioner(this);
-        configureLanguageSelector();
-        configureOutletControls();
-        configureSetupWorkflow();
-        startLocalController();
-        refreshHotspotStatus();
+    private void configureNavigation() {
+        for (int i = 0; i < navButtons.length; i++) {
+            final int page = i;
+            navButtons[i].setOnClickListener(v -> showPage(page));
+        }
+        findViewById(R.id.homeToSetup).setOnClickListener(v -> showPage(1));
+        findViewById(R.id.homeToScan).setOnClickListener(v -> showPage(2));
+        showPage(0);
+    }
 
-        scanButton.setOnClickListener(v -> startScan());
-        probeButton.setOnClickListener(v -> probeCurrentHost());
-        ipInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                probeCurrentHost();
-                return true;
-            }
-            return false;
-        });
+    private void showPage(int page) {
+        if (page < 0 || page >= pages.length) return;
+        currentPage = page;
+        for (int i = 0; i < pages.length; i++) {
+            pages[i].setVisibility(i == page ? View.VISIBLE : View.GONE);
+            navButtons[i].setAlpha(i == page ? 1f : 0.58f);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentPage != 0) {
+            showPage(0);
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void configureSetupWorkflow() {
         openHotspotButton.setOnClickListener(v -> HotspotSupport.openSystemHotspotSettings(this));
-        refreshHotspotButton.setOnClickListener(v -> refreshHotspotStatus());
-        provisionButton.setOnClickListener(v -> requestWifiSetupPermission(this::provisionDevice));
+        refreshHotspotButton.setOnClickListener(v -> captureHotspotAddress());
+        openWifiButton.setOnClickListener(v -> HotspotSupport.openWifiSettings(this));
+        provisionButton.setOnClickListener(v -> requestWifiSetupPermission(() -> provisionDevice(false)));
+        manualProvisionButton.setOnClickListener(v -> requestWifiSetupPermission(() -> provisionDevice(true)));
     }
 
-    private void refreshHotspotStatus() {
-        String controllerIp = HotspotSupport.findControllerIpv4();
-        String displayIp = controllerIp == null ? getString(R.string.hotspot_ip_unknown) : controllerIp;
-        boolean concurrent = HotspotSupport.supportsSamePhoneProvisioning(this);
-        hotspotStatus.setText(getString(
-                concurrent ? R.string.hotspot_single_phone_supported : R.string.hotspot_second_device_required,
-                displayIp
-        ));
+    private void restoreSetupProfile() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        setupSsidInput.setText(prefs.getString(PREF_SETUP_SSID, ""));
+        targetWifiSsidInput.setText(prefs.getString(PREF_TARGET_SSID, ""));
+        String savedIp = prefs.getString(PREF_HOTSPOT_IP, "");
+        if (savedIp != null && !savedIp.isEmpty()) controllerIpInput.setText(savedIp);
+    }
 
-        if (controllerIp != null && controllerIpInput != null) {
-            String current = textOf(controllerIpInput);
-            if (current.isEmpty() || isPrivateIpv4(current)) controllerIpInput.setText(controllerIp);
+    private void persistSetupProfile() {
+        getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                .putString(PREF_SETUP_SSID, textOf(setupSsidInput))
+                .putString(PREF_TARGET_SSID, textOf(targetWifiSsidInput))
+                .apply();
+    }
+
+    private void captureHotspotAddress() {
+        String controllerIp = HotspotSupport.findControllerIpv4();
+        if (controllerIp == null) {
+            Snackbar.make(refreshHotspotButton, R.string.hotspot_ip_missing, Snackbar.LENGTH_LONG).show();
+            updateHotspotStatus(false);
+            return;
+        }
+        getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                .putString(PREF_HOTSPOT_IP, controllerIp)
+                .apply();
+        controllerIpInput.setText(controllerIp);
+        persistSetupProfile();
+        updateHotspotStatus(false);
+        Snackbar.make(refreshHotspotButton,
+                getString(R.string.hotspot_ip_saved, controllerIp), Snackbar.LENGTH_LONG).show();
+    }
+
+    private void updateHotspotStatus(boolean overwriteWhenMissing) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        String saved = prefs.getString(PREF_HOTSPOT_IP, "");
+        String current = HotspotSupport.findControllerIpv4();
+        String currentText = current == null ? getString(R.string.hotspot_ip_unknown) : current;
+        String savedText = saved == null || saved.isEmpty() ? getString(R.string.hotspot_ip_unknown) : saved;
+        hotspotStatus.setText(getString(R.string.hotspot_status, currentText, savedText));
+        if (overwriteWhenMissing && (saved == null || saved.isEmpty()) && current != null) {
+            controllerIpInput.setText(current);
         }
     }
 
-    private void provisionDevice() {
+    private void provisionDevice(boolean sequential) {
         String setupSsid = textOf(setupSsidInput);
         String wifiSsid = textOf(targetWifiSsidInput);
         String wifiPassword = textOf(targetWifiPasswordInput);
         String controllerIp = textOf(controllerIpInput);
-
         if (setupSsid.isEmpty() || wifiSsid.isEmpty() || controllerIp.isEmpty()) {
-            Snackbar.make(provisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(manualProvisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
             return;
         }
-
+        persistSetupProfile();
         setProvisionBusy(true);
         provisionStatus.setText(R.string.provisioning);
-        provisioner.provision(setupSsid, wifiSsid, wifiPassword, controllerIp,
-                new MttlProvisioner.Callback() {
-                    @Override
-                    public void onStatus(String status) {
-                        runOnUiThread(() -> provisionStatus.setText(status));
-                    }
+        MttlProvisioner.Callback callback = provisionCallback(sequential);
+        if (sequential) {
+            provisioner.provisionCurrentWifi(setupSsid, wifiSsid, wifiPassword, controllerIp, callback);
+        } else {
+            provisioner.provision(setupSsid, wifiSsid, wifiPassword, controllerIp, callback);
+        }
+    }
 
-                    @Override
-                    public void onComplete() {
-                        runOnUiThread(() -> {
-                            setProvisionBusy(false);
-                            provisionStatus.setText(R.string.provision_complete_detail);
-                            deviceState.setText(R.string.provision_complete);
-                            discoveryDetail.setText(R.string.provision_complete_detail);
-                        });
-                    }
+    private MttlProvisioner.Callback provisionCallback(boolean sequential) {
+        return new MttlProvisioner.Callback() {
+            @Override public void onStatus(String status) {
+                runOnUiThread(() -> provisionStatus.setText(status));
+            }
 
-                    @Override
-                    public void onError(String message, Throwable error) {
-                        runOnUiThread(() -> {
-                            setProvisionBusy(false);
-                            String detail = error == null ? message : message + ": " + safeMessage(error);
-                            provisionStatus.setText(getString(R.string.provision_failed, detail));
-                            Snackbar.make(provisionButton,
-                                    getString(R.string.provision_failed, detail), Snackbar.LENGTH_LONG).show();
-                        });
-                    }
+            @Override public void onComplete() {
+                runOnUiThread(() -> {
+                    setProvisionBusy(false);
+                    provisionStatus.setText(sequential
+                            ? R.string.sequential_success
+                            : R.string.provision_complete_detail);
+                    deviceState.setText(R.string.provision_complete);
+                    discoveryDetail.setText(sequential
+                            ? R.string.sequential_success
+                            : R.string.provision_complete_detail);
+                    if (sequential) HotspotSupport.openSystemHotspotSettings(MainActivity.this);
                 });
+            }
+
+            @Override public void onError(String message, Throwable error) {
+                runOnUiThread(() -> {
+                    setProvisionBusy(false);
+                    String detail = error == null ? message : message + ": " + safeMessage(error);
+                    provisionStatus.setText(getString(R.string.provision_failed, detail));
+                    Snackbar.make(manualProvisionButton,
+                            getString(R.string.provision_failed, detail), Snackbar.LENGTH_LONG).show();
+                });
+            }
+        };
     }
 
     private void requestWifiSetupPermission(Runnable action) {
@@ -219,14 +321,16 @@ public class MainActivity extends AppCompatActivity {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (action != null) action.run();
         } else {
-            Snackbar.make(provisionButton, R.string.wifi_permission_required, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(manualProvisionButton, R.string.wifi_permission_required, Snackbar.LENGTH_LONG).show();
         }
     }
 
     private void setProvisionBusy(boolean busy) {
         provisionButton.setEnabled(!busy);
+        manualProvisionButton.setEnabled(!busy);
         openHotspotButton.setEnabled(!busy);
         refreshHotspotButton.setEnabled(!busy);
+        openWifiButton.setEnabled(!busy);
         setupSsidInput.setEnabled(!busy);
         targetWifiSsidInput.setEnabled(!busy);
         targetWifiPasswordInput.setEnabled(!busy);
@@ -235,10 +339,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureLanguageSelector() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.language_labels,
-                android.R.layout.simple_spinner_item
-        );
+                this, R.array.language_labels, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         languageSpinner.setAdapter(adapter);
 
@@ -248,32 +349,24 @@ public class MainActivity extends AppCompatActivity {
             selectedLanguage = getResources().getConfiguration().getLocales().get(0).getLanguage();
         }
         languageSpinner.setSelection(languageIndex(selectedLanguage), false);
-
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position < 0 || position >= LANGUAGE_TAGS.length) return;
                 String requested = LANGUAGE_TAGS[position];
                 String current = getSharedPreferences(PREFS, MODE_PRIVATE)
                         .getString(PREF_LANGUAGE, getResources().getConfiguration().getLocales().get(0).getLanguage());
                 if (!requested.equals(current)) {
-                    getSharedPreferences(PREFS, MODE_PRIVATE)
-                            .edit()
-                            .putString(PREF_LANGUAGE, requested)
-                            .apply();
+                    getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                            .putString(PREF_LANGUAGE, requested).apply();
                     recreate();
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
     private int languageIndex(String language) {
-        for (int i = 0; i < LANGUAGE_TAGS.length; i++) {
-            if (LANGUAGE_TAGS[i].equals(language)) return i;
-        }
+        for (int i = 0; i < LANGUAGE_TAGS.length; i++) if (LANGUAGE_TAGS[i].equals(language)) return i;
         return 1;
     }
 
@@ -289,11 +382,8 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         controllerServer.setOutlet(mac, outlet, checked);
                     } catch (IOException error) {
-                        runOnUiThread(() -> Snackbar.make(
-                                scanButton,
-                                getString(R.string.command_failed, safeMessage(error)),
-                                Snackbar.LENGTH_LONG
-                        ).show());
+                        runOnUiThread(() -> Snackbar.make(scanButton,
+                                getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
                     }
                 });
             });
@@ -302,30 +392,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void startLocalController() {
         controllerServer = new MttlControllerServer(new MttlControllerServer.Listener() {
-            @Override
-            public void onListening(int port) {
+            @Override public void onListening(int port) {
                 runOnUiThread(() -> {
                     deviceState.setText(R.string.controller_listening);
                     discoveryDetail.setText(R.string.scan_explanation);
                 });
             }
 
-            @Override
-            public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
+            @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
                 activeMac = bootInfo.mac;
                 runOnUiThread(() -> {
                     setOutletControlsEnabled(true);
-                    deviceState.setText(getString(
-                            R.string.controller_connected,
-                            ModelCatalog.PRIMARY_MODEL,
-                            bootInfo.firmwareVersion
-                    ));
+                    deviceState.setText(getString(R.string.controller_connected,
+                            ModelCatalog.PRIMARY_MODEL, bootInfo.firmwareVersion));
                     discoveryDetail.setText(remoteAddress);
+                    showPage(0);
                 });
             }
 
-            @Override
-            public void onDeviceDisconnected(String mac) {
+            @Override public void onDeviceDisconnected(String mac) {
                 if (!mac.equalsIgnoreCase(activeMac == null ? "" : activeMac)) return;
                 activeMac = null;
                 runOnUiThread(() -> {
@@ -335,14 +420,12 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-            @Override
-            public void onOutletState(String mac, MttlProtocol.OutletState state) {
+            @Override public void onOutletState(String mac, MttlProtocol.OutletState state) {
                 if (!isActive(mac)) return;
                 runOnUiThread(() -> applyOutletState(state.outlet, state.on));
             }
 
-            @Override
-            public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
+            @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
                 if (!isActive(mac)) return;
                 runOnUiThread(() -> {
                     applyingDeviceState = true;
@@ -352,26 +435,19 @@ public class MainActivity extends AppCompatActivity {
                                 outletSwitches[outlet.channel - 1].setChecked(outlet.relayOn);
                             }
                         }
-                    } finally {
-                        applyingDeviceState = false;
-                    }
+                    } finally { applyingDeviceState = false; }
                 });
             }
 
-            @Override
-            public void onProtocolFrame(String mac, String frame) {
-                // Unknown frames are ignored safely; they are not reflected back to the device.
-            }
+            @Override public void onProtocolFrame(String mac, String frame) { }
 
-            @Override
-            public void onError(String message, Throwable error) {
+            @Override public void onError(String message, Throwable error) {
                 runOnUiThread(() -> {
                     deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
                     if (activeMac == null) setOutletControlsEnabled(false);
                 });
             }
         });
-
         try {
             controllerServer.start();
         } catch (IOException error) {
@@ -387,15 +463,11 @@ public class MainActivity extends AppCompatActivity {
     private void applyOutletState(int outlet, boolean on) {
         if (outlet < 1 || outlet > outletSwitches.length) return;
         applyingDeviceState = true;
-        try {
-            outletSwitches[outlet - 1].setChecked(on);
-        } finally {
-            applyingDeviceState = false;
-        }
+        try { outletSwitches[outlet - 1].setChecked(on); }
+        finally { applyingDeviceState = false; }
     }
 
     private void setOutletControlsEnabled(boolean enabled) {
-        if (outletSwitches == null) return;
         for (MaterialSwitch outletSwitch : outletSwitches) outletSwitch.setEnabled(enabled);
     }
 
@@ -403,7 +475,6 @@ public class MainActivity extends AppCompatActivity {
         setBusy(true);
         deviceState.setText(R.string.scanning);
         discoveryDetail.setText(R.string.scan_explanation);
-
         DeviceScanner.scanLocal24((hosts, subnet) -> runOnUiThread(() -> {
             setBusy(false);
             if (hosts.isEmpty()) {
@@ -411,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
                 discoveryDetail.setText(getString(R.string.scan_none, subnet));
                 return;
             }
-
             String first = hosts.get(0);
             ipInput.setText(first);
             deviceState.setText(R.string.service_detected);
@@ -428,7 +498,6 @@ public class MainActivity extends AppCompatActivity {
             ipInput.setError(getString(R.string.enter_ip));
             return;
         }
-
         setBusy(true);
         deviceState.setText(R.string.probing);
         DeviceScanner.probe(host, (target, reachable, detail) -> runOnUiThread(() -> {
@@ -436,7 +505,6 @@ public class MainActivity extends AppCompatActivity {
             if (reachable) {
                 deviceState.setText(R.string.service_detected);
                 discoveryDetail.setText(getString(R.string.probe_success, target));
-                Snackbar.make(scanButton, R.string.protocol_locked, Snackbar.LENGTH_LONG).show();
             } else {
                 deviceState.setText(R.string.offline);
                 discoveryDetail.setText(getString(R.string.probe_failed, target));
@@ -455,10 +523,6 @@ public class MainActivity extends AppCompatActivity {
         return input == null || input.getText() == null ? "" : input.getText().toString().trim();
     }
 
-    private static boolean isPrivateIpv4(String value) {
-        return value.startsWith("10.") || value.startsWith("192.168.") || value.startsWith("172.");
-    }
-
     private static String safeMessage(Throwable error) {
         if (error == null) return "unknown";
         String value = error.getMessage();
@@ -468,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (hotspotStatus != null) refreshHotspotStatus();
+        if (hotspotStatus != null) updateHotspotStatus(false);
     }
 
     @Override

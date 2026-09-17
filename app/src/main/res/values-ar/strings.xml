@@ -8,35 +8,58 @@
     <string name="research_mode">محرك التحكم المحلي</string>
     <string name="research_note">أكد البحث في المشاريع المفتوحة بروتوكول التحكم المحلي لعائلة MTTL. تتفعّل مفاتيح المخارج فقط بعد أن يعرّف المشترك المتوافق نفسه للهاتف على TCP 10086، مع بقاء التحقق العملي مطلوبًا لكل مراجعة عتاد.</string>
 
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_setup">الإعداد</string>
+    <string name="nav_scan">الفحص</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_about">عنا</string>
+    <string name="home_title">لوحة التحكم الرئيسية</string>
+    <string name="home_subtitle">حالة الاتصال والتحكم المباشر في مخارج المشترك الأربعة.</string>
+    <string name="quick_setup">إعداد المشترك</string>
+    <string name="quick_scan">فحص الشبكة</string>
+
     <string name="setup_wizard">إعداد المشترك</string>
     <string name="setup_wizard_note">ضع المشترك في وضع الإعداد، ثم أدخل اسم شبكته المؤقتة TONLY_TAP أو ONLY_TAP واختر شبكة واي فاي 2.4 جيجاهرتز التي سيتصل بها. عنوان وحدة التحكم يكون عادة عنوان هذا الهاتف.</string>
+    <string name="setup_single_phone_note">لا تحتاج هاتفًا ثانيًا. يحفظ التطبيق أولًا عنوان هوت سبوت الهاتف، ثم تتصل مؤقتًا بشبكة المشترك، فيكتب التطبيق بيانات الهوت سبوت، وبعدها يطلب منك تشغيل الهوت سبوت مرة أخرى.</string>
+    <string name="step_1">1 · تجهيز هوت سبوت الهاتف</string>
+    <string name="step_2">2 · الاتصال بشبكة إعداد المشترك</string>
+    <string name="step_3">3 · الإعداد من نفس الهاتف</string>
+    <string name="capture_hotspot">حفظ عنوان الهوت سبوت</string>
+    <string name="open_wifi_settings">فتح إعدادات الواي فاي</string>
+    <string name="sequential_provision">أنا متصل بـ TONLY_TAP — متابعة</string>
+    <string name="automatic_provision">اتصال تلقائي للهواتف المتوافقة</string>
+    <string name="manual_connected_note">بعد حفظ عنوان الهوت سبوت، أوقف الهوت سبوت واتصل يدويًا بشبكة TONLY_TAP أو ONLY_TAP، ثم ارجع واضغط متابعة. سيقوم التطبيق بالإعداد عبر 192.168.1.1:30300.</string>
+    <string name="hotspot_status">عنوان IPv4 المحلي الحالي: %1$s\nعنوان وحدة التحكم المحفوظ للهوت سبوت: %2$s</string>
+    <string name="hotspot_ip_saved">تم حفظ عنوان وحدة التحكم للهوت سبوت: %1$s</string>
+    <string name="hotspot_ip_missing">لم يتم اكتشاف عنوان IPv4 للهوت سبوت. شغّل الهوت سبوت أولًا ثم احفظ عنوانه.</string>
+    <string name="sequential_success">تمت كتابة الإعدادات داخل المشترك. سيتم فتح إعدادات الهوت سبوت الآن. شغّل نفس الهوت سبوت 2.4 جيجاهرتز فورًا وانتظر اتصال المشترك على TCP 10086.</string>
     <string name="setup_ssid_hint">شبكة إعداد المشترك مثل TONLY_TAP_XXXXXXX</string>
-    <string name="target_wifi_ssid_hint">شبكة واي فاي 2.4 جيجاهرتز أو هوت سبوت الهاتف</string>
+    <string name="target_wifi_ssid_hint">اسم هوت سبوت الهاتف أو شبكة واي فاي 2.4 جيجاهرتز</string>
     <string name="target_wifi_password_hint">كلمة مرور الواي فاي أو الهوت سبوت</string>
-    <string name="controller_ip_hint">عنوان IPv4 لوحدة التحكم على هذا الهاتف</string>
+    <string name="controller_ip_hint">عنوان IPv4 المحفوظ للهوت سبوت/وحدة التحكم</string>
     <string name="provision_device">ربط / إعداد</string>
     <string name="provisioning">جارٍ إعداد المشترك…</string>
     <string name="provision_complete">اكتمل إعداد المشترك</string>
     <string name="provision_complete_detail">سيعيد المشترك التشغيل. اترك شبكة الواي فاي أو هوت سبوت الهاتف مفعّلة وانتظر اتصاله على TCP 10086.</string>
     <string name="provision_failed">فشل إعداد المشترك: %1$s</string>
     <string name="wifi_permission_required">يلزم السماح بالوصول إلى أجهزة واي فاي القريبة لإعداد المشترك.</string>
-    <string name="missing_setup_fields">أدخل شبكة إعداد المشترك وشبكة الواي فاي المستهدفة وعنوان IPv4 لوحدة التحكم.</string>
+    <string name="missing_setup_fields">أدخل شبكة إعداد المشترك واسم الهوت سبوت أو الواي فاي وعنوان IPv4 المحفوظ لوحدة التحكم.</string>
 
     <string name="mobile_hotspot_mode">وضع هوت سبوت الهاتف</string>
     <string name="mobile_hotspot_note">في المنازل التي لا يوجد بها راوتر، يمكن لهذا الهاتف أن يكون نقطة الوصول ووحدة التحكم المحلية معًا. اضبط الهوت سبوت على 2.4 جيجاهرتز. مشاركة الإنترنت ليست مطلوبة لأن التحكم محلي.</string>
     <string name="open_hotspot_settings">فتح إعدادات الهوت سبوت</string>
     <string name="refresh_hotspot">تحديث عنوان الهاتف</string>
-    <string name="hotspot_single_phone_supported">هذا الهاتف يدعم تشغيل الهوت سبوت والاتصال بشبكة إعداد المشترك في الوقت نفسه. عنوان وحدة التحكم: %1$s</string>
-    <string name="hotspot_second_device_required">هذا الهاتف لا يستطيع إبقاء الهوت سبوت فعالًا أثناء الاتصال بشبكة إعداد المشترك. استخدم هاتفًا أو لابتوبًا ثانيًا مرة واحدة للإعداد، وبعد ذلك يعمل هذا الهاتف كهوت سبوت ووحدة تحكم. عنوان وحدة التحكم: %1$s</string>
-    <string name="hotspot_ip_unknown">لم يتم اكتشافه بعد</string>
+    <string name="hotspot_single_phone_supported">شريحة الواي فاي تعلن دعم STA + AP، لكن سلوك الشركة المصنعة للهاتف قد يختلف عمليًا.</string>
+    <string name="hotspot_second_device_required">استخدم الإعداد المتتابع من هاتف واحد إذا لم يعمل الهوت سبوت والاتصال بشبكة المشترك معًا.</string>
+    <string name="hotspot_ip_unknown">غير مكتشف</string>
     <string name="hotspot_runtime_note">بعد الإعداد، يتواصل المشترك والتطبيق محليًا عبر هوت سبوت الهاتف على TCP 10086.</string>
 
-    <string name="device_discovery">تشخيص وضع الإعداد</string>
+    <string name="device_discovery">الفحص والتشخيص</string>
     <string name="ip_hint">عنوان IP للمشترك MTTL-W01</string>
     <string name="scan">فحص الشبكة</string>
     <string name="probe">فحص 30300</string>
     <string name="idle">جارٍ تشغيل وحدة التحكم…</string>
-    <string name="scan_explanation">يُستخدم TCP 30300 في البرمجيات المعروفة أثناء الإعداد والربط. التحكم الطبيعي في المخارج يتم عبر جلسة الجهاز إلى وحدة التحكم على TCP 10086.</string>
+    <string name="scan_explanation">يُستخدم TCP 30300 أثناء الإعداد والربط. التحكم الطبيعي في المخارج يتم عبر جلسة الجهاز إلى وحدة التحكم على TCP 10086.</string>
     <string name="scanning">جارٍ فحص الشبكة المحلية…</string>
     <string name="not_found">لم يتم اكتشاف خدمة الإعداد</string>
     <string name="service_detected">تم اكتشاف خدمة إعداد MTTL</string>
@@ -47,7 +70,7 @@
     <string name="multiple_hosts">يوجد %1$d أجهزة تفتح المنفذ 30300. تحقق من عنوان IP المختار.</string>
     <string name="probe_success">الجهاز %1$s قبل اتصال TCP على منفذ الإعداد 30300 ولم يتم إرسال أي أوامر إليه.</string>
     <string name="probe_failed">الجهاز %1$s لم يستجب على TCP 30300. وقد يكون ذلك طبيعيًا خارج وضع الإعداد.</string>
-    <string name="protocol_locked">تم اكتشاف منفذ الإعداد. ينتظر التحكم في الريليه جلسة موثوقة من جهاز متوافق على المنفذ 10086.</string>
+    <string name="protocol_locked">تم اكتشاف منفذ الإعداد. ينتظر التحكم في الريليه جلسة من جهاز متوافق من عائلة MTTL على المنفذ 10086.</string>
     <string name="enter_ip">أدخل عنوان IP</string>
     <string name="controller_listening">وحدة التحكم المحلية تستمع على TCP 10086</string>
     <string name="controller_connected">متصل: %1$s · البرنامج الثابت %2$s</string>
@@ -62,5 +85,12 @@
     <string name="outlet_3">المخرج 3</string>
     <string name="outlet_4">المخرج 4</string>
     <string name="locked">في انتظار اتصال مشترك متوافق بوحدة التحكم على المنفذ 10086</string>
+
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_note">يتم تطبيق تغيير اللغة فورًا. إعداد المشترك والتحكم به محليان ولا يحتاجان إلى الاشتراك الكوري.</string>
+    <string name="about_title">عنا</string>
     <string name="about_line">FG Machines RCK · عائلة MTTL · تحكم محلي أولاً</string>
+    <string name="about_body">FG Machines RCK وحدة تحكم محلية مستقلة للمشتركات الذكية المتوافقة من LG U+ / TONLY. التطبيق ليس تطبيقًا رسميًا من LG U+. يركز المشروع على التشغيل المحلي عبر الواي فاي والتشخيص الواضح والتحكم الآمن في الريليهات.</string>
+    <string name="supported_models_title">التوافق</string>
+    <string name="supported_models_body">العائلة الأساسية المتحقق منها: MTTL-W01. مراجعات الشهادة المعروفة HU04139-17002A/B/C/D/E. يتعرف التطبيق على TONLY_TAP_* و ONLY_TAP_* ويتحقق من البروتوكول قبل تفعيل مفاتيح المخارج.</string>
 </resources>
