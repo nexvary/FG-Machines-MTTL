@@ -4,7 +4,7 @@
     android:id="@+id/mainRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fg_black"
+    android:background="@drawable/bg_app_gradient"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -15,13 +15,15 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="14dp"
         app:cardBackgroundColor="@color/fg_black_soft"
-        app:cardCornerRadius="20dp"
-        app:strokeColor="@color/fg_blue"
+        app:cardCornerRadius="22dp"
+        app:cardElevation="5dp"
+        app:strokeColor="@color/fg_blue_bright"
         app:strokeWidth="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_brand_header"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="14dp">
@@ -848,19 +850,95 @@
                             android:textSize="13sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/about_social_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/about_social_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fgMachinesFacebookButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/fg_machines_facebook"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fg_black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="16dp"
+                            app:icon="@drawable/ic_group"
+                            app:iconGravity="textStart"
+                            app:iconPadding="12dp"
+                            app:iconSize="23dp"
+                            app:iconTint="@color/fg_black" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/alaaMohamedFacebookButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/alaa_mohamed_facebook"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fg_text"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/fg_blue"
+                            app:cornerRadius="16dp"
+                            app:icon="@drawable/ic_person"
+                            app:iconGravity="textStart"
+                            app:iconPadding="12dp"
+                            app:iconSize="23dp"
+                            app:iconTint="@color/fg_text" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="76dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="8dp"
         app:cardBackgroundColor="@color/fg_black_soft"
-        app:cardCornerRadius="22dp"
-        app:strokeColor="@color/fg_surface_2"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
+        app:strokeColor="@color/fg_blue"
         app:strokeWidth="1dp">
 
         <LinearLayout

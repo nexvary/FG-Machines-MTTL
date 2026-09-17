@@ -107,4 +107,9 @@
         <item>Dos teléfonos (sin router)</item>
         <item>Un teléfono (experimental)</item>
     </string-array>
+    <string name="about_social_title">Enlaces de FG Machines</string>
+    <string name="about_social_note">Página oficial del negocio y perfil personal</string>
+    <string name="fg_machines_facebook">FG Machines · Página de Facebook</string>
+    <string name="alaa_mohamed_facebook">Alaa Mohamed · Perfil personal</string>
+    <string name="open_link_failed">No se pudo abrir el enlace en este dispositivo.</string>
 </resources>

@@ -107,4 +107,9 @@
         <item>İki telefon (yönlendiricisiz)</item>
         <item>Tek telefon (deneysel)</item>
     </string-array>
+    <string name="about_social_title">FG Machines bağlantıları</string>
+    <string name="about_social_note">Resmî işletme sayfası ve kişisel profil</string>
+    <string name="fg_machines_facebook">FG Machines · Facebook sayfası</string>
+    <string name="alaa_mohamed_facebook">Alaa Mohamed · Kişisel profil</string>
+    <string name="open_link_failed">Bu cihazda bağlantı açılamadı.</string>
 </resources>
