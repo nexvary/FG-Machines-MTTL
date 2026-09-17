@@ -112,4 +112,17 @@
     <string name="fg_machines_facebook">FG Machines · Facebook sayfası</string>
     <string name="alaa_mohamed_facebook">Alaa Mohamed · Kişisel profil</string>
     <string name="open_link_failed">Bu cihazda bağlantı açılamadı.</string>
+    <string name="wizard_assistant_title">Kurulum Asistanı</string>
+    <string name="wizard_local_badge">YEREL</string>
+    <string name="wizard_stage_network">Denetleyici</string>
+    <string name="wizard_stage_credentials">Ağ bilgileri</string>
+    <string name="wizard_stage_write">Yazma</string>
+    <string name="wizard_waiting">BEKLİYOR</string>
+    <string name="wizard_ready">HAZIR</string>
+    <string name="wizard_locked">KİLİTLİ</string>
+    <string name="wizard_done">TAMAM</string>
+    <string name="wizard_need_controller">Önce denetleyici IPv4 adresini kaydedin veya girin.</string>
+    <string name="wizard_need_network">Priz kurulum SSID’sini ve hedef 2.4 GHz ağı girin.</string>
+    <string name="wizard_ready_to_write">Hazır. Bu kurulum telefonunu TONLY_TAP ağına bağlayın ve Devam’a basın.</string>
+    <string name="wizard_complete">Kurulum tamamlandı. Prizin denetleyici ağına bağlanması bekleniyor.</string>
 </resources>
