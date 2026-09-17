@@ -112,4 +112,17 @@
     <string name="fg_machines_facebook">FG Machines · صفحة فيسبوك</string>
     <string name="alaa_mohamed_facebook">علاء محمد · الحساب الشخصي</string>
     <string name="open_link_failed">تعذر فتح الرابط على هذا الجهاز.</string>
+    <string name="wizard_assistant_title">مساعد الإعداد</string>
+    <string name="wizard_local_badge">محلي</string>
+    <string name="wizard_stage_network">وحدة التحكم</string>
+    <string name="wizard_stage_credentials">بيانات الشبكة</string>
+    <string name="wizard_stage_write">الكتابة</string>
+    <string name="wizard_waiting">بانتظار</string>
+    <string name="wizard_ready">جاهز</string>
+    <string name="wizard_locked">مغلق</string>
+    <string name="wizard_done">تم</string>
+    <string name="wizard_need_controller">احفظ أو أدخل عنوان IPv4 الخاص بوحدة التحكم أولًا.</string>
+    <string name="wizard_need_network">أدخل شبكة إعداد المشترك وشبكة 2.4 جيجاهرتز المستهدفة.</string>
+    <string name="wizard_ready_to_write">جاهز. اتصل من هاتف الإعداد بشبكة TONLY_TAP ثم اضغط متابعة.</string>
+    <string name="wizard_complete">اكتمل الإعداد. في انتظار اتصال المشترك بشبكة وحدة التحكم.</string>
 </resources>

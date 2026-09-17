@@ -120,4 +120,17 @@
     <string name="fg_machines_facebook">FG Machines · Facebook page</string>
     <string name="alaa_mohamed_facebook">Alaa Mohamed · Personal profile</string>
     <string name="open_link_failed">Could not open the link on this device.</string>
+    <string name="wizard_assistant_title">Setup Assistant</string>
+    <string name="wizard_local_badge">LOCAL</string>
+    <string name="wizard_stage_network">Controller</string>
+    <string name="wizard_stage_credentials">Credentials</string>
+    <string name="wizard_stage_write">Write</string>
+    <string name="wizard_waiting">WAITING</string>
+    <string name="wizard_ready">READY</string>
+    <string name="wizard_locked">LOCKED</string>
+    <string name="wizard_done">DONE</string>
+    <string name="wizard_need_controller">Save or enter the controller IPv4 address first.</string>
+    <string name="wizard_need_network">Enter the strip setup SSID and target 2.4 GHz network.</string>
+    <string name="wizard_ready_to_write">Ready. Connect this setup phone to TONLY_TAP, then press Continue.</string>
+    <string name="wizard_complete">Provisioning completed. Waiting for the strip to join the controller network.</string>
 </resources>

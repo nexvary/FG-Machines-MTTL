@@ -9,7 +9,9 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -72,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
     private Spinner setupModeSpinner;
     private TextView setupModeDescription;
     private TextView setupModeBadge;
+    private TextView setupReadinessText;
+    private TextView step1Status;
+    private TextView step2Status;
+    private TextView step3Status;
+    private LinearProgressIndicator setupProgress;
     private MaterialSwitch[] outletSwitches;
     private View[] pages;
     private MaterialButton[] navButtons;
@@ -83,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private MttlControllerServer controllerServer;
     private MttlProvisioner provisioner;
     private Runnable pendingWifiAction;
+    private boolean provisionBusy;
+    private boolean provisioningSucceeded;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -122,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         configureSetupModeSelector();
         configureOutletControls();
         configureSetupWorkflow();
+        configureSetupReadiness();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -171,6 +181,11 @@ public class MainActivity extends AppCompatActivity {
         setupModeSpinner = findViewById(R.id.setupModeSpinner);
         setupModeDescription = findViewById(R.id.setupModeDescription);
         setupModeBadge = findViewById(R.id.setupModeBadge);
+        setupReadinessText = findViewById(R.id.setupReadinessText);
+        step1Status = findViewById(R.id.step1Status);
+        step2Status = findViewById(R.id.step2Status);
+        step3Status = findViewById(R.id.step3Status);
+        setupProgress = findViewById(R.id.setupProgress);
         outletSwitches = new MaterialSwitch[]{
                 findViewById(R.id.outlet1), findViewById(R.id.outlet2),
                 findViewById(R.id.outlet3), findViewById(R.id.outlet4)
@@ -244,6 +259,87 @@ public class MainActivity extends AppCompatActivity {
         manualProvisionButton.setOnClickListener(v -> requestWifiSetupPermission(() -> provisionDevice(true)));
     }
 
+
+    private void configureSetupReadiness() {
+        TextWatcher watcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                provisioningSucceeded = false;
+                updateSetupReadiness();
+            }
+            @Override public void afterTextChanged(Editable s) { }
+        };
+        setupSsidInput.addTextChangedListener(watcher);
+        targetWifiSsidInput.addTextChangedListener(watcher);
+        targetWifiPasswordInput.addTextChangedListener(watcher);
+        controllerIpInput.addTextChangedListener(watcher);
+        updateSetupReadiness();
+    }
+
+    private void updateSetupReadiness() {
+        if (setupProgress == null || setupReadinessText == null) return;
+
+        boolean controllerReady = isValidIpv4(textOf(controllerIpInput));
+        boolean networkReady = !textOf(setupSsidInput).isEmpty()
+                && !textOf(targetWifiSsidInput).isEmpty();
+        boolean readyToWrite = controllerReady && networkReady;
+
+        int progressValue = 25;
+        if (controllerReady) progressValue = 50;
+        if (readyToWrite) progressValue = 75;
+        if (provisioningSucceeded) progressValue = 100;
+        setupProgress.setProgressCompat(progressValue, true);
+
+        applyStepStatus(step1Status, controllerReady,
+                controllerReady ? R.string.wizard_ready : R.string.wizard_waiting);
+        applyStepStatus(step2Status, networkReady,
+                networkReady ? R.string.wizard_ready : R.string.wizard_waiting);
+        applyStepStatus(step3Status, provisioningSucceeded,
+                provisioningSucceeded ? R.string.wizard_done
+                        : (readyToWrite ? R.string.wizard_ready : R.string.wizard_locked));
+
+        if (provisioningSucceeded) {
+            setupReadinessText.setText(R.string.wizard_complete);
+            setupReadinessText.setTextColor(getColor(R.color.fg_green));
+        } else if (!controllerReady) {
+            setupReadinessText.setText(R.string.wizard_need_controller);
+            setupReadinessText.setTextColor(getColor(R.color.fg_warning));
+        } else if (!networkReady) {
+            setupReadinessText.setText(R.string.wizard_need_network);
+            setupReadinessText.setTextColor(getColor(R.color.fg_warning));
+        } else {
+            setupReadinessText.setText(R.string.wizard_ready_to_write);
+            setupReadinessText.setTextColor(getColor(R.color.fg_green));
+        }
+
+        boolean canProvision = readyToWrite && !provisionBusy;
+        manualProvisionButton.setEnabled(canProvision);
+        if (provisionButton.getVisibility() == View.VISIBLE) provisionButton.setEnabled(canProvision);
+    }
+
+    private void applyStepStatus(TextView view, boolean positive, int labelRes) {
+        if (view == null) return;
+        view.setText(labelRes);
+        view.setTextColor(getColor(positive ? R.color.fg_green : R.color.fg_silver_dark));
+        view.setAlpha(positive ? 1f : 0.88f);
+    }
+
+    private static boolean isValidIpv4(String value) {
+        if (value == null || value.trim().isEmpty()) return false;
+        String[] parts = value.trim().split("\\.");
+        if (parts.length != 4) return false;
+        for (String part : parts) {
+            try {
+                if (part.isEmpty() || (part.length() > 1 && part.startsWith("0"))) return false;
+                int n = Integer.parseInt(part);
+                if (n < 0 || n > 255) return false;
+            } catch (NumberFormatException error) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void restoreSetupProfile() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         setupSsidInput.setText(prefs.getString(PREF_SETUP_SSID, ""));
@@ -256,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
             setupModeSpinner.setSelection(savedMode, false);
             applySetupMode(savedMode);
         }
+        updateSetupReadiness();
     }
 
     private void persistSetupProfile() {
@@ -305,8 +402,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         persistSetupProfile();
+        provisioningSucceeded = false;
         setProvisionBusy(true);
         provisionStatus.setText(R.string.provisioning);
+        updateSetupReadiness();
         int setupMode = setupModeSpinner == null ? SETUP_MODE_ROUTER : setupModeSpinner.getSelectedItemPosition();
         MttlProvisioner.Callback callback = provisionCallback(sequential, setupMode);
         if (sequential) {
@@ -324,7 +423,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override public void onComplete() {
                 runOnUiThread(() -> {
+                    provisioningSucceeded = true;
                     setProvisionBusy(false);
+                    updateSetupReadiness();
                     provisionStatus.setText(sequential
                             ? successMessageForMode(setupMode)
                             : R.string.provision_complete_detail);
@@ -344,7 +445,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override public void onError(String message, Throwable error) {
                 runOnUiThread(() -> {
+                    provisioningSucceeded = false;
                     setProvisionBusy(false);
+                    updateSetupReadiness();
                     String detail = error == null ? message : message + ": " + safeMessage(error);
                     provisionStatus.setText(getString(R.string.provision_failed, detail));
                     Snackbar.make(manualProvisionButton,
@@ -381,15 +484,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setProvisionBusy(boolean busy) {
-        provisionButton.setEnabled(!busy);
-        manualProvisionButton.setEnabled(!busy);
+        provisionBusy = busy;
         openHotspotButton.setEnabled(!busy);
         refreshHotspotButton.setEnabled(!busy);
         openWifiButton.setEnabled(!busy);
+        setupModeSpinner.setEnabled(!busy);
         setupSsidInput.setEnabled(!busy);
         targetWifiSsidInput.setEnabled(!busy);
         targetWifiPasswordInput.setEnabled(!busy);
         controllerIpInput.setEnabled(!busy);
+        updateSetupReadiness();
     }
 
     private void configureSetupModeSelector() {
@@ -410,7 +514,9 @@ public class MainActivity extends AppCompatActivity {
                 if (position < SETUP_MODE_ROUTER || position > SETUP_MODE_SINGLE_PHONE) return;
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                         .putInt(PREF_SETUP_MODE, position).apply();
+                provisioningSucceeded = false;
                 applySetupMode(position);
+                updateSetupReadiness();
             }
             @Override public void onNothingSelected(AdapterView<?> parent) { }
         });
@@ -638,6 +744,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (hotspotStatus != null) updateHotspotStatus(false);
+        updateSetupReadiness();
     }
 
     @Override

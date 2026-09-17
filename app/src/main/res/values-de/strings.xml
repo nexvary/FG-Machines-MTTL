@@ -112,4 +112,17 @@
     <string name="fg_machines_facebook">FG Machines · Facebook-Seite</string>
     <string name="alaa_mohamed_facebook">Alaa Mohamed · Persönliches Profil</string>
     <string name="open_link_failed">Der Link konnte auf diesem Gerät nicht geöffnet werden.</string>
+    <string name="wizard_assistant_title">Einrichtungsassistent</string>
+    <string name="wizard_local_badge">LOKAL</string>
+    <string name="wizard_stage_network">Controller</string>
+    <string name="wizard_stage_credentials">Zugangsdaten</string>
+    <string name="wizard_stage_write">Schreiben</string>
+    <string name="wizard_waiting">WARTET</string>
+    <string name="wizard_ready">BEREIT</string>
+    <string name="wizard_locked">GESPERRT</string>
+    <string name="wizard_done">FERTIG</string>
+    <string name="wizard_need_controller">Zuerst die Controller-IPv4 speichern oder eingeben.</string>
+    <string name="wizard_need_network">Setup-SSID der Leiste und das 2,4-GHz-Zielnetz eingeben.</string>
+    <string name="wizard_ready_to_write">Bereit. Dieses Setup-Telefon mit TONLY_TAP verbinden und dann Weiter drücken.</string>
+    <string name="wizard_complete">Einrichtung abgeschlossen. Die Leiste soll sich nun mit dem Controller-Netz verbinden.</string>
 </resources>
