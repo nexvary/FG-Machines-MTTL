@@ -44,8 +44,8 @@ jobs:
       - name: Validate Home Assistant integration syntax
         run: python3 -m compileall -q home_assistant/custom_components/fg_machines_rck
 
-      - name: Test, lint and build isolated debug + side-by-side APK
-        run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar
+      - name: Test, lint and build debug + side-by-side + ARM64 fast APK
+        run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar assembleSidecarArm64
 
       - name: Verify side-by-side package identity
         shell: bash
@@ -57,6 +57,23 @@ jobs:
           "$AAPT" dump badging "$APK" | tee /tmp/sidecar-badging.txt
           grep -q "package: name='com.fgmachines.rck.sidecar134'" /tmp/sidecar-badging.txt
           grep -q "application-label:'FG Machines RCK 1.3.4 Test'" /tmp/sidecar-badging.txt
+
+      - name: Verify ARM64 fast-install package
+        shell: bash
+        run: |
+          set -euo pipefail
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -n 1)"
+          APK="$(find app/build/outputs/apk -type f -name '*.apk' | grep -i 'sidecarArm64' | head -n 1)"
+          test -n "$AAPT"
+          test -n "$APK"
+          "$AAPT" dump badging "$APK" | tee /tmp/arm64-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar134arm64'" /tmp/arm64-badging.txt
+          grep -q "application-label:'FG Machines RCK 1.3.4 Fast'" /tmp/arm64-badging.txt
+          if unzip -l "$APK" | grep -E 'lib/(x86|x86_64|armeabi-v7a)/'; then
+            echo "Unexpected non-ARM64 native library found."
+            exit 1
+          fi
+          ls -lh "$APK"
 
       - name: Prepare private release signing
         if: env.FG_RCK_KEYSTORE_B64 != ''
@@ -111,6 +128,13 @@ jobs:
         with:
           name: FG-Machines-RCK-1.3.4-side-by-side
           path: app/build/outputs/apk/sidecar/app-sidecar.apk
+          if-no-files-found: error
+
+      - name: Upload ARM64 fast-install APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FG-Machines-RCK-1.3.4-ARM64-Fast
+          path: app/build/outputs/apk/sidecarArm64/*.apk
           if-no-files-found: error
 
 
