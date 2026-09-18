@@ -47,6 +47,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
 
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final List<HomeAssistantZWaveClient.SwitchEntity> switches = new ArrayList<>();
+    private volatile boolean gatewayReady;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -120,7 +121,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
                     return;
                 }
                 saveSelectedEntity(switches.get(position).entityId);
-                setControlEnabled(true);
+                setControlEnabled(gatewayReady);
                 renderState(switches.get(position).entityId, switches.get(position).state,
                         switches.get(position).friendlyName);
             }
@@ -153,6 +154,8 @@ public final class DawonZWaveActivity extends AppCompatActivity {
         }
 
         saveGatewaySettings(endpoint, token);
+        gatewayReady = false;
+        setControlEnabled(false);
         setBusy(true);
         statusText.setText(R.string.dawon_gateway_connecting);
 
@@ -188,6 +191,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
         entitySpinner.setAdapter(adapter);
 
         if (switches.isEmpty()) {
+            gatewayReady = false;
             statusText.setText(R.string.dawon_gateway_connected_no_switches);
             setControlEnabled(false);
             return;
@@ -206,6 +210,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
         }
         entitySpinner.setSelection(selection, false);
         saveSelectedEntity(switches.get(selection).entityId);
+        gatewayReady = true;
         setControlEnabled(true);
         renderState(switches.get(selection).entityId,
                 switches.get(selection).state,
@@ -220,7 +225,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
 
     private void refreshSelectedState() {
         HomeAssistantZWaveClient.SwitchEntity selected = selectedSwitch();
-        if (selected == null) {
+        if (!gatewayReady || selected == null) {
             Snackbar.make(statusText, R.string.dawon_select_switch_first, Snackbar.LENGTH_LONG).show();
             return;
         }
@@ -243,7 +248,7 @@ public final class DawonZWaveActivity extends AppCompatActivity {
 
     private void setSelectedSwitch(boolean on) {
         HomeAssistantZWaveClient.SwitchEntity selected = selectedSwitch();
-        if (selected == null) {
+        if (!gatewayReady || selected == null) {
             Snackbar.make(statusText, R.string.dawon_select_switch_first, Snackbar.LENGTH_LONG).show();
             return;
         }
@@ -310,9 +315,10 @@ public final class DawonZWaveActivity extends AppCompatActivity {
 
     private void setBusy(boolean busy) {
         connectButton.setEnabled(!busy);
-        refreshButton.setEnabled(!busy && selectedSwitch() != null);
-        onButton.setEnabled(!busy && selectedSwitch() != null);
-        offButton.setEnabled(!busy && selectedSwitch() != null);
+        boolean controlsReady = !busy && gatewayReady && selectedSwitch() != null;
+        refreshButton.setEnabled(controlsReady);
+        onButton.setEnabled(controlsReady);
+        offButton.setEnabled(controlsReady);
         entitySpinner.setEnabled(!busy);
     }
 
@@ -323,7 +329,9 @@ public final class DawonZWaveActivity extends AppCompatActivity {
     }
 
     private void showError(IOException error) {
+        gatewayReady = false;
         setBusy(false);
+        setControlEnabled(false);
         statusText.setText(getString(R.string.dawon_gateway_error, safeMessage(error)));
     }
 
