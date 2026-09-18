@@ -426,13 +426,14 @@ public class MainActivity extends AppCompatActivity {
                     provisioningSucceeded = true;
                     setProvisionBusy(false);
                     updateSetupReadiness();
-                    provisionStatus.setText(sequential
-                            ? successMessageForMode(setupMode)
-                            : R.string.provision_complete_detail);
+                    boolean legacyBinary = provisioner.getLastDialect()
+                            == MttlProvisioner.ProvisioningDialect.LEGACY_BINARY_WIFI;
+                    int successText = legacyBinary
+                            ? R.string.legacy_binary_wifi_success
+                            : (sequential ? successMessageForMode(setupMode) : R.string.provision_complete_detail);
+                    provisionStatus.setText(successText);
                     deviceState.setText(R.string.provision_complete);
-                    discoveryDetail.setText(sequential
-                            ? successMessageForMode(setupMode)
-                            : R.string.provision_complete_detail);
+                    discoveryDetail.setText(successText);
                     if (sequential) {
                         if (setupMode == SETUP_MODE_ROUTER) {
                             HotspotSupport.openWifiSettings(MainActivity.this);
