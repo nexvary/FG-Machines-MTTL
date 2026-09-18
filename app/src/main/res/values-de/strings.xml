@@ -385,4 +385,8 @@
     <string name="camera_no_result">Kein lesbarer Text oder Barcode gefunden. Bild näher und bei guter Beleuchtung erneut aufnehmen.</string>
     <string name="camera_no_autofill">Das Bild wurde gelesen, aber kein Wert war für automatisches Ausfüllen sicher genug. OCR-Ergebnis manuell prüfen.</string>
 
+
+    <string name="camera_local_identity">Lokal bestätigte Identität erkannt</string>
+    <string name="diagnostics_bound_with_identifiers">Gerät verknüpft. %1$d Barcode-Kennung(en) für die spätere lokale Erkennung gespeichert.</string>
+
 </resources>
