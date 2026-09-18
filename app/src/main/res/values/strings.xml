@@ -269,7 +269,7 @@
     <string name="temperature_alert_title">Power strip temperature alert</string>
     <string name="temperature_alert_body">Temperature reached %1$d°C (threshold %2$d°C).</string>
     <string name="energy_alert_title">Daily energy alert</string>
-    <string name="energy_alert_body">Today's recorded energy reached %1$.2f kWh (threshold %2$.2f kWh).</string>
+    <string name="energy_alert_body">Today’s recorded energy reached %1$.2f kWh (threshold %2$.2f kWh).</string>
     <string-array name="share_role_labels">
         <item>View</item><item>Control</item><item>Admin</item>
     </string-array>
