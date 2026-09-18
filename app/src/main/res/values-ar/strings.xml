@@ -485,4 +485,5 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="dawon_refresh_state">تحديث الحالة</string>
     <string name="dawon_gateway_idle">لم يتم الاتصال ببوابة Z-Wave بعد.</string>
 
+    <string name="dawon_back">رجوع</string>
 </resources>
