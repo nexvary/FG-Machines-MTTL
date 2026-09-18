@@ -368,4 +368,21 @@
     <string name="guided_compatibility_label">Kompatibilitätswert</string>
     <string name="guided_open_source">Profilquelle öffnen</string>
 
+
+    <string name="camera_assist_title">Kamera-Assistent</string>
+    <string name="camera_assist_subtitle">Fehleranzeige oder Gerätelabel lokal mit gebündelter OCR- und Barcode-Erkennung lesen.</string>
+    <string name="camera_scan_display">Fehleranzeige scannen</string>
+    <string name="camera_scan_label">Modelllabel scannen</string>
+    <string name="camera_result_waiting">Noch kein Bild gescannt.</string>
+    <string name="camera_processing">Text und Barcodes werden gelesen…</string>
+    <string name="camera_capture_cancelled">Kameraaufnahme wurde abgebrochen.</string>
+    <string name="camera_detected_brand">Erkannte Marke</string>
+    <string name="camera_detected_model">Erkanntes Modell</string>
+    <string name="camera_detected_code">Erkannter Fehlercode</string>
+    <string name="camera_detected_barcodes">Erkannter Barcode</string>
+    <string name="camera_barcode_note">Ein roher Barcode oder eine Seriennummer gilt nur dann als Modell, wenn die lokale Datenbank eine verifizierte Zuordnung enthält.</string>
+    <string name="camera_ocr_text">OCR-Text</string>
+    <string name="camera_no_result">Kein lesbarer Text oder Barcode gefunden. Bild näher und bei guter Beleuchtung erneut aufnehmen.</string>
+    <string name="camera_no_autofill">Das Bild wurde gelesen, aber kein Wert war für automatisches Ausfüllen sicher genug. OCR-Ergebnis manuell prüfen.</string>
+
 </resources>
