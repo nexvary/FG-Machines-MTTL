@@ -2,13 +2,16 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.2
+## Current Android baseline — 1.3.3
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
 - Correct RTL layout direction for Arabic.
 - Compatibility catalog based on model, certificate revision, setup SSID, boot signature and firmware family.
-- Product-level hardware catalog now identifies the Dawon DNS `MTD-01 / PM-M130-ZW` family separately from MTTL. It is routed to a Z-Wave gateway/controller path rather than the MTTL TCP scanner; direct phone-only control is not claimed until physical Z-Wave inclusion is verified.
+- Product-level hardware catalog identifies the Dawon DNS `MTD-01 / PM-M130-ZW` family separately from MTTL and verifies its Z-Wave fingerprint: manufacturer `0x018C`, product type `0x0042`, product ID `0x0007`.
+- Dawon MTD-01 now has a dedicated control screen that talks to a local Home Assistant / Z-Wave JS gateway using the Home Assistant REST API. It discovers `switch.*` entities, ranks probable Dawon/MTD-01 entities, sends real ON/OFF service calls, and refreshes the returned state.
+- The MTD-01 control path preserves local-first operation: private-LAN HTTP is permitted while public endpoints must use HTTPS. A KR-compatible Z-Wave controller is still physically required because the Android phone itself does not contain the device's Z-Wave radio.
+- The certified MTD-01 profile uses the Korean Z-Wave plan (920.90 / 921.70 / 923.10 MHz), Switch Binary v1, Meter v3 and Security S0. The app shows inclusion guidance and does not send MTTL TCP commands to this model.
 - Setup-service diagnostics for TCP `30300`.
 - Local TCP controller on port `10086` for compatible MTTL firmware.
 - Validated parser for `bootinfo`, four-channel `getinfo` telemetry and outlet state events.
