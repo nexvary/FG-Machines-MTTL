@@ -150,7 +150,7 @@
     <string name="protection_event">Código de protección/evento reportado: %1$s</string>
     <string name="high_load_warning">Carga alta: por encima del nivel recomendado de 3.000 W</string>
     <string name="outlet_telemetry_waiting">Potencia — W · Energía — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">La regleta no está conectada al controlador local.</string>
     <string name="energy_cost_settings">Coste de energía</string>
     <string name="tariff_hint">Tarifa eléctrica (EGP por kWh)</string>
@@ -347,5 +347,42 @@
     <string name="diagnostics_scope_label">Alcance de la fuente</string>
     <string name="diagnostics_symptom_label">Síntoma</string>
     <string name="diagnostics_rck_unavailable">No había una instantánea de telemetría RCK en vivo disponible.</string>
+
+
+    <string name="guided_title">Diagnóstico guiado por síntomas</string>
+    <string name="guided_subtitle">Responde preguntas breves. Las causas se ordenan por reglas respaldadas por fuentes; la puntuación no es una probabilidad de fallo.</string>
+    <string name="guided_start">Iniciar diagnóstico guiado</string>
+    <string name="guided_yes">Sí</string>
+    <string name="guided_no">No</string>
+    <string name="guided_not_started">Diagnóstico guiado no iniciado</string>
+    <string name="guided_question_waiting">Elige un perfil de síntomas y pulsa Iniciar.</string>
+    <string name="guided_result_waiting">Las causas ordenadas aparecerán aquí tras las preguntas.</string>
+    <string name="guided_select_profile">Elige primero un perfil de síntomas.</string>
+    <string name="guided_progress_format">Pregunta %1$d de %2$d</string>
+    <string name="guided_progress_done">Completado · %1$d preguntas</string>
+    <string name="guided_question_complete">Cuestionario completado.</string>
+    <string name="guided_complete">Causas más compatibles según estas reglas:</string>
+    <string name="guided_score_note">Los puntos de compatibilidad son pesos de reglas, no probabilidades ni sustituyen un diagnóstico técnico específico del modelo.</string>
+    <string name="guided_safe_action_label">Comprobación segura</string>
+    <string name="guided_service_boundary_label">Límite de servicio</string>
+    <string name="guided_compatibility_label">Puntuación de compatibilidad</string>
+    <string name="guided_open_source">Abrir fuente del perfil</string>
+
+
+    <string name="camera_assist_title">Asistente de cámara</string>
+    <string name="camera_assist_subtitle">Lee localmente la pantalla de error o la etiqueta del aparato con OCR y código de barras integrados.</string>
+    <string name="camera_scan_display">Escanear pantalla de error</string>
+    <string name="camera_scan_label">Escanear etiqueta del modelo</string>
+    <string name="camera_result_waiting">Todavía no se ha escaneado ninguna imagen.</string>
+    <string name="camera_processing">Leyendo texto y códigos de barras…</string>
+    <string name="camera_capture_cancelled">Se canceló la captura de cámara.</string>
+    <string name="camera_detected_brand">Marca detectada</string>
+    <string name="camera_detected_model">Modelo detectado</string>
+    <string name="camera_detected_code">Código de error detectado</string>
+    <string name="camera_detected_barcodes">Código de barras detectado</string>
+    <string name="camera_barcode_note">Un código o número de serie no se considera modelo salvo que exista una asociación verificada en la base local.</string>
+    <string name="camera_ocr_text">Texto OCR</string>
+    <string name="camera_no_result">No se encontró texto ni código legible. Repite la foto más cerca y con buena luz.</string>
+    <string name="camera_no_autofill">La imagen se leyó, pero no hubo un valor seguro para autocompletar. Revisa el OCR manualmente.</string>
 
 </resources>

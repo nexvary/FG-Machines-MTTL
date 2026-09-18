@@ -150,7 +150,7 @@
     <string name="protection_event">Koruma/olay kodu bildirildi: %1$s</string>
     <string name="high_load_warning">Yüksek yük: önerilen 3.000 W çalışma seviyesinin üzerinde</string>
     <string name="outlet_telemetry_waiting">Güç — W · Enerji — kWh · Sıcaklık — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">Priz yerel denetleyiciye bağlı değil.</string>
     <string name="energy_cost_settings">Enerji maliyeti</string>
     <string name="tariff_hint">Elektrik tarifesi (kWh başına EGP)</string>
@@ -347,5 +347,42 @@
     <string name="diagnostics_scope_label">Kaynak kapsamı</string>
     <string name="diagnostics_symptom_label">Belirti</string>
     <string name="diagnostics_rck_unavailable">Canlı RCK telemetri anlık görüntüsü mevcut değildi.</string>
+
+
+    <string name="guided_title">Yönlendirmeli Belirti Teşhisi</string>
+    <string name="guided_subtitle">Kısa soruları yanıtlayın. Kaynak destekli nedenler kural uyumuna göre sıralanır; puan arıza olasılığı değildir.</string>
+    <string name="guided_start">Yönlendirmeli teşhisi başlat</string>
+    <string name="guided_yes">Evet</string>
+    <string name="guided_no">Hayır</string>
+    <string name="guided_not_started">Yönlendirmeli teşhis başlatılmadı</string>
+    <string name="guided_question_waiting">Bir belirti profili seçin ve Başlat düğmesine dokunun.</string>
+    <string name="guided_result_waiting">Sorular tamamlanınca sıralı nedenler burada görünecek.</string>
+    <string name="guided_select_profile">Önce bir belirti profili seçin.</string>
+    <string name="guided_progress_format">Soru %1$d / %2$d</string>
+    <string name="guided_progress_done">Tamamlandı · %1$d soru</string>
+    <string name="guided_question_complete">Soru formu tamamlandı.</string>
+    <string name="guided_complete">Bu kural setine göre en uyumlu nedenler:</string>
+    <string name="guided_score_note">Uyum puanları kural ağırlıklarıdır; olasılık değildir ve modele özel servis teşhisinin yerini tutmaz.</string>
+    <string name="guided_safe_action_label">Güvenli kontrol</string>
+    <string name="guided_service_boundary_label">Servis sınırı</string>
+    <string name="guided_compatibility_label">Uyum puanı</string>
+    <string name="guided_open_source">Profil kaynağını aç</string>
+
+
+    <string name="camera_assist_title">Kamera Yardımı</string>
+    <string name="camera_assist_subtitle">Hata ekranını veya cihaz etiketini uygulamayla birlikte gelen OCR ve barkod modelleriyle yerel olarak okuyun.</string>
+    <string name="camera_scan_display">Hata ekranını tara</string>
+    <string name="camera_scan_label">Model etiketini tara</string>
+    <string name="camera_result_waiting">Henüz görüntü taranmadı.</string>
+    <string name="camera_processing">Metin ve barkodlar okunuyor…</string>
+    <string name="camera_capture_cancelled">Kamera çekimi iptal edildi.</string>
+    <string name="camera_detected_brand">Algılanan marka</string>
+    <string name="camera_detected_model">Algılanan model</string>
+    <string name="camera_detected_code">Algılanan hata kodu</string>
+    <string name="camera_detected_barcodes">Algılanan barkod</string>
+    <string name="camera_barcode_note">Ham barkod veya seri numarası, yerel veritabanında doğrulanmış eşleme olmadıkça model olarak kabul edilmez.</string>
+    <string name="camera_ocr_text">OCR metni</string>
+    <string name="camera_no_result">Okunabilir metin veya barkod bulunamadı. Fotoğrafı daha yakından ve iyi ışıkta tekrar çekin.</string>
+    <string name="camera_no_autofill">Görüntü okundu ancak güvenli otomatik doldurma değeri bulunamadı. OCR sonucunu elle kontrol edin.</string>
 
 </resources>

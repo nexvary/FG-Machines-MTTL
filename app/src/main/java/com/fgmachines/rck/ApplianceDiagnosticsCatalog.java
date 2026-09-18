@@ -195,6 +195,229 @@ public final class ApplianceDiagnosticsCatalog {
                     "Roborock S7 manual: Error 5",
                     "https://support.roborock.com/hc/en-us/article_attachments/900008254623",
                     "Roborock S7 family only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"1"},
+                    "Bumper / collision buffer needs attention.",
+                    new String[]{"Collision buffer stuck", "Foreign object around the bumper"},
+                    new String[]{
+                            "Power or pause the robot before inspection.",
+                            "Gently tap the bumper and remove visible foreign objects.",
+                            "Move the vacuum-mop to a clear area and reactivate it."
+                    },
+                    new String[]{"Bumper assembly (service part if mechanically faulty)"},
+                    new String[]{"error 1", "bumper", "collision buffer", "stuck bumper",
+                            "المصد", "الصدام", "عالق"},
+                    Severity.INFO,
+                    "Use after-sales service if the bumper moves freely but the error repeatedly returns.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop. Do not apply this code to other Xiaomi vacuum families without their own model documentation."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"4"},
+                    "Main brush is obstructed.",
+                    new String[]{"Hair or foreign object caught in the main brush", "Debris around brush bearings"},
+                    new String[]{
+                            "Power the robot off.",
+                            "Remove the user-serviceable main brush.",
+                            "Clean the bristles and bearings and reinstall the brush."
+                    },
+                    new String[]{"Main brush", "Brush bearing/end cap"},
+                    new String[]{"error 4", "main brush", "brush stuck", "brush jammed",
+                            "الفرشاة الرئيسية", "الفرشاة عالقة"},
+                    Severity.INFO,
+                    "Use service if the brush is clean and free-moving but the error continues.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"5"},
+                    "Side brush is obstructed.",
+                    new String[]{"Hair or debris caught in the side brush"},
+                    new String[]{
+                            "Power the robot off.",
+                            "Remove and clean the user-serviceable side brush."
+                    },
+                    new String[]{"Side brush"},
+                    new String[]{"error 5", "side brush", "brush stuck", "الفرشاة الجانبية"},
+                    Severity.INFO,
+                    "Use service if the side brush is clean and turns freely but the error continues.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"8"},
+                    "Dust compartment or filter is not detected correctly.",
+                    new String[]{"Dust compartment not seated", "Filter not installed correctly", "Filter fault"},
+                    new String[]{
+                            "Power or pause the robot.",
+                            "Remove and reinstall the dust compartment and filter.",
+                            "Confirm both parts are correctly seated."
+                    },
+                    new String[]{"Dust compartment", "Filter"},
+                    new String[]{"error 8", "dust compartment", "filter", "bin error",
+                            "حاوية الغبار", "الفلتر"},
+                    Severity.INFO,
+                    "Use after-sales service if correct installation and a known-good filter do not clear the error.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"10"},
+                    "Charging error.",
+                    new String[]{"Dirty charging contacts", "Poor dock contact or seating", "Charging hardware fault"},
+                    new String[]{
+                            "Power or pause the robot.",
+                            "Wipe charging contacts on the dock and robot with a dry cloth.",
+                            "Place the vacuum-mop correctly on the charging dock and retry."
+                    },
+                    new String[]{"Charging contacts", "Charging dock"},
+                    new String[]{"error 10", "charging error", "not charging", "لا تشحن", "لا يشحن"},
+                    Severity.WARNING,
+                    "Use after-sales service if cleaning the contacts and reseating the robot does not clear the error.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"11"},
+                    "Battery temperature is outside the normal operating range.",
+                    new String[]{"Battery too hot", "Battery too cold"},
+                    new String[]{
+                            "Stop use and allow the robot to return to normal room temperature.",
+                            "Retry only after the battery temperature has normalized."
+                    },
+                    new String[]{"Battery pack (service part)"},
+                    new String[]{"error 11", "battery temperature", "too hot", "too cold",
+                            "حرارة البطارية", "البطارية ساخنة"},
+                    Severity.WARNING,
+                    "Do not open the battery pack. Use after-sales service if the warning persists at normal room temperature.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"13"},
+                    "Visual navigation sensor requires cleaning.",
+                    new String[]{"Visual navigation sensor dirty or obstructed"},
+                    new String[]{
+                            "Power or pause the robot.",
+                            "Wipe the visual navigation sensor carefully, then reactivate the vacuum-mop."
+                    },
+                    new String[]{"Visual navigation sensor (service part if faulty)"},
+                    new String[]{"error 13", "navigation sensor", "visual sensor", "navigation error",
+                            "حساس الملاحة", "مستشعر الملاحة"},
+                    Severity.INFO,
+                    "Use after-sales service if the sensor is clean but the error returns.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "Mi Robot Vacuum-Mop",
+                    new String[]{"14"},
+                    "Internal error; Xiaomi advises a system reset.",
+                    new String[]{"Internal controller or sensor fault"},
+                    new String[]{
+                            "Use the documented system-reset procedure for the exact model.",
+                            "Retry normal operation after the reset."
+                    },
+                    new String[]{"Internal electronics (service only)"},
+                    new String[]{"error 14", "internal error", "system reset", "خطأ داخلي"},
+                    Severity.SERVICE,
+                    "If the error remains after the documented reset, contact Xiaomi after-sales service.",
+                    "Xiaomi Global: Mi Robot Vacuum-Mop error code description",
+                    "https://www.mi.com/global/support/faq/details/KA-07588/",
+                    "Official Xiaomi guidance for Mi Robot Vacuum-Mop only."
+            ),
+            entry(
+                    "LG", "Air Conditioner", "LG air conditioners covered by CH10/CH67/E6/EF support guidance", "*",
+                    new String[]{"CH10", "CH67", "E6", "EF"},
+                    "LG identifies these codes with an indoor or outdoor fan motor problem.",
+                    new String[]{"Visible debris obstructing an exposed fan", "Fan motor or related electrical fault"},
+                    new String[]{
+                            "Switch the air conditioner off before any visual inspection.",
+                            "Remove only safe, visible external debris such as leaves if accessible without disassembly.",
+                            "Restore power and check whether the code returns."
+                    },
+                    new String[]{"Fan motor", "Fan assembly", "Control electronics"},
+                    new String[]{"fan error", "fan motor", "fan not running", "مروحة", "المروحة لا تعمل"},
+                    Severity.SERVICE,
+                    "If the code persists, stop using the unit and contact LG support. Do not disassemble or replace internal parts yourself.",
+                    "LG Support: CH10 / CH67 / E6 / EF",
+                    "https://www.lg.com/us/support/help-library/how-to-troubleshoot-error-codes-ch10-ch67-e6-and-ef-on-your-lg-air-conditioner-CT10000014-20155396792105",
+                    "Official LG air-conditioner guidance. Error applicability varies by product type/model; confirm the exact model documentation."
+            ),
+            entry(
+                    "LG", "Air Conditioner", "LG air conditioners covered by CH05/CH53/E0 guidance", "*",
+                    new String[]{"CH05", "CH53", "E0"},
+                    "Communication problem between the indoor and outdoor units.",
+                    new String[]{"Temporary electrical/power instability", "Indoor/outdoor communication wiring or electronics fault"},
+                    new String[]{
+                            "Switch the air conditioner off using its normal control.",
+                            "Perform only the manufacturer-documented power reset.",
+                            "If the code appeared just after installation, contact the installer."
+                    },
+                    new String[]{"Communication wiring", "Indoor/outdoor control electronics"},
+                    new String[]{"communication error", "indoor outdoor communication", "اتصال الوحدة الداخلية", "اتصال الوحدة الخارجية"},
+                    Severity.SERVICE,
+                    "If the code returns after a documented reset, service or installer inspection is required.",
+                    "LG Support: CH05 / CH53 / E0",
+                    "https://www.lg.com/levant_en/support/product-help/CT20158041-20155402843500",
+                    "Official LG air-conditioner guidance; confirm exact model/type because code applicability can differ."
+            ),
+            entry(
+                    "LG", "Air Conditioner", "LG air conditioners covered by CH32/CH33/CH36/CH38/F4 guidance", "*",
+                    new String[]{"CH32", "CH33", "CH36", "CH38", "F4"},
+                    "LG associates these codes with a low-refrigerant condition.",
+                    new String[]{"Low refrigerant charge", "Possible sealed-system leak or installation issue"},
+                    new String[]{
+                            "Stop repeated resets if the code continues.",
+                            "Do not open refrigerant lines or valves.",
+                            "Contact the installer or qualified HVAC service."
+                    },
+                    new String[]{"Refrigerant circuit", "Sealed-system components"},
+                    new String[]{"low refrigerant", "not cooling", "weak cooling", "نقص فريون", "لا يبرد", "تبريد ضعيف"},
+                    Severity.SERVICE,
+                    "Qualified HVAC service is required; refrigerant circuits are sealed/pressurized systems.",
+                    "LG Support: CH32 / CH33 / CH36 / CH38 / F4",
+                    "https://www.lg.com/levant_en/support/product-help/CT20158041-20155402843500",
+                    "Official LG air-conditioner guidance; refrigerant diagnosis and service must be performed by qualified personnel."
+            ),
+            entry(
+                    "LG", "Air Conditioner", "General LG cooling troubleshooting", "*",
+                    new String[]{},
+                    "Cooling is weak or no cold air is produced.",
+                    new String[]{
+                            "Incorrect operating mode or target temperature",
+                            "Dirty user-serviceable filter restricting airflow",
+                            "Outdoor-unit area poorly ventilated or obstructed",
+                            "Internal or sealed-system fault if safe checks do not resolve the symptom"
+                    },
+                    new String[]{
+                            "Select normal Cooling mode and verify the target temperature.",
+                            "Clean only the user-serviceable filter according to the exact model manual.",
+                            "Remove safe, visible obstacles around the outdoor unit and ensure its ventilation area is open."
+                    },
+                    new String[]{"Air filter", "Internal HVAC parts require service diagnosis"},
+                    new String[]{"not cooling", "no cold air", "weak cooling", "runs but not cold",
+                            "لا يبرد", "التكييف لا يبرد", "تبريد ضعيف"},
+                    Severity.WARNING,
+                    "If cooling remains weak after the documented user checks, request qualified service; do not open refrigerant or mains-voltage sections.",
+                    "LG Support: Cooling operation fails / No cold air",
+                    "https://www.lg.com/us/support/help-library/lg-air-conditioner-for-cooling-cooling-operation-fails-no-cold-air--20154629491668",
+                    "General LG troubleshooting across models; exact filter access and service diagnosis depend on the specific model."
             )
     ));
 

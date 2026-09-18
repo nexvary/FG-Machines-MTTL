@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +23,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -45,6 +55,16 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private TextView resultText;
     private TextView historyText;
     private MaterialButton sourceButton;
+    private Spinner guidedProfileSpinner;
+    private TextView guidedProgressText;
+    private TextView guidedQuestionText;
+    private TextView guidedResultText;
+    private MaterialButton guidedYesButton;
+    private MaterialButton guidedNoButton;
+    private MaterialButton guidedSourceButton;
+    private MaterialButton captureDisplayButton;
+    private MaterialButton captureLabelButton;
+    private TextView captureResultText;
 
     private FleetStore fleetStore;
     private ApplianceDiagnosticsStore diagnosticsStore;
@@ -52,8 +72,27 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private ControllerHub controllerHub;
 
     private final List<FleetStore.DeviceRecord> devices = new ArrayList<>();
+    private final List<GuidedDiagnosticsEngine.Profile> guidedProfiles = new ArrayList<>();
+    private final List<Boolean> guidedAnswers = new ArrayList<>();
     private String activeMac = "";
     private ApplianceDiagnosticsCatalog.Match lastMatch;
+    private GuidedDiagnosticsEngine.Profile activeGuidedProfile;
+    private int guidedQuestionIndex;
+    private static final int CAPTURE_MODE_DISPLAY = 1;
+    private static final int CAPTURE_MODE_LABEL = 2;
+    private int captureMode;
+    private int capturePending;
+    private String capturedText = "";
+    private final List<String> capturedBarcodes = new ArrayList<>();
+
+    private final ActivityResultLauncher<Void> diagnosticCameraLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
+                if (bitmap == null) {
+                    if (captureResultText != null) captureResultText.setText(R.string.camera_capture_cancelled);
+                    return;
+                }
+                processDiagnosticImage(bitmap);
+            });
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -89,12 +128,15 @@ public final class DiagnosticsActivity extends AppCompatActivity {
 
         configureDevices();
         configureOutlets();
+        configureGuidedDiagnostics();
 
         findViewById(R.id.diagnosticsBackButton).setOnClickListener(v -> finish());
         findViewById(R.id.diagnosticsSearchButton).setOnClickListener(v -> runSearch());
         findViewById(R.id.diagnosticsBindButton).setOnClickListener(v -> saveBinding());
         findViewById(R.id.diagnosticsRecordButton).setOnClickListener(v -> recordIncident());
         sourceButton.setOnClickListener(v -> openCurrentSource());
+        captureDisplayButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_DISPLAY));
+        captureLabelButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_LABEL));
     }
 
     private void applySystemBarInsets() {
@@ -118,8 +160,252 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         resultText = findViewById(R.id.diagnosticsResult);
         historyText = findViewById(R.id.diagnosticsHistory);
         sourceButton = findViewById(R.id.diagnosticsSourceButton);
+        guidedProfileSpinner = findViewById(R.id.guidedProfileSpinner);
+        guidedProgressText = findViewById(R.id.guidedProgressText);
+        guidedQuestionText = findViewById(R.id.guidedQuestionText);
+        guidedResultText = findViewById(R.id.guidedResultText);
+        guidedYesButton = findViewById(R.id.guidedYesButton);
+        guidedNoButton = findViewById(R.id.guidedNoButton);
+        guidedSourceButton = findViewById(R.id.guidedSourceButton);
+        captureDisplayButton = findViewById(R.id.captureDisplayButton);
+        captureLabelButton = findViewById(R.id.captureLabelButton);
+        captureResultText = findViewById(R.id.captureResultText);
         sourceButton.setEnabled(false);
         sourceButton.setAlpha(0.55f);
+    }
+
+    private void startDiagnosticCapture(int mode) {
+        captureMode = mode;
+        captureResultText.setText(R.string.camera_processing);
+        diagnosticCameraLauncher.launch(null);
+    }
+
+    private void processDiagnosticImage(Bitmap bitmap) {
+        capturedText = "";
+        capturedBarcodes.clear();
+        capturePending = 2;
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+
+        TextRecognizer recognizer =
+                TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        recognizer.process(image)
+                .addOnSuccessListener(text -> {
+                    capturedText = text == null ? "" : text.getText();
+                    recognizer.close();
+                    onCapturePartFinished();
+                })
+                .addOnFailureListener(error -> {
+                    recognizer.close();
+                    onCapturePartFinished();
+                });
+
+        BarcodeScanner scanner = BarcodeScanning.getClient();
+        scanner.process(image)
+                .addOnSuccessListener(barcodes -> {
+                    if (barcodes != null) {
+                        for (Barcode barcode : barcodes) {
+                            String raw = barcode.getRawValue();
+                            if (raw != null && !raw.trim().isEmpty()) capturedBarcodes.add(raw.trim());
+                        }
+                    }
+                    scanner.close();
+                    onCapturePartFinished();
+                })
+                .addOnFailureListener(error -> {
+                    scanner.close();
+                    onCapturePartFinished();
+                });
+    }
+
+    private void onCapturePartFinished() {
+        capturePending--;
+        if (capturePending > 0) return;
+        applyDiagnosticCapture();
+    }
+
+    private void applyDiagnosticCapture() {
+        DiagnosticVisionParser.Result parsed =
+                DiagnosticVisionParser.parse(capturedText, capturedBarcodes);
+
+        boolean applied = false;
+        if (captureMode == CAPTURE_MODE_DISPLAY && !parsed.errorCode.isEmpty()) {
+            codeInput.setText(parsed.errorCode);
+            applied = true;
+        }
+        if (captureMode == CAPTURE_MODE_LABEL) {
+            if (!parsed.brand.isEmpty()) {
+                brandInput.setText(parsed.brand);
+                applied = true;
+            }
+            if (!parsed.model.isEmpty()) {
+                modelInput.setText(parsed.model);
+                applied = true;
+            }
+        }
+
+        StringBuilder summary = new StringBuilder();
+        if (!parsed.brand.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_brand))
+                    .append(": ").append(parsed.brand).append("\n");
+        }
+        if (!parsed.model.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_model))
+                    .append(": ").append(parsed.model).append("\n");
+        }
+        if (!parsed.errorCode.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_code))
+                    .append(": ").append(parsed.errorCode).append("\n");
+        }
+        if (!parsed.barcodes.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_barcodes))
+                    .append(": ").append(android.text.TextUtils.join(", ", parsed.barcodes))
+                    .append("\n")
+                    .append(getString(R.string.camera_barcode_note))
+                    .append("\n");
+        }
+        if (!parsed.recognizedText.isEmpty()) {
+            String preview = parsed.recognizedText.replace("\n", " · ");
+            if (preview.length() > 220) preview = preview.substring(0, 220) + "…";
+            summary.append(getString(R.string.camera_ocr_text))
+                    .append(": ").append(preview);
+        }
+
+        if (summary.length() == 0) {
+            captureResultText.setText(R.string.camera_no_result);
+        } else {
+            captureResultText.setText(summary.toString().trim());
+        }
+
+        if (!applied) {
+            Snackbar.make(captureResultText, R.string.camera_no_autofill, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void configureGuidedDiagnostics() {
+        guidedProfiles.clear();
+        guidedProfiles.addAll(GuidedDiagnosticsEngine.profiles());
+
+        List<String> labels = new ArrayList<>();
+        for (GuidedDiagnosticsEngine.Profile profile : guidedProfiles) labels.add(profile.title);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        guidedProfileSpinner.setAdapter(adapter);
+
+        findViewById(R.id.guidedStartButton).setOnClickListener(v -> startGuidedDiagnosis());
+        guidedYesButton.setOnClickListener(v -> answerGuidedQuestion(true));
+        guidedNoButton.setOnClickListener(v -> answerGuidedQuestion(false));
+        guidedSourceButton.setOnClickListener(v -> openGuidedSource());
+        resetGuidedUi();
+    }
+
+    private void resetGuidedUi() {
+        activeGuidedProfile = null;
+        guidedQuestionIndex = 0;
+        guidedAnswers.clear();
+        guidedProgressText.setText(R.string.guided_not_started);
+        guidedQuestionText.setText(R.string.guided_question_waiting);
+        guidedResultText.setText(R.string.guided_result_waiting);
+        guidedYesButton.setEnabled(false);
+        guidedNoButton.setEnabled(false);
+        guidedSourceButton.setEnabled(false);
+        guidedSourceButton.setAlpha(0.55f);
+    }
+
+    private void startGuidedDiagnosis() {
+        int position = guidedProfileSpinner.getSelectedItemPosition();
+        if (position < 0 || position >= guidedProfiles.size()) {
+            Snackbar.make(guidedQuestionText, R.string.guided_select_profile, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        activeGuidedProfile = guidedProfiles.get(position);
+        guidedQuestionIndex = 0;
+        guidedAnswers.clear();
+
+        brandInput.setText(activeGuidedProfile.brand);
+        categoryInput.setText(activeGuidedProfile.category);
+        if (!activeGuidedProfile.modelHint.isEmpty()) modelInput.setText(activeGuidedProfile.modelHint);
+        symptomInput.setText(activeGuidedProfile.title);
+
+        guidedResultText.setText(R.string.guided_result_waiting);
+        guidedYesButton.setEnabled(true);
+        guidedNoButton.setEnabled(true);
+        guidedSourceButton.setEnabled(true);
+        guidedSourceButton.setAlpha(1f);
+        showGuidedQuestion();
+    }
+
+    private void showGuidedQuestion() {
+        if (activeGuidedProfile == null) return;
+        if (guidedQuestionIndex >= activeGuidedProfile.questions.size()) {
+            finishGuidedDiagnosis();
+            return;
+        }
+        guidedProgressText.setText(getString(
+                R.string.guided_progress_format,
+                guidedQuestionIndex + 1,
+                activeGuidedProfile.questions.size()));
+        guidedQuestionText.setText(activeGuidedProfile.questions.get(guidedQuestionIndex).prompt);
+    }
+
+    private void answerGuidedQuestion(boolean yes) {
+        if (activeGuidedProfile == null
+                || guidedQuestionIndex < 0
+                || guidedQuestionIndex >= activeGuidedProfile.questions.size()) {
+            return;
+        }
+        guidedAnswers.add(yes);
+        guidedQuestionIndex++;
+        showGuidedQuestion();
+    }
+
+    private void finishGuidedDiagnosis() {
+        if (activeGuidedProfile == null) return;
+
+        List<GuidedDiagnosticsEngine.RankedCause> causes =
+                GuidedDiagnosticsEngine.evaluate(activeGuidedProfile.id, guidedAnswers);
+        StringBuilder result = new StringBuilder();
+        result.append(getString(R.string.guided_complete)).append("\n");
+        result.append(getString(R.string.guided_score_note));
+
+        int count = Math.min(3, causes.size());
+        for (int i = 0; i < count; i++) {
+            GuidedDiagnosticsEngine.RankedCause cause = causes.get(i);
+            result.append("\n\n")
+                    .append(i + 1).append(". ")
+                    .append(cause.hypothesis.title)
+                    .append("\n")
+                    .append(getString(R.string.guided_safe_action_label))
+                    .append(": ").append(cause.hypothesis.safeAction)
+                    .append("\n")
+                    .append(getString(R.string.guided_service_boundary_label))
+                    .append(": ").append(cause.hypothesis.serviceBoundary)
+                    .append("\n")
+                    .append(getString(R.string.guided_compatibility_label))
+                    .append(": ").append(cause.compatibilityScore);
+        }
+
+        guidedProgressText.setText(getString(
+                R.string.guided_progress_done,
+                activeGuidedProfile.questions.size()));
+        guidedQuestionText.setText(R.string.guided_question_complete);
+        guidedResultText.setText(result.toString());
+        guidedYesButton.setEnabled(false);
+        guidedNoButton.setEnabled(false);
+    }
+
+    private void openGuidedSource() {
+        if (activeGuidedProfile == null || activeGuidedProfile.sourceUrl.isEmpty()) return;
+        openExternal(activeGuidedProfile.sourceUrl, guidedSourceButton);
+    }
+
+    private void openExternal(String url, View anchor) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (RuntimeException error) {
+            Snackbar.make(anchor, R.string.open_link_failed, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void configureDevices() {
@@ -354,11 +640,7 @@ public final class DiagnosticsActivity extends AppCompatActivity {
 
     private void openCurrentSource() {
         if (lastMatch == null || lastMatch.entry.sourceUrl.isEmpty()) return;
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(lastMatch.entry.sourceUrl)));
-        } catch (RuntimeException error) {
-            Snackbar.make(sourceButton, R.string.open_link_failed, Snackbar.LENGTH_LONG).show();
-        }
+        openExternal(lastMatch.entry.sourceUrl, sourceButton);
     }
 
     private static String textOf(TextInputEditText input) {

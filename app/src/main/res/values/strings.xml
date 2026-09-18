@@ -158,7 +158,7 @@
     <string name="protection_event">Protection/event code reported: %1$s</string>
     <string name="high_load_warning">High load: above the recommended 3,000 W operating level</string>
     <string name="outlet_telemetry_waiting">Power — W · Energy — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">The strip is not connected to the local controller.</string>
     <string name="energy_cost_settings">Energy cost</string>
     <string name="tariff_hint">Electricity tariff (EGP per kWh)</string>
@@ -355,5 +355,42 @@
     <string name="diagnostics_scope_label">Source scope</string>
     <string name="diagnostics_symptom_label">Symptom</string>
     <string name="diagnostics_rck_unavailable">No live RCK telemetry snapshot was available.</string>
+
+
+    <string name="guided_title">Guided Symptom Diagnosis</string>
+    <string name="guided_subtitle">Answer a few short questions. The app ranks source-backed causes without pretending the score is a failure probability.</string>
+    <string name="guided_start">Start guided diagnosis</string>
+    <string name="guided_yes">Yes</string>
+    <string name="guided_no">No</string>
+    <string name="guided_not_started">Guided diagnosis not started</string>
+    <string name="guided_question_waiting">Choose a symptom profile and tap Start.</string>
+    <string name="guided_result_waiting">The ranked causes will appear here after the questions.</string>
+    <string name="guided_select_profile">Choose a symptom profile first.</string>
+    <string name="guided_progress_format">Question %1$d of %2$d</string>
+    <string name="guided_progress_done">Completed · %1$d questions</string>
+    <string name="guided_question_complete">Questionnaire complete.</string>
+    <string name="guided_complete">Most compatible causes from this rule set:</string>
+    <string name="guided_score_note">Compatibility points are rule weights, not probabilities or a substitute for model-specific service diagnosis.</string>
+    <string name="guided_safe_action_label">Safe check</string>
+    <string name="guided_service_boundary_label">Service boundary</string>
+    <string name="guided_compatibility_label">Compatibility score</string>
+    <string name="guided_open_source">Open profile source</string>
+
+
+    <string name="camera_assist_title">Camera Assist</string>
+    <string name="camera_assist_subtitle">Read an error display or appliance label locally with bundled OCR and barcode models.</string>
+    <string name="camera_scan_display">Scan error display</string>
+    <string name="camera_scan_label">Scan model label</string>
+    <string name="camera_result_waiting">No image scanned yet.</string>
+    <string name="camera_processing">Reading text and barcodes…</string>
+    <string name="camera_capture_cancelled">Camera capture was cancelled.</string>
+    <string name="camera_detected_brand">Detected brand</string>
+    <string name="camera_detected_model">Detected model</string>
+    <string name="camera_detected_code">Detected error code</string>
+    <string name="camera_detected_barcodes">Detected barcode</string>
+    <string name="camera_barcode_note">A raw barcode/serial is not treated as a model unless the local database has a verified mapping.</string>
+    <string name="camera_ocr_text">OCR text</string>
+    <string name="camera_no_result">No readable text or barcode was found. Retake the photo closer and in good light.</string>
+    <string name="camera_no_autofill">The capture was read, but no value was safe to auto-fill. Review the OCR result manually.</string>
 
 </resources>

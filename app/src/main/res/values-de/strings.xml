@@ -150,7 +150,7 @@
     <string name="protection_event">Schutz-/Ereigniscode gemeldet: %1$s</string>
     <string name="high_load_warning">Hohe Last: über dem empfohlenen Betriebsniveau von 3.000 W</string>
     <string name="outlet_telemetry_waiting">Leistung — W · Energie — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">Die Steckdosenleiste ist nicht mit dem lokalen Controller verbunden.</string>
     <string name="energy_cost_settings">Energiekosten</string>
     <string name="tariff_hint">Stromtarif (EGP pro kWh)</string>
@@ -347,5 +347,42 @@
     <string name="diagnostics_scope_label">Geltungsbereich der Quelle</string>
     <string name="diagnostics_symptom_label">Symptom</string>
     <string name="diagnostics_rck_unavailable">Kein Live-RCK-Telemetrie-Snapshot verfügbar.</string>
+
+
+    <string name="guided_title">Geführte Symptomdiagnose</string>
+    <string name="guided_subtitle">Beantworten Sie kurze Fragen. Quellenbasierte Ursachen werden nach Regelübereinstimmung sortiert; der Wert ist keine Ausfallwahrscheinlichkeit.</string>
+    <string name="guided_start">Geführte Diagnose starten</string>
+    <string name="guided_yes">Ja</string>
+    <string name="guided_no">Nein</string>
+    <string name="guided_not_started">Geführte Diagnose nicht gestartet</string>
+    <string name="guided_question_waiting">Symptomprofil wählen und Start drücken.</string>
+    <string name="guided_result_waiting">Nach den Fragen erscheinen hier die sortierten Ursachen.</string>
+    <string name="guided_select_profile">Zuerst ein Symptomprofil auswählen.</string>
+    <string name="guided_progress_format">Frage %1$d von %2$d</string>
+    <string name="guided_progress_done">Abgeschlossen · %1$d Fragen</string>
+    <string name="guided_question_complete">Fragebogen abgeschlossen.</string>
+    <string name="guided_complete">Am besten passende Ursachen aus diesem Regelsatz:</string>
+    <string name="guided_score_note">Kompatibilitätspunkte sind Regelgewichte, keine Wahrscheinlichkeiten und kein Ersatz für eine modellspezifische Servicediagnose.</string>
+    <string name="guided_safe_action_label">Sichere Prüfung</string>
+    <string name="guided_service_boundary_label">Servicegrenze</string>
+    <string name="guided_compatibility_label">Kompatibilitätswert</string>
+    <string name="guided_open_source">Profilquelle öffnen</string>
+
+
+    <string name="camera_assist_title">Kamera-Assistent</string>
+    <string name="camera_assist_subtitle">Fehleranzeige oder Gerätelabel lokal mit gebündelter OCR- und Barcode-Erkennung lesen.</string>
+    <string name="camera_scan_display">Fehleranzeige scannen</string>
+    <string name="camera_scan_label">Modelllabel scannen</string>
+    <string name="camera_result_waiting">Noch kein Bild gescannt.</string>
+    <string name="camera_processing">Text und Barcodes werden gelesen…</string>
+    <string name="camera_capture_cancelled">Kameraaufnahme wurde abgebrochen.</string>
+    <string name="camera_detected_brand">Erkannte Marke</string>
+    <string name="camera_detected_model">Erkanntes Modell</string>
+    <string name="camera_detected_code">Erkannter Fehlercode</string>
+    <string name="camera_detected_barcodes">Erkannter Barcode</string>
+    <string name="camera_barcode_note">Ein roher Barcode oder eine Seriennummer gilt nur dann als Modell, wenn die lokale Datenbank eine verifizierte Zuordnung enthält.</string>
+    <string name="camera_ocr_text">OCR-Text</string>
+    <string name="camera_no_result">Kein lesbarer Text oder Barcode gefunden. Bild näher und bei guter Beleuchtung erneut aufnehmen.</string>
+    <string name="camera_no_autofill">Das Bild wurde gelesen, aber kein Wert war für automatisches Ausfüllen sicher genug. OCR-Ergebnis manuell prüfen.</string>
 
 </resources>

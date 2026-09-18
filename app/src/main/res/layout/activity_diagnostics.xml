@@ -142,6 +142,78 @@
                     android:orientation="vertical"
                     android:padding="14dp">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/camera_assist_title"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_blue_bright"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/camera_assist_subtitle"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text_secondary"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/captureDisplayButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="@string/camera_scan_display"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:icon="@drawable/ic_diagnostics"
+                            app:iconTint="@color/fg_black" />
+
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/captureLabelButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="@string/camera_scan_label"
+                            android:textColor="@color/fg_green"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_green_dark" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/captureResultText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_status_pill"
+                        android:padding="10dp"
+                        android:text="@string/camera_result_waiting"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text_secondary"
+                        android:textIsSelectable="true"
+                        android:textSize="11sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/fg_divider" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -240,6 +312,138 @@
                             app:cornerRadius="14dp"
                             app:strokeColor="@color/fg_blue" />
                     </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/fg_surface_2"
+                app:cardCornerRadius="18dp"
+                app:strokeColor="@color/fg_green"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guided_title"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_green"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/guided_subtitle"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text_secondary"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/guidedProfileSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/fg_green" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/guidedStartButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/guided_start"
+                        android:textColor="@color/fg_black"
+                        app:backgroundTint="@color/fg_green"
+                        app:cornerRadius="14dp"
+                        app:icon="@drawable/ic_diagnostics"
+                        app:iconTint="@color/fg_black" />
+
+                    <TextView
+                        android:id="@+id/guidedProgressText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/guided_not_started"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_blue_bright"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/guidedQuestionText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_status_pill"
+                        android:minHeight="68dp"
+                        android:padding="12dp"
+                        android:text="@string/guided_question_waiting"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/guidedYesButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="@string/guided_yes"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="14dp" />
+
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="1dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/guidedNoButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="@string/guided_no"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_blue" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/guidedResultText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/guided_result_waiting"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text_secondary"
+                        android:textIsSelectable="true"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/guidedSourceButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/guided_open_source"
+                        android:textColor="@color/fg_green"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_green_dark" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
