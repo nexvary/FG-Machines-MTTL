@@ -303,4 +303,7 @@
     <string name="scene_applied">Sahne uygulandı · gönderilen komut: %1$d · hata: %2$d</string>
     <string name="history_cost_waiting">Geçmiş maliyeti hesaplamak için elektrik tarifesini ayarlayın.</string>
     <string name="history_cost_format">Maliyet · bugün %1$.2f EGP · hafta %2$.2f EGP · ay %3$.2f EGP</string>
+    <string name="scene_selected_status">%1$s · 4 çıkıştan %2$d açık</string>
+    <string name="scene_label_format">%1$s · %2$d/4 AÇIK</string>
+    <string name="scene_ready">Sahne hazır. Uygulamak dört çıkışın durumunu değiştirir.</string>
 </resources>
