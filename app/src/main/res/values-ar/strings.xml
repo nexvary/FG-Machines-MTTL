@@ -425,4 +425,20 @@
     <string name="confirm_room_off_count">إيقاف المخارج الكهربائية الأربعة في %1$d مشترك متصل داخل هذه الغرفة؟</string>
     <string name="confirm_fleet_off_count">إيقاف المخارج الكهربائية الأربعة في جميع المشتركات المتصلة وعددها %1$d؟</string>
 
+
+    <string name="hardware_catalog_title">الأجهزة المدعومة</string>
+    <string name="hardware_catalog_summary">MTTL-W01 · تحكم محلي مباشر عبر TCP
+Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج وحدة تحكم/بوابة Z-Wave؛ التحكم المباشر من الهاتف غير مفعّل بدونها.</string>
+    <string name="hardware_identity_hint">الموديل / رقم الاعتماد، مثال MTD-01</string>
+    <string name="identify_hardware">التعرّف على الجهاز</string>
+    <string name="hardware_identity_waiting">اكتب الموديل أو رقم الاعتماد الموجود على ملصق الجهاز.</string>
+    <string name="hardware_identity_required">أدخل الموديل أو رقم الاعتماد.</string>
+    <string name="hardware_identity_unknown">لم يتم التعرف على الجهاز. لن يتم تخمين البروتوكول.</string>
+    <string name="hardware_identity_gateway_format">%1$s · %2$s
+تم التعرف على عائلة الجهاز · يلزم Controller/Hub يدعم Z-Wave
+منافذ USB: %3$d · التصنيف: %4$d فولت / %5$d أمبير · الحد الأقصى: %6$d واط
+لن يرسل FG Machines RCK أوامر MTTL TCP إلى هذا الجهاز.</string>
+    <string name="hardware_identity_local_format">%1$s · %2$s
+جهاز تحكم محلي معروف. استخدم مسار إعداد واكتشاف MTTL.</string>
+
 </resources>
