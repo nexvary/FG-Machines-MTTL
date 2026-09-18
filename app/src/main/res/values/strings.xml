@@ -356,4 +356,24 @@
     <string name="diagnostics_symptom_label">Symptom</string>
     <string name="diagnostics_rck_unavailable">No live RCK telemetry snapshot was available.</string>
 
+
+    <string name="guided_title">Guided Symptom Diagnosis</string>
+    <string name="guided_subtitle">Answer a few short questions. The app ranks source-backed causes without pretending the score is a failure probability.</string>
+    <string name="guided_start">Start guided diagnosis</string>
+    <string name="guided_yes">Yes</string>
+    <string name="guided_no">No</string>
+    <string name="guided_not_started">Guided diagnosis not started</string>
+    <string name="guided_question_waiting">Choose a symptom profile and tap Start.</string>
+    <string name="guided_result_waiting">The ranked causes will appear here after the questions.</string>
+    <string name="guided_select_profile">Choose a symptom profile first.</string>
+    <string name="guided_progress_format">Question %1$d of %2$d</string>
+    <string name="guided_progress_done">Completed · %1$d questions</string>
+    <string name="guided_question_complete">Questionnaire complete.</string>
+    <string name="guided_complete">Most compatible causes from this rule set:</string>
+    <string name="guided_score_note">Compatibility points are rule weights, not probabilities or a substitute for model-specific service diagnosis.</string>
+    <string name="guided_safe_action_label">Safe check</string>
+    <string name="guided_service_boundary_label">Service boundary</string>
+    <string name="guided_compatibility_label">Compatibility score</string>
+    <string name="guided_open_source">Open profile source</string>
+
 </resources>
