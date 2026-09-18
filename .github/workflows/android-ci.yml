@@ -26,6 +26,9 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Validate Home Assistant integration syntax
+        run: python3 -m compileall -q home_assistant/custom_components/fg_machines_rck
+
       - name: Test, lint and build debug APK
         run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
 

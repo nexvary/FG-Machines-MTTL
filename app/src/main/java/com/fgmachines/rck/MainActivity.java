@@ -1,6 +1,8 @@
 package com.fgmachines.rck;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +35,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
     private static final int NOTIFICATION_PERMISSION_REQUEST = 89;
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
+    private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
+    private static final String PREF_REMOTE_TOKEN = "remote_token";
     private static final String FG_MACHINES_FACEBOOK_URL = "https://www.facebook.com/share/1Hx66RKhd2/";
     private static final String ALAA_MOHAMED_FACEBOOK_URL = "https://www.facebook.com/share/1DGDH6q8xV/";
 
@@ -98,15 +106,45 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText roomNameInput;
     private TextInputEditText[] outletNameInputs;
     private MaterialButton saveDeviceNamesButton;
+    private MaterialButton forgetDeviceButton;
     private MaterialSwitch alertsSwitch;
     private MaterialSwitch[] autoOffSwitches;
     private TextInputEditText[] autoOffMinutesInputs;
+    private MaterialSwitch[] powerLimitSwitches;
+    private TextInputEditText[] powerLimitInputs;
     private MaterialSwitch[] scheduleSwitches;
     private TextInputEditText[] scheduleOnInputs;
     private TextInputEditText[] scheduleOffInputs;
     private Spinner[] scheduleDaySpinners;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
+    private Spinner fleetDeviceSpinner;
+    private Spinner fleetRoomSpinner;
+    private TextView fleetStatus;
+    private HistorySparklineView historySparkline;
+    private TextView historySummary;
+    private TextView historyRecent;
+    private MaterialSwitch setupGuardCheck;
+    private TextInputEditText alertPowerInput;
+    private TextInputEditText alertTempInput;
+    private TextInputEditText alertEnergyInput;
+    private MaterialButton saveAlertLimitsButton;
+    private TextView apiEndpointText;
+    private TextInputEditText shareNameInput;
+    private Spinner shareRoleSpinner;
+    private MaterialButton createShareButton;
+    private MaterialButton createHaTokenButton;
+    private TextView shareTokenText;
+    private Spinner shareEntriesSpinner;
+    private MaterialButton revokeShareButton;
+    private TextInputEditText remoteEndpointInput;
+    private TextInputEditText remoteTokenInput;
+    private MaterialButton remoteRefreshButton;
+    private Spinner remoteDeviceSpinner;
+    private Spinner remoteOutletSpinner;
+    private MaterialButton remoteOnButton;
+    private MaterialButton remoteOffButton;
+    private TextView remoteStatus;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -127,6 +165,13 @@ public class MainActivity extends AppCompatActivity {
     private Runnable pendingWifiAction;
     private boolean provisionBusy;
     private boolean provisioningSucceeded;
+    private FleetStore fleetStore;
+    private HistoryStore historyStore;
+    private AccessControlStore accessStore;
+    private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
+    private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
+    private final List<RemoteApiClient.RemoteDevice> remoteDevices = new ArrayList<>();
+    private String fleetRoomFilter = "";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -161,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
         bindViews();
 
         provisioner = new MttlProvisioner(this);
+        fleetStore = new FleetStore(this);
+        historyStore = new HistoryStore(this);
+        accessStore = new AccessControlStore(this);
         controllerHub = ControllerHub.get(this);
         Intent controllerIntent = new Intent(this, MttlControllerService.class);
         controllerIntent.setAction(MttlControllerService.ACTION_START);
@@ -175,6 +223,11 @@ public class MainActivity extends AppCompatActivity {
         configureDeviceNaming();
         configureAlerts();
         configureAutomationSettings();
+        configureFleet();
+        configureHistory();
+        configureAlertLimits();
+        configureSharing();
+        configureRemoteControl();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -238,9 +291,37 @@ public class MainActivity extends AppCompatActivity {
         stripNameInput = findViewById(R.id.stripNameInput);
         roomNameInput = findViewById(R.id.roomNameInput);
         saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
+        forgetDeviceButton = findViewById(R.id.forgetDeviceButton);
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
+        fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
+        fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
+        fleetStatus = findViewById(R.id.fleetStatus);
+        historySparkline = findViewById(R.id.historySparkline);
+        historySummary = findViewById(R.id.historySummary);
+        historyRecent = findViewById(R.id.historyRecent);
+        setupGuardCheck = findViewById(R.id.setupGuardCheck);
+        alertPowerInput = findViewById(R.id.alertPowerInput);
+        alertTempInput = findViewById(R.id.alertTempInput);
+        alertEnergyInput = findViewById(R.id.alertEnergyInput);
+        saveAlertLimitsButton = findViewById(R.id.saveAlertLimitsButton);
+        apiEndpointText = findViewById(R.id.apiEndpointText);
+        shareNameInput = findViewById(R.id.shareNameInput);
+        shareRoleSpinner = findViewById(R.id.shareRoleSpinner);
+        createShareButton = findViewById(R.id.createShareButton);
+        createHaTokenButton = findViewById(R.id.createHaTokenButton);
+        shareTokenText = findViewById(R.id.shareTokenText);
+        shareEntriesSpinner = findViewById(R.id.shareEntriesSpinner);
+        revokeShareButton = findViewById(R.id.revokeShareButton);
+        remoteEndpointInput = findViewById(R.id.remoteEndpointInput);
+        remoteTokenInput = findViewById(R.id.remoteTokenInput);
+        remoteRefreshButton = findViewById(R.id.remoteRefreshButton);
+        remoteDeviceSpinner = findViewById(R.id.remoteDeviceSpinner);
+        remoteOutletSpinner = findViewById(R.id.remoteOutletSpinner);
+        remoteOnButton = findViewById(R.id.remoteOnButton);
+        remoteOffButton = findViewById(R.id.remoteOffButton);
+        remoteStatus = findViewById(R.id.remoteStatus);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -264,6 +345,14 @@ public class MainActivity extends AppCompatActivity {
         autoOffMinutesInputs = new TextInputEditText[]{
                 findViewById(R.id.autoOffMinutes1), findViewById(R.id.autoOffMinutes2),
                 findViewById(R.id.autoOffMinutes3), findViewById(R.id.autoOffMinutes4)
+        };
+        powerLimitSwitches = new MaterialSwitch[]{
+                findViewById(R.id.powerLimitSwitch1), findViewById(R.id.powerLimitSwitch2),
+                findViewById(R.id.powerLimitSwitch3), findViewById(R.id.powerLimitSwitch4)
+        };
+        powerLimitInputs = new TextInputEditText[]{
+                findViewById(R.id.powerLimitW1), findViewById(R.id.powerLimitW2),
+                findViewById(R.id.powerLimitW3), findViewById(R.id.powerLimitW4)
         };
         scheduleSwitches = new MaterialSwitch[]{
                 findViewById(R.id.scheduleSwitch1), findViewById(R.id.scheduleSwitch2),
@@ -328,36 +417,73 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureDeviceNaming() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        stripNameInput.setText(prefs.getString(PREF_STRIP_NAME, ""));
-        roomNameInput.setText(prefs.getString(PREF_ROOM_NAME, ""));
-        for (int i = 0; i < outletNameInputs.length; i++) {
-            outletNameInputs[i].setText(prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), ""));
-        }
-        applyDeviceNames();
-
+        clearDeviceNamingFields();
         saveDeviceNamesButton.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit()
-                    .putString(PREF_STRIP_NAME, textOf(stripNameInput))
-                    .putString(PREF_ROOM_NAME, textOf(roomNameInput));
-            for (int i = 0; i < outletNameInputs.length; i++) {
-                editor.putString(PREF_OUTLET_NAME_PREFIX + (i + 1), textOf(outletNameInputs[i]));
+            if (activeMac == null || fleetStore == null) {
+                Snackbar.make(saveDeviceNamesButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+                return;
             }
-            editor.apply();
+            fleetStore.updateLabels(activeMac, textOf(stripNameInput), textOf(roomNameInput));
+            for (int i = 0; i < outletNameInputs.length; i++) {
+                fleetStore.updateOutletName(activeMac, i + 1, textOf(outletNameInputs[i]));
+            }
             applyDeviceNames();
+            refreshFleetUi();
             Snackbar.make(saveDeviceNamesButton, R.string.names_saved, Snackbar.LENGTH_SHORT).show();
+        });
+
+        forgetDeviceButton.setOnClickListener(v -> {
+            if (activeMac == null || fleetStore == null) {
+                Snackbar.make(forgetDeviceButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            if (controllerHub != null && controllerHub.isConnected(activeMac)) {
+                Snackbar.make(forgetDeviceButton, R.string.forget_device_disconnect_first, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            String forgottenMac = activeMac;
+            fleetStore.remove(forgottenMac);
+            activeMac = null;
+            activeFirmwareVersion = null;
+            clearDeviceNamingFields();
+            clearTelemetryUi();
+            setOutletControlsEnabled(false);
+            refreshFleetUi();
+            refreshHistory();
+            Snackbar.make(forgetDeviceButton, R.string.device_forgotten, Snackbar.LENGTH_SHORT).show();
         });
     }
 
     private void applyDeviceNames() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         for (int i = 0; i < outletSwitches.length; i++) {
-            String name = prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), "");
-            if (name == null || name.trim().isEmpty()) {
-                outletSwitches[i].setText(getString(outletNameResource(i)));
-            } else {
-                outletSwitches[i].setText(name.trim());
-            }
+            String name = activeMac == null || fleetStore == null
+                    ? "" : fleetStore.outletName(activeMac, i + 1);
+            outletSwitches[i].setText(name == null || name.trim().isEmpty()
+                    ? getString(outletNameResource(i)) : name.trim());
+        }
+        loadSelectedDeviceLabels();
+    }
+
+    private void loadSelectedDeviceLabels() {
+        if (stripNameInput == null || roomNameInput == null) return;
+        FleetStore.DeviceRecord record = activeMac == null || fleetStore == null
+                ? null : fleetStore.get(activeMac);
+        if (record == null) {
+            clearDeviceNamingFields();
+            return;
+        }
+        stripNameInput.setText(record.name);
+        roomNameInput.setText(record.room);
+        for (int i = 0; i < outletNameInputs.length; i++) {
+            outletNameInputs[i].setText(fleetStore.outletName(activeMac, i + 1));
+        }
+    }
+
+    private void clearDeviceNamingFields() {
+        if (stripNameInput != null) stripNameInput.setText("");
+        if (roomNameInput != null) roomNameInput.setText("");
+        if (outletNameInputs != null) {
+            for (TextInputEditText input : outletNameInputs) if (input != null) input.setText("");
         }
     }
 
@@ -486,38 +612,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAutomationSettings() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         for (int i = 0; i < 4; i++) {
-            int channel = i + 1;
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                     this, R.array.automation_day_mode_labels, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             scheduleDaySpinners[i].setAdapter(adapter);
-
-            autoOffSwitches[i].setChecked(
-                    prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
-            autoOffMinutesInputs[i].setText(String.valueOf(
-                    prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30)));
-            scheduleSwitches[i].setChecked(
-                    prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
-            scheduleOnInputs[i].setText(
-                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel, ""));
-            scheduleOffInputs[i].setText(
-                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel, ""));
-            int dayMode = prefs.getInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
-                    LocalAutomationEngine.DAY_EVERY_DAY);
-            if (dayMode < LocalAutomationEngine.DAY_EVERY_DAY
-                    || dayMode > LocalAutomationEngine.DAY_WEEKENDS) {
-                dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
-            }
-            scheduleDaySpinners[i].setSelection(dayMode, false);
         }
-        updateAutomationSummary();
-
         saveAutomationButton.setOnClickListener(v -> saveAutomationSettings());
+        loadAutomationSettingsForActiveDevice();
     }
 
     private void saveAutomationSettings() {
+        if (activeMac == null) {
+            Snackbar.make(saveAutomationButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+            return;
+        }
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         int enabledRules = 0;
@@ -528,6 +637,14 @@ public class MainActivity extends AppCompatActivity {
             int minutes = parsePositiveInt(textOf(autoOffMinutesInputs[i]));
             if (autoOffEnabled && minutes <= 0) {
                 autoOffMinutesInputs[i].setError(getString(R.string.automation_invalid_minutes));
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            boolean powerLimitEnabled = powerLimitSwitches[i].isChecked();
+            int powerLimitW = parsePositiveInt(textOf(powerLimitInputs[i]));
+            if (powerLimitEnabled && powerLimitW <= 0) {
+                powerLimitInputs[i].setError(getString(R.string.automation_invalid_power_limit));
                 Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
                 return;
             }
@@ -549,23 +666,32 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            editor.putBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, autoOffEnabled);
-            editor.putInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel,
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), autoOffEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, activeMac, channel),
                     minutes > 0 ? minutes : 30);
-            editor.putBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, scheduleEnabled);
-            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel,
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), powerLimitEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel),
+                    powerLimitW > 0 ? powerLimitW : 0);
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), scheduleEnabled);
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ON, activeMac, channel),
                     LocalAutomationEngine.normalizeTime(onTime));
-            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel,
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_OFF, activeMac, channel),
                     LocalAutomationEngine.normalizeTime(offTime));
-            editor.putInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, activeMac, channel),
                     scheduleDaySpinners[i].getSelectedItemPosition());
 
             if (autoOffEnabled) enabledRules++;
+            if (powerLimitEnabled) enabledRules++;
             if (scheduleEnabled) enabledRules++;
-
-            if (activeMac != null) {
-                editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
-            }
+            editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
         }
         editor.apply();
         updateAutomationSummary();
@@ -575,16 +701,109 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAutomationSummary() {
         if (automationSummary == null) return;
+        if (activeMac == null) {
+            automationSummary.setText(R.string.automation_select_device);
+            automationSummary.setTextColor(getColor(R.color.fg_silver));
+            return;
+        }
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int rules = 0;
         for (int channel = 1; channel <= 4; channel++) {
-            if (prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false)) rules++;
-            if (prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false)) rules++;
         }
         automationSummary.setText(rules == 0
                 ? getString(R.string.automation_none)
                 : getString(R.string.automation_active_count, rules));
         automationSummary.setTextColor(getColor(rules == 0 ? R.color.fg_silver : R.color.fg_green));
+    }
+
+    private void loadAutomationSettingsForActiveDevice() {
+        boolean enabled = activeMac != null;
+        saveAutomationButton.setEnabled(enabled);
+        if (!enabled) {
+            for (int i = 0; i < 4; i++) {
+                autoOffSwitches[i].setChecked(false);
+                autoOffMinutesInputs[i].setText("30");
+                powerLimitSwitches[i].setChecked(false);
+                powerLimitInputs[i].setText("");
+                scheduleSwitches[i].setChecked(false);
+                scheduleOnInputs[i].setText("");
+                scheduleOffInputs[i].setText("");
+                scheduleDaySpinners[i].setSelection(LocalAutomationEngine.DAY_EVERY_DAY, false);
+            }
+            updateAutomationSummary();
+            return;
+        }
+
+        migrateLegacyAutomation(activeMac);
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            autoOffSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), false));
+            autoOffMinutesInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, activeMac, channel), 30)));
+
+            powerLimitSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false));
+            int power = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel), 0);
+            powerLimitInputs[i].setText(power > 0 ? String.valueOf(power) : "");
+
+            scheduleSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false));
+            scheduleOnInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ON, activeMac, channel), ""));
+            scheduleOffInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_OFF, activeMac, channel), ""));
+            int dayMode = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, activeMac, channel),
+                    LocalAutomationEngine.DAY_EVERY_DAY);
+            if (dayMode < LocalAutomationEngine.DAY_EVERY_DAY
+                    || dayMode > LocalAutomationEngine.DAY_WEEKENDS) {
+                dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
+            }
+            scheduleDaySpinners[i].setSelection(dayMode, false);
+        }
+        updateAutomationSummary();
+    }
+
+    private void migrateLegacyAutomation(String mac) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean("automation_legacy_consumed", false)) return;
+        boolean anyLegacy = false;
+        SharedPreferences.Editor editor = prefs.edit();
+        for (int channel = 1; channel <= 4; channel++) {
+            if (prefs.contains(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel)) {
+                anyLegacy = true;
+                editor.putBoolean(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, mac, channel),
+                        prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
+                editor.putInt(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, mac, channel),
+                        prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30));
+                editor.putBoolean(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_ENABLED, mac, channel),
+                        prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
+                editor.putString(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_ON, mac, channel),
+                        prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel, ""));
+                editor.putString(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_OFF, mac, channel),
+                        prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel, ""));
+                editor.putInt(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, mac, channel),
+                        prefs.getInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+                                LocalAutomationEngine.DAY_EVERY_DAY));
+            }
+        }
+        if (anyLegacy) editor.putBoolean("automation_legacy_consumed", true);
+        editor.apply();
     }
 
     private static int parsePositiveInt(String value) {
@@ -595,6 +814,415 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException error) {
             return 0;
         }
+    }
+
+    private void configureFleet() {
+        fleetRoomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object selected = parent.getItemAtPosition(position);
+                String value = selected == null ? "" : selected.toString();
+                fleetRoomFilter = position == 0 ? "" : value;
+                refreshFleetDeviceSpinner();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        fleetDeviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position < 0 || position >= visibleFleetDevices.size()) return;
+                selectFleetDevice(visibleFleetDevices.get(position).mac);
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        refreshFleetUi();
+    }
+
+    private void refreshFleetUi() {
+        if (fleetStore == null || fleetRoomSpinner == null) return;
+        List<String> rooms = new ArrayList<>();
+        rooms.add(getString(R.string.all_rooms));
+        rooms.addAll(fleetStore.rooms());
+        ArrayAdapter<String> roomAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, rooms);
+        roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fleetRoomSpinner.setAdapter(roomAdapter);
+        int roomIndex = 0;
+        if (!fleetRoomFilter.isEmpty()) {
+            for (int i = 1; i < rooms.size(); i++) {
+                if (fleetRoomFilter.equalsIgnoreCase(rooms.get(i))) {
+                    roomIndex = i;
+                    break;
+                }
+            }
+        }
+        fleetRoomSpinner.setSelection(roomIndex, false);
+        refreshFleetDeviceSpinner();
+        updateApiEndpoint();
+    }
+
+    private void refreshFleetDeviceSpinner() {
+        visibleFleetDevices.clear();
+        List<String> labels = new ArrayList<>();
+        for (FleetStore.DeviceRecord record : fleetStore.list()) {
+            if (!fleetRoomFilter.isEmpty() && !fleetRoomFilter.equalsIgnoreCase(record.room)) continue;
+            visibleFleetDevices.add(record);
+            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
+            String label = record.displayName();
+            if (!record.room.isEmpty()) label += " · " + record.room;
+            label += live != null && live.connected ? " · ONLINE" : " · OFFLINE";
+            labels.add(label);
+        }
+        if (labels.isEmpty()) labels.add(getString(R.string.fleet_no_devices));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fleetDeviceSpinner.setAdapter(adapter);
+
+        if (!visibleFleetDevices.isEmpty()) {
+            String preferred = activeMac != null ? FleetStore.normalizeMac(activeMac) : fleetStore.selectedMac();
+            int selected = 0;
+            for (int i = 0; i < visibleFleetDevices.size(); i++) {
+                if (visibleFleetDevices.get(i).mac.equalsIgnoreCase(preferred)) {
+                    selected = i;
+                    break;
+                }
+            }
+            fleetDeviceSpinner.setSelection(selected, false);
+            selectFleetDevice(visibleFleetDevices.get(selected).mac);
+        } else {
+            fleetStatus.setText(R.string.fleet_waiting);
+        }
+    }
+
+    private void selectFleetDevice(String mac) {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty()) return;
+        activeMac = key;
+        fleetStore.select(key);
+        migrateLegacyLabelsIfNeeded(key);
+        ControllerHub.DeviceState state = controllerHub.state(key);
+        activeFirmwareVersion = state == null ? null : state.firmwareVersion;
+        applyDeviceNames();
+        loadAutomationSettingsForActiveDevice();
+
+        if (state != null && state.connected) {
+            setOutletControlsEnabled(true);
+            deviceState.setText(getString(R.string.controller_connected,
+                    ModelCatalog.PRIMARY_MODEL, state.firmwareVersion));
+            FleetStore.DeviceRecord record = fleetStore.get(key);
+            discoveryDetail.setText(getString(R.string.device_location_detail,
+                    record == null ? "" : record.displayName(),
+                    record == null ? "" : record.room,
+                    state.remoteAddress));
+            if (state.telemetry != null) {
+                applyingDeviceState = true;
+                try {
+                    for (MttlProtocol.OutletTelemetry outlet : state.telemetry.outlets) {
+                        if (outlet.channel >= 1 && outlet.channel <= outletSwitches.length) {
+                            outletSwitches[outlet.channel - 1].setChecked(outlet.relayOn);
+                        }
+                    }
+                    updateTelemetryUi(state.telemetry);
+                } finally {
+                    applyingDeviceState = false;
+                }
+            }
+        } else {
+            setOutletControlsEnabled(false);
+            clearTelemetryUi();
+            deviceState.setText(R.string.controller_disconnected);
+        }
+        updateFleetStatus();
+        refreshHistory();
+    }
+
+    private void migrateLegacyLabelsIfNeeded(String mac) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean("fleet_legacy_labels_migrated", false)) return;
+        FleetStore.DeviceRecord record = fleetStore.get(mac);
+        if (record == null) return;
+
+        String oldName = prefs.getString(PREF_STRIP_NAME, "");
+        String oldRoom = prefs.getString(PREF_ROOM_NAME, "");
+        boolean hasLegacy = (oldName != null && !oldName.trim().isEmpty())
+                || (oldRoom != null && !oldRoom.trim().isEmpty());
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            String oldOutlet = prefs.getString(PREF_OUTLET_NAME_PREFIX + outlet, "");
+            hasLegacy |= oldOutlet != null && !oldOutlet.trim().isEmpty();
+        }
+        if (!hasLegacy) {
+            prefs.edit().putBoolean("fleet_legacy_labels_migrated", true).apply();
+            return;
+        }
+
+        if (record.name.isEmpty() && record.room.isEmpty()) {
+            fleetStore.updateLabels(mac, oldName, oldRoom);
+        }
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            if (fleetStore.outletName(mac, outlet).isEmpty()) {
+                fleetStore.updateOutletName(mac, outlet,
+                        prefs.getString(PREF_OUTLET_NAME_PREFIX + outlet, ""));
+            }
+        }
+        prefs.edit().putBoolean("fleet_legacy_labels_migrated", true).apply();
+    }
+
+    private void updateFleetStatus() {
+        if (fleetStatus == null || fleetStore == null) return;
+        int total = fleetStore.list().size();
+        int connected = controllerHub == null ? 0 : controllerHub.connectedStates().size();
+        FleetStore.DeviceRecord record = activeMac == null ? null : fleetStore.get(activeMac);
+        ControllerHub.DeviceState state = activeMac == null ? null : controllerHub.state(activeMac);
+        String lastSeen = record == null || record.lastSeenAt <= 0
+                ? getString(R.string.unknown_value)
+                : DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                        .format(new java.util.Date(record.lastSeenAt));
+        String uptime = state == null || !state.connected || state.connectedSince <= 0
+                ? getString(R.string.not_connected)
+                : formatDuration(System.currentTimeMillis() - state.connectedSince);
+        fleetStatus.setText(getString(R.string.fleet_status_format,
+                connected, total, lastSeen, uptime));
+    }
+
+    private void configureHistory() {
+        refreshHistory();
+    }
+
+    private void refreshHistory() {
+        if (historyStore == null || historySparkline == null) return;
+        if (activeMac == null) {
+            historySparkline.setPoints(new ArrayList<>());
+            historySummary.setText(R.string.history_waiting);
+            historyRecent.setText(R.string.history_no_events);
+            return;
+        }
+        long now = System.currentTimeMillis();
+        Calendar day = Calendar.getInstance();
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+
+        Calendar week = (Calendar) day.clone();
+        int dow = week.get(Calendar.DAY_OF_WEEK);
+        int daysSinceSunday = dow - Calendar.SUNDAY;
+        week.add(Calendar.DAY_OF_MONTH, -daysSinceSunday);
+
+        Calendar month = (Calendar) day.clone();
+        month.set(Calendar.DAY_OF_MONTH, 1);
+
+        HistoryStore.Summary daily = historyStore.summary(activeMac, day.getTimeInMillis());
+        HistoryStore.Summary weekly = historyStore.summary(activeMac, week.getTimeInMillis());
+        HistoryStore.Summary monthly = historyStore.summary(activeMac, month.getTimeInMillis());
+        historySummary.setText(getString(R.string.history_summary_format,
+                daily.energyDeltaKWh, weekly.energyDeltaKWh, monthly.energyDeltaKWh,
+                daily.maxPowerW));
+        historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
+
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        if (events.isEmpty()) {
+            historyRecent.setText(R.string.history_no_events);
+        } else {
+            StringBuilder text = new StringBuilder();
+            DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+            for (HistoryStore.EventRecord event : events) {
+                if (text.length() > 0) text.append('\n');
+                text.append(format.format(new java.util.Date(event.ts)))
+                        .append(" · ").append(event.kind);
+                if (event.outlet > 0) text.append(" #").append(event.outlet);
+                if (event.detail != null && !event.detail.isEmpty()) {
+                    text.append(" · ").append(event.detail);
+                }
+            }
+            historyRecent.setText(text.toString());
+        }
+    }
+
+    private void configureAlertLimits() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        double power = Double.longBitsToDouble(prefs.getLong(
+                MttlControllerService.PREF_ALERT_POWER_W, Double.doubleToRawLongBits(3000.0)));
+        int temp = prefs.getInt(MttlControllerService.PREF_ALERT_TEMP_C, 0);
+        double energy = Double.longBitsToDouble(prefs.getLong(
+                MttlControllerService.PREF_ALERT_DAILY_ENERGY_KWH, Double.doubleToRawLongBits(0.0)));
+        alertPowerInput.setText(String.format(Locale.US, "%.0f", power));
+        if (temp > 0) alertTempInput.setText(String.valueOf(temp));
+        if (energy > 0) alertEnergyInput.setText(String.format(Locale.US, "%.2f", energy));
+
+        saveAlertLimitsButton.setOnClickListener(v -> {
+            double powerLimit = parsePositiveDouble(textOf(alertPowerInput));
+            int tempLimit = parsePositiveInt(textOf(alertTempInput));
+            double energyLimit = parsePositiveDouble(textOf(alertEnergyInput));
+            if (powerLimit <= 0) powerLimit = 3000.0;
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putLong(MttlControllerService.PREF_ALERT_POWER_W,
+                            Double.doubleToRawLongBits(powerLimit))
+                    .putInt(MttlControllerService.PREF_ALERT_TEMP_C, tempLimit)
+                    .putLong(MttlControllerService.PREF_ALERT_DAILY_ENERGY_KWH,
+                            Double.doubleToRawLongBits(energyLimit))
+                    .apply();
+            Snackbar.make(saveAlertLimitsButton, R.string.alert_limits_saved,
+                    Snackbar.LENGTH_SHORT).show();
+        });
+    }
+
+    private void configureSharing() {
+        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(
+                this, R.array.share_role_labels, android.R.layout.simple_spinner_item);
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shareRoleSpinner.setAdapter(roleAdapter);
+
+        createShareButton.setOnClickListener(v -> {
+            AccessControlStore.Role role = roleForPosition(shareRoleSpinner.getSelectedItemPosition());
+            AccessControlStore.AccessEntry entry = accessStore.create(textOf(shareNameInput), role);
+            showAccessToken(entry);
+            refreshSharingEntries();
+        });
+        createHaTokenButton.setOnClickListener(v -> {
+            AccessControlStore.AccessEntry entry = accessStore.create(
+                    "Home Assistant", AccessControlStore.Role.CONTROL);
+            showAccessToken(entry);
+            refreshSharingEntries();
+        });
+        revokeShareButton.setOnClickListener(v -> {
+            int position = shareEntriesSpinner.getSelectedItemPosition();
+            if (position < 0 || position >= visibleAccessEntries.size()) return;
+            accessStore.revokeKey(visibleAccessEntries.get(position).tokenHash);
+            refreshSharingEntries();
+            shareTokenText.setText(R.string.share_token_waiting);
+        });
+        shareTokenText.setOnClickListener(v -> {
+            CharSequence value = shareTokenText.getText();
+            if (value == null || value.length() == 0) return;
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("FG Machines access token", value));
+            Snackbar.make(shareTokenText, R.string.token_copied, Snackbar.LENGTH_SHORT).show();
+        });
+        refreshSharingEntries();
+        updateApiEndpoint();
+    }
+
+    private void showAccessToken(AccessControlStore.AccessEntry entry) {
+        shareTokenText.setText(entry.token);
+        Snackbar.make(shareTokenText,
+                getString(R.string.access_created, entry.name, entry.role.name()),
+                Snackbar.LENGTH_LONG).show();
+    }
+
+    private void refreshSharingEntries() {
+        visibleAccessEntries.clear();
+        visibleAccessEntries.addAll(accessStore.list());
+        List<String> labels = new ArrayList<>();
+        for (AccessControlStore.AccessEntry entry : visibleAccessEntries) {
+            labels.add(entry.name + " · " + entry.role.name());
+        }
+        if (labels.isEmpty()) labels.add(getString(R.string.no_shared_users));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shareEntriesSpinner.setAdapter(adapter);
+        revokeShareButton.setEnabled(!visibleAccessEntries.isEmpty());
+    }
+
+    private AccessControlStore.Role roleForPosition(int position) {
+        if (position == 2) return AccessControlStore.Role.ADMIN;
+        if (position == 1) return AccessControlStore.Role.CONTROL;
+        return AccessControlStore.Role.VIEW;
+    }
+
+    private void updateApiEndpoint() {
+        if (apiEndpointText == null) return;
+        String ip = HotspotSupport.findControllerIpv4();
+        apiEndpointText.setText(ip == null
+                ? getString(R.string.api_endpoint_waiting)
+                : "http://" + ip + ":" + LocalApiServer.PORT);
+    }
+
+    private void configureRemoteControl() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        remoteEndpointInput.setText(prefs.getString(PREF_REMOTE_ENDPOINT, ""));
+        remoteTokenInput.setText(prefs.getString(PREF_REMOTE_TOKEN, ""));
+
+        ArrayAdapter<CharSequence> outletAdapter = ArrayAdapter.createFromResource(
+                this, R.array.remote_outlet_labels, android.R.layout.simple_spinner_item);
+        outletAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        remoteOutletSpinner.setAdapter(outletAdapter);
+
+        remoteRefreshButton.setOnClickListener(v -> refreshRemoteDevices());
+        remoteOnButton.setOnClickListener(v -> sendRemoteOutlet(true));
+        remoteOffButton.setOnClickListener(v -> sendRemoteOutlet(false));
+        remoteOnButton.setEnabled(false);
+        remoteOffButton.setEnabled(false);
+    }
+
+    private void refreshRemoteDevices() {
+        String endpoint = textOf(remoteEndpointInput);
+        String token = textOf(remoteTokenInput);
+        getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                .putString(PREF_REMOTE_ENDPOINT, endpoint)
+                .putString(PREF_REMOTE_TOKEN, token)
+                .apply();
+        remoteStatus.setText(R.string.remote_connecting);
+        remoteRefreshButton.setEnabled(false);
+        commandWorker.execute(() -> {
+            try {
+                List<RemoteApiClient.RemoteDevice> result =
+                        new RemoteApiClient(endpoint, token).listDevices();
+                runOnUiThread(() -> {
+                    remoteDevices.clear();
+                    remoteDevices.addAll(result);
+                    List<String> labels = new ArrayList<>();
+                    for (RemoteApiClient.RemoteDevice device : result) labels.add(device.toString());
+                    if (labels.isEmpty()) labels.add(getString(R.string.remote_no_devices));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            MainActivity.this, android.R.layout.simple_spinner_item, labels);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    remoteDeviceSpinner.setAdapter(adapter);
+                    boolean available = !result.isEmpty();
+                    remoteOnButton.setEnabled(available);
+                    remoteOffButton.setEnabled(available);
+                    remoteStatus.setText(available
+                            ? getString(R.string.remote_connected_count, result.size())
+                            : getString(R.string.remote_no_devices));
+                    remoteRefreshButton.setEnabled(true);
+                });
+            } catch (IOException error) {
+                runOnUiThread(() -> {
+                    remoteStatus.setText(getString(R.string.remote_failed, safeMessage(error)));
+                    remoteOnButton.setEnabled(false);
+                    remoteOffButton.setEnabled(false);
+                    remoteRefreshButton.setEnabled(true);
+                });
+            }
+        });
+    }
+
+    private void sendRemoteOutlet(boolean on) {
+        int devicePosition = remoteDeviceSpinner.getSelectedItemPosition();
+        int outlet = remoteOutletSpinner.getSelectedItemPosition() + 1;
+        if (devicePosition < 0 || devicePosition >= remoteDevices.size()) return;
+        RemoteApiClient.RemoteDevice device = remoteDevices.get(devicePosition);
+        String endpoint = textOf(remoteEndpointInput);
+        String token = textOf(remoteTokenInput);
+        remoteStatus.setText(R.string.remote_sending);
+        commandWorker.execute(() -> {
+            try {
+                new RemoteApiClient(endpoint, token).setOutlet(device.mac, outlet, on);
+                runOnUiThread(() -> remoteStatus.setText(getString(
+                        R.string.remote_command_sent, device.name, outlet,
+                        on ? getString(R.string.remote_on) : getString(R.string.remote_off))));
+            } catch (IOException error) {
+                runOnUiThread(() -> remoteStatus.setText(
+                        getString(R.string.remote_failed, safeMessage(error))));
+            }
+        });
+    }
+
+    private static String formatDuration(long millis) {
+        long minutes = Math.max(0, millis / 60000L);
+        long hours = minutes / 60;
+        long remaining = minutes % 60;
+        return hours > 0 ? hours + "h " + remaining + "m" : remaining + "m";
     }
 
     private void configureAlerts() {
@@ -655,6 +1283,10 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.addTextChangedListener(watcher);
         targetWifiPasswordInput.addTextChangedListener(watcher);
         controllerIpInput.addTextChangedListener(watcher);
+        setupGuardCheck.setOnCheckedChangeListener((button, checked) -> {
+            provisioningSucceeded = false;
+            updateSetupReadiness();
+        });
         updateSetupReadiness();
     }
 
@@ -663,12 +1295,16 @@ public class MainActivity extends AppCompatActivity {
 
         boolean controllerReady = isValidIpv4(textOf(controllerIpInput));
         boolean networkReady = !textOf(setupSsidInput).isEmpty()
-                && !textOf(targetWifiSsidInput).isEmpty();
-        boolean readyToWrite = controllerReady && networkReady;
+                && !textOf(targetWifiSsidInput).isEmpty()
+                && isValidWpa2Password(textOf(targetWifiPasswordInput));
+        boolean securityReady = setupGuardCheck != null && setupGuardCheck.isChecked();
+        boolean networkAndControllerReady = controllerReady && networkReady;
+        boolean readyToWrite = networkAndControllerReady && securityReady;
 
         int progressValue = 25;
         if (controllerReady) progressValue = 50;
-        if (readyToWrite) progressValue = 75;
+        if (networkAndControllerReady) progressValue = 75;
+        if (readyToWrite) progressValue = 90;
         if (provisioningSucceeded) progressValue = 100;
         setupProgress.setProgressCompat(progressValue, true);
 
@@ -688,6 +1324,9 @@ public class MainActivity extends AppCompatActivity {
             setupReadinessText.setTextColor(getColor(R.color.fg_warning));
         } else if (!networkReady) {
             setupReadinessText.setText(R.string.wizard_need_network);
+            setupReadinessText.setTextColor(getColor(R.color.fg_warning));
+        } else if (!securityReady) {
+            setupReadinessText.setText(R.string.wizard_need_security);
             setupReadinessText.setTextColor(getColor(R.color.fg_warning));
         } else {
             setupReadinessText.setText(R.string.wizard_ready_to_write);
@@ -720,6 +1359,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private static boolean isValidWpa2Password(String value) {
+        if (value == null) return false;
+        String password = value.trim();
+        if (password.length() >= 8 && password.length() <= 63) return true;
+        return password.length() == 64 && password.matches("[0-9A-Fa-f]{64}");
     }
 
     private void restoreSetupProfile() {
@@ -781,6 +1427,15 @@ public class MainActivity extends AppCompatActivity {
         String controllerIp = textOf(controllerIpInput);
         if (setupSsid.isEmpty() || wifiSsid.isEmpty() || controllerIp.isEmpty()) {
             Snackbar.make(manualProvisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (!isValidWpa2Password(wifiPassword)) {
+            targetWifiPasswordInput.setError(getString(R.string.wpa2_password_invalid));
+            Snackbar.make(manualProvisionButton, R.string.wpa2_password_invalid, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (setupGuardCheck == null || !setupGuardCheck.isChecked()) {
+            Snackbar.make(manualProvisionButton, R.string.setup_guard_required, Snackbar.LENGTH_LONG).show();
             return;
         }
         persistSetupProfile();
@@ -875,6 +1530,7 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.setEnabled(!busy);
         targetWifiPasswordInput.setEnabled(!busy);
         controllerIpInput.setEnabled(!busy);
+        setupGuardCheck.setEnabled(!busy);
         updateSetupReadiness();
     }
 
@@ -995,38 +1651,53 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
-                activeMac = bootInfo.mac;
-                activeFirmwareVersion = bootInfo.firmwareVersion;
-                runOnUiThread(() -> {
-                    setOutletControlsEnabled(true);
-                    deviceState.setText(getString(R.string.controller_connected,
-                            ModelCatalog.PRIMARY_MODEL, bootInfo.firmwareVersion));
-                    String stripName = getSharedPreferences(PREFS, MODE_PRIVATE)
-                            .getString(PREF_STRIP_NAME, "");
-                    String roomName = getSharedPreferences(PREFS, MODE_PRIVATE)
-                            .getString(PREF_ROOM_NAME, "");
-                    if ((stripName == null || stripName.trim().isEmpty())
-                            && (roomName == null || roomName.trim().isEmpty())) {
-                        discoveryDetail.setText(remoteAddress);
+                String key = FleetStore.normalizeMac(bootInfo.mac);
+                fleetStore.register(key, bootInfo.firmwareVersion, System.currentTimeMillis());
+                String preferred = fleetStore.selectedMac();
+                if (activeMac == null) {
+                    if (!preferred.isEmpty() && controllerHub.isConnected(preferred)) {
+                        activeMac = preferred;
                     } else {
-                        discoveryDetail.setText(getString(R.string.device_location_detail,
-                                stripName == null ? "" : stripName.trim(),
-                                roomName == null ? "" : roomName.trim(),
-                                remoteAddress));
+                        activeMac = key;
+                        fleetStore.select(key);
                     }
-                    showPage(0);
+                }
+                if (key.equalsIgnoreCase(activeMac)) activeFirmwareVersion = bootInfo.firmwareVersion;
+                runOnUiThread(() -> {
+                    refreshFleetUi();
+                    if (key.equalsIgnoreCase(activeMac)) selectFleetDevice(activeMac);
+                    else updateFleetStatus();
                 });
             }
 
             @Override public void onDeviceDisconnected(String mac) {
-                if (!mac.equalsIgnoreCase(activeMac == null ? "" : activeMac)) return;
-                activeMac = null;
-                activeFirmwareVersion = null;
+                String key = FleetStore.normalizeMac(mac);
+                boolean selectedDisconnected = key.equalsIgnoreCase(activeMac == null ? "" : activeMac);
+                if (selectedDisconnected) {
+                    List<ControllerHub.DeviceState> connected = controllerHub.connectedStates();
+                    if (connected.isEmpty()) {
+                        activeMac = null;
+                        activeFirmwareVersion = null;
+                    } else {
+                        activeMac = connected.get(0).mac;
+                        activeFirmwareVersion = connected.get(0).firmwareVersion;
+                        fleetStore.select(activeMac);
+                    }
+                }
                 runOnUiThread(() -> {
-                    setOutletControlsEnabled(false);
-                    clearTelemetryUi();
-                    deviceState.setText(R.string.controller_disconnected);
-                    discoveryDetail.setText(R.string.locked);
+                    refreshFleetUi();
+                    if (activeMac == null) {
+                        setOutletControlsEnabled(false);
+                        clearTelemetryUi();
+                        clearDeviceNamingFields();
+                        deviceState.setText(R.string.controller_disconnected);
+                        discoveryDetail.setText(R.string.locked);
+                        refreshHistory();
+                    } else if (selectedDisconnected) {
+                        selectFleetDevice(activeMac);
+                    } else {
+                        updateFleetStatus();
+                    }
                 });
             }
 
@@ -1046,6 +1717,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         updateTelemetryUi(telemetry);
+                        updateFleetStatus();
+                        refreshHistory();
                     } finally { applyingDeviceState = false; }
                 });
             }
@@ -1147,6 +1820,10 @@ public class MainActivity extends AppCompatActivity {
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
         updateAutomationSummary();
+        refreshFleetUi();
+        refreshHistory();
+        refreshSharingEntries();
+        updateApiEndpoint();
     }
 
     @Override
@@ -1156,6 +1833,7 @@ public class MainActivity extends AppCompatActivity {
             controllerHub.removeListener(controllerListener);
         }
         commandWorker.shutdownNow();
+        if (historyStore != null) historyStore.close();
         super.onDestroy();
     }
 }

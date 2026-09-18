@@ -1,0 +1,178 @@
+package com.fgmachines.rck;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/** Local SQLite telemetry/event history. No cloud account is required. */
+public final class HistoryStore extends SQLiteOpenHelper {
+    private static final String DB_NAME = "fg_rck_history.db";
+    private static final int DB_VERSION = 1;
+    private static final long SAMPLE_INTERVAL_MS = 30_000L;
+    private static final long RETENTION_MS = 90L * 24L * 60L * 60L * 1000L;
+    private static final long PRUNE_INTERVAL_MS = 6L * 60L * 60L * 1000L;
+    private volatile long lastPruneAt;
+
+    public HistoryStore(Context context) {
+        super(context.getApplicationContext(), DB_NAME, null, DB_VERSION);
+    }
+
+    @Override public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE telemetry (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ts INTEGER NOT NULL," +
+                "mac TEXT NOT NULL," +
+                "power_w REAL NOT NULL," +
+                "energy_kwh REAL NOT NULL," +
+                "max_temp_c INTEGER NOT NULL)");
+        db.execSQL("CREATE INDEX idx_telemetry_mac_ts ON telemetry(mac, ts)");
+        db.execSQL("CREATE TABLE events (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ts INTEGER NOT NULL," +
+                "mac TEXT NOT NULL," +
+                "outlet INTEGER NOT NULL DEFAULT 0," +
+                "kind TEXT NOT NULL," +
+                "detail TEXT NOT NULL DEFAULT '')");
+        db.execSQL("CREATE INDEX idx_events_mac_ts ON events(mac, ts)");
+    }
+
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
+
+    public synchronized void recordTelemetry(String mac, MttlProtocol.Telemetry telemetry, long now) {
+        if (mac == null || telemetry == null) return;
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty()) return;
+
+        SQLiteDatabase db = getWritableDatabase();
+        pruneIfNeeded(db, now);
+        long last = 0L;
+        try (Cursor cursor = db.rawQuery(
+                "SELECT ts FROM telemetry WHERE mac=? ORDER BY ts DESC LIMIT 1",
+                new String[]{key})) {
+            if (cursor.moveToFirst()) last = cursor.getLong(0);
+        }
+        if (now - last < SAMPLE_INTERVAL_MS) return;
+
+        double power = 0.0;
+        double energy = 0.0;
+        int maxTemp = Integer.MIN_VALUE;
+        for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+            power += Math.max(0.0, outlet.powerW);
+            energy += Math.max(0.0, outlet.energyKWh);
+            maxTemp = Math.max(maxTemp, outlet.temperatureC);
+        }
+        if (maxTemp == Integer.MIN_VALUE) maxTemp = 0;
+
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("ts", now);
+        values.put("mac", key);
+        values.put("power_w", power);
+        values.put("energy_kwh", energy);
+        values.put("max_temp_c", maxTemp);
+        db.insert("telemetry", null, values);
+    }
+
+    private void pruneIfNeeded(SQLiteDatabase db, long now) {
+        if (now - lastPruneAt < PRUNE_INTERVAL_MS) return;
+        long cutoff = now - RETENTION_MS;
+        db.delete("telemetry", "ts<?", new String[]{String.valueOf(cutoff)});
+        db.delete("events", "ts<?", new String[]{String.valueOf(cutoff)});
+        lastPruneAt = now;
+    }
+
+    public synchronized void recordEvent(String mac, int outlet, String kind, String detail, long now) {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty() || kind == null || kind.trim().isEmpty()) return;
+        android.content.ContentValues values = new android.content.ContentValues();
+        values.put("ts", now);
+        values.put("mac", key);
+        values.put("outlet", outlet);
+        values.put("kind", kind.trim());
+        values.put("detail", detail == null ? "" : detail);
+        getWritableDatabase().insert("events", null, values);
+    }
+
+    public Summary summary(String mac, long since) {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty()) return new Summary(0, 0, 0, 0);
+        SQLiteDatabase db = getReadableDatabase();
+        double minEnergy = 0;
+        double maxEnergy = 0;
+        double avgPower = 0;
+        double maxPower = 0;
+        try (Cursor c = db.rawQuery(
+                "SELECT MIN(energy_kwh), MAX(energy_kwh), AVG(power_w), MAX(power_w) " +
+                        "FROM telemetry WHERE mac=? AND ts>=?",
+                new String[]{key, String.valueOf(since)})) {
+            if (c.moveToFirst() && !c.isNull(0)) {
+                minEnergy = c.getDouble(0);
+                maxEnergy = c.getDouble(1);
+                avgPower = c.getDouble(2);
+                maxPower = c.getDouble(3);
+            }
+        }
+        return new Summary(Math.max(0.0, maxEnergy - minEnergy), avgPower, maxPower, maxEnergy);
+    }
+
+    public List<PowerPoint> recentPower(String mac, int limit) {
+        String key = FleetStore.normalizeMac(mac);
+        List<PowerPoint> points = new ArrayList<>();
+        if (key.isEmpty()) return points;
+        int safeLimit = Math.max(2, Math.min(240, limit));
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT ts,power_w FROM telemetry WHERE mac=? ORDER BY ts DESC LIMIT " + safeLimit,
+                new String[]{key})) {
+            while (c.moveToNext()) points.add(0, new PowerPoint(c.getLong(0), c.getDouble(1)));
+        }
+        return points;
+    }
+
+    public List<EventRecord> recentEvents(String mac, int limit) {
+        String key = FleetStore.normalizeMac(mac);
+        List<EventRecord> events = new ArrayList<>();
+        if (key.isEmpty()) return events;
+        int safeLimit = Math.max(1, Math.min(100, limit));
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT ts,outlet,kind,detail FROM events WHERE mac=? ORDER BY ts DESC LIMIT " + safeLimit,
+                new String[]{key})) {
+            while (c.moveToNext()) {
+                events.add(new EventRecord(c.getLong(0), c.getInt(1), c.getString(2), c.getString(3)));
+            }
+        }
+        return events;
+    }
+
+    public static final class Summary {
+        public final double energyDeltaKWh;
+        public final double averagePowerW;
+        public final double maxPowerW;
+        public final double latestEnergyKWh;
+
+        Summary(double energyDeltaKWh, double averagePowerW, double maxPowerW, double latestEnergyKWh) {
+            this.energyDeltaKWh = energyDeltaKWh;
+            this.averagePowerW = averagePowerW;
+            this.maxPowerW = maxPowerW;
+            this.latestEnergyKWh = latestEnergyKWh;
+        }
+    }
+
+    public static final class PowerPoint {
+        public final long ts;
+        public final double powerW;
+        PowerPoint(long ts, double powerW) { this.ts = ts; this.powerW = powerW; }
+    }
+
+    public static final class EventRecord {
+        public final long ts;
+        public final int outlet;
+        public final String kind;
+        public final String detail;
+        EventRecord(long ts, int outlet, String kind, String detail) {
+            this.ts = ts; this.outlet = outlet; this.kind = kind; this.detail = detail;
+        }
+    }
+}

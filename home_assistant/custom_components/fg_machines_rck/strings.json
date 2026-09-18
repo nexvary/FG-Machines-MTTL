@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "FG Machines RCK",
+        "description": "Connect to the authenticated local/VPN API on your controller phone.",
+        "data": {
+          "host": "Controller URL",
+          "token": "Access token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect or token is not authorized"
+    },
+    "abort": {
+      "already_configured": "This controller is already configured"
+    }
+  }
+}

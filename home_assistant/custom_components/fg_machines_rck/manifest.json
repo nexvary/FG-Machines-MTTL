@@ -1,0 +1,9 @@
+{
+  "domain": "fg_machines_rck",
+  "name": "FG Machines RCK",
+  "version": "1.0.0",
+  "documentation": "https://github.com/nexvary/FG-Machines-MTTL",
+  "config_flow": true,
+  "iot_class": "local_polling",
+  "requirements": []
+}

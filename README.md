@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 0.9.0
+## Current Android baseline — 1.0.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -22,6 +22,16 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
 - Per-outlet local automation: auto-off timers and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.
 - Schedule day modes are explicit: every day, Sun–Thu, or Fri–Sat. Time values use 24-hour HH:mm format.
+- Multi-device fleet registry with persistent device names, rooms, selected device, firmware, last-seen and connection uptime.
+- Room filtering turns room metadata into an actual fleet organization layer instead of a single free-text label.
+- Local SQLite telemetry/event history with daily, weekly and monthly energy summaries plus an in-app power sparkline.
+- Configurable alerts for high load, temperature and daily energy, while firmware protection/event codes remain authoritative.
+- Per-outlet automation also supports automatic cutoff above a user-defined watt threshold.
+- Mandatory Setup Guard blocks provisioning until 2.4 GHz + WPA2-Personal is confirmed and the WPA2 passphrase is structurally valid.
+- Authenticated local HTTP API on port `18086` with View / Control / Admin sharing roles; only token hashes are stored.
+- Optional Remote Control client can connect to another FG Machines RCK controller over a private VPN or HTTPS endpoint.
+- Home Assistant custom integration under `home_assistant/custom_components/fg_machines_rck` exposes each outlet as an independent switch plus power, energy and temperature sensors.
+- Local-first behavior remains the default: outlet control, automation, history and alerts do not require a subscription or external cloud.
 - GitHub Actions release gate: unit tests + Android lint + debug APK build.
 
 ## Compatibility catalog
@@ -51,6 +61,9 @@ There are two different local roles:
 
 1. **Setup / provisioning:** the strip exposes an AP and local endpoint at `192.168.1.1:30300`.
 2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines RCK now implements that controller endpoint on Android.
+
+3. **Local API / Home Assistant:** the controller phone exposes an authenticated API on TCP `18086` for trusted LAN/VPN clients. Access tokens are created in the app and only their SHA-256 hashes are retained.
+4. **Remote Control:** another FG Machines RCK installation can use the same API through a private VPN or an HTTPS reverse proxy. Direct public exposure of the phone's plain HTTP port is not recommended.
 
 Normal controller commands include:
 

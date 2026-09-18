@@ -143,7 +143,82 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                
                 <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/fleet_title"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_text"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_status_pill"
+                                android:paddingStart="9dp"
+                                android:paddingTop="4dp"
+                                android:paddingEnd="9dp"
+                                android:paddingBottom="4dp"
+                                android:text="@string/local_first_badge"
+                                android:textColor="@color/fg_green"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/fleetRoomSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="@color/fg_green"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <Spinner
+                            android:id="@+id/fleetDeviceSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <TextView
+                            android:id="@+id/fleetStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/fleet_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+<com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -381,7 +456,64 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/history_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <com.fgmachines.rck.HistorySparklineView
+                            android:id="@+id/historySparkline"
+                            android:layout_width="match_parent"
+                            android:layout_height="110dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill" />
+
+                        <TextView
+                            android:id="@+id/historySummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/history_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/historyRecent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="@string/history_no_events"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -760,6 +892,15 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_warning"
                             android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/setupGuardCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/setup_guard_confirm"
+                            android:textColor="@color/fg_warning"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -1383,6 +1524,31 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/scheduleSwitch1"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -1473,6 +1639,31 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
                                 android:singleLine="true"
                                 android:textColor="@color/fg_text"
                                 android:textDirection="ltr" />
@@ -1575,6 +1766,31 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/scheduleSwitch3"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -1665,6 +1881,31 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
                                 android:singleLine="true"
                                 android:textColor="@color/fg_text"
                                 android:textDirection="ltr" />
@@ -1877,6 +2118,17 @@
                             android:textColor="@color/fg_text"
                             app:backgroundTint="@color/fg_blue"
                             app:cornerRadius="14dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/forgetDeviceButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/forget_device"
+                            android:textColor="@color/fg_warning"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_warning" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -1941,6 +2193,319 @@
                             android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_warning"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/alert_limits_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/alert_limits_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/alertPowerInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/alert_power_hint"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/alertTempInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/alert_temp_hint"
+                            android:inputType="number"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/alertEnergyInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/alert_energy_hint"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveAlertLimitsButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/save_alert_limits"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_warning"
+                            app:cornerRadius="14dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sharing_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/apiEndpointText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/api_endpoint_waiting"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textDirection="ltr"
+                            android:textSize="11sp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/shareNameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/share_name_hint"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text" />
+                        <Spinner
+                            android:id="@+id/shareRoleSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/createShareButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/create_access"
+                                android:textColor="@color/fg_black"
+                                app:backgroundTint="@color/fg_green"
+                                app:cornerRadius="14dp" />
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/createHaTokenButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/create_ha_token"
+                                android:textColor="@color/fg_text"
+                                app:backgroundTint="@color/fg_blue"
+                                app:cornerRadius="14dp" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/shareTokenText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/share_token_waiting"
+                            android:textColor="@color/fg_green"
+                            android:textDirection="ltr"
+                            android:textIsSelectable="true"
+                            android:textSize="11sp" />
+                        <Spinner
+                            android:id="@+id/shareEntriesSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="@color/fg_silver"
+                            android:popupBackground="@color/fg_surface_2" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/revokeShareButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/revoke_access"
+                            android:textColor="@color/fg_warning"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_warning" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/sharing_security_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/remote_control_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/remote_control_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remoteEndpointInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/remote_endpoint_hint"
+                            android:inputType="textUri"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remoteTokenInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/remote_token_hint"
+                            android:inputType="textPassword"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/remoteRefreshButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/remote_connect"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="14dp" />
+                        <Spinner
+                            android:id="@+id/remoteDeviceSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+                        <Spinner
+                            android:id="@+id/remoteOutletSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_silver"
+                            android:popupBackground="@color/fg_surface_2" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/remoteOnButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/remote_on"
+                                android:textColor="@color/fg_black"
+                                app:backgroundTint="@color/fg_green"
+                                app:cornerRadius="14dp" />
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/remoteOffButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/remote_off"
+                                android:textColor="@color/fg_text"
+                                app:backgroundTint="@color/fg_warning"
+                                app:cornerRadius="14dp" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/remoteStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/remote_not_connected"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </ScrollView>
 

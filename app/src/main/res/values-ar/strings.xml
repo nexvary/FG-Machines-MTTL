@@ -207,4 +207,70 @@
         <item>الأحد–الخميس</item>
         <item>الجمعة–السبت</item>
     </string-array>
+    <string name="fleet_title">الأجهزة / الأسطول</string>
+    <string name="local_first_badge">محلي أولاً</string>
+    <string name="fleet_waiting">في انتظار أجهزة MTTL-W01 المعروفة أو المتصلة.</string>
+    <string name="history_title">سجل الطاقة</string>
+    <string name="history_waiting">اختر جهازًا لعرض السجل.</string>
+    <string name="history_no_events">لا توجد أحداث حديثة.</string>
+    <string name="setup_guard_confirm">تحققت أن شبكة الواي فاي أو نقطة الاتصال 2.4 جيجاهرتز وبحماية WPA2-Personal</string>
+    <string name="alert_limits_title">حدود التنبيهات</string>
+    <string name="alert_limits_note">حد تنبيه القدرة الافتراضي 3000 واط. تنبيهات الحرارة والطاقة اليومية تظل معطلة إذا تُركت فارغة.</string>
+    <string name="alert_power_hint">حد تنبيه الحمل المرتفع (واط)</string>
+    <string name="alert_temp_hint">حد تنبيه الحرارة (°م، اختياري)</string>
+    <string name="alert_energy_hint">تنبيه الطاقة اليومية (ك.و.س، اختياري)</string>
+    <string name="save_alert_limits">حفظ حدود التنبيه</string>
+    <string name="sharing_title">المستخدمون والمشاركة وHome Assistant</string>
+    <string name="api_endpoint_waiting">لم يتم تحديد IP للواجهة المحلية بعد · المنفذ 18086</string>
+    <string name="share_name_hint">اسم المستخدم أو التكامل</string>
+    <string name="create_access">إنشاء صلاحية</string>
+    <string name="create_ha_token">رمز Home Assistant</string>
+    <string name="share_token_waiting">سيظهر رمز الوصول الجديد هنا. اضغط لنسخه.</string>
+    <string name="revoke_access">إلغاء الصلاحية المحددة</string>
+    <string name="sharing_security_note">صلاحية View للقراءة فقط، وControl للتحكم بالمخارج، وAdmin تتضمن التحكم. استخدم الواجهة داخل شبكة موثوقة/VPN أو خلف HTTPS.</string>
+    <string name="remote_control_title">التحكم عن بُعد</string>
+    <string name="remote_control_note">اتصل بوحدة FG Machines RCK أخرى عبر عنوان HTTPS أو VPN. يظل التحكم المحلي هو الوضع الافتراضي.</string>
+    <string name="remote_endpoint_hint">العنوان البعيد، مثال https://rck.example.com</string>
+    <string name="remote_token_hint">رمز الوصول</string>
+    <string name="remote_connect">اتصال / تحديث</string>
+    <string name="remote_on">تشغيل</string>
+    <string name="remote_off">إيقاف</string>
+    <string name="remote_not_connected">وحدة التحكم البعيدة غير متصلة.</string>
+    <string name="power_limit_enable">إيقاف المخرج عند تجاوز حد القدرة</string>
+    <string name="power_limit_w_hint">حد فصل القدرة (واط)</string>
+    <string name="select_device_first">اختر جهازًا من الأسطول أولاً.</string>
+    <string name="all_rooms">كل الغرف</string>
+    <string name="fleet_no_devices">لا توجد أجهزة في هذه الغرفة</string>
+    <string name="unknown_value">غير معروف</string>
+    <string name="not_connected">غير متصل</string>
+    <string name="fleet_status_format">متصل %1$d / %2$d · آخر ظهور %3$s · مدة الاتصال %4$s</string>
+    <string name="history_summary_format">اليوم %1$.3f ك.و.س · الأسبوع %2$.3f · الشهر %3$.3f · أعلى قدرة اليوم %4$.0f واط</string>
+    <string name="alert_limits_saved">تم حفظ حدود التنبيهات</string>
+    <string name="token_copied">تم نسخ رمز الوصول</string>
+    <string name="access_created">تم إنشاء صلاحية لـ %1$s · %2$s</string>
+    <string name="no_shared_users">لا توجد صلاحيات مشاركة</string>
+    <string name="remote_connecting">جارٍ الاتصال بوحدة التحكم البعيدة…</string>
+    <string name="remote_no_devices">لم تُرجع وحدة التحكم أجهزة.</string>
+    <string name="remote_connected_count">تم الاتصال عن بُعد · عدد الأجهزة %1$d</string>
+    <string name="remote_failed">فشل التحكم عن بُعد: %1$s</string>
+    <string name="remote_sending">جارٍ إرسال أمر التحكم…</string>
+    <string name="remote_command_sent">%1$s · المخرج %2$d · تم إرسال %3$s</string>
+    <string name="wizard_need_security">أكد 2.4 جيجاهرتز + WPA2-Personal قبل البرمجة.</string>
+    <string name="setup_guard_required">يتطلب Setup Guard تأكيد 2.4 جيجاهرتز + WPA2-Personal.</string>
+    <string name="automation_invalid_power_limit">أدخل حد قدرة موجبًا بالواط.</string>
+    <string name="temperature_alert_title">تنبيه حرارة المشترك</string>
+    <string name="temperature_alert_body">وصلت الحرارة إلى %1$d°م (الحد %2$d°م).</string>
+    <string name="energy_alert_title">تنبيه الطاقة اليومية</string>
+    <string name="energy_alert_body">وصل استهلاك اليوم المسجل إلى %1$.2f ك.و.س (الحد %2$.2f).</string>
+    <string-array name="share_role_labels">
+        <item>عرض</item><item>تحكم</item><item>مدير</item>
+    </string-array>
+    <string-array name="remote_outlet_labels">
+        <item>المخرج 1</item><item>المخرج 2</item><item>المخرج 3</item><item>المخرج 4</item>
+    </string-array>
+    <string name="wpa2_password_invalid">يجب أن تكون كلمة مرور WPA2-Personal من 8 إلى 63 حرفًا، أو مفتاح PSK سداسيًا من 64 حرفًا.</string>
+    <string name="automation_select_device">اختر جهازًا من الأسطول لضبط قواعد الأتمتة الخاصة به.</string>
+    <string name="forget_device">حذف الجهاز غير المتصل</string>
+    <string name="forget_device_disconnect_first">افصل الجهاز أولًا قبل حذفه من الأسطول.</string>
+    <string name="device_forgotten">تم حذف الجهاز من الأسطول المحلي.</string>
 </resources>

@@ -207,4 +207,70 @@
         <item>Paz–Per</item>
         <item>Cum–Cmt</item>
     </string-array>
+    <string name="fleet_title">Cihazlar / Filo</string>
+    <string name="local_first_badge">ÖNCE YEREL</string>
+    <string name="fleet_waiting">Bilinen veya bağlı MTTL-W01 cihazları bekleniyor.</string>
+    <string name="history_title">Enerji geçmişi</string>
+    <string name="history_waiting">Geçmişi görmek için bir cihaz seçin.</string>
+    <string name="history_no_events">Yakın zamanda olay yok.</string>
+    <string name="setup_guard_confirm">Hedef Wi-Fi/hotspot’un 2.4 GHz ve WPA2-Personal olduğunu doğruladım</string>
+    <string name="alert_limits_title">Uyarı eşikleri</string>
+    <string name="alert_limits_note">Güç uyarısı varsayılan 3000 W. Sıcaklık ve günlük enerji boş bırakılırsa devre dışıdır.</string>
+    <string name="alert_power_hint">Yüksek yük uyarı eşiği (W)</string>
+    <string name="alert_temp_hint">Sıcaklık uyarı eşiği (°C, isteğe bağlı)</string>
+    <string name="alert_energy_hint">Günlük enerji uyarısı (kWh, isteğe bağlı)</string>
+    <string name="save_alert_limits">Uyarı eşiklerini kaydet</string>
+    <string name="sharing_title">Kullanıcılar, Paylaşım ve Home Assistant</string>
+    <string name="api_endpoint_waiting">Yerel API IP henüz algılanmadı · port 18086</string>
+    <string name="share_name_hint">Kullanıcı / entegrasyon adı</string>
+    <string name="create_access">Erişim oluştur</string>
+    <string name="create_ha_token">Home Assistant tokeni</string>
+    <string name="share_token_waiting">Yeni erişim tokeni burada görünür. Kopyalamak için dokunun.</string>
+    <string name="revoke_access">Seçili erişimi iptal et</string>
+    <string name="sharing_security_note">View yalnızca okur. Control prizleri anahtarlar. Admin Control yetkisini içerir. API’yi güvenilir LAN/VPN veya HTTPS arkasında kullanın.</string>
+    <string name="remote_control_title">Uzaktan Kontrol</string>
+    <string name="remote_control_note">Başka bir FG Machines RCK denetleyicisine HTTPS/VPN uç noktası üzerinden bağlanın. Yerel kontrol varsayılandır.</string>
+    <string name="remote_endpoint_hint">Uzak uç nokta, ör. https://rck.example.com</string>
+    <string name="remote_token_hint">Erişim tokeni</string>
+    <string name="remote_connect">Bağlan / Yenile</string>
+    <string name="remote_on">AÇ</string>
+    <string name="remote_off">KAPAT</string>
+    <string name="remote_not_connected">Uzak denetleyici bağlı değil.</string>
+    <string name="power_limit_enable">Güç sınırı aşılınca prizi kapat</string>
+    <string name="power_limit_w_hint">Güç kesme eşiği (W)</string>
+    <string name="select_device_first">Önce bir filo cihazı seçin.</string>
+    <string name="all_rooms">Tüm odalar</string>
+    <string name="fleet_no_devices">Bu odada cihaz yok</string>
+    <string name="unknown_value">bilinmiyor</string>
+    <string name="not_connected">çevrimdışı</string>
+    <string name="fleet_status_format">Çevrimiçi %1$d / %2$d · Son görülme %3$s · Çalışma %4$s</string>
+    <string name="history_summary_format">Bugün %1$.3f kWh · Hafta %2$.3f · Ay %3$.3f · Bugün tepe %4$.0f W</string>
+    <string name="alert_limits_saved">Uyarı eşikleri kaydedildi</string>
+    <string name="token_copied">Erişim tokeni kopyalandı</string>
+    <string name="access_created">%1$s için erişim oluşturuldu · %2$s</string>
+    <string name="no_shared_users">Paylaşılan kullanıcı yok</string>
+    <string name="remote_connecting">Uzak denetleyiciye bağlanılıyor…</string>
+    <string name="remote_no_devices">Uzak cihaz bulunamadı.</string>
+    <string name="remote_connected_count">Uzak bağlantı kuruldu · %1$d cihaz</string>
+    <string name="remote_failed">Uzaktan kontrol başarısız: %1$s</string>
+    <string name="remote_sending">Uzak komut gönderiliyor…</string>
+    <string name="remote_command_sent">%1$s · priz %2$d · %3$s gönderildi</string>
+    <string name="wizard_need_security">Kurulumdan önce 2.4 GHz + WPA2-Personal onayını verin.</string>
+    <string name="setup_guard_required">Setup Guard için 2.4 GHz + WPA2-Personal onayı gerekir.</string>
+    <string name="automation_invalid_power_limit">Pozitif bir watt sınırı girin.</string>
+    <string name="temperature_alert_title">Priz sıcaklık uyarısı</string>
+    <string name="temperature_alert_body">Sıcaklık %1$d°C’ye ulaştı (eşik %2$d°C).</string>
+    <string name="energy_alert_title">Günlük enerji uyarısı</string>
+    <string name="energy_alert_body">Bugünkü kayıtlı enerji %1$.2f kWh oldu (eşik %2$.2f kWh).</string>
+    <string-array name="share_role_labels">
+        <item>Görüntüle</item><item>Kontrol</item><item>Yönetici</item>
+    </string-array>
+    <string-array name="remote_outlet_labels">
+        <item>Priz 1</item><item>Priz 2</item><item>Priz 3</item><item>Priz 4</item>
+    </string-array>
+    <string name="wpa2_password_invalid">WPA2-Personal parolası 8–63 karakter olmalı veya 64 karakterlik onaltılık PSK olmalıdır.</string>
+    <string name="automation_select_device">Otomasyon kurallarını ayarlamak için bir filo cihazı seçin.</string>
+    <string name="forget_device">Çevrimdışı cihazı unut</string>
+    <string name="forget_device_disconnect_first">Cihazı filodan kaldırmadan önce bağlantısını kesin.</string>
+    <string name="device_forgotten">Cihaz yerel filodan kaldırıldı.</string>
 </resources>
