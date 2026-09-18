@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,18 +36,24 @@ public final class AccessControlStore {
         String safeName = name == null || name.trim().isEmpty() ? "Shared user" : name.trim();
         Role safeRole = role == null ? Role.VIEW : role;
         String token = generateToken();
+        String tokenHash = hashToken(token);
         Set<String> copy = new HashSet<>(prefs.getStringSet(KEY_ENTRIES, Collections.emptySet()));
-        copy.add(encode(safeName, safeRole, token));
+        copy.add(encode(safeName, safeRole, tokenHash));
         prefs.edit().putStringSet(KEY_ENTRIES, copy).apply();
-        return new AccessEntry(safeName, safeRole, token);
+        return new AccessEntry(safeName, safeRole, token, tokenHash);
     }
 
     public synchronized void revoke(String token) {
         if (token == null) return;
+        revokeKey(hashToken(token));
+    }
+
+    public synchronized void revokeKey(String tokenHash) {
+        if (tokenHash == null || tokenHash.isEmpty()) return;
         Set<String> copy = new HashSet<>(prefs.getStringSet(KEY_ENTRIES, Collections.emptySet()));
         copy.removeIf(raw -> {
             AccessEntry entry = decode(raw);
-            return entry != null && token.equals(entry.token);
+            return entry != null && tokenHash.equals(entry.tokenHash);
         });
         prefs.edit().putStringSet(KEY_ENTRIES, copy).apply();
     }
@@ -63,7 +71,7 @@ public final class AccessControlStore {
     public Role roleForToken(String token) {
         if (token == null || token.trim().isEmpty()) return null;
         for (AccessEntry entry : list()) {
-            if (constantTimeEquals(entry.token, token.trim())) return entry.role;
+            if (constantTimeEquals(entry.tokenHash, hashToken(token.trim()))) return entry.role;
         }
         return null;
     }
@@ -73,10 +81,10 @@ public final class AccessControlStore {
         return role != null && role.allows(required);
     }
 
-    static String encode(String name, Role role, String token) {
+    static String encode(String name, Role role, String tokenHash) {
         String safeName = Base64.encodeToString(
                 name.getBytes(java.nio.charset.StandardCharsets.UTF_8), Base64.NO_WRAP);
-        return safeName + "|" + role.name() + "|" + token;
+        return safeName + "|" + role.name() + "|" + tokenHash;
     }
 
     static AccessEntry decode(String raw) {
@@ -88,9 +96,19 @@ public final class AccessControlStore {
                     java.nio.charset.StandardCharsets.UTF_8);
             Role role = Role.valueOf(parts[1]);
             if (parts[2].length() < 20) return null;
-            return new AccessEntry(name, role, parts[2]);
+            return new AccessEntry(name, role, "", parts[2]);
         } catch (IllegalArgumentException error) {
             return null;
+        }
+    }
+
+    private static String hashToken(String token) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+        } catch (NoSuchAlgorithmException error) {
+            throw new IllegalStateException("SHA-256 unavailable", error);
         }
     }
 
@@ -114,8 +132,12 @@ public final class AccessControlStore {
         public final String name;
         public final Role role;
         public final String token;
-        AccessEntry(String name, Role role, String token) {
-            this.name = name; this.role = role; this.token = token;
+        public final String tokenHash;
+        AccessEntry(String name, Role role, String token, String tokenHash) {
+            this.name = name;
+            this.role = role;
+            this.token = token;
+            this.tokenHash = tokenHash;
         }
     }
 }
