@@ -41,7 +41,7 @@ public class ApplianceDiagnosticsCatalogTest {
     @Test public void xiaomiVacuumCodeIsModelScoped() {
         List<ApplianceDiagnosticsCatalog.Match> matches =
                 ApplianceDiagnosticsCatalog.search(
-                        "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "10", "");
+                        "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum Mop", "10", "");
         assertFalse(matches.isEmpty());
         assertEquals("Xiaomi", matches.get(0).entry.brand);
         assertTrue(matches.get(0).modelVerified);
