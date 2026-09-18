@@ -20,6 +20,11 @@ public class HardwareCatalogTest {
         assertEquals("MTD-01 / PM-M130-ZW", p.displayModel);
         assertEquals(2, p.usbPortCount);
         assertEquals(3500, p.maxPowerW);
+        assertEquals(0x018C, p.zwaveManufacturerId);
+        assertEquals(0x0042, p.zwaveProductTypeId);
+        assertEquals(0x0007, p.zwaveProductId);
+        assertTrue(p.zwaveCommandClasses.contains("Switch Binary"));
+        assertTrue(p.zwaveCommandClasses.contains("Meter v3"));
     }
 
     @Test public void doesNotTreatDawonAsMttl() {
