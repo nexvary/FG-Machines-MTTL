@@ -536,6 +536,7 @@ public class MainActivity extends AppCompatActivity {
                     .putLong(PREF_TARIFF, Double.doubleToRawLongBits(value))
                     .apply();
             updateEstimatedCost();
+            refreshHistory();
             Snackbar.make(saveTariffButton, R.string.tariff_saved, Snackbar.LENGTH_SHORT).show();
         });
 
