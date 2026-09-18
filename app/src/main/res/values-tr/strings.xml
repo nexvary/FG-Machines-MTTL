@@ -406,4 +406,19 @@ Son: %3$s</string>
     <string name="usb_discovery_complete_format">Keşif tamamlandı · bilinmeyen çerçeve %1$d
 Son: %2$s</string>
 
+
+    <string name="fleet_overview_waiting">Cihazlar kaydedildiğinde filo özeti gösterilir.</string>
+    <string name="fleet_list_waiting">Geçerli oda filtresine uyan cihaz yok.</string>
+    <string name="fleet_online">ÇEVRİMİÇİ</string>
+    <string name="fleet_offline">ÇEVRİMDIŞI</string>
+    <string name="room_unassigned">Oda yok</string>
+    <string name="fleet_scope_all">Tüm odalar</string>
+    <string name="fleet_scope_room">Oda: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Cihaz %2$d · Çevrimiçi %3$d · Çevrimdışı %4$d
+Anlık yük %5$.0f W · Bildirilen enerji %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · ÇEVRİMİÇİ · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · ÇEVRİMDIŞI · Son görülme %3$s</string>
+    <string name="room_all_off_count">ODAYI KAPAT (%1$d)</string>
+    <string name="fleet_all_off_count">TÜMÜNÜ KAPAT (%1$d)</string>
+
 </resources>
