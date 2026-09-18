@@ -406,4 +406,19 @@ Letzter: %3$s</string>
     <string name="usb_discovery_complete_format">Erkennung abgeschlossen · unbekannte Rahmen %1$d
 Letzter: %2$s</string>
 
+
+    <string name="fleet_overview_waiting">Flottenübersicht erscheint nach dem Registrieren von Geräten.</string>
+    <string name="fleet_list_waiting">Keine Geräte entsprechen dem aktuellen Raumfilter.</string>
+    <string name="fleet_online">ONLINE</string>
+    <string name="fleet_offline">OFFLINE</string>
+    <string name="room_unassigned">Kein Raum</string>
+    <string name="fleet_scope_all">Alle Räume</string>
+    <string name="fleet_scope_room">Raum: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Geräte %2$d · Online %3$d · Offline %4$d
+Aktuelle Last %5$.0f W · Gemeldete Energie %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · ONLINE · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · OFFLINE · Zuletzt gesehen %3$s</string>
+    <string name="room_all_off_count">RAUM AUS (%1$d)</string>
+    <string name="fleet_all_off_count">ALLE AUS (%1$d)</string>
+
 </resources>
