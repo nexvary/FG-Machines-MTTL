@@ -37,4 +37,24 @@ public class ApplianceDiagnosticsCatalogTest {
         assertFalse(matches.isEmpty());
         assertTrue(matches.get(0).entry.codes.contains("5C"));
     }
+
+    @Test public void xiaomiVacuumCodeIsModelScoped() {
+        List<ApplianceDiagnosticsCatalog.Match> matches =
+                ApplianceDiagnosticsCatalog.search(
+                        "Xiaomi", "Robot Vacuum", "Mi Robot Vacuum-Mop", "10", "");
+        assertFalse(matches.isEmpty());
+        assertEquals("Xiaomi", matches.get(0).entry.brand);
+        assertTrue(matches.get(0).modelVerified);
+
+        assertTrue(ApplianceDiagnosticsCatalog.search(
+                "Xiaomi", "Robot Vacuum", "Robot Vacuum H50", "10", "").isEmpty());
+    }
+
+    @Test public void lgNoCoolingSymptomFindsOfficialGuidance() {
+        List<ApplianceDiagnosticsCatalog.Match> matches =
+                ApplianceDiagnosticsCatalog.search(
+                        "LG", "Air Conditioner", "", "", "لا يبرد");
+        assertFalse(matches.isEmpty());
+        assertTrue(matches.get(0).entry.sourceUrl.contains("lg.com"));
+    }
 }
