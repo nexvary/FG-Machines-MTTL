@@ -36,9 +36,16 @@ public final class MttlControllerService extends Service implements MttlControll
     private static final int ALERT_BASE_ID = 2000;
     private static final String PREFS = "fg_rck_settings";
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
+    public static final String PREF_ALERT_POWER_W = "alert_power_w";
+    public static final String PREF_ALERT_TEMP_C = "alert_temp_c";
+    public static final String PREF_ALERT_DAILY_ENERGY_KWH = "alert_daily_energy_kwh";
 
     private ControllerHub hub;
     private LocalAutomationEngine automationEngine;
+    private FleetStore fleetStore;
+    private HistoryStore historyStore;
+    private AccessControlStore accessStore;
+    private LocalApiServer localApiServer;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -46,6 +53,10 @@ public final class MttlControllerService extends Service implements MttlControll
         super.onCreate();
         createChannels();
         hub = ControllerHub.get(this);
+        fleetStore = new FleetStore(this);
+        historyStore = new HistoryStore(this);
+        accessStore = new AccessControlStore(this);
+        localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
         automationEngine = new LocalAutomationEngine(this, hub);
         automationEngine.start();
         hub.addListener(this, true);
@@ -61,6 +72,7 @@ public final class MttlControllerService extends Service implements MttlControll
         startForeground(CONTROLLER_NOTIFICATION_ID, buildControllerNotification());
         try {
             hub.start();
+            localApiServer.start();
         } catch (IOException error) {
             postAlert(getString(R.string.controller_service_error), safeMessage(error), ALERT_BASE_ID + 99);
         }
@@ -70,6 +82,8 @@ public final class MttlControllerService extends Service implements MttlControll
     @Override public void onDestroy() {
         if (hub != null) hub.removeListener(this);
         if (automationEngine != null) automationEngine.close();
+        if (localApiServer != null) localApiServer.close();
+        if (historyStore != null) historyStore.close();
         super.onDestroy();
     }
 
@@ -148,52 +162,100 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
-        connectedMacs.add(bootInfo.mac.toUpperCase());
-        lastAlertKeyByMac.remove(bootInfo.mac);
+        String mac = FleetStore.normalizeMac(bootInfo.mac);
+        connectedMacs.add(mac);
+        lastAlertKeyByMac.remove(mac);
+        if (fleetStore != null) fleetStore.register(mac, bootInfo.firmwareVersion, System.currentTimeMillis());
+        if (historyStore != null) historyStore.recordEvent(
+                mac, 0, "connected", remoteAddress, System.currentTimeMillis());
         updateControllerNotification();
     }
 
     @Override public void onDeviceDisconnected(String mac) {
-        if (mac != null) connectedMacs.remove(mac.toUpperCase());
+        String key = FleetStore.normalizeMac(mac);
+        if (!key.isEmpty()) connectedMacs.remove(key);
+        if (historyStore != null && !key.isEmpty()) historyStore.recordEvent(
+                key, 0, "disconnected", "", System.currentTimeMillis());
         updateControllerNotification();
         postAlert(getString(R.string.strip_offline_alert_title),
                 getString(R.string.strip_offline_alert_body), ALERT_BASE_ID + 1);
     }
 
-    @Override public void onOutletState(String mac, MttlProtocol.OutletState state) { }
+    @Override public void onOutletState(String mac, MttlProtocol.OutletState state) {
+        if (historyStore != null && state != null) {
+            historyStore.recordEvent(mac, state.outlet, "relay_state",
+                    state.on ? "on" : "off", System.currentTimeMillis());
+        }
+    }
 
     @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
         if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
+        long now = System.currentTimeMillis();
+        String key = FleetStore.normalizeMac(mac);
+        if (fleetStore != null && !key.isEmpty()) fleetStore.register(key, "", now);
+        if (historyStore != null) historyStore.recordTelemetry(key, telemetry, now);
+
         double totalPower = 0.0;
         String event = null;
         int hottest = Integer.MIN_VALUE;
+        boolean overload = false;
+        boolean overheat = false;
         for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
             totalPower += Math.max(0.0, outlet.powerW);
             hottest = Math.max(hottest, outlet.temperatureC);
+            overload |= outlet.overloadProtection;
+            overheat |= outlet.overheatProtection;
             if (!"00".equals(outlet.eventCode)) event = outlet.eventCode;
         }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        double powerThreshold = Math.max(1.0,
+                Double.longBitsToDouble(prefs.getLong(PREF_ALERT_POWER_W,
+                        Double.doubleToRawLongBits(3000.0))));
+        int tempThreshold = prefs.getInt(PREF_ALERT_TEMP_C, 0);
+        double energyThreshold = Double.longBitsToDouble(
+                prefs.getLong(PREF_ALERT_DAILY_ENERGY_KWH, Double.doubleToRawLongBits(0.0)));
 
         String alertKey = null;
         String title = null;
         String body = null;
-        if (event != null) {
-            alertKey = "event:" + event;
+        if (event != null || overload || overheat) {
+            String code = event == null ? (overload ? "OVERLOAD" : "OVERHEAT") : event;
+            alertKey = "event:" + code;
             title = getString(R.string.protection_alert_title);
-            body = getString(R.string.protection_alert_body, event);
-        } else if (totalPower > 3000.0) {
+            body = getString(R.string.protection_alert_body, code);
+        } else if (tempThreshold > 0 && hottest >= tempThreshold) {
+            alertKey = "temp:high";
+            title = getString(R.string.temperature_alert_title);
+            body = getString(R.string.temperature_alert_body, hottest, tempThreshold);
+        } else if (totalPower > powerThreshold) {
             alertKey = "power:high";
             title = getString(R.string.high_load_alert_title);
             body = getString(R.string.high_load_alert_body, totalPower);
+        } else if (energyThreshold > 0.0 && historyStore != null) {
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            calendar.set(java.util.Calendar.HOUR_OF_DAY, 0);
+            calendar.set(java.util.Calendar.MINUTE, 0);
+            calendar.set(java.util.Calendar.SECOND, 0);
+            calendar.set(java.util.Calendar.MILLISECOND, 0);
+            double today = historyStore.summary(key, calendar.getTimeInMillis()).energyDeltaKWh;
+            if (today >= energyThreshold) {
+                alertKey = "energy:daily";
+                title = getString(R.string.energy_alert_title);
+                body = getString(R.string.energy_alert_body, today, energyThreshold);
+            }
         }
 
         if (alertKey == null) {
-            lastAlertKeyByMac.remove(mac);
+            lastAlertKeyByMac.remove(key);
             return;
         }
-        String previous = lastAlertKeyByMac.get(mac);
+        String previous = lastAlertKeyByMac.get(key);
         if (alertKey.equals(previous)) return;
-        lastAlertKeyByMac.put(mac, alertKey);
-        int id = ALERT_BASE_ID + Math.abs(mac.hashCode() % 500);
+        lastAlertKeyByMac.put(key, alertKey);
+        if (historyStore != null) historyStore.recordEvent(
+                key, 0, "alert", alertKey, now);
+        int id = ALERT_BASE_ID + Math.abs(key.hashCode() % 500);
         postAlert(title, body, id);
     }
 
