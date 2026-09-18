@@ -287,4 +287,20 @@
     <string name="history_exported">Verlauf als CSV exportiert.</string>
     <string name="history_export_failed">Export des Verlaufs fehlgeschlagen: %1$s</string>
     <string name="remote_security_note">Öffentliche Remote-Endpunkte müssen HTTPS verwenden. HTTP ist nur für lokale/private VPN-Adressen erlaubt.</string>
+    <string name="scenes_title">Szenen</string>
+    <string name="scenes_note">Aktuellen Zustand der vier Ausgänge dieser Leiste speichern und später mit einer Bestätigung anwenden.</string>
+    <string name="scene_name_hint">Szenenname</string>
+    <string name="save_current_scene">Aktuellen Zustand speichern</string>
+    <string name="apply_scene">Anwenden</string>
+    <string name="delete_scene">Löschen</string>
+    <string name="scenes_waiting">Ein Flottengerät auswählen, um lokale Szenen zu verwenden.</string>
+    <string name="no_scenes">Für dieses Gerät sind keine Szenen gespeichert.</string>
+    <string name="scene_saved">Szene gespeichert: %1$s</string>
+    <string name="scene_deleted">Szene gelöscht.</string>
+    <string name="scene_name_required">Zuerst einen Szenennamen eingeben.</string>
+    <string name="scene_device_offline">Die ausgewählte Leiste muss verbunden sein, um eine Szene anzuwenden.</string>
+    <string name="confirm_scene_apply">Szene %1$s anwenden? %2$d Ausgänge werden EIN sein.</string>
+    <string name="scene_applied">Szene angewendet · Befehle gesendet: %1$d · Fehler: %2$d</string>
+    <string name="history_cost_waiting">Stromtarif festlegen, um historische Kosten zu berechnen.</string>
+    <string name="history_cost_format">Kosten · heute %1$.2f EGP · Woche %2$.2f EGP · Monat %3$.2f EGP</string>
 </resources>
