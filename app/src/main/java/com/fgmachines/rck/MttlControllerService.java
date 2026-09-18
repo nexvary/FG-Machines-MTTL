@@ -38,6 +38,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
 
     private ControllerHub hub;
+    private LocalAutomationEngine automationEngine;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -45,6 +46,8 @@ public final class MttlControllerService extends Service implements MttlControll
         super.onCreate();
         createChannels();
         hub = ControllerHub.get(this);
+        automationEngine = new LocalAutomationEngine(this, hub);
+        automationEngine.start();
         hub.addListener(this, true);
     }
 
@@ -66,6 +69,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     @Override public void onDestroy() {
         if (hub != null) hub.removeListener(this);
+        if (automationEngine != null) automationEngine.close();
         super.onDestroy();
     }
 
@@ -159,6 +163,7 @@ public final class MttlControllerService extends Service implements MttlControll
     @Override public void onOutletState(String mac, MttlProtocol.OutletState state) { }
 
     @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
+        if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
         double totalPower = 0.0;
         String event = null;
         int hottest = Integer.MIN_VALUE;

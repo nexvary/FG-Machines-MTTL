@@ -183,4 +183,28 @@
     <string name="background_controller_note">Mantiene TCP 10086 activo al salir de la app para que la regleta siga conectada al teléfono.</string>
     <string name="safety_alerts">Notificaciones de seguridad y desconexión</string>
     <string name="safety_alerts_note">Alertas locales por desconexión, eventos de protección y cargas superiores a 3.000 W.</string>
+    <string name="automation_title">Automatización local</string>
+    <string name="automation_note">Los temporizadores y horarios se ejecutan localmente en este teléfono controlador. Mantén activo el hotspot y el servicio de control.</string>
+    <string name="automation_none">No hay reglas de automatización activas</string>
+    <string name="automation_active_count">Reglas de automatización activas: %1$d</string>
+    <string name="automation_outlet_1">Automatización de salida 1</string>
+    <string name="automation_outlet_2">Automatización de salida 2</string>
+    <string name="automation_outlet_3">Automatización de salida 3</string>
+    <string name="automation_outlet_4">Automatización de salida 4</string>
+    <string name="auto_off_enable">Temporizador de apagado automático</string>
+    <string name="auto_off_minutes_hint">Minutos antes del apagado</string>
+    <string name="schedule_enable">Horario diario</string>
+    <string name="schedule_on_hint">ENCENDER HH:mm</string>
+    <string name="schedule_off_hint">APAGAR HH:mm</string>
+    <string name="save_automation">Guardar automatización</string>
+    <string name="automation_background_note">Los horarios se comprueban cada 15 segundos en segundo plano. El temporizador empieza cuando la telemetría indica que la salida está encendida.</string>
+    <string name="automation_invalid_minutes">Introduce un número de minutos mayor que cero.</string>
+    <string name="automation_invalid_time">Usa el formato de 24 horas HH:mm.</string>
+    <string name="automation_fix_fields">Revisa los valores de automatización antes de guardar.</string>
+    <string name="automation_saved">Automatización guardada · reglas activas: %1$d</string>
+    <string-array name="automation_day_mode_labels">
+        <item>Todos los días</item>
+        <item>Dom–Jue</item>
+        <item>Vie–Sáb</item>
+    </string-array>
 </resources>

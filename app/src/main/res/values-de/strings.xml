@@ -183,4 +183,28 @@
     <string name="background_controller_note">Hält TCP 10086 aktiv, wenn die App verlassen wird, damit die Leiste mit diesem Telefon verbunden bleibt.</string>
     <string name="safety_alerts">Sicherheits- und Offline-Benachrichtigungen</string>
     <string name="safety_alerts_note">Lokale Warnungen bei Trennung, Schutzereignissen und Lasten über 3.000 W.</string>
+    <string name="automation_title">Lokale Automatisierung</string>
+    <string name="automation_note">Timer und Zeitpläne laufen lokal auf diesem Controller-Telefon. Hotspot und Controller-Dienst müssen aktiv bleiben.</string>
+    <string name="automation_none">Keine Automatisierungsregel aktiv</string>
+    <string name="automation_active_count">Aktive Automatisierungsregeln: %1$d</string>
+    <string name="automation_outlet_1">Automatisierung Ausgang 1</string>
+    <string name="automation_outlet_2">Automatisierung Ausgang 2</string>
+    <string name="automation_outlet_3">Automatisierung Ausgang 3</string>
+    <string name="automation_outlet_4">Automatisierung Ausgang 4</string>
+    <string name="auto_off_enable">Automatischer Abschalttimer</string>
+    <string name="auto_off_minutes_hint">Minuten bis zum automatischen Ausschalten</string>
+    <string name="schedule_enable">Täglicher Zeitplan</string>
+    <string name="schedule_on_hint">EIN HH:mm</string>
+    <string name="schedule_off_hint">AUS HH:mm</string>
+    <string name="save_automation">Automatisierung speichern</string>
+    <string name="automation_background_note">Zeitpläne werden im Hintergrunddienst alle 15 Sekunden geprüft. Der Abschalttimer startet, sobald die Live-Telemetrie den Ausgang als eingeschaltet meldet.</string>
+    <string name="automation_invalid_minutes">Eine positive Minutenanzahl eingeben.</string>
+    <string name="automation_invalid_time">24-Stunden-Format HH:mm verwenden.</string>
+    <string name="automation_fix_fields">Automatisierungswerte vor dem Speichern prüfen.</string>
+    <string name="automation_saved">Automatisierung gespeichert · aktive Regeln: %1$d</string>
+    <string-array name="automation_day_mode_labels">
+        <item>Jeden Tag</item>
+        <item>So–Do</item>
+        <item>Fr–Sa</item>
+    </string-array>
 </resources>

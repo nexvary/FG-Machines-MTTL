@@ -191,4 +191,28 @@
     <string name="background_controller_note">Keeps TCP 10086 active when you leave the app so the strip can stay connected to this phone.</string>
     <string name="safety_alerts">Safety and offline notifications</string>
     <string name="safety_alerts_note">Alerts are generated locally for disconnects, reported protection events and loads above 3,000 W.</string>
+    <string name="automation_title">Local automation</string>
+    <string name="automation_note">Timers and schedules run locally on this controller phone. Keep the hotspot/controller service active.</string>
+    <string name="automation_none">No automation rules enabled</string>
+    <string name="automation_active_count">%1$d automation rule(s) enabled</string>
+    <string name="automation_outlet_1">Outlet 1 automation</string>
+    <string name="automation_outlet_2">Outlet 2 automation</string>
+    <string name="automation_outlet_3">Outlet 3 automation</string>
+    <string name="automation_outlet_4">Outlet 4 automation</string>
+    <string name="auto_off_enable">Auto-off timer</string>
+    <string name="auto_off_minutes_hint">Minutes before automatic off</string>
+    <string name="schedule_enable">Daily schedule</string>
+    <string name="schedule_on_hint">ON HH:mm</string>
+    <string name="schedule_off_hint">OFF HH:mm</string>
+    <string name="save_automation">Save automation</string>
+    <string name="automation_background_note">Schedules are checked every 15 seconds in the background service. Auto-off starts when live telemetry reports that the outlet is ON.</string>
+    <string name="automation_invalid_minutes">Enter a positive number of minutes.</string>
+    <string name="automation_invalid_time">Use 24-hour HH:mm format.</string>
+    <string name="automation_fix_fields">Check the automation values before saving.</string>
+    <string name="automation_saved">Automation saved · %1$d rule(s) enabled</string>
+    <string-array name="automation_day_mode_labels">
+        <item>Every day</item>
+        <item>Sun–Thu</item>
+        <item>Fri–Sat</item>
+    </string-array>
 </resources>

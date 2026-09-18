@@ -183,4 +183,28 @@
     <string name="background_controller_note">تحافظ على TCP 10086 فعالًا عند مغادرة التطبيق حتى يبقى المشترك متصلًا بهذا الهاتف.</string>
     <string name="safety_alerts">تنبيهات الحماية والانقطاع</string>
     <string name="safety_alerts_note">تنبيهات محلية عند انقطاع الاتصال أو وصول حدث حماية من المشترك أو تجاوز الحمل 3000 واط.</string>
+    <string name="automation_title">الأتمتة المحلية</string>
+    <string name="automation_note">المؤقتات والجداول تعمل محليًا على هاتف التحكم. اترك نقطة الاتصال وخدمة وحدة التحكم تعمل.</string>
+    <string name="automation_none">لا توجد قواعد أتمتة مفعلة</string>
+    <string name="automation_active_count">عدد قواعد الأتمتة المفعلة: %1$d</string>
+    <string name="automation_outlet_1">أتمتة المخرج 1</string>
+    <string name="automation_outlet_2">أتمتة المخرج 2</string>
+    <string name="automation_outlet_3">أتمتة المخرج 3</string>
+    <string name="automation_outlet_4">أتمتة المخرج 4</string>
+    <string name="auto_off_enable">مؤقت إيقاف تلقائي</string>
+    <string name="auto_off_minutes_hint">عدد الدقائق قبل الإيقاف</string>
+    <string name="schedule_enable">جدول تشغيل يومي</string>
+    <string name="schedule_on_hint">تشغيل HH:mm</string>
+    <string name="schedule_off_hint">إيقاف HH:mm</string>
+    <string name="save_automation">حفظ الأتمتة</string>
+    <string name="automation_background_note">يتم فحص الجداول كل 15 ثانية في خدمة الخلفية. يبدأ مؤقت الإيقاف عندما ترسل القياسات أن المخرج في حالة تشغيل.</string>
+    <string name="automation_invalid_minutes">أدخل عدد دقائق صحيحًا أكبر من صفر.</string>
+    <string name="automation_invalid_time">استخدم تنسيق 24 ساعة HH:mm.</string>
+    <string name="automation_fix_fields">راجع قيم الأتمتة قبل الحفظ.</string>
+    <string name="automation_saved">تم حفظ الأتمتة · القواعد المفعلة: %1$d</string>
+    <string-array name="automation_day_mode_labels">
+        <item>كل يوم</item>
+        <item>الأحد–الخميس</item>
+        <item>الجمعة–السبت</item>
+    </string-array>
 </resources>
