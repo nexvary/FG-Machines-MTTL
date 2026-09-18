@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.2.1
+## Current Android baseline — 1.3.1
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -12,6 +12,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Local TCP controller on port `10086` for compatible MTTL firmware.
 - Validated parser for `bootinfo`, four-channel `getinfo` telemetry and outlet state events.
 - Independent outlet commands `1..4` are enabled only after a peer identifies itself with a valid MTTL `lgutap` boot frame.
+- USB1/USB2 are represented explicitly as charging ports, but independent USB switching remains disabled because only four AC relay channels are verified. Passive USB hardware discovery records unknown inbound frames without sending guessed channel 5/6 commands.
 - Periodic local status polling and live relay-state synchronization.
 - Live energy dashboard showing per-outlet and total power, reported energy, temperature, protection/event codes and manual refresh.
 - Local EGP/kWh tariff setting with estimated energy cost.
