@@ -44,8 +44,19 @@ jobs:
       - name: Validate Home Assistant integration syntax
         run: python3 -m compileall -q home_assistant/custom_components/fg_machines_rck
 
-      - name: Test, lint and build isolated debug APK
-        run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
+      - name: Test, lint and build isolated debug + side-by-side APK
+        run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar
+
+      - name: Verify side-by-side package identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -n 1)"
+          test -n "$AAPT"
+          APK="app/build/outputs/apk/sidecar/app-sidecar.apk"
+          "$AAPT" dump badging "$APK" | tee /tmp/sidecar-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar134'" /tmp/sidecar-badging.txt
+          grep -q "application-label:'FG Machines RCK 1.3.4 Test'" /tmp/sidecar-badging.txt
 
       - name: Prepare private release signing
         if: env.FG_RCK_KEYSTORE_B64 != ''
@@ -95,6 +106,13 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
+      - name: Upload side-by-side 1.3.4 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FG-Machines-RCK-1.3.4-side-by-side
+          path: app/build/outputs/apk/sidecar/app-sidecar.apk
+          if-no-files-found: error
+
 
   ui-screenshot:
     needs: build
@@ -105,7 +123,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: FG-Machines-RCK-debug-separate-package
-          path: apk
+          path: apk-debug
+
+      - name: Download side-by-side APK
+        uses: actions/download-artifact@v4
+        with:
+          name: FG-Machines-RCK-1.3.4-side-by-side
+          path: apk-sidecar
 
       - name: Capture real app dashboard screenshot
         uses: reactivecircus/android-emulator-runner@v2
@@ -115,24 +139,20 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
-            adb install -r apk/app-debug.apk
-            adb shell am force-stop com.fgmachines.rck.debug
-            adb shell am start -n com.fgmachines.rck.debug/com.fgmachines.rck.MainActivity
+            adb install apk-debug/app-debug.apk
+            adb install apk-sidecar/app-sidecar.apk
+            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar134'
+            adb shell am force-stop com.fgmachines.rck.sidecar134
+            adb shell am start -n com.fgmachines.rck.sidecar134/com.fgmachines.rck.MainActivity
             sleep 20
             adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
             adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
             adb shell cat /sdcard/fg-rck-ui.xml || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.3.3-dashboard.png
-            adb shell am start -n com.fgmachines.rck.debug/com.fgmachines.rck.DiagnosticsActivity
-            sleep 5
-            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.3.3-diagnostics.png
+            adb exec-out screencap -p > FG-Machines-RCK-1.3.4-sidecar-dashboard.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.3-screenshot
-          path: |
-            FG-Machines-RCK-1.3.3-dashboard.png
-            FG-Machines-RCK-1.3.3-diagnostics.png
+          name: FG-Machines-RCK-1.3.4-sidecar-screenshot
+          path: FG-Machines-RCK-1.3.4-sidecar-dashboard.png
           if-no-files-found: error
