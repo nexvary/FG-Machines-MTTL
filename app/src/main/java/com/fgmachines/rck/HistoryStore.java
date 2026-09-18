@@ -13,6 +13,9 @@ public final class HistoryStore extends SQLiteOpenHelper {
     private static final String DB_NAME = "fg_rck_history.db";
     private static final int DB_VERSION = 1;
     private static final long SAMPLE_INTERVAL_MS = 30_000L;
+    private static final long RETENTION_MS = 90L * 24L * 60L * 60L * 1000L;
+    private static final long PRUNE_INTERVAL_MS = 6L * 60L * 60L * 1000L;
+    private volatile long lastPruneAt;
 
     public HistoryStore(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, DB_VERSION);
@@ -45,6 +48,7 @@ public final class HistoryStore extends SQLiteOpenHelper {
         if (key.isEmpty()) return;
 
         SQLiteDatabase db = getWritableDatabase();
+        pruneIfNeeded(db, now);
         long last = 0L;
         try (Cursor cursor = db.rawQuery(
                 "SELECT ts FROM telemetry WHERE mac=? ORDER BY ts DESC LIMIT 1",
@@ -70,6 +74,14 @@ public final class HistoryStore extends SQLiteOpenHelper {
         values.put("energy_kwh", energy);
         values.put("max_temp_c", maxTemp);
         db.insert("telemetry", null, values);
+    }
+
+    private void pruneIfNeeded(SQLiteDatabase db, long now) {
+        if (now - lastPruneAt < PRUNE_INTERVAL_MS) return;
+        long cutoff = now - RETENTION_MS;
+        db.delete("telemetry", "ts<?", new String[]{String.valueOf(cutoff)});
+        db.delete("events", "ts<?", new String[]{String.valueOf(cutoff)});
+        lastPruneAt = now;
     }
 
     public synchronized void recordEvent(String mac, int outlet, String kind, String detail, long now) {
