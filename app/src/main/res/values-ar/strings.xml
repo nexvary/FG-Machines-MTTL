@@ -368,4 +368,21 @@
     <string name="guided_compatibility_label">درجة التوافق</string>
     <string name="guided_open_source">فتح مصدر السيناريو</string>
 
+
+    <string name="camera_assist_title">مساعدة الكاميرا</string>
+    <string name="camera_assist_subtitle">قراءة شاشة الخطأ أو ملصق الجهاز محليًا باستخدام OCR وقراءة الباركود المضمّنين داخل التطبيق.</string>
+    <string name="camera_scan_display">تصوير شاشة الخطأ</string>
+    <string name="camera_scan_label">تصوير ملصق الموديل</string>
+    <string name="camera_result_waiting">لم يتم فحص صورة بعد.</string>
+    <string name="camera_processing">جارٍ قراءة النص والباركود…</string>
+    <string name="camera_capture_cancelled">تم إلغاء التصوير.</string>
+    <string name="camera_detected_brand">الشركة المكتشفة</string>
+    <string name="camera_detected_model">الموديل المكتشف</string>
+    <string name="camera_detected_code">كود الخطأ المكتشف</string>
+    <string name="camera_detected_barcodes">الباركود المكتشف</string>
+    <string name="camera_barcode_note">لا يُعتبر الباركود أو الرقم التسلسلي موديلًا إلا إذا كان له تطابق موثّق داخل قاعدة البيانات المحلية.</string>
+    <string name="camera_ocr_text">النص المقروء</string>
+    <string name="camera_no_result">لم يتم العثور على نص أو باركود واضح. أعد التصوير من مسافة أقرب وبإضاءة جيدة.</string>
+    <string name="camera_no_autofill">تمت قراءة الصورة لكن لم توجد قيمة آمنة للملء التلقائي. راجع النص المقروء يدويًا.</string>
+
 </resources>
