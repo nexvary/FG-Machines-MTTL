@@ -270,4 +270,7 @@
     </string-array>
     <string name="wpa2_password_invalid">La contraseña WPA2-Personal debe tener 8–63 caracteres o ser una PSK hexadecimal de 64 caracteres.</string>
     <string name="automation_select_device">Selecciona un dispositivo de la flota para configurar sus automatizaciones.</string>
+    <string name="forget_device">Olvidar dispositivo sin conexión</string>
+    <string name="forget_device_disconnect_first">Desconecta el dispositivo antes de eliminarlo de la flota.</string>
+    <string name="device_forgotten">Dispositivo eliminado de la flota local.</string>
 </resources>
