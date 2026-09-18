@@ -269,4 +269,5 @@
         <item>Salida 1</item><item>Salida 2</item><item>Salida 3</item><item>Salida 4</item>
     </string-array>
     <string name="wpa2_password_invalid">La contraseña WPA2-Personal debe tener 8–63 caracteres o ser una PSK hexadecimal de 64 caracteres.</string>
+    <string name="automation_select_device">Selecciona un dispositivo de la flota para configurar sus automatizaciones.</string>
 </resources>
