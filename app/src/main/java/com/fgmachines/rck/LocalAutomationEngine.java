@@ -151,8 +151,13 @@ public final class LocalAutomationEngine implements Closeable {
         }
     }
 
-    private static String deadlineKey(String mac, int channel) {
+    public static String deadlinePreferenceKey(String mac, int channel) {
+        if (mac == null) return "automation_deadline_unknown_" + channel;
         return "automation_deadline_" + mac.replace(":", "").replace("-", "") + "_" + channel;
+    }
+
+    private static String deadlineKey(String mac, int channel) {
+        return deadlinePreferenceKey(mac, channel);
     }
 
     @Override public void close() {
