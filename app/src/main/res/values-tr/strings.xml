@@ -348,4 +348,24 @@
     <string name="diagnostics_symptom_label">Belirti</string>
     <string name="diagnostics_rck_unavailable">Canlı RCK telemetri anlık görüntüsü mevcut değildi.</string>
 
+
+    <string name="guided_title">Yönlendirmeli Belirti Teşhisi</string>
+    <string name="guided_subtitle">Kısa soruları yanıtlayın. Kaynak destekli nedenler kural uyumuna göre sıralanır; puan arıza olasılığı değildir.</string>
+    <string name="guided_start">Yönlendirmeli teşhisi başlat</string>
+    <string name="guided_yes">Evet</string>
+    <string name="guided_no">Hayır</string>
+    <string name="guided_not_started">Yönlendirmeli teşhis başlatılmadı</string>
+    <string name="guided_question_waiting">Bir belirti profili seçin ve Başlat'a dokunun.</string>
+    <string name="guided_result_waiting">Sorular tamamlanınca sıralı nedenler burada görünecek.</string>
+    <string name="guided_select_profile">Önce bir belirti profili seçin.</string>
+    <string name="guided_progress_format">Soru %1$d / %2$d</string>
+    <string name="guided_progress_done">Tamamlandı · %1$d soru</string>
+    <string name="guided_question_complete">Soru formu tamamlandı.</string>
+    <string name="guided_complete">Bu kural setine göre en uyumlu nedenler:</string>
+    <string name="guided_score_note">Uyum puanları kural ağırlıklarıdır; olasılık değildir ve modele özel servis teşhisinin yerini tutmaz.</string>
+    <string name="guided_safe_action_label">Güvenli kontrol</string>
+    <string name="guided_service_boundary_label">Servis sınırı</string>
+    <string name="guided_compatibility_label">Uyum puanı</string>
+    <string name="guided_open_source">Profil kaynağını aç</string>
+
 </resources>
