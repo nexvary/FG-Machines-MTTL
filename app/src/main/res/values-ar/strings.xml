@@ -441,4 +441,20 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="hardware_identity_local_format">%1$s · %2$s
 جهاز تحكم محلي معروف. استخدم مسار إعداد واكتشاف MTTL.</string>
 
+
+    <string name="diagnostics_live_context_title">السياق الكهربائي الحي</string>
+    <string name="diagnostics_live_context_note">بيانات قراءة فقط من مخرج MTTL-W01 المحدد. تساعد في التشخيص ولا تستبدل بيانات الصيانة الخاصة بالموديل.</string>
+    <string name="diagnostics_refresh_live_context">تحديث السياق الكهربائي</string>
+    <string name="diagnostics_live_unavailable">اختر مشترك MTTL-W01 مسجلاً ومخرجًا لعرض البيانات الكهربائية الحية.</string>
+    <string name="diagnostics_live_device_offline">المشترك المحدد غير متصل أو لا يرسل Telemetry حيًا.</string>
+    <string name="diagnostics_live_no_outlet_data">لا توجد بيانات حية للمخرج المحدد.</string>
+    <string name="diagnostics_live_on">تشغيل</string>
+    <string name="diagnostics_live_off">إيقاف</string>
+    <string name="diagnostics_live_warning">تحذير</string>
+    <string name="diagnostics_live_normal">طبيعي</string>
+    <string name="diagnostics_live_none">لا يوجد</string>
+    <string name="diagnostics_live_format">المخرج %1$d · الريليه %2$s
+القدرة %3$.1f واط · الطاقة %4$.3f ك.و.س · الحرارة %5$d°م
+حمل زائد: %6$s · حرارة زائدة: %7$s · الحدث: %8$s</string>
+
 </resources>
