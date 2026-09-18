@@ -876,6 +876,7 @@ public class MainActivity extends AppCompatActivity {
         if (key.isEmpty()) return;
         activeMac = key;
         fleetStore.select(key);
+        migrateLegacyLabelsIfNeeded(key);
         ControllerHub.DeviceState state = controllerHub.state(key);
         activeFirmwareVersion = state == null ? null : state.firmwareVersion;
         applyDeviceNames();
@@ -910,6 +911,37 @@ public class MainActivity extends AppCompatActivity {
         }
         updateFleetStatus();
         refreshHistory();
+    }
+
+    private void migrateLegacyLabelsIfNeeded(String mac) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean("fleet_legacy_labels_migrated", false)) return;
+        FleetStore.DeviceRecord record = fleetStore.get(mac);
+        if (record == null) return;
+
+        String oldName = prefs.getString(PREF_STRIP_NAME, "");
+        String oldRoom = prefs.getString(PREF_ROOM_NAME, "");
+        boolean hasLegacy = (oldName != null && !oldName.trim().isEmpty())
+                || (oldRoom != null && !oldRoom.trim().isEmpty());
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            String oldOutlet = prefs.getString(PREF_OUTLET_NAME_PREFIX + outlet, "");
+            hasLegacy |= oldOutlet != null && !oldOutlet.trim().isEmpty();
+        }
+        if (!hasLegacy) {
+            prefs.edit().putBoolean("fleet_legacy_labels_migrated", true).apply();
+            return;
+        }
+
+        if (record.name.isEmpty() && record.room.isEmpty()) {
+            fleetStore.updateLabels(mac, oldName, oldRoom);
+        }
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            if (fleetStore.outletName(mac, outlet).isEmpty()) {
+                fleetStore.updateOutletName(mac, outlet,
+                        prefs.getString(PREF_OUTLET_NAME_PREFIX + outlet, ""));
+            }
+        }
+        prefs.edit().putBoolean("fleet_legacy_labels_migrated", true).apply();
     }
 
     private void updateFleetStatus() {
