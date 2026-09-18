@@ -158,7 +158,7 @@
     <string name="tariff_note">Wird nur auf diesem Telefon zur Kostenschätzung aus der gemeldeten Energie verwendet.</string>
     <string name="tariff_saved">Tarif gespeichert</string>
     <string name="setup_security_note">Wichtig: Ziel-Hotspot/Router muss 2,4 GHz und WPA2-Personal verwenden. Diese Anforderung wurde am MTTL-W01 physisch bestätigt.</string>
-    <string name="device_naming_title">Namen & Raum</string>
+    <string name="device_naming_title">Namen &amp; Raum</string>
     <string name="device_naming_note">Lokale Bezeichnungen werden nur auf diesem Telefon gespeichert und ändern die Firmware nicht.</string>
     <string name="strip_name_hint">Name der Steckdosenleiste</string>
     <string name="room_name_hint">Raum</string>
