@@ -348,4 +348,24 @@
     <string name="diagnostics_symptom_label">Síntoma</string>
     <string name="diagnostics_rck_unavailable">No había una instantánea de telemetría RCK en vivo disponible.</string>
 
+
+    <string name="guided_title">Diagnóstico guiado por síntomas</string>
+    <string name="guided_subtitle">Responde preguntas breves. Las causas se ordenan por reglas respaldadas por fuentes; la puntuación no es una probabilidad de fallo.</string>
+    <string name="guided_start">Iniciar diagnóstico guiado</string>
+    <string name="guided_yes">Sí</string>
+    <string name="guided_no">No</string>
+    <string name="guided_not_started">Diagnóstico guiado no iniciado</string>
+    <string name="guided_question_waiting">Elige un perfil de síntomas y pulsa Iniciar.</string>
+    <string name="guided_result_waiting">Las causas ordenadas aparecerán aquí tras las preguntas.</string>
+    <string name="guided_select_profile">Elige primero un perfil de síntomas.</string>
+    <string name="guided_progress_format">Pregunta %1$d de %2$d</string>
+    <string name="guided_progress_done">Completado · %1$d preguntas</string>
+    <string name="guided_question_complete">Cuestionario completado.</string>
+    <string name="guided_complete">Causas más compatibles según estas reglas:</string>
+    <string name="guided_score_note">Los puntos de compatibilidad son pesos de reglas, no probabilidades ni sustituyen un diagnóstico técnico específico del modelo.</string>
+    <string name="guided_safe_action_label">Comprobación segura</string>
+    <string name="guided_service_boundary_label">Límite de servicio</string>
+    <string name="guided_compatibility_label">Puntuación de compatibilidad</string>
+    <string name="guided_open_source">Abrir fuente del perfil</string>
+
 </resources>
