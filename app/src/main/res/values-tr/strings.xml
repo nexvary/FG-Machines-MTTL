@@ -306,4 +306,46 @@
     <string name="scene_selected_status">%1$s · 4 çıkıştan %2$d açık</string>
     <string name="scene_label_format">%1$s · %2$d/4 AÇIK</string>
     <string name="scene_ready">Sahne hazır. Uygulamak dört çıkışın durumunu değiştirir.</string>
+
+    <string name="diagnostics_home_action">Cihaz Arıza Teşhisi</string>
+    <string name="diagnostics_back">Geri</string>
+    <string name="diagnostics_title">Cihaz Arıza Teşhisi</string>
+    <string name="diagnostics_subtitle">Kaynak doğrulamalı hata kodları, belirtiler ve RCK bağlantılı geçmiş; çevrimdışı çalışır</string>
+    <string name="diagnostics_device_binding">Cihaz ve çıkış eşleştirme</string>
+    <string name="diagnostics_no_devices">Kayıtlı MTTL-W01 cihazı yok</string>
+    <string name="diagnostics_outlet_format">Çıkış %1$d</string>
+    <string name="diagnostics_binding_none">Bu çıkışa bağlı bir ev cihazı yok.</string>
+    <string name="diagnostics_binding_format">%1$s · çıkış %2$d</string>
+    <string name="diagnostics_brand_hint">Marka — ör. Samsung, Roborock</string>
+    <string name="diagnostics_category_hint">Kategori — çamaşır makinesi, klima, buzdolabı, robot süpürge…</string>
+    <string name="diagnostics_model_hint">Tam model / seri</string>
+    <string name="diagnostics_code_hint">Hata kodu / numarası</string>
+    <string name="diagnostics_symptom_hint">Belirti — ör. suyu boşaltmıyor, şarj olmuyor</string>
+    <string name="diagnostics_search">Teşhis et</string>
+    <string name="diagnostics_bind">Cihazı bağla</string>
+    <string name="diagnostics_result_title">Teşhis sonucu</string>
+    <string name="diagnostics_result_empty">Marka/model ile hata kodu veya belirti girin. Sonuçlar çevrimdışı kalır.</string>
+    <string name="diagnostics_no_match">Kaynak doğrulamalı eşleşme bulunamadı. Genel bir internet anlamı kullanmak yerine tam model/seri ve kodu kontrol edin.</string>
+    <string name="diagnostics_open_source">Resmî kaynağı aç</string>
+    <string name="diagnostics_record">Arıza geçmişine kaydet</string>
+    <string name="diagnostics_safety_title">Güvenlik sınırı</string>
+    <string name="diagnostics_safety_body">Yalnızca kullanıcı için güvenli kontroller gösterilir. Şebeke gerilimi bölmelerini açmayın, korumaları devre dışı bırakmayın, enerjili devrelerde çalışmayın veya kapalı/basınçlı soğutma devrelerini açmayın. Bu işler yetkili bir teknisyen gerektirir.</string>
+    <string name="diagnostics_history_title">Bu çıkışın arıza geçmişi</string>
+    <string name="diagnostics_history_empty">Bu çıkış için kayıtlı teşhis olayı yok.</string>
+    <string name="diagnostics_select_device">Önce bir MTTL-W01 seçin veya kaydedin.</string>
+    <string name="diagnostics_binding_requires_identity">Cihazı bağlamadan önce en az marka, kategori veya model girin.</string>
+    <string name="diagnostics_bound">Cihaz çıkışa bağlandı.</string>
+    <string name="diagnostics_search_before_record">Olayı kaydetmeden önce kaynak doğrulamalı bir teşhis çalıştırın.</string>
+    <string name="diagnostics_recorded">Teşhis olayı güncel RCK telemetri anlık görüntüsüyle kaydedildi.</string>
+    <string name="diagnostics_code_label">Kod</string>
+    <string name="diagnostics_meaning_label">Anlam</string>
+    <string name="diagnostics_causes_label">Olası nedenler</string>
+    <string name="diagnostics_safe_checks_label">Güvenli kontroller</string>
+    <string name="diagnostics_parts_label">Olası parçalar</string>
+    <string name="diagnostics_model_verify">Bu kodun modele özel olduğu kabul edilmeden önce tam model doğrulanmalıdır.</string>
+    <string name="diagnostics_service_label">Servis sınırı</string>
+    <string name="diagnostics_scope_label">Kaynak kapsamı</string>
+    <string name="diagnostics_symptom_label">Belirti</string>
+    <string name="diagnostics_rck_unavailable">Canlı RCK telemetri anlık görüntüsü mevcut değildi.</string>
+
 </resources>

@@ -306,4 +306,46 @@
     <string name="scene_selected_status">%1$s · %2$d von 4 Ausgängen EIN</string>
     <string name="scene_label_format">%1$s · %2$d/4 EIN</string>
     <string name="scene_ready">Szene bereit. Anwenden ändert den Zustand aller vier Ausgänge.</string>
+
+    <string name="diagnostics_home_action">Gerätediagnose</string>
+    <string name="diagnostics_back">Zurück</string>
+    <string name="diagnostics_title">Gerätediagnose</string>
+    <string name="diagnostics_subtitle">Offline-Fehlercodes, Symptome und RCK-verknüpfter Verlauf mit Quellenangabe</string>
+    <string name="diagnostics_device_binding">Gerät- und Ausgangszuordnung</string>
+    <string name="diagnostics_no_devices">Keine gespeicherten MTTL-W01-Geräte</string>
+    <string name="diagnostics_outlet_format">Ausgang %1$d</string>
+    <string name="diagnostics_binding_none">Mit diesem Ausgang ist kein Haushaltsgerät verknüpft.</string>
+    <string name="diagnostics_binding_format">%1$s · Ausgang %2$d</string>
+    <string name="diagnostics_brand_hint">Marke — z. B. Samsung, Roborock</string>
+    <string name="diagnostics_category_hint">Kategorie — Waschmaschine, Klimaanlage, Kühlschrank, Saugroboter…</string>
+    <string name="diagnostics_model_hint">Exaktes Modell / Baureihe</string>
+    <string name="diagnostics_code_hint">Fehlercode / Nummer</string>
+    <string name="diagnostics_symptom_hint">Symptom — z. B. pumpt nicht ab, lädt nicht</string>
+    <string name="diagnostics_search">Diagnostizieren</string>
+    <string name="diagnostics_bind">Gerät verknüpfen</string>
+    <string name="diagnostics_result_title">Diagnoseergebnis</string>
+    <string name="diagnostics_result_empty">Marke/Modell plus Fehlercode oder Symptom eingeben. Ergebnisse bleiben offline.</string>
+    <string name="diagnostics_no_match">Keine quellenverifizierte Übereinstimmung gefunden. Exaktes Modell/Baureihe und Code prüfen, statt eine allgemeine Internet-Bedeutung zu verwenden.</string>
+    <string name="diagnostics_open_source">Offizielle Quelle öffnen</string>
+    <string name="diagnostics_record">Im Fehlerverlauf speichern</string>
+    <string name="diagnostics_safety_title">Sicherheitsgrenze</string>
+    <string name="diagnostics_safety_body">Nur benutzersichere Prüfungen werden angezeigt. Keine Netzspannungsbereiche öffnen, Schutzfunktionen überbrücken, an spannungsführenden Stromkreisen arbeiten oder geschlossene bzw. unter Druck stehende Kältekreisläufe öffnen. Diese Arbeiten gehören zu qualifiziertem Fachpersonal.</string>
+    <string name="diagnostics_history_title">Fehlerverlauf für diesen Ausgang</string>
+    <string name="diagnostics_history_empty">Keine Diagnosevorfälle für diesen Ausgang gespeichert.</string>
+    <string name="diagnostics_select_device">Zuerst ein MTTL-W01 auswählen oder registrieren.</string>
+    <string name="diagnostics_binding_requires_identity">Vor dem Verknüpfen mindestens Marke, Kategorie oder Modell eingeben.</string>
+    <string name="diagnostics_bound">Gerät mit Ausgang verknüpft.</string>
+    <string name="diagnostics_search_before_record">Vor dem Speichern zuerst eine quellenverifizierte Diagnose ausführen.</string>
+    <string name="diagnostics_recorded">Diagnosevorfall mit aktuellem RCK-Telemetrie-Snapshot gespeichert.</string>
+    <string name="diagnostics_code_label">Code</string>
+    <string name="diagnostics_meaning_label">Bedeutung</string>
+    <string name="diagnostics_causes_label">Mögliche Ursachen</string>
+    <string name="diagnostics_safe_checks_label">Sichere Prüfungen</string>
+    <string name="diagnostics_parts_label">Mögliche Teile</string>
+    <string name="diagnostics_model_verify">Das genaue Modell muss geprüft werden, bevor dieser Code als modellspezifisch behandelt wird.</string>
+    <string name="diagnostics_service_label">Servicegrenze</string>
+    <string name="diagnostics_scope_label">Geltungsbereich der Quelle</string>
+    <string name="diagnostics_symptom_label">Symptom</string>
+    <string name="diagnostics_rck_unavailable">Kein Live-RCK-Telemetrie-Snapshot verfügbar.</string>
+
 </resources>

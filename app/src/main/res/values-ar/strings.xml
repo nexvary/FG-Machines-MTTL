@@ -306,4 +306,46 @@
     <string name="scene_selected_status">%1$s · عدد المخارج المشغلة %2$d من 4</string>
     <string name="scene_label_format">%1$s · تشغيل %2$d/4</string>
     <string name="scene_ready">المشهد جاهز. تطبيقه يغير حالات المخارج الأربعة.</string>
+
+    <string name="diagnostics_home_action">تشخيص الأجهزة المنزلية</string>
+    <string name="diagnostics_back">رجوع</string>
+    <string name="diagnostics_title">تشخيص الأجهزة المنزلية</string>
+    <string name="diagnostics_subtitle">أكواد وأعراض موثقة بالمصدر تعمل دون إنترنت مع سجل مرتبط ببيانات RCK</string>
+    <string name="diagnostics_device_binding">ربط الجهاز والمخرج</string>
+    <string name="diagnostics_no_devices">لا توجد أجهزة MTTL-W01 محفوظة</string>
+    <string name="diagnostics_outlet_format">المخرج %1$d</string>
+    <string name="diagnostics_binding_none">لا يوجد جهاز منزلي مرتبط بهذا المخرج.</string>
+    <string name="diagnostics_binding_format">%1$s · المخرج %2$d</string>
+    <string name="diagnostics_brand_hint">الشركة — مثال Samsung أو Roborock</string>
+    <string name="diagnostics_category_hint">النوع — غسالة، تكييف، ثلاجة، مكنسة روبوت…</string>
+    <string name="diagnostics_model_hint">الموديل / السلسلة بدقة</string>
+    <string name="diagnostics_code_hint">كود / رقم الخطأ</string>
+    <string name="diagnostics_symptom_hint">العَرَض — مثال: لا تصرف المياه أو لا تشحن</string>
+    <string name="diagnostics_search">تشخيص</string>
+    <string name="diagnostics_bind">ربط الجهاز</string>
+    <string name="diagnostics_result_title">نتيجة التشخيص</string>
+    <string name="diagnostics_result_empty">أدخل الشركة والموديل مع كود الخطأ أو وصف العطل. البحث يعمل محليًا دون إنترنت.</string>
+    <string name="diagnostics_no_match">لم يتم العثور على نتيجة موثقة بالمصدر. تحقق من الموديل/السلسلة والكود بدل استخدام معنى عام من الإنترنت.</string>
+    <string name="diagnostics_open_source">فتح المصدر الرسمي</string>
+    <string name="diagnostics_record">حفظ في سجل الأعطال</string>
+    <string name="diagnostics_safety_title">حدود الأمان</string>
+    <string name="diagnostics_safety_body">يتم عرض الفحوص الآمنة للمستخدم فقط. لا تفتح أجزاء جهد الكهرباء، ولا تتجاوز وسائل الحماية، ولا تعمل على دوائر موصلة بالكهرباء، ولا تفتح دوائر تبريد مغلقة أو مضغوطة. هذه الأعمال تتطلب فنيًا مؤهلًا.</string>
+    <string name="diagnostics_history_title">سجل الأعطال لهذا المخرج</string>
+    <string name="diagnostics_history_empty">لا توجد أعطال تشخيصية مسجلة لهذا المخرج.</string>
+    <string name="diagnostics_select_device">اختر أو سجل جهاز MTTL-W01 أولًا.</string>
+    <string name="diagnostics_binding_requires_identity">أدخل الشركة أو النوع أو الموديل على الأقل قبل ربط الجهاز.</string>
+    <string name="diagnostics_bound">تم ربط الجهاز بالمخرج.</string>
+    <string name="diagnostics_search_before_record">نفّذ تشخيصًا موثقًا بالمصدر قبل حفظ العطل.</string>
+    <string name="diagnostics_recorded">تم حفظ العطل مع لقطة بيانات RCK الحالية.</string>
+    <string name="diagnostics_code_label">الكود</string>
+    <string name="diagnostics_meaning_label">المعنى</string>
+    <string name="diagnostics_causes_label">الأسباب المحتملة</string>
+    <string name="diagnostics_safe_checks_label">فحوص آمنة</string>
+    <string name="diagnostics_parts_label">الأجزاء المحتملة</string>
+    <string name="diagnostics_model_verify">يجب التحقق من الموديل الدقيق قبل اعتبار هذا الكود خاصًا به.</string>
+    <string name="diagnostics_service_label">متى يحتاج فنيًا</string>
+    <string name="diagnostics_scope_label">نطاق المصدر</string>
+    <string name="diagnostics_symptom_label">العَرَض</string>
+    <string name="diagnostics_rck_unavailable">لا توجد لقطة Telemetry حية من RCK حاليًا.</string>
+
 </resources>

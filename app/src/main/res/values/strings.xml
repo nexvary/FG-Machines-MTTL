@@ -314,4 +314,46 @@
     <string name="scene_selected_status">%1$s · %2$d of 4 outlets ON</string>
     <string name="scene_label_format">%1$s · %2$d/4 ON</string>
     <string name="scene_ready">Scene ready. Applying it changes all four outlet states.</string>
+
+    <string name="diagnostics_home_action">Appliance Diagnostics</string>
+    <string name="diagnostics_back">Back</string>
+    <string name="diagnostics_title">Appliance Diagnostics</string>
+    <string name="diagnostics_subtitle">Offline, source-aware fault codes, symptoms, and RCK-linked history</string>
+    <string name="diagnostics_device_binding">Device &amp; outlet binding</string>
+    <string name="diagnostics_no_devices">No saved MTTL-W01 devices</string>
+    <string name="diagnostics_outlet_format">Outlet %1$d</string>
+    <string name="diagnostics_binding_none">No appliance is linked to this outlet.</string>
+    <string name="diagnostics_binding_format">%1$s · outlet %2$d</string>
+    <string name="diagnostics_brand_hint">Brand — e.g. Samsung, Roborock</string>
+    <string name="diagnostics_category_hint">Category — washer, AC, refrigerator, robot vacuum…</string>
+    <string name="diagnostics_model_hint">Exact model / series</string>
+    <string name="diagnostics_code_hint">Error code / number</string>
+    <string name="diagnostics_symptom_hint">Symptom — e.g. does not drain, does not charge</string>
+    <string name="diagnostics_search">Diagnose</string>
+    <string name="diagnostics_bind">Link appliance</string>
+    <string name="diagnostics_result_title">Diagnostic result</string>
+    <string name="diagnostics_result_empty">Enter a brand/model plus an error code or symptom. Results stay offline.</string>
+    <string name="diagnostics_no_match">No source-verified match was found. Check the exact model/series and code instead of using a generic internet meaning.</string>
+    <string name="diagnostics_open_source">Open official source</string>
+    <string name="diagnostics_record">Save to fault history</string>
+    <string name="diagnostics_safety_title">Safety boundary</string>
+    <string name="diagnostics_safety_body">Only user-safe checks are shown. Do not open mains-voltage compartments, bypass protection, work on energized circuits, or open sealed/pressurized refrigeration systems. Escalate those jobs to a qualified technician.</string>
+    <string name="diagnostics_history_title">Fault history for this outlet</string>
+    <string name="diagnostics_history_empty">No recorded diagnostic incidents for this outlet.</string>
+    <string name="diagnostics_select_device">Select or register an MTTL-W01 first.</string>
+    <string name="diagnostics_binding_requires_identity">Enter at least a brand, category, or model before linking the appliance.</string>
+    <string name="diagnostics_bound">Appliance linked to outlet.</string>
+    <string name="diagnostics_search_before_record">Run a source-verified diagnosis before saving an incident.</string>
+    <string name="diagnostics_recorded">Diagnostic incident saved with the current RCK telemetry snapshot.</string>
+    <string name="diagnostics_code_label">Code</string>
+    <string name="diagnostics_meaning_label">Meaning</string>
+    <string name="diagnostics_causes_label">Possible causes</string>
+    <string name="diagnostics_safe_checks_label">Safe checks</string>
+    <string name="diagnostics_parts_label">Likely parts</string>
+    <string name="diagnostics_model_verify">Exact model verification is required before treating this code as model-specific.</string>
+    <string name="diagnostics_service_label">Service boundary</string>
+    <string name="diagnostics_scope_label">Source scope</string>
+    <string name="diagnostics_symptom_label">Symptom</string>
+    <string name="diagnostics_rck_unavailable">No live RCK telemetry snapshot was available.</string>
+
 </resources>
