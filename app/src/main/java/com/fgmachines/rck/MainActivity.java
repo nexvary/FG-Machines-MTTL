@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSwitch alertsSwitch;
     private MaterialSwitch[] autoOffSwitches;
     private TextInputEditText[] autoOffMinutesInputs;
+    private MaterialSwitch[] powerLimitSwitches;
+    private TextInputEditText[] powerLimitInputs;
     private MaterialSwitch[] scheduleSwitches;
     private TextInputEditText[] scheduleOnInputs;
     private TextInputEditText[] scheduleOffInputs;
@@ -341,6 +343,14 @@ public class MainActivity extends AppCompatActivity {
         autoOffMinutesInputs = new TextInputEditText[]{
                 findViewById(R.id.autoOffMinutes1), findViewById(R.id.autoOffMinutes2),
                 findViewById(R.id.autoOffMinutes3), findViewById(R.id.autoOffMinutes4)
+        };
+        powerLimitSwitches = new MaterialSwitch[]{
+                findViewById(R.id.powerLimitSwitch1), findViewById(R.id.powerLimitSwitch2),
+                findViewById(R.id.powerLimitSwitch3), findViewById(R.id.powerLimitSwitch4)
+        };
+        powerLimitInputs = new TextInputEditText[]{
+                findViewById(R.id.powerLimitW1), findViewById(R.id.powerLimitW2),
+                findViewById(R.id.powerLimitW3), findViewById(R.id.powerLimitW4)
         };
         scheduleSwitches = new MaterialSwitch[]{
                 findViewById(R.id.scheduleSwitch1), findViewById(R.id.scheduleSwitch2),
@@ -591,6 +601,10 @@ public class MainActivity extends AppCompatActivity {
                     prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
             autoOffMinutesInputs[i].setText(String.valueOf(
                     prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30)));
+            powerLimitSwitches[i].setChecked(
+                    prefs.getBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, false));
+            int savedPowerLimit = prefs.getInt(LocalAutomationEngine.KEY_POWER_LIMIT_W + channel, 0);
+            powerLimitInputs[i].setText(savedPowerLimit > 0 ? String.valueOf(savedPowerLimit) : "");
             scheduleSwitches[i].setChecked(
                     prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
             scheduleOnInputs[i].setText(
@@ -625,6 +639,14 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            boolean powerLimitEnabled = powerLimitSwitches[i].isChecked();
+            int powerLimitW = parsePositiveInt(textOf(powerLimitInputs[i]));
+            if (powerLimitEnabled && powerLimitW <= 0) {
+                powerLimitInputs[i].setError(getString(R.string.automation_invalid_power_limit));
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
             boolean scheduleEnabled = scheduleSwitches[i].isChecked();
             String onTime = textOf(scheduleOnInputs[i]);
             String offTime = textOf(scheduleOffInputs[i]);
@@ -645,6 +667,9 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, autoOffEnabled);
             editor.putInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel,
                     minutes > 0 ? minutes : 30);
+            editor.putBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, powerLimitEnabled);
+            editor.putInt(LocalAutomationEngine.KEY_POWER_LIMIT_W + channel,
+                    powerLimitW > 0 ? powerLimitW : 0);
             editor.putBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, scheduleEnabled);
             editor.putString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel,
                     LocalAutomationEngine.normalizeTime(onTime));
@@ -654,6 +679,7 @@ public class MainActivity extends AppCompatActivity {
                     scheduleDaySpinners[i].getSelectedItemPosition());
 
             if (autoOffEnabled) enabledRules++;
+            if (powerLimitEnabled) enabledRules++;
             if (scheduleEnabled) enabledRules++;
 
             if (activeMac != null) {
@@ -672,6 +698,7 @@ public class MainActivity extends AppCompatActivity {
         int rules = 0;
         for (int channel = 1; channel <= 4; channel++) {
             if (prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, false)) rules++;
             if (prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false)) rules++;
         }
         automationSummary.setText(rules == 0
