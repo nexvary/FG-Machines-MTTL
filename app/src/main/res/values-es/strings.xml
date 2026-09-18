@@ -273,4 +273,18 @@
     <string name="forget_device">Olvidar dispositivo sin conexión</string>
     <string name="forget_device_disconnect_first">Desconecta el dispositivo antes de eliminarlo de la flota.</string>
     <string name="device_forgotten">Dispositivo eliminado de la flota local.</string>
+    <string name="room_all_off">APAGAR HABITACIÓN</string>
+    <string name="fleet_all_off">APAGAR TODO</string>
+    <string name="emergency_off_note">Acceso de seguridad: envía APAGADO a las cuatro salidas de la habitación seleccionada o de todas las regletas conectadas. Requiere confirmación.</string>
+    <string name="no_connected_devices">No hay regletas conectadas.</string>
+    <string name="no_room_selected">Selecciona primero una habitación o un dispositivo asignado a una habitación.</string>
+    <string name="confirm_room_off">¿Apagar todas las salidas conectadas de esta habitación?</string>
+    <string name="confirm_fleet_off">¿Apagar todas las salidas de todas las regletas conectadas?</string>
+    <string name="confirm_action">CONFIRMAR</string>
+    <string name="no_connected_targets">No hay dispositivos conectados que coincidan con este objetivo.</string>
+    <string name="emergency_off_result">Comandos APAGADO enviados: %1$d · fallos: %2$d</string>
+    <string name="export_history_csv">Exportar historial CSV</string>
+    <string name="history_exported">Historial CSV exportado.</string>
+    <string name="history_export_failed">Falló la exportación del historial: %1$s</string>
+    <string name="remote_security_note">Los endpoints remotos públicos deben usar HTTPS. HTTP solo se acepta en direcciones locales/VPN privadas.</string>
 </resources>
