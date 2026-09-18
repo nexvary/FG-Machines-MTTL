@@ -158,6 +158,11 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton remoteOnButton;
     private MaterialButton remoteOffButton;
     private TextView remoteStatus;
+    private TextView usbPort1Status;
+    private TextView usbPort2Status;
+    private TextView usbDiscoveryStatus;
+    private MaterialButton startUsbDiscoveryButton;
+    private MaterialButton refreshUsbDiscoveryButton;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -180,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean provisioningSucceeded;
     private FleetStore fleetStore;
     private HistoryStore historyStore;
+    private UsbDiscoveryStore usbDiscoveryStore;
     private AccessControlStore accessStore;
     private SceneStore sceneStore;
     private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
@@ -224,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         provisioner = new MttlProvisioner(this);
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
+        usbDiscoveryStore = new UsbDiscoveryStore(this);
         accessStore = new AccessControlStore(this);
         sceneStore = new SceneStore(this);
         controllerHub = ControllerHub.get(this);
@@ -234,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         configureLanguageSelector();
         configureSetupModeSelector();
         configureOutletControls();
+        configureUsbHardware();
         configureSetupWorkflow();
         configureSetupReadiness();
         configureEnergyDashboard();
@@ -350,6 +358,11 @@ public class MainActivity extends AppCompatActivity {
         remoteOnButton = findViewById(R.id.remoteOnButton);
         remoteOffButton = findViewById(R.id.remoteOffButton);
         remoteStatus = findViewById(R.id.remoteStatus);
+        usbPort1Status = findViewById(R.id.usbPort1Status);
+        usbPort2Status = findViewById(R.id.usbPort2Status);
+        usbDiscoveryStatus = findViewById(R.id.usbDiscoveryStatus);
+        startUsbDiscoveryButton = findViewById(R.id.startUsbDiscoveryButton);
+        refreshUsbDiscoveryButton = findViewById(R.id.refreshUsbDiscoveryButton);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -971,6 +984,7 @@ public class MainActivity extends AppCompatActivity {
             deviceState.setText(R.string.controller_disconnected);
         }
         updateFleetStatus();
+        refreshUsbDiscoveryStatus();
         refreshScenes();
         refreshHistory();
     }
@@ -1904,6 +1918,66 @@ public class MainActivity extends AppCompatActivity {
         return 1;
     }
 
+    private void configureUsbHardware() {
+        usbPort1Status.setText(R.string.usb_port_1_status);
+        usbPort2Status.setText(R.string.usb_port_2_status);
+        startUsbDiscoveryButton.setOnClickListener(v -> startUsbDiscovery());
+        refreshUsbDiscoveryButton.setOnClickListener(v -> refreshUsbDiscoveryStatus());
+        refreshUsbDiscoveryStatus();
+    }
+
+    private void startUsbDiscovery() {
+        String mac = activeMac == null ? "" : FleetStore.normalizeMac(activeMac);
+        if (mac.isEmpty() || controllerHub == null || !controllerHub.isConnected(mac)) {
+            Snackbar.make(startUsbDiscoveryButton,
+                    R.string.usb_discovery_requires_device, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        usbDiscoveryStore.start(mac, now);
+        if (historyStore != null) {
+            historyStore.recordEvent(mac, 0, "usb_discovery_started",
+                    UsbHardwareProfile.evidenceSummary(), now);
+        }
+        refreshUsbDiscoveryStatus();
+        Snackbar.make(startUsbDiscoveryButton,
+                R.string.usb_discovery_started, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void refreshUsbDiscoveryStatus() {
+        if (usbDiscoveryStatus == null || usbDiscoveryStore == null) return;
+        String mac = activeMac == null ? "" : FleetStore.normalizeMac(activeMac);
+        if (mac.isEmpty()) {
+            usbDiscoveryStatus.setText(R.string.usb_discovery_select_device);
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        UsbDiscoveryStore.Snapshot snapshot = usbDiscoveryStore.snapshot(mac, now);
+        if (!snapshot.sameDevice) {
+            usbDiscoveryStatus.setText(R.string.usb_discovery_idle);
+            return;
+        }
+
+        if (snapshot.active) {
+            long seconds = (snapshot.remainingMs(now) + 999L) / 1000L;
+            String last = snapshot.lastFrame.isEmpty()
+                    ? getString(R.string.usb_discovery_no_frames)
+                    : snapshot.lastFrame;
+            usbDiscoveryStatus.setText(getString(
+                    R.string.usb_discovery_active_format,
+                    seconds, snapshot.frameCount, last));
+        } else {
+            String last = snapshot.lastFrame.isEmpty()
+                    ? getString(R.string.usb_discovery_no_frames)
+                    : snapshot.lastFrame;
+            usbDiscoveryStatus.setText(getString(
+                    R.string.usb_discovery_complete_format,
+                    snapshot.frameCount, last));
+        }
+    }
+
     private void configureOutletControls() {
         setOutletControlsEnabled(false);
         for (int i = 0; i < outletSwitches.length; i++) {
@@ -2106,6 +2180,7 @@ public class MainActivity extends AppCompatActivity {
         updateSetupReadiness();
         updateAutomationSummary();
         refreshFleetUi();
+        refreshUsbDiscoveryStatus();
         refreshHistory();
         refreshSharingEntries();
         updateApiEndpoint();
