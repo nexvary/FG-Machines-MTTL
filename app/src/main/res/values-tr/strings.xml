@@ -165,4 +165,22 @@
     <string name="save_names">Adları kaydet</string>
     <string name="names_saved">Adlar kaydedildi</string>
     <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="controller_service_error">Denetleyici hizmeti hatası</string>
+    <string name="controller_notification_channel">Yerel denetleyici</string>
+    <string name="controller_notification_channel_desc">MTTL yerel denetleyicisini arka planda çalışır tutar.</string>
+    <string name="alert_notification_channel">Priz uyarıları</string>
+    <string name="alert_notification_channel_desc">Bağlantı, koruma olayı ve yüksek yük uyarıları.</string>
+    <string name="controller_notification_title">FG Machines RCK denetleyicisi aktif</string>
+    <string name="controller_notification_waiting">MTTL-W01 bağlantısı bekleniyor</string>
+    <string name="controller_notification_connected">Yerel bağlı priz sayısı: %1$d</string>
+    <string name="strip_offline_alert_title">Priz çevrimdışı</string>
+    <string name="strip_offline_alert_body">MTTL-W01 yerel FG Machines denetleyicisinden ayrıldı.</string>
+    <string name="protection_alert_title">Priz koruma olayı</string>
+    <string name="protection_alert_body">Priz koruma/olay kodu %1$s bildirdi.</string>
+    <string name="high_load_alert_title">Yüksek güç yükü</string>
+    <string name="high_load_alert_body">Anlık güç %1$.0f W seviyesine ulaştı. Bağlı yükleri kontrol edin.</string>
+    <string name="background_controller_title">Arka plan yerel denetleyici</string>
+    <string name="background_controller_note">Uygulamadan çıktığınızda TCP 10086 hizmetini açık tutarak prizin telefona bağlı kalmasını sağlar.</string>
+    <string name="safety_alerts">Güvenlik ve çevrimdışı bildirimleri</string>
+    <string name="safety_alerts_note">Bağlantı kesilmesi, koruma olayı veya 3.000 W üzerindeki yükler için yerel uyarılar üretir.</string>
 </resources>

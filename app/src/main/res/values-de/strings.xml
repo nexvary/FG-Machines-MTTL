@@ -165,4 +165,22 @@
     <string name="save_names">Namen speichern</string>
     <string name="names_saved">Namen gespeichert</string>
     <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="controller_service_error">Fehler des Controller-Dienstes</string>
+    <string name="controller_notification_channel">Lokaler Controller</string>
+    <string name="controller_notification_channel_desc">Hält den lokalen MTTL-Controller im Hintergrund verfügbar.</string>
+    <string name="alert_notification_channel">Steckdosenleisten-Warnungen</string>
+    <string name="alert_notification_channel_desc">Warnungen bei Trennung, Schutzereignissen und hoher Last.</string>
+    <string name="controller_notification_title">FG Machines RCK Controller aktiv</string>
+    <string name="controller_notification_waiting">Warte auf MTTL-W01 Verbindung</string>
+    <string name="controller_notification_connected">Lokal verbundene Leisten: %1$d</string>
+    <string name="strip_offline_alert_title">Steckdosenleiste offline</string>
+    <string name="strip_offline_alert_body">MTTL-W01 wurde vom lokalen FG Machines Controller getrennt.</string>
+    <string name="protection_alert_title">Schutzereignis der Steckdosenleiste</string>
+    <string name="protection_alert_body">Die Leiste meldete Schutz-/Ereigniscode %1$s.</string>
+    <string name="high_load_alert_title">Hohe elektrische Last</string>
+    <string name="high_load_alert_body">Die aktuelle Leistung erreichte %1$.0f W. Angeschlossene Lasten prüfen.</string>
+    <string name="background_controller_title">Lokaler Hintergrund-Controller</string>
+    <string name="background_controller_note">Hält TCP 10086 aktiv, wenn die App verlassen wird, damit die Leiste mit diesem Telefon verbunden bleibt.</string>
+    <string name="safety_alerts">Sicherheits- und Offline-Benachrichtigungen</string>
+    <string name="safety_alerts_note">Lokale Warnungen bei Trennung, Schutzereignissen und Lasten über 3.000 W.</string>
 </resources>

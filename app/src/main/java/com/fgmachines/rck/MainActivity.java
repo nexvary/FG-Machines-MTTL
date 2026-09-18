@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int SETUP_MODE_SINGLE_PHONE = 2;
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
+    private static final int NOTIFICATION_PERMISSION_REQUEST = 89;
+    private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
     private static final String FG_MACHINES_FACEBOOK_URL = "https://www.facebook.com/share/1Hx66RKhd2/";
     private static final String ALAA_MOHAMED_FACEBOOK_URL = "https://www.facebook.com/share/1DGDH6q8xV/";
 
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText roomNameInput;
     private TextInputEditText[] outletNameInputs;
     private MaterialButton saveDeviceNamesButton;
+    private MaterialSwitch alertsSwitch;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -109,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
     private volatile String activeFirmwareVersion;
     private volatile boolean applyingDeviceState;
     private double lastReportedEnergyKWh;
-    private MttlControllerServer controllerServer;
+    private ControllerHub controllerHub;
+    private MttlControllerServer.Listener controllerListener;
     private MttlProvisioner provisioner;
     private Runnable pendingWifiAction;
     private boolean provisionBusy;
@@ -148,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
         bindViews();
 
         provisioner = new MttlProvisioner(this);
+        controllerHub = ControllerHub.get(this);
+        Intent controllerIntent = new Intent(this, MttlControllerService.class);
+        controllerIntent.setAction(MttlControllerService.ACTION_START);
+        ContextCompat.startForegroundService(this, controllerIntent);
         configureNavigation();
         configureLanguageSelector();
         configureSetupModeSelector();
@@ -156,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         configureSetupReadiness();
         configureEnergyDashboard();
         configureDeviceNaming();
+        configureAlerts();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -219,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         stripNameInput = findViewById(R.id.stripNameInput);
         roomNameInput = findViewById(R.id.roomNameInput);
         saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
+        alertsSwitch = findViewById(R.id.alertsSwitch);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -341,13 +352,13 @@ public class MainActivity extends AppCompatActivity {
 
         refreshTelemetryButton.setOnClickListener(v -> {
             String mac = activeMac;
-            if (mac == null || controllerServer == null) {
+            if (mac == null || controllerHub == null) {
                 Snackbar.make(refreshTelemetryButton, R.string.telemetry_device_offline, Snackbar.LENGTH_SHORT).show();
                 return;
             }
             commandWorker.execute(() -> {
                 try {
-                    controllerServer.refresh(mac);
+                    controllerHub.refresh(mac);
                 } catch (IOException error) {
                     runOnUiThread(() -> Snackbar.make(refreshTelemetryButton,
                             getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
@@ -436,6 +447,27 @@ public class MainActivity extends AppCompatActivity {
             return parsed > 0.0 && Double.isFinite(parsed) ? parsed : 0.0;
         } catch (NumberFormatException error) {
             return 0.0;
+        }
+    }
+
+    private void configureAlerts() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        alertsSwitch.setChecked(prefs.getBoolean(PREF_ALERTS_ENABLED, true));
+        alertsSwitch.setOnCheckedChangeListener((button, checked) -> {
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putBoolean(PREF_ALERTS_ENABLED, checked)
+                    .apply();
+            if (checked) requestNotificationPermissionIfNeeded();
+        });
+        if (alertsSwitch.isChecked()) requestNotificationPermissionIfNeeded();
+    }
+
+    private void requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 33
+                && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    NOTIFICATION_PERMISSION_REQUEST);
         }
     }
 
@@ -791,10 +823,10 @@ public class MainActivity extends AppCompatActivity {
             outletSwitches[i].setOnCheckedChangeListener((button, checked) -> {
                 if (applyingDeviceState || !button.isEnabled()) return;
                 String mac = activeMac;
-                if (mac == null || controllerServer == null) return;
+                if (mac == null || controllerHub == null) return;
                 commandWorker.execute(() -> {
                     try {
-                        controllerServer.setOutlet(mac, outlet, checked);
+                        controllerHub.setOutlet(mac, outlet, checked);
                     } catch (IOException error) {
                         runOnUiThread(() -> Snackbar.make(scanButton,
                                 getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
@@ -805,11 +837,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startLocalController() {
-        controllerServer = new MttlControllerServer(new MttlControllerServer.Listener() {
+        controllerListener = new MttlControllerServer.Listener() {
             @Override public void onListening(int port) {
                 runOnUiThread(() -> {
-                    deviceState.setText(R.string.controller_listening);
-                    discoveryDetail.setText(R.string.scan_explanation);
+                    if (activeMac == null) {
+                        deviceState.setText(R.string.controller_listening);
+                        discoveryDetail.setText(R.string.scan_explanation);
+                    }
                 });
             }
 
@@ -877,9 +911,10 @@ public class MainActivity extends AppCompatActivity {
                     if (activeMac == null) setOutletControlsEnabled(false);
                 });
             }
-        });
+        };
+        controllerHub.addListener(controllerListener, true);
         try {
-            controllerServer.start();
+            controllerHub.start();
         } catch (IOException error) {
             deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
             setOutletControlsEnabled(false);
@@ -969,7 +1004,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if (provisioner != null) provisioner.close();
-        if (controllerServer != null) controllerServer.close();
+        if (controllerHub != null && controllerListener != null) {
+            controllerHub.removeListener(controllerListener);
+        }
         commandWorker.shutdownNow();
         super.onDestroy();
     }

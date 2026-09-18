@@ -165,4 +165,22 @@
     <string name="save_names">Guardar nombres</string>
     <string name="names_saved">Nombres guardados</string>
     <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="controller_service_error">Error del servicio de control</string>
+    <string name="controller_notification_channel">Controlador local</string>
+    <string name="controller_notification_channel_desc">Mantiene disponible el controlador local MTTL en segundo plano.</string>
+    <string name="alert_notification_channel">Alertas de la regleta</string>
+    <string name="alert_notification_channel_desc">Alertas de desconexión, protección y carga alta.</string>
+    <string name="controller_notification_title">Controlador FG Machines RCK activo</string>
+    <string name="controller_notification_waiting">Esperando conexión MTTL-W01</string>
+    <string name="controller_notification_connected">Regletas conectadas localmente: %1$d</string>
+    <string name="strip_offline_alert_title">Regleta sin conexión</string>
+    <string name="strip_offline_alert_body">MTTL-W01 se desconectó del controlador local FG Machines.</string>
+    <string name="protection_alert_title">Evento de protección</string>
+    <string name="protection_alert_body">La regleta informó el código de protección/evento %1$s.</string>
+    <string name="high_load_alert_title">Carga eléctrica alta</string>
+    <string name="high_load_alert_body">La potencia en vivo alcanzó %1$.0f W. Revisa las cargas conectadas.</string>
+    <string name="background_controller_title">Controlador local en segundo plano</string>
+    <string name="background_controller_note">Mantiene TCP 10086 activo al salir de la app para que la regleta siga conectada al teléfono.</string>
+    <string name="safety_alerts">Notificaciones de seguridad y desconexión</string>
+    <string name="safety_alerts_note">Alertas locales por desconexión, eventos de protección y cargas superiores a 3.000 W.</string>
 </resources>
