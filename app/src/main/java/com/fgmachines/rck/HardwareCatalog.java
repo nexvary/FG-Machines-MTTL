@@ -48,6 +48,11 @@ public final class HardwareCatalog {
             0,
             0,
             "",
+            "",
+            -1,
+            -1,
+            -1,
+            "",
             ""
     );
 
@@ -75,7 +80,12 @@ public final class HardwareCatalog {
             16,
             3500,
             "DC 5V / 2A total, 2 USB ports",
-            SOURCE_DAWON_ENERGY
+            SOURCE_DAWON_ENERGY,
+            0x018C,
+            0x0042,
+            0x0007,
+            "KR 920.90 / 921.70 / 923.10 MHz",
+            "Switch Binary v1; Meter v3; Security S0"
     );
 
     private static final List<Profile> ALL = Collections.unmodifiableList(
@@ -127,6 +137,11 @@ public final class HardwareCatalog {
         public final int maxPowerW;
         public final String usbRating;
         public final String sourceUrl;
+        public final int zwaveManufacturerId;
+        public final int zwaveProductTypeId;
+        public final int zwaveProductId;
+        public final String zwaveFrequencyPlan;
+        public final String zwaveCommandClasses;
 
         Profile(String id,
                 String manufacturer,
@@ -140,7 +155,12 @@ public final class HardwareCatalog {
                 int ratedA,
                 int maxPowerW,
                 String usbRating,
-                String sourceUrl) {
+                String sourceUrl,
+                int zwaveManufacturerId,
+                int zwaveProductTypeId,
+                int zwaveProductId,
+                String zwaveFrequencyPlan,
+                String zwaveCommandClasses) {
             this.id = id;
             this.manufacturer = manufacturer;
             this.displayModel = displayModel;
@@ -154,6 +174,11 @@ public final class HardwareCatalog {
             this.maxPowerW = maxPowerW;
             this.usbRating = usbRating == null ? "" : usbRating;
             this.sourceUrl = sourceUrl == null ? "" : sourceUrl;
+            this.zwaveManufacturerId = zwaveManufacturerId;
+            this.zwaveProductTypeId = zwaveProductTypeId;
+            this.zwaveProductId = zwaveProductId;
+            this.zwaveFrequencyPlan = zwaveFrequencyPlan == null ? "" : zwaveFrequencyPlan;
+            this.zwaveCommandClasses = zwaveCommandClasses == null ? "" : zwaveCommandClasses;
         }
 
         public boolean requiresGateway() {
