@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Keeps the local TCP controller available while the app is in the background.
@@ -37,7 +39,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     private ControllerHub hub;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
-    private int connectedCount;
+    private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
     @Override public void onCreate() {
         super.onCreate();
@@ -93,6 +95,7 @@ public final class MttlControllerService extends Service implements MttlControll
         Intent openIntent = new Intent(this, MainActivity.class);
         PendingIntent pending = PendingIntent.getActivity(
                 this, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        int connectedCount = connectedMacs.size();
         String text = connectedCount > 0
                 ? getString(R.string.controller_notification_connected, connectedCount)
                 : getString(R.string.controller_notification_waiting);
@@ -141,13 +144,13 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
-        connectedCount = Math.max(1, connectedCount + 1);
+        connectedMacs.add(bootInfo.mac.toUpperCase());
         lastAlertKeyByMac.remove(bootInfo.mac);
         updateControllerNotification();
     }
 
     @Override public void onDeviceDisconnected(String mac) {
-        connectedCount = Math.max(0, connectedCount - 1);
+        if (mac != null) connectedMacs.remove(mac.toUpperCase());
         updateControllerNotification();
         postAlert(getString(R.string.strip_offline_alert_title),
                 getString(R.string.strip_offline_alert_body), ALERT_BASE_ID + 1);
