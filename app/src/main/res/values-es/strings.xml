@@ -441,4 +441,48 @@ FG Machines RCK no enviará comandos MTTL TCP a este dispositivo.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Hardware de control local reconocido. Usa la ruta de configuración/detección MTTL.</string>
 
+
+    <string name="open_dawon_zwave_control">Abrir control Z-Wave MTD-01</string>
+    <string name="dawon_control_title">Control Dawon MTD-01</string>
+    <string name="dawon_control_subtitle">Control ON/OFF real mediante un gateway local Home Assistant / Z-Wave JS. El teléfono no finge disponer de radio Z-Wave.</string>
+    <string name="dawon_verified_profile">Perfil Z-Wave verificado</string>
+    <string name="dawon_fingerprint_format">%1$s
+Fabricante 0x%2$04X · Tipo 0x%3$04X · Producto 0x%4$04X
+%5$s
+%6$s</string>
+    <string name="dawon_kr_frequency_warning">Importante: esta unidad coreana usa el plan Z-Wave KR. El controlador debe admitir KR 920.90 / 921.70 / 923.10 MHz.</string>
+    <string name="dawon_pairing_title">Emparejamiento / Inclusion</string>
+    <string name="dawon_pairing_steps">1. Pon el gateway Z-Wave en Add/Inclusion.
+2. Conecta el MTD-01.
+3. Mantén pulsado el botón físico unos 5 segundos y suéltalo cuando parpadee el LED.
+4. Espera a que termine la inclusión, conecta abajo y selecciona la entidad switch detectada.</string>
+    <string name="dawon_gateway_title">Gateway Z-Wave</string>
+    <string name="dawon_gateway_note">Usa Home Assistant local con Z-Wave JS y un controlador compatible con KR. HTTP se permite solo en LAN privada; los endpoints públicos requieren HTTPS.</string>
+    <string name="dawon_gateway_endpoint_hint">URL de Home Assistant, p. ej. http://192.168.1.20:8123</string>
+    <string name="dawon_gateway_token_hint">Token de acceso de larga duración de Home Assistant</string>
+    <string name="dawon_gateway_connect">Conectar y descubrir switches</string>
+    <string name="dawon_gateway_endpoint_required">Introduce la URL de Home Assistant.</string>
+    <string name="dawon_gateway_token_required">Introduce el token de Home Assistant.</string>
+    <string name="dawon_gateway_connecting">Conectando al gateway Z-Wave…</string>
+    <string name="dawon_no_switch_entities">No se encontraron entidades switch</string>
+    <string name="dawon_gateway_connected_no_switches">Gateway conectado, pero no hay entidades switch.*. Empareja primero el MTD-01 y vuelve a intentar.</string>
+    <string name="dawon_candidate_found">Se encontró y seleccionó un switch probable MTD-01 / Dawon.</string>
+    <string name="dawon_select_switch_manually">Gateway conectado. Selecciona manualmente el switch MTD-01.</string>
+    <string name="dawon_select_switch_first">Selecciona primero una entidad switch.</string>
+    <string name="dawon_sending_on">Enviando ON mediante Z-Wave…</string>
+    <string name="dawon_sending_off">Enviando OFF mediante Z-Wave…</string>
+    <string name="dawon_on_sent">ON enviado y estado actualizado.</string>
+    <string name="dawon_off_sent">OFF enviado y estado actualizado.</string>
+    <string name="dawon_state_format">%1$s
+%2$s
+Estado: %3$s</string>
+    <string name="dawon_state_unavailable">NO DISPONIBLE</string>
+    <string name="dawon_state_on">ON</string>
+    <string name="dawon_state_off">OFF</string>
+    <string name="dawon_gateway_error">Error de gateway: %1$s</string>
+    <string name="dawon_on">ON</string>
+    <string name="dawon_off">OFF</string>
+    <string name="dawon_refresh_state">Actualizar estado</string>
+    <string name="dawon_gateway_idle">Todavía no conectado a un gateway Z-Wave.</string>
+
 </resources>
