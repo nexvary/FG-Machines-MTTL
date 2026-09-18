@@ -1163,7 +1163,8 @@ public class MainActivity extends AppCompatActivity {
 
         boolean controllerReady = isValidIpv4(textOf(controllerIpInput));
         boolean networkReady = !textOf(setupSsidInput).isEmpty()
-                && !textOf(targetWifiSsidInput).isEmpty();
+                && !textOf(targetWifiSsidInput).isEmpty()
+                && isValidWpa2Password(textOf(targetWifiPasswordInput));
         boolean securityReady = setupGuardCheck != null && setupGuardCheck.isChecked();
         boolean networkAndControllerReady = controllerReady && networkReady;
         boolean readyToWrite = networkAndControllerReady && securityReady;
@@ -1228,6 +1229,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private static boolean isValidWpa2Password(String value) {
+        if (value == null) return false;
+        String password = value.trim();
+        if (password.length() >= 8 && password.length() <= 63) return true;
+        return password.length() == 64 && password.matches("[0-9A-Fa-f]{64}");
+    }
+
     private void restoreSetupProfile() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         setupSsidInput.setText(prefs.getString(PREF_SETUP_SSID, ""));
@@ -1287,6 +1295,11 @@ public class MainActivity extends AppCompatActivity {
         String controllerIp = textOf(controllerIpInput);
         if (setupSsid.isEmpty() || wifiSsid.isEmpty() || controllerIp.isEmpty()) {
             Snackbar.make(manualProvisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (!isValidWpa2Password(wifiPassword)) {
+            targetWifiPasswordInput.setError(getString(R.string.wpa2_password_invalid));
+            Snackbar.make(manualProvisionButton, R.string.wpa2_password_invalid, Snackbar.LENGTH_LONG).show();
             return;
         }
         if (setupGuardCheck == null || !setupGuardCheck.isChecked()) {
@@ -1385,6 +1398,7 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.setEnabled(!busy);
         targetWifiPasswordInput.setEnabled(!busy);
         controllerIpInput.setEnabled(!busy);
+        setupGuardCheck.setEnabled(!busy);
         updateSetupReadiness();
     }
 
