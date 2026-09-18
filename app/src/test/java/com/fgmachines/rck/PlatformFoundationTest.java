@@ -6,6 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.net.InetAddress;
+
 public class PlatformFoundationTest {
     @Test
     public void normalizesMacAddressesForFleetKeys() {
@@ -28,5 +31,31 @@ public class PlatformFoundationTest {
                 LocalApiServer.ParsedTarget.parse("/api/v1/devices/ABC/outlets/2?state=ON");
         assertEquals("/api/v1/devices/ABC/outlets/2", target.path);
         assertEquals("on", target.query.get("state"));
+    }
+    @Test
+    public void trustedPeerBoundaryAcceptsLanAndPrivateVpnOnly() throws Exception {
+        assertTrue(EndpointSecurity.isTrustedPeer(InetAddress.getByName("192.168.1.5")));
+        assertTrue(EndpointSecurity.isTrustedPeer(InetAddress.getByName("10.43.167.72")));
+        assertTrue(EndpointSecurity.isTrustedPeer(InetAddress.getByName("100.100.20.30")));
+        assertFalse(EndpointSecurity.isTrustedPeer(InetAddress.getByName("8.8.8.8")));
+    }
+
+    @Test
+    public void rejectsPlainHttpToPublicInternet() throws Exception {
+        EndpointSecurity.validateRemoteEndpoint("http://192.168.1.20:18086");
+        EndpointSecurity.validateRemoteEndpoint("https://example.com");
+        boolean rejected = false;
+        try {
+            EndpointSecurity.validateRemoteEndpoint("http://8.8.8.8:18086");
+        } catch (IOException expected) {
+            rejected = true;
+        }
+        assertTrue(rejected);
+    }
+
+    @Test
+    public void csvEscapesQuotesAndCommas() {
+        assertEquals("\"a,b\"", HistoryStore.csv("a,b"));
+        assertEquals("\"a\"\"b\"", HistoryStore.csv("a\"b"));
     }
 }

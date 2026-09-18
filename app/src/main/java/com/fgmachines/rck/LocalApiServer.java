@@ -69,6 +69,10 @@ public final class LocalApiServer implements Closeable {
     }
 
     private void handle(Socket socket) {
+        if (!EndpointSecurity.isTrustedPeer(socket.getInetAddress())) {
+            try { socket.close(); } catch (IOException ignored) { }
+            return;
+        }
         try (Socket closeable = socket;
              BufferedReader reader = new BufferedReader(new InputStreamReader(
                      closeable.getInputStream(), StandardCharsets.UTF_8));

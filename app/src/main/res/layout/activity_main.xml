@@ -215,6 +215,47 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/emergencyRoomOffButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/room_all_off"
+                                android:textColor="@color/fg_warning"
+                                app:cornerRadius="14dp"
+                                app:strokeColor="@color/fg_warning" />
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/emergencyAllOffButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/fleet_all_off"
+                                android:textColor="@color/fg_text"
+                                app:backgroundTint="@color/fg_red"
+                                app:cornerRadius="14dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/emergency_off_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver_dark"
+                            android:textSize="10sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -510,6 +551,17 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/exportHistoryButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/export_history_csv"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_blue" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -2418,6 +2470,18 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="9dp"
+                            android:text="@string/remote_security_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_warning"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/remoteEndpointInput"
                             android:layout_width="match_parent"

@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.0.0
+## Current Android baseline — 1.1.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -32,6 +32,10 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Optional Remote Control client can connect to another FG Machines RCK controller over a private VPN or HTTPS endpoint.
 - Home Assistant custom integration under `home_assistant/custom_components/fg_machines_rck` exposes each outlet as an independent switch plus power, energy and temperature sensors.
 - Local-first behavior remains the default: outlet control, automation, history and alerts do not require a subscription or external cloud.
+- Emergency fleet shutdown shortcuts can turn off every outlet in the selected room or all currently connected strips, with an explicit confirmation gate.
+- History can be exported to CSV through Android's Storage Access Framework without requesting broad storage permissions.
+- The local API now accepts clients only from loopback, private LAN/link-local ranges, IPv6 unique-local ranges and private CGNAT/VPN space.
+- Remote Control rejects public plain-HTTP endpoints; public endpoints must use HTTPS while private LAN/VPN HTTP remains supported.
 - GitHub Actions release gate: unit tests + Android lint + debug APK build.
 
 ## Compatibility catalog
