@@ -421,4 +421,8 @@ Aktuelle Last %5$.0f W · Gemeldete Energie %6$.3f kWh</string>
     <string name="room_all_off_count">RAUM AUS (%1$d)</string>
     <string name="fleet_all_off_count">ALLE AUS (%1$d)</string>
 
+
+    <string name="confirm_room_off_count">Alle vier AC-Ausgänge bei %1$d verbundenen Geräten in diesem Raum ausschalten?</string>
+    <string name="confirm_fleet_off_count">Alle vier AC-Ausgänge bei allen %1$d verbundenen Geräten ausschalten?</string>
+
 </resources>
