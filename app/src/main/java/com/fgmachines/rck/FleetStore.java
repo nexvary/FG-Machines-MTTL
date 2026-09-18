@@ -67,6 +67,28 @@ public final class FleetStore {
         return prefs.getString(PREFIX_OUTLET_NAME + key + "_" + outlet, "");
     }
 
+    public synchronized void remove(String mac) {
+        String key = normalizeMac(mac);
+        if (key.isEmpty()) return;
+        Set<String> saved = prefs.getStringSet(KEY_MACS, Collections.emptySet());
+        java.util.HashSet<String> copy = new java.util.HashSet<>(saved);
+        copy.remove(key);
+        SharedPreferences.Editor editor = prefs.edit()
+                .putStringSet(KEY_MACS, copy)
+                .remove(PREFIX_NAME + key)
+                .remove(PREFIX_ROOM + key)
+                .remove(PREFIX_FW + key)
+                .remove(PREFIX_FIRST_SEEN + key)
+                .remove(PREFIX_LAST_SEEN + key);
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            editor.remove(PREFIX_OUTLET_NAME + key + "_" + outlet);
+        }
+        if (key.equalsIgnoreCase(prefs.getString(KEY_SELECTED, ""))) {
+            editor.remove(KEY_SELECTED);
+        }
+        editor.apply();
+    }
+
     public synchronized void select(String mac) {
         String key = normalizeMac(mac);
         if (!key.isEmpty()) prefs.edit().putString(KEY_SELECTED, key).apply();
