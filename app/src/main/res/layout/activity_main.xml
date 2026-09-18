@@ -1689,6 +1689,17 @@
                             android:textColor="@color/fg_text_secondary"
                             android:textIsSelectable="true"
                             android:textSize="11sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/openDawonZWaveButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/open_dawon_zwave_control"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_blue" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
