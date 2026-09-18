@@ -58,4 +58,14 @@ public class PlatformFoundationTest {
         assertEquals("\"a,b\"", HistoryStore.csv("a,b"));
         assertEquals("\"a\"\"b\"", HistoryStore.csv("a\"b"));
     }
+    @Test
+    public void sceneMaskMapsToFourOutlets() {
+        SceneStore.Scene scene = new SceneStore.Scene(
+                "scene-1", "88D0391C0C50", "Night", 0b0101);
+        assertTrue(scene.outletOn(1));
+        assertFalse(scene.outletOn(2));
+        assertTrue(scene.outletOn(3));
+        assertFalse(scene.outletOn(4));
+        assertEquals(2, scene.onCount());
+    }
 }

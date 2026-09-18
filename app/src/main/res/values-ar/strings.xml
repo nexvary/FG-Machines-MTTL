@@ -287,4 +287,23 @@
     <string name="history_exported">تم تصدير سجل CSV.</string>
     <string name="history_export_failed">فشل تصدير السجل: %1$s</string>
     <string name="remote_security_note">العناوين البعيدة العامة يجب أن تستخدم HTTPS. يُسمح بـ HTTP فقط داخل الشبكة المحلية أو VPN خاص.</string>
+    <string name="scenes_title">المشاهد</string>
+    <string name="scenes_note">احفظ حالة المخارج الأربعة الحالية لهذا المشترك ثم طبّقها لاحقًا بعد تأكيد واحد.</string>
+    <string name="scene_name_hint">اسم المشهد</string>
+    <string name="save_current_scene">حفظ الحالة الحالية</string>
+    <string name="apply_scene">تطبيق</string>
+    <string name="delete_scene">حذف</string>
+    <string name="scenes_waiting">اختر جهازًا من الأسطول لاستخدام المشاهد المحلية.</string>
+    <string name="no_scenes">لا توجد مشاهد محفوظة لهذا الجهاز.</string>
+    <string name="scene_saved">تم حفظ المشهد: %1$s</string>
+    <string name="scene_deleted">تم حذف المشهد.</string>
+    <string name="scene_name_required">أدخل اسمًا للمشهد أولًا.</string>
+    <string name="scene_device_offline">يجب أن يكون المشترك المحدد متصلًا لتطبيق المشهد.</string>
+    <string name="confirm_scene_apply">تطبيق المشهد %1$s؟ سيتم تشغيل %2$d مخرج.</string>
+    <string name="scene_applied">تم تطبيق المشهد · الأوامر المرسلة: %1$d · الفشل: %2$d</string>
+    <string name="history_cost_waiting">حدد تعريفة الكهرباء لحساب التكلفة التاريخية.</string>
+    <string name="history_cost_format">التكلفة · اليوم %1$.2f جنيه · الأسبوع %2$.2f · الشهر %3$.2f</string>
+    <string name="scene_selected_status">%1$s · عدد المخارج المشغلة %2$d من 4</string>
+    <string name="scene_label_format">%1$s · تشغيل %2$d/4</string>
+    <string name="scene_ready">المشهد جاهز. تطبيقه يغير حالات المخارج الأربعة.</string>
 </resources>
