@@ -485,4 +485,5 @@ Status: %3$s</string>
     <string name="dawon_refresh_state">Status aktualisieren</string>
     <string name="dawon_gateway_idle">Noch nicht mit einem Z-Wave-Gateway verbunden.</string>
 
+    <string name="dawon_back">Zurück</string>
 </resources>
