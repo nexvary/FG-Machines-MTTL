@@ -19,6 +19,7 @@ public final class FleetStore {
     private static final String PREFIX_FIRST_SEEN = "first_seen_";
     private static final String PREFIX_LAST_SEEN = "last_seen_";
     private static final String PREFIX_FW = "firmware_";
+    private static final String PREFIX_OUTLET_NAME = "outlet_name_";
 
     private final SharedPreferences prefs;
 
@@ -52,6 +53,18 @@ public final class FleetStore {
                 .putString(PREFIX_NAME + key, clean(name))
                 .putString(PREFIX_ROOM + key, clean(room))
                 .apply();
+    }
+
+    public synchronized void updateOutletName(String mac, int outlet, String name) {
+        String key = normalizeMac(mac);
+        if (key.isEmpty() || outlet < 1 || outlet > 4) return;
+        prefs.edit().putString(PREFIX_OUTLET_NAME + key + "_" + outlet, clean(name)).apply();
+    }
+
+    public String outletName(String mac, int outlet) {
+        String key = normalizeMac(mac);
+        if (key.isEmpty() || outlet < 1 || outlet > 4) return "";
+        return prefs.getString(PREFIX_OUTLET_NAME + key + "_" + outlet, "");
     }
 
     public synchronized void select(String mac) {
