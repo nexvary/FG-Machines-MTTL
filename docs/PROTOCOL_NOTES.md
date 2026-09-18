@@ -170,12 +170,23 @@ history/catalog documents Z-Wave smart-plug families. Based on the `-ZW` model f
 ecosystem, FG Machines RCK classifies this device into a **Z-Wave gateway/controller path** rather
 than the MTTL local TCP path.
 
-This transport classification is deliberately treated as a hardware-family routing decision, not as
-proof that the exact MTD-01 unit has completed an FG physical Z-Wave inclusion test. Until that test
-is recorded, the app identifies the model but does not send MTTL commands or claim direct phone-only
-control.
+The Z-Wave Alliance certification for MTD-01 identifies manufacturer `0x018C`, product type
+`0x0042`, product ID `0x0007`, Korean frequencies 920.90 / 921.70 / 923.10 MHz, and command
+classes including Switch Binary v1, Meter v3 and Security S0.
+
+FG Machines RCK 1.3.3 implements a real gateway control path for this model through the authenticated
+Home Assistant REST API. The Android app can discover `switch.*` entities from a Home Assistant /
+Z-Wave JS gateway, rank likely Dawon/MTD-01 entities, invoke `switch.turn_on` /
+`switch.turn_off`, and read the resulting entity state.
+
+This does not remove the physical Z-Wave-radio requirement: the gateway/controller must use a
+KR-compatible Z-Wave radio. The phone itself is not treated as a Z-Wave controller. Physical
+inclusion against the photographed unit remains a separate hardware-validation gate, but the
+software path now sends standards-based switch commands through the gateway instead of merely
+identifying the model.
 
 References:
+- https://products.z-wavealliance.org/z-wave-product/power-manager-5/
 - https://eep.energy.or.kr/electricity/elec_view_234.aspx?no=234170061
 - https://products.z-wavealliance.org/z-wave-product/smartplug-10a-2/
 - https://dawondns.com/new/03_about_eng/
