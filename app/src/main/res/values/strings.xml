@@ -393,4 +393,8 @@
     <string name="camera_no_result">No readable text or barcode was found. Retake the photo closer and in good light.</string>
     <string name="camera_no_autofill">The capture was read, but no value was safe to auto-fill. Review the OCR result manually.</string>
 
+
+    <string name="camera_local_identity">Matched local confirmed identity</string>
+    <string name="diagnostics_bound_with_identifiers">Appliance linked. Saved %1$d barcode identifier(s) for future local recognition.</string>
+
 </resources>
