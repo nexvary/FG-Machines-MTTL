@@ -389,4 +389,21 @@
     <string name="camera_local_identity">Identidad local confirmada encontrada</string>
     <string name="diagnostics_bound_with_identifiers">Equipo vinculado. Se guardaron %1$d identificador(es) de código de barras para reconocimiento local futuro.</string>
 
+
+    <string name="usb_ports_title">Puertos de carga USB</string>
+    <string name="usb_ports_note">En MTTL-W01 están confirmados cuatro relés de CA controlables. Los dos USB-A están en una placa de carga separada; no se ha verificado un relé USB independiente ni un comando de protocolo.</string>
+    <string name="usb_port_1_status">USB 1 · puerto de carga · ON/OFF independiente no disponible hasta confirmar evidencia de hardware o protocolo</string>
+    <string name="usb_port_2_status">USB 2 · puerto de carga · ON/OFF independiente no disponible hasta confirmar evidencia de hardware o protocolo</string>
+    <string name="usb_discovery_start">Iniciar descubrimiento USB</string>
+    <string name="usb_discovery_refresh">Actualizar resultado</string>
+    <string name="usb_discovery_idle">El descubrimiento pasivo está inactivo. No envía comandos supuestos para canales 5/6.</string>
+    <string name="usb_discovery_select_device">Selecciona un MTTL-W01 conectado antes de iniciar el descubrimiento USB.</string>
+    <string name="usb_discovery_requires_device">Se requiere un MTTL-W01 conectado para el descubrimiento USB pasivo.</string>
+    <string name="usb_discovery_started">El descubrimiento USB se inició durante 90 segundos. Conecta y desconecta de forma segura un dispositivo USB de bajo consumo y luego actualiza el resultado. No abras la regleta.</string>
+    <string name="usb_discovery_no_frames">Aún no se han capturado tramas de protocolo desconocidas.</string>
+    <string name="usb_discovery_active_format">Descubrimiento activo · quedan %1$d s · tramas desconocidas %2$d
+Última: %3$s</string>
+    <string name="usb_discovery_complete_format">Descubrimiento completado · tramas desconocidas %1$d
+Última: %2$s</string>
+
 </resources>
