@@ -1010,6 +1010,11 @@ public class MainActivity extends AppCompatActivity {
         fleetDevicesList.setText(list.length() == 0
                 ? getString(R.string.fleet_list_waiting)
                 : list.toString());
+
+        int allTargets = countEmergencyTargets(false);
+        int roomTargets = countEmergencyTargets(true);
+        emergencyAllOffButton.setText(getString(R.string.fleet_all_off_count, allTargets));
+        emergencyRoomOffButton.setText(getString(R.string.room_all_off_count, roomTargets));
     }
 
     private static double fleetPowerW(ControllerHub.DeviceState state) {
@@ -1312,10 +1317,31 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(fleetStatus, R.string.no_room_selected, Snackbar.LENGTH_LONG).show();
             return;
         }
-        int message = roomOnly ? R.string.confirm_room_off : R.string.confirm_fleet_off;
-        Snackbar.make(fleetStatus, message, Snackbar.LENGTH_LONG)
+        int targets = countEmergencyTargets(roomOnly);
+        if (targets <= 0) {
+            Snackbar.make(fleetStatus, R.string.no_connected_targets, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        int message = roomOnly ? R.string.confirm_room_off_count : R.string.confirm_fleet_off_count;
+        Snackbar.make(fleetStatus, getString(message, targets), Snackbar.LENGTH_LONG)
                 .setAction(R.string.confirm_action, v -> executeEmergencyOff(roomOnly))
                 .show();
+    }
+
+    private int countEmergencyTargets(boolean roomOnly) {
+        if (controllerHub == null) return 0;
+        String targetRoom = roomOnly ? selectedEmergencyRoom() : "";
+        if (roomOnly && targetRoom.isEmpty()) return 0;
+        int count = 0;
+        for (ControllerHub.DeviceState state : controllerHub.connectedStates()) {
+            if (!roomOnly) {
+                count++;
+                continue;
+            }
+            FleetStore.DeviceRecord record = fleetStore == null ? null : fleetStore.get(state.mac);
+            if (record != null && targetRoom.equalsIgnoreCase(record.room)) count++;
+        }
+        return count;
     }
 
     private String selectedEmergencyRoom() {
