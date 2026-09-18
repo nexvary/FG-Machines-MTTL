@@ -287,4 +287,20 @@
     <string name="history_exported">Historial CSV exportado.</string>
     <string name="history_export_failed">Falló la exportación del historial: %1$s</string>
     <string name="remote_security_note">Los endpoints remotos públicos deben usar HTTPS. HTTP solo se acepta en direcciones locales/VPN privadas.</string>
+    <string name="scenes_title">Escenas</string>
+    <string name="scenes_note">Guarda el estado actual de las cuatro salidas de esta regleta y aplícalo después con una confirmación.</string>
+    <string name="scene_name_hint">Nombre de la escena</string>
+    <string name="save_current_scene">Guardar estado actual</string>
+    <string name="apply_scene">Aplicar</string>
+    <string name="delete_scene">Eliminar</string>
+    <string name="scenes_waiting">Selecciona un dispositivo de la flota para usar escenas locales.</string>
+    <string name="no_scenes">No hay escenas guardadas para este dispositivo.</string>
+    <string name="scene_saved">Escena guardada: %1$s</string>
+    <string name="scene_deleted">Escena eliminada.</string>
+    <string name="scene_name_required">Introduce primero un nombre para la escena.</string>
+    <string name="scene_device_offline">La regleta seleccionada debe estar conectada para aplicar una escena.</string>
+    <string name="confirm_scene_apply">¿Aplicar la escena %1$s? Se encenderán %2$d salidas.</string>
+    <string name="scene_applied">Escena aplicada · comandos enviados: %1$d · fallos: %2$d</string>
+    <string name="history_cost_waiting">Configura una tarifa eléctrica para calcular el coste histórico.</string>
+    <string name="history_cost_format">Coste · hoy %1$.2f EGP · semana %2$.2f EGP · mes %3$.2f EGP</string>
 </resources>
