@@ -414,4 +414,19 @@ Last: %3$s</string>
     <string name="usb_discovery_complete_format">Discovery complete · unknown frames %1$d
 Last: %2$s</string>
 
+
+    <string name="fleet_overview_waiting">Fleet totals will appear when devices are registered.</string>
+    <string name="fleet_list_waiting">No devices match the current room filter.</string>
+    <string name="fleet_online">ONLINE</string>
+    <string name="fleet_offline">OFFLINE</string>
+    <string name="room_unassigned">No room</string>
+    <string name="fleet_scope_all">All rooms</string>
+    <string name="fleet_scope_room">Room: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Devices %2$d · Online %3$d · Offline %4$d
+Live load %5$.0f W · Reported energy %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · ONLINE · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · OFFLINE · Last seen %3$s</string>
+    <string name="room_all_off_count">ROOM OFF (%1$d)</string>
+    <string name="fleet_all_off_count">ALL OFF (%1$d)</string>
+
 </resources>
