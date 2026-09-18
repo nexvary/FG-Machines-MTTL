@@ -39,6 +39,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     private ControllerHub hub;
     private LocalAutomationEngine automationEngine;
+    private EnergyHistoryStore energyHistory;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -48,6 +49,7 @@ public final class MttlControllerService extends Service implements MttlControll
         hub = ControllerHub.get(this);
         automationEngine = new LocalAutomationEngine(this, hub);
         automationEngine.start();
+        energyHistory = new EnergyHistoryStore(this);
         hub.addListener(this, true);
     }
 
@@ -164,6 +166,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
         if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
+        if (energyHistory != null) energyHistory.record(mac, telemetry);
         double totalPower = 0.0;
         String event = null;
         int hottest = Integer.MIN_VALUE;
