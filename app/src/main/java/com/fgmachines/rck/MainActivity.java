@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_TARGET_SSID = "target_ssid";
     private static final String PREF_SETUP_SSID = "setup_ssid";
     private static final String PREF_SETUP_MODE = "setup_mode";
+    private static final String PREF_TARIFF = "energy_tariff_egp";
+    private static final double NOMINAL_VOLTAGE_V = 220.0;
     private static final int SETUP_MODE_ROUTER = 0;
     private static final int SETUP_MODE_TWO_PHONE = 1;
     private static final int SETUP_MODE_SINGLE_PHONE = 2;
@@ -75,6 +77,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView setupModeDescription;
     private TextView setupModeBadge;
     private TextView setupReadinessText;
+    private TextView totalPowerValue;
+    private TextView totalEnergyValue;
+    private TextView voltageValue;
+    private TextView currentEstimateValue;
+    private TextView maxTemperatureValue;
+    private TextView estimatedCostValue;
+    private TextView safetyStatus;
+    private TextView[] outletTelemetryViews;
+    private TextInputEditText tariffInput;
+    private MaterialButton saveTariffButton;
+    private MaterialButton refreshTelemetryButton;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -86,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final ExecutorService commandWorker = Executors.newSingleThreadExecutor();
     private volatile String activeMac;
+    private volatile String activeFirmwareVersion;
     private volatile boolean applyingDeviceState;
+    private double lastReportedEnergyKWh;
     private MttlControllerServer controllerServer;
     private MttlProvisioner provisioner;
     private Runnable pendingWifiAction;
@@ -132,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         configureOutletControls();
         configureSetupWorkflow();
         configureSetupReadiness();
+        configureEnergyDashboard();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -182,6 +198,16 @@ public class MainActivity extends AppCompatActivity {
         setupModeDescription = findViewById(R.id.setupModeDescription);
         setupModeBadge = findViewById(R.id.setupModeBadge);
         setupReadinessText = findViewById(R.id.setupReadinessText);
+        totalPowerValue = findViewById(R.id.totalPowerValue);
+        totalEnergyValue = findViewById(R.id.totalEnergyValue);
+        voltageValue = findViewById(R.id.voltageValue);
+        currentEstimateValue = findViewById(R.id.currentEstimateValue);
+        maxTemperatureValue = findViewById(R.id.maxTemperatureValue);
+        estimatedCostValue = findViewById(R.id.estimatedCostValue);
+        safetyStatus = findViewById(R.id.safetyStatus);
+        tariffInput = findViewById(R.id.tariffInput);
+        saveTariffButton = findViewById(R.id.saveTariffButton);
+        refreshTelemetryButton = findViewById(R.id.refreshTelemetryButton);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -189,6 +215,10 @@ public class MainActivity extends AppCompatActivity {
         outletSwitches = new MaterialSwitch[]{
                 findViewById(R.id.outlet1), findViewById(R.id.outlet2),
                 findViewById(R.id.outlet3), findViewById(R.id.outlet4)
+        };
+        outletTelemetryViews = new TextView[]{
+                findViewById(R.id.outlet1Telemetry), findViewById(R.id.outlet2Telemetry),
+                findViewById(R.id.outlet3Telemetry), findViewById(R.id.outlet4Telemetry)
         };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
@@ -234,6 +264,121 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    private void configureEnergyDashboard() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        double tariff = Double.longBitsToDouble(prefs.getLong(PREF_TARIFF,
+                Double.doubleToRawLongBits(0.0)));
+        if (tariff > 0) tariffInput.setText(String.format(Locale.US, "%.4f", tariff));
+
+        saveTariffButton.setOnClickListener(v -> {
+            double value = parsePositiveDouble(textOf(tariffInput));
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putLong(PREF_TARIFF, Double.doubleToRawLongBits(value))
+                    .apply();
+            updateEstimatedCost();
+            Snackbar.make(saveTariffButton, R.string.tariff_saved, Snackbar.LENGTH_SHORT).show();
+        });
+
+        refreshTelemetryButton.setOnClickListener(v -> {
+            String mac = activeMac;
+            if (mac == null || controllerServer == null) {
+                Snackbar.make(refreshTelemetryButton, R.string.telemetry_device_offline, Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            commandWorker.execute(() -> {
+                try {
+                    controllerServer.refresh(mac);
+                } catch (IOException error) {
+                    runOnUiThread(() -> Snackbar.make(refreshTelemetryButton,
+                            getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
+                }
+            });
+        });
+        clearTelemetryUi();
+    }
+
+    private void updateTelemetryUi(MttlProtocol.Telemetry telemetry) {
+        double totalPower = 0.0;
+        double totalEnergy = 0.0;
+        int maxTemp = Integer.MIN_VALUE;
+        String protectionEvent = null;
+
+        for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+            totalPower += Math.max(0.0, outlet.powerW);
+            totalEnergy += Math.max(0.0, outlet.energyKWh);
+            maxTemp = Math.max(maxTemp, outlet.temperatureC);
+            if (!"00".equals(outlet.eventCode)) protectionEvent = outlet.eventCode;
+
+            if (outlet.channel >= 1 && outlet.channel <= outletTelemetryViews.length) {
+                outletTelemetryViews[outlet.channel - 1].setText(getString(
+                        R.string.outlet_telemetry_format,
+                        outlet.powerW, outlet.energyKWh, outlet.temperatureC));
+            }
+        }
+
+        lastReportedEnergyKWh = totalEnergy;
+        totalPowerValue.setText(getString(R.string.power_value, totalPower));
+        totalEnergyValue.setText(getString(R.string.energy_value, totalEnergy));
+        currentEstimateValue.setText(getString(R.string.current_estimate_value,
+                totalPower / NOMINAL_VOLTAGE_V));
+        maxTemperatureValue.setText(maxTemp == Integer.MIN_VALUE
+                ? getString(R.string.value_temperature_empty)
+                : getString(R.string.temperature_value, maxTemp));
+        voltageValue.setText(getString(R.string.voltage_not_exposed));
+        updateEstimatedCost();
+
+        if (protectionEvent != null) {
+            safetyStatus.setText(getString(R.string.protection_event, protectionEvent));
+            safetyStatus.setTextColor(getColor(R.color.fg_warning));
+        } else if (totalPower > 3000.0) {
+            safetyStatus.setText(R.string.high_load_warning);
+            safetyStatus.setTextColor(getColor(R.color.fg_warning));
+        } else {
+            safetyStatus.setText(R.string.telemetry_normal);
+            safetyStatus.setTextColor(getColor(R.color.fg_green));
+        }
+    }
+
+    private void updateEstimatedCost() {
+        double tariff = Double.longBitsToDouble(getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getLong(PREF_TARIFF, Double.doubleToRawLongBits(0.0)));
+        if (tariff <= 0.0 || lastReportedEnergyKWh <= 0.0) {
+            estimatedCostValue.setText(R.string.value_cost_empty);
+            return;
+        }
+        estimatedCostValue.setText(getString(R.string.cost_value,
+                lastReportedEnergyKWh * tariff));
+    }
+
+    private void clearTelemetryUi() {
+        lastReportedEnergyKWh = 0.0;
+        if (totalPowerValue != null) totalPowerValue.setText(R.string.value_power_empty);
+        if (totalEnergyValue != null) totalEnergyValue.setText(R.string.value_energy_empty);
+        if (voltageValue != null) voltageValue.setText(R.string.voltage_not_exposed);
+        if (currentEstimateValue != null) currentEstimateValue.setText(R.string.value_current_empty);
+        if (maxTemperatureValue != null) maxTemperatureValue.setText(R.string.value_temperature_empty);
+        if (estimatedCostValue != null) estimatedCostValue.setText(R.string.value_cost_empty);
+        if (safetyStatus != null) {
+            safetyStatus.setText(R.string.telemetry_waiting);
+            safetyStatus.setTextColor(getColor(R.color.fg_text_secondary));
+        }
+        if (outletTelemetryViews != null) {
+            for (TextView value : outletTelemetryViews) {
+                if (value != null) value.setText(R.string.outlet_telemetry_waiting);
+            }
+        }
+    }
+
+    private static double parsePositiveDouble(String value) {
+        if (value == null || value.trim().isEmpty()) return 0.0;
+        try {
+            double parsed = Double.parseDouble(value.trim().replace(',', '.'));
+            return parsed > 0.0 && Double.isFinite(parsed) ? parsed : 0.0;
+        } catch (NumberFormatException error) {
+            return 0.0;
+        }
     }
 
     private void configureAboutLinks() {
@@ -612,6 +757,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
                 activeMac = bootInfo.mac;
+                activeFirmwareVersion = bootInfo.firmwareVersion;
                 runOnUiThread(() -> {
                     setOutletControlsEnabled(true);
                     deviceState.setText(getString(R.string.controller_connected,
@@ -624,8 +770,10 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onDeviceDisconnected(String mac) {
                 if (!mac.equalsIgnoreCase(activeMac == null ? "" : activeMac)) return;
                 activeMac = null;
+                activeFirmwareVersion = null;
                 runOnUiThread(() -> {
                     setOutletControlsEnabled(false);
+                    clearTelemetryUi();
                     deviceState.setText(R.string.controller_disconnected);
                     discoveryDetail.setText(R.string.locked);
                 });
@@ -646,6 +794,7 @@ public class MainActivity extends AppCompatActivity {
                                 outletSwitches[outlet.channel - 1].setChecked(outlet.relayOn);
                             }
                         }
+                        updateTelemetryUi(telemetry);
                     } finally { applyingDeviceState = false; }
                 });
             }
