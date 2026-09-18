@@ -151,7 +151,7 @@ public final class LocalApiServer implements Closeable {
             return;
         }
 
-        if (segments.length == 8
+        if (segments.length == 7
                 && "POST".equals(method)
                 && "api".equals(segments[1])
                 && "v1".equals(segments[2])
@@ -181,7 +181,7 @@ public final class LocalApiServer implements Closeable {
             return;
         }
 
-        if (segments.length == 6
+        if (segments.length == 5
                 && "GET".equals(method)
                 && "api".equals(segments[1])
                 && "v1".equals(segments[2])
