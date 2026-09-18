@@ -173,4 +173,22 @@
     <string name="save_names">Save names</string>
     <string name="names_saved">Names saved</string>
     <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="controller_service_error">Controller service error</string>
+    <string name="controller_notification_channel">Local controller</string>
+    <string name="controller_notification_channel_desc">Keeps the MTTL local controller available in the background.</string>
+    <string name="alert_notification_channel">Power strip alerts</string>
+    <string name="alert_notification_channel_desc">Offline, protection and high-load alerts from connected strips.</string>
+    <string name="controller_notification_title">FG Machines RCK controller active</string>
+    <string name="controller_notification_waiting">Waiting for an MTTL-W01 connection</string>
+    <string name="controller_notification_connected">%1$d strip(s) connected locally</string>
+    <string name="strip_offline_alert_title">Power strip offline</string>
+    <string name="strip_offline_alert_body">The MTTL-W01 disconnected from the local FG Machines controller.</string>
+    <string name="protection_alert_title">Power strip protection event</string>
+    <string name="protection_alert_body">The strip reported protection/event code %1$s.</string>
+    <string name="high_load_alert_title">High power load</string>
+    <string name="high_load_alert_body">Live power reached %1$.0f W. Check the connected loads.</string>
+    <string name="background_controller_title">Background local controller</string>
+    <string name="background_controller_note">Keeps TCP 10086 active when you leave the app so the strip can stay connected to this phone.</string>
+    <string name="safety_alerts">Safety and offline notifications</string>
+    <string name="safety_alerts_note">Alerts are generated locally for disconnects, reported protection events and loads above 3,000 W.</string>
 </resources>
