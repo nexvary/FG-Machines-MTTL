@@ -1124,6 +1124,10 @@ public class MainActivity extends AppCompatActivity {
         targetWifiSsidInput.addTextChangedListener(watcher);
         targetWifiPasswordInput.addTextChangedListener(watcher);
         controllerIpInput.addTextChangedListener(watcher);
+        setupGuardCheck.setOnCheckedChangeListener((button, checked) -> {
+            provisioningSucceeded = false;
+            updateSetupReadiness();
+        });
         updateSetupReadiness();
     }
 
@@ -1133,11 +1137,14 @@ public class MainActivity extends AppCompatActivity {
         boolean controllerReady = isValidIpv4(textOf(controllerIpInput));
         boolean networkReady = !textOf(setupSsidInput).isEmpty()
                 && !textOf(targetWifiSsidInput).isEmpty();
-        boolean readyToWrite = controllerReady && networkReady;
+        boolean securityReady = setupGuardCheck != null && setupGuardCheck.isChecked();
+        boolean networkAndControllerReady = controllerReady && networkReady;
+        boolean readyToWrite = networkAndControllerReady && securityReady;
 
         int progressValue = 25;
         if (controllerReady) progressValue = 50;
-        if (readyToWrite) progressValue = 75;
+        if (networkAndControllerReady) progressValue = 75;
+        if (readyToWrite) progressValue = 90;
         if (provisioningSucceeded) progressValue = 100;
         setupProgress.setProgressCompat(progressValue, true);
 
@@ -1157,6 +1164,9 @@ public class MainActivity extends AppCompatActivity {
             setupReadinessText.setTextColor(getColor(R.color.fg_warning));
         } else if (!networkReady) {
             setupReadinessText.setText(R.string.wizard_need_network);
+            setupReadinessText.setTextColor(getColor(R.color.fg_warning));
+        } else if (!securityReady) {
+            setupReadinessText.setText(R.string.wizard_need_security);
             setupReadinessText.setTextColor(getColor(R.color.fg_warning));
         } else {
             setupReadinessText.setText(R.string.wizard_ready_to_write);
@@ -1250,6 +1260,10 @@ public class MainActivity extends AppCompatActivity {
         String controllerIp = textOf(controllerIpInput);
         if (setupSsid.isEmpty() || wifiSsid.isEmpty() || controllerIp.isEmpty()) {
             Snackbar.make(manualProvisionButton, R.string.missing_setup_fields, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (setupGuardCheck == null || !setupGuardCheck.isChecked()) {
+            Snackbar.make(manualProvisionButton, R.string.setup_guard_required, Snackbar.LENGTH_LONG).show();
             return;
         }
         persistSetupProfile();
@@ -1464,38 +1478,53 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override public void onDeviceConnected(MttlProtocol.BootInfo bootInfo, String remoteAddress) {
-                activeMac = bootInfo.mac;
-                activeFirmwareVersion = bootInfo.firmwareVersion;
-                runOnUiThread(() -> {
-                    setOutletControlsEnabled(true);
-                    deviceState.setText(getString(R.string.controller_connected,
-                            ModelCatalog.PRIMARY_MODEL, bootInfo.firmwareVersion));
-                    String stripName = getSharedPreferences(PREFS, MODE_PRIVATE)
-                            .getString(PREF_STRIP_NAME, "");
-                    String roomName = getSharedPreferences(PREFS, MODE_PRIVATE)
-                            .getString(PREF_ROOM_NAME, "");
-                    if ((stripName == null || stripName.trim().isEmpty())
-                            && (roomName == null || roomName.trim().isEmpty())) {
-                        discoveryDetail.setText(remoteAddress);
+                String key = FleetStore.normalizeMac(bootInfo.mac);
+                fleetStore.register(key, bootInfo.firmwareVersion, System.currentTimeMillis());
+                String preferred = fleetStore.selectedMac();
+                if (activeMac == null) {
+                    if (!preferred.isEmpty() && controllerHub.isConnected(preferred)) {
+                        activeMac = preferred;
                     } else {
-                        discoveryDetail.setText(getString(R.string.device_location_detail,
-                                stripName == null ? "" : stripName.trim(),
-                                roomName == null ? "" : roomName.trim(),
-                                remoteAddress));
+                        activeMac = key;
+                        fleetStore.select(key);
                     }
-                    showPage(0);
+                }
+                if (key.equalsIgnoreCase(activeMac)) activeFirmwareVersion = bootInfo.firmwareVersion;
+                runOnUiThread(() -> {
+                    refreshFleetUi();
+                    if (key.equalsIgnoreCase(activeMac)) selectFleetDevice(activeMac);
+                    else updateFleetStatus();
                 });
             }
 
             @Override public void onDeviceDisconnected(String mac) {
-                if (!mac.equalsIgnoreCase(activeMac == null ? "" : activeMac)) return;
-                activeMac = null;
-                activeFirmwareVersion = null;
+                String key = FleetStore.normalizeMac(mac);
+                boolean selectedDisconnected = key.equalsIgnoreCase(activeMac == null ? "" : activeMac);
+                if (selectedDisconnected) {
+                    List<ControllerHub.DeviceState> connected = controllerHub.connectedStates();
+                    if (connected.isEmpty()) {
+                        activeMac = null;
+                        activeFirmwareVersion = null;
+                    } else {
+                        activeMac = connected.get(0).mac;
+                        activeFirmwareVersion = connected.get(0).firmwareVersion;
+                        fleetStore.select(activeMac);
+                    }
+                }
                 runOnUiThread(() -> {
-                    setOutletControlsEnabled(false);
-                    clearTelemetryUi();
-                    deviceState.setText(R.string.controller_disconnected);
-                    discoveryDetail.setText(R.string.locked);
+                    refreshFleetUi();
+                    if (activeMac == null) {
+                        setOutletControlsEnabled(false);
+                        clearTelemetryUi();
+                        clearDeviceNamingFields();
+                        deviceState.setText(R.string.controller_disconnected);
+                        discoveryDetail.setText(R.string.locked);
+                        refreshHistory();
+                    } else if (selectedDisconnected) {
+                        selectFleetDevice(activeMac);
+                    } else {
+                        updateFleetStatus();
+                    }
                 });
             }
 
@@ -1515,6 +1544,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         updateTelemetryUi(telemetry);
+                        updateFleetStatus();
+                        refreshHistory();
                     } finally { applyingDeviceState = false; }
                 });
             }
@@ -1616,6 +1647,10 @@ public class MainActivity extends AppCompatActivity {
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
         updateAutomationSummary();
+        refreshFleetUi();
+        refreshHistory();
+        refreshSharingEntries();
+        updateApiEndpoint();
     }
 
     @Override
@@ -1625,6 +1660,7 @@ public class MainActivity extends AppCompatActivity {
             controllerHub.removeListener(controllerListener);
         }
         commandWorker.shutdownNow();
+        if (historyStore != null) historyStore.close();
         super.onDestroy();
     }
 }
