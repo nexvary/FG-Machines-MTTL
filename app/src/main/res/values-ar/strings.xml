@@ -165,4 +165,22 @@
     <string name="save_names">حفظ الأسماء</string>
     <string name="names_saved">تم حفظ الأسماء</string>
     <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="controller_service_error">خطأ في خدمة وحدة التحكم</string>
+    <string name="controller_notification_channel">وحدة التحكم المحلية</string>
+    <string name="controller_notification_channel_desc">تحافظ على وحدة تحكم MTTL المحلية فعالة في الخلفية.</string>
+    <string name="alert_notification_channel">تنبيهات المشترك</string>
+    <string name="alert_notification_channel_desc">تنبيهات الانقطاع وأحداث الحماية والحمل المرتفع للمشترك المتصل.</string>
+    <string name="controller_notification_title">وحدة تحكم FG Machines RCK تعمل</string>
+    <string name="controller_notification_waiting">في انتظار اتصال MTTL-W01</string>
+    <string name="controller_notification_connected">عدد المشتركات المتصلة محليًا: %1$d</string>
+    <string name="strip_offline_alert_title">المشترك غير متصل</string>
+    <string name="strip_offline_alert_body">انقطع اتصال MTTL-W01 بوحدة تحكم FG Machines المحلية.</string>
+    <string name="protection_alert_title">حدث حماية في المشترك</string>
+    <string name="protection_alert_body">أبلغ المشترك عن كود حماية/حدث %1$s.</string>
+    <string name="high_load_alert_title">حمل كهربائي مرتفع</string>
+    <string name="high_load_alert_body">وصل الاستهلاك اللحظي إلى %1$.0f واط. راجع الأحمال المتصلة.</string>
+    <string name="background_controller_title">وحدة التحكم في الخلفية</string>
+    <string name="background_controller_note">تحافظ على TCP 10086 فعالًا عند مغادرة التطبيق حتى يبقى المشترك متصلًا بهذا الهاتف.</string>
+    <string name="safety_alerts">تنبيهات الحماية والانقطاع</string>
+    <string name="safety_alerts_note">تنبيهات محلية عند انقطاع الاتصال أو وصول حدث حماية من المشترك أو تجاوز الحمل 3000 واط.</string>
 </resources>
