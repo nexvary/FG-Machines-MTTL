@@ -406,4 +406,19 @@
     <string name="usb_discovery_complete_format">اكتمل الاكتشاف · الإطارات غير المعروفة %1$d
 الأخير: %2$s</string>
 
+
+    <string name="fleet_overview_waiting">ستظهر ملخصات الأسطول عند تسجيل الأجهزة.</string>
+    <string name="fleet_list_waiting">لا توجد أجهزة تطابق فلتر الغرفة الحالي.</string>
+    <string name="fleet_online">متصل</string>
+    <string name="fleet_offline">غير متصل</string>
+    <string name="room_unassigned">بدون غرفة</string>
+    <string name="fleet_scope_all">كل الغرف</string>
+    <string name="fleet_scope_room">الغرفة: %1$s</string>
+    <string name="fleet_overview_format">%1$s · الأجهزة %2$d · متصل %3$d · غير متصل %4$d
+الحمل الحالي %5$.0f واط · الطاقة المبلّغ عنها %6$.3f ك.و.س</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · متصل · %3$.0f واط · %4$.3f ك.و.س</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · غير متصل · آخر ظهور %3$s</string>
+    <string name="room_all_off_count">إيقاف الغرفة (%1$d)</string>
+    <string name="fleet_all_off_count">إيقاف الكل (%1$d)</string>
+
 </resources>
