@@ -348,4 +348,24 @@
     <string name="diagnostics_symptom_label">العَرَض</string>
     <string name="diagnostics_rck_unavailable">لا توجد لقطة Telemetry حية من RCK حاليًا.</string>
 
+
+    <string name="guided_title">تشخيص الأعراض الموجّه</string>
+    <string name="guided_subtitle">أجب عن أسئلة قصيرة ليتم ترتيب الأسباب المدعومة بالمصدر دون اعتبار الدرجة نسبة احتمال للعطل.</string>
+    <string name="guided_start">بدء التشخيص الموجّه</string>
+    <string name="guided_yes">نعم</string>
+    <string name="guided_no">لا</string>
+    <string name="guided_not_started">لم يبدأ التشخيص الموجّه</string>
+    <string name="guided_question_waiting">اختر سيناريو العطل ثم اضغط بدء.</string>
+    <string name="guided_result_waiting">ستظهر الأسباب المرتبة هنا بعد الإجابة عن الأسئلة.</string>
+    <string name="guided_select_profile">اختر سيناريو العطل أولًا.</string>
+    <string name="guided_progress_format">السؤال %1$d من %2$d</string>
+    <string name="guided_progress_done">اكتمل · %1$d أسئلة</string>
+    <string name="guided_question_complete">اكتملت الأسئلة.</string>
+    <string name="guided_complete">الأسباب الأكثر توافقًا مع الإجابات:</string>
+    <string name="guided_score_note">نقاط التوافق أوزان لقواعد التشخيص وليست نسبة احتمال ولا بديلًا عن تشخيص فني خاص بالموديل.</string>
+    <string name="guided_safe_action_label">فحص آمن</string>
+    <string name="guided_service_boundary_label">حدود الفني</string>
+    <string name="guided_compatibility_label">درجة التوافق</string>
+    <string name="guided_open_source">فتح مصدر السيناريو</string>
+
 </resources>
