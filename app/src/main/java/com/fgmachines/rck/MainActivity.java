@@ -589,42 +589,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAutomationSettings() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         for (int i = 0; i < 4; i++) {
-            int channel = i + 1;
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                     this, R.array.automation_day_mode_labels, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             scheduleDaySpinners[i].setAdapter(adapter);
-
-            autoOffSwitches[i].setChecked(
-                    prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
-            autoOffMinutesInputs[i].setText(String.valueOf(
-                    prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30)));
-            powerLimitSwitches[i].setChecked(
-                    prefs.getBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, false));
-            int savedPowerLimit = prefs.getInt(LocalAutomationEngine.KEY_POWER_LIMIT_W + channel, 0);
-            powerLimitInputs[i].setText(savedPowerLimit > 0 ? String.valueOf(savedPowerLimit) : "");
-            scheduleSwitches[i].setChecked(
-                    prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
-            scheduleOnInputs[i].setText(
-                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel, ""));
-            scheduleOffInputs[i].setText(
-                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel, ""));
-            int dayMode = prefs.getInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
-                    LocalAutomationEngine.DAY_EVERY_DAY);
-            if (dayMode < LocalAutomationEngine.DAY_EVERY_DAY
-                    || dayMode > LocalAutomationEngine.DAY_WEEKENDS) {
-                dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
-            }
-            scheduleDaySpinners[i].setSelection(dayMode, false);
         }
-        updateAutomationSummary();
-
         saveAutomationButton.setOnClickListener(v -> saveAutomationSettings());
+        loadAutomationSettingsForActiveDevice();
     }
 
     private void saveAutomationSettings() {
+        if (activeMac == null) {
+            Snackbar.make(saveAutomationButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+            return;
+        }
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         int enabledRules = 0;
@@ -664,27 +643,32 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            editor.putBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, autoOffEnabled);
-            editor.putInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel,
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), autoOffEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, activeMac, channel),
                     minutes > 0 ? minutes : 30);
-            editor.putBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, powerLimitEnabled);
-            editor.putInt(LocalAutomationEngine.KEY_POWER_LIMIT_W + channel,
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), powerLimitEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel),
                     powerLimitW > 0 ? powerLimitW : 0);
-            editor.putBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, scheduleEnabled);
-            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel,
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), scheduleEnabled);
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ON, activeMac, channel),
                     LocalAutomationEngine.normalizeTime(onTime));
-            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel,
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_OFF, activeMac, channel),
                     LocalAutomationEngine.normalizeTime(offTime));
-            editor.putInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, activeMac, channel),
                     scheduleDaySpinners[i].getSelectedItemPosition());
 
             if (autoOffEnabled) enabledRules++;
             if (powerLimitEnabled) enabledRules++;
             if (scheduleEnabled) enabledRules++;
-
-            if (activeMac != null) {
-                editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
-            }
+            editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
         }
         editor.apply();
         updateAutomationSummary();
@@ -694,17 +678,109 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAutomationSummary() {
         if (automationSummary == null) return;
+        if (activeMac == null) {
+            automationSummary.setText(R.string.automation_select_device);
+            automationSummary.setTextColor(getColor(R.color.fg_silver));
+            return;
+        }
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int rules = 0;
         for (int channel = 1; channel <= 4; channel++) {
-            if (prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false)) rules++;
-            if (prefs.getBoolean(LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED + channel, false)) rules++;
-            if (prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false)) rules++;
         }
         automationSummary.setText(rules == 0
                 ? getString(R.string.automation_none)
                 : getString(R.string.automation_active_count, rules));
         automationSummary.setTextColor(getColor(rules == 0 ? R.color.fg_silver : R.color.fg_green));
+    }
+
+    private void loadAutomationSettingsForActiveDevice() {
+        boolean enabled = activeMac != null;
+        saveAutomationButton.setEnabled(enabled);
+        if (!enabled) {
+            for (int i = 0; i < 4; i++) {
+                autoOffSwitches[i].setChecked(false);
+                autoOffMinutesInputs[i].setText("30");
+                powerLimitSwitches[i].setChecked(false);
+                powerLimitInputs[i].setText("");
+                scheduleSwitches[i].setChecked(false);
+                scheduleOnInputs[i].setText("");
+                scheduleOffInputs[i].setText("");
+                scheduleDaySpinners[i].setSelection(LocalAutomationEngine.DAY_EVERY_DAY, false);
+            }
+            updateAutomationSummary();
+            return;
+        }
+
+        migrateLegacyAutomation(activeMac);
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            autoOffSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), false));
+            autoOffMinutesInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, activeMac, channel), 30)));
+
+            powerLimitSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false));
+            int power = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel), 0);
+            powerLimitInputs[i].setText(power > 0 ? String.valueOf(power) : "");
+
+            scheduleSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false));
+            scheduleOnInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_ON, activeMac, channel), ""));
+            scheduleOffInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_OFF, activeMac, channel), ""));
+            int dayMode = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, activeMac, channel),
+                    LocalAutomationEngine.DAY_EVERY_DAY);
+            if (dayMode < LocalAutomationEngine.DAY_EVERY_DAY
+                    || dayMode > LocalAutomationEngine.DAY_WEEKENDS) {
+                dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
+            }
+            scheduleDaySpinners[i].setSelection(dayMode, false);
+        }
+        updateAutomationSummary();
+    }
+
+    private void migrateLegacyAutomation(String mac) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean("automation_legacy_consumed", false)) return;
+        boolean anyLegacy = false;
+        SharedPreferences.Editor editor = prefs.edit();
+        for (int channel = 1; channel <= 4; channel++) {
+            if (prefs.contains(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel)) {
+                anyLegacy = true;
+                editor.putBoolean(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, mac, channel),
+                        prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
+                editor.putInt(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_AUTO_OFF_MINUTES, mac, channel),
+                        prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30));
+                editor.putBoolean(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_ENABLED, mac, channel),
+                        prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
+                editor.putString(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_ON, mac, channel),
+                        prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel, ""));
+                editor.putString(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_OFF, mac, channel),
+                        prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel, ""));
+                editor.putInt(LocalAutomationEngine.deviceKey(
+                        LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, mac, channel),
+                        prefs.getInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+                                LocalAutomationEngine.DAY_EVERY_DAY));
+            }
+        }
+        if (anyLegacy) editor.putBoolean("automation_legacy_consumed", true);
+        editor.apply();
     }
 
     private static int parsePositiveInt(String value) {
@@ -803,6 +879,7 @@ public class MainActivity extends AppCompatActivity {
         ControllerHub.DeviceState state = controllerHub.state(key);
         activeFirmwareVersion = state == null ? null : state.firmwareVersion;
         applyDeviceNames();
+        loadAutomationSettingsForActiveDevice();
 
         if (state != null && state.connected) {
             setOutletControlsEnabled(true);
