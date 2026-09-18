@@ -228,7 +228,7 @@
     <string name="alert_temp_hint">Temperature alert threshold (°C, optional)</string>
     <string name="alert_energy_hint">Daily energy alert (kWh, optional)</string>
     <string name="save_alert_limits">Save alert thresholds</string>
-    <string name="sharing_title">Users, Sharing & Home Assistant</string>
+    <string name="sharing_title">Users, Sharing &amp; Home Assistant</string>
     <string name="api_endpoint_waiting">Local API IP not detected yet · port 18086</string>
     <string name="share_name_hint">User / integration name</string>
     <string name="create_access">Create access</string>
