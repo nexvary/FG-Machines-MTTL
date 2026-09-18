@@ -2,6 +2,14 @@ plugins {
     id 'com.android.application'
 }
 
+def signingEnv = [
+        storeFile: System.getenv('FG_RCK_KEYSTORE_PATH'),
+        storePassword: System.getenv('FG_RCK_KEYSTORE_PASSWORD'),
+        keyAlias: System.getenv('FG_RCK_KEY_ALIAS'),
+        keyPassword: System.getenv('FG_RCK_KEY_PASSWORD')
+]
+def stableSigningReady = signingEnv.values().every { it != null && !it.trim().isEmpty() }
+
 android {
     namespace 'com.fgmachines.rck'
     compileSdk 35
@@ -10,14 +18,32 @@ android {
         applicationId 'com.fgmachines.rck'
         minSdk 26
         targetSdk 35
-        versionCode 14
-        versionName '1.2.0'
+        versionCode 15
+        versionName '1.2.1'
+    }
+
+    signingConfigs {
+        if (stableSigningReady) {
+            stableRelease {
+                storeFile file(signingEnv.storeFile)
+                storePassword signingEnv.storePassword
+                keyAlias signingEnv.keyAlias
+                keyPassword signingEnv.keyPassword
+            }
+        }
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (stableSigningReady) {
+                signingConfig signingConfigs.stableRelease
+            }
         }
     }
 
