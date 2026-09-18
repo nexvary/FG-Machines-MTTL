@@ -268,4 +268,5 @@
     <string-array name="remote_outlet_labels">
         <item>Ausgang 1</item><item>Ausgang 2</item><item>Ausgang 3</item><item>Ausgang 4</item>
     </string-array>
+    <string name="wpa2_password_invalid">Das WPA2-Personal-Kennwort muss 8–63 Zeichen lang sein oder ein 64-stelliger hexadezimaler PSK sein.</string>
 </resources>
