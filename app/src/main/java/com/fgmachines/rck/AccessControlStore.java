@@ -20,7 +20,7 @@ public final class AccessControlStore {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public enum Role {
-        VIEW(1), CONTROL(2), ADMIN(3);
+        VIEW(1), CONTROL(2), ADMIN(3), OWNER(4);
         final int level;
         Role(int level) { this.level = level; }
         public boolean allows(Role required) { return level >= required.level; }
