@@ -441,4 +441,48 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="hardware_identity_local_format">%1$s · %2$s
 جهاز تحكم محلي معروف. استخدم مسار إعداد واكتشاف MTTL.</string>
 
+
+    <string name="open_dawon_zwave_control">فتح تحكم Z-Wave للموديل MTD-01</string>
+    <string name="dawon_control_title">التحكم في Dawon MTD-01</string>
+    <string name="dawon_control_subtitle">تشغيل وإيقاف فعلي عبر Home Assistant / Z-Wave JS محلي. التطبيق لا يفترض أن الهاتف يحتوي راديو Z-Wave.</string>
+    <string name="dawon_verified_profile">ملف Z-Wave الموثق</string>
+    <string name="dawon_fingerprint_format">%1$s
+المصنّع 0x%2$04X · النوع 0x%3$04X · المنتج 0x%4$04X
+%5$s
+%6$s</string>
+    <string name="dawon_kr_frequency_warning">مهم: هذه النسخة الكورية تستخدم نطاق Z-Wave الكوري. يجب أن تدعم وحدة التحكم KR 920.90 / 921.70 / 923.10 MHz.</string>
+    <string name="dawon_pairing_title">الاقتران / Inclusion</string>
+    <string name="dawon_pairing_steps">1. ضع بوابة Z-Wave في وضع الإضافة / Inclusion.
+2. صِل MTD-01 بالكهرباء.
+3. اضغط زر المشترك نحو 5 ثوانٍ ثم اتركه عندما يومض الـLED.
+4. انتظر اكتمال الاقتران، ثم اتصل من الأسفل واختر كيان switch الذي تم اكتشافه.</string>
+    <string name="dawon_gateway_title">بوابة Z-Wave</string>
+    <string name="dawon_gateway_note">استخدم Home Assistant محليًا مع Z-Wave JS ووحدة Z-Wave تدعم تردد KR. يسمح HTTP داخل الشبكة الخاصة فقط، أما العناوين العامة فتتطلب HTTPS.</string>
+    <string name="dawon_gateway_endpoint_hint">عنوان Home Assistant، مثال http://192.168.1.20:8123</string>
+    <string name="dawon_gateway_token_hint">Home Assistant long-lived access token</string>
+    <string name="dawon_gateway_connect">اتصال واكتشاف المفاتيح</string>
+    <string name="dawon_gateway_endpoint_required">أدخل عنوان Home Assistant.</string>
+    <string name="dawon_gateway_token_required">أدخل Access Token لـ Home Assistant.</string>
+    <string name="dawon_gateway_connecting">جارٍ الاتصال ببوابة Z-Wave…</string>
+    <string name="dawon_no_switch_entities">لم يتم العثور على كيانات switch</string>
+    <string name="dawon_gateway_connected_no_switches">تم الاتصال بالبوابة لكن لا توجد كيانات switch.*. قم باقتران MTD-01 أولًا ثم أعد المحاولة.</string>
+    <string name="dawon_candidate_found">تم العثور على مفتاح مرجح أنه MTD-01 / Dawon وتم اختياره.</string>
+    <string name="dawon_select_switch_manually">تم الاتصال. اختر مفتاح MTD-01 يدويًا من القائمة.</string>
+    <string name="dawon_select_switch_first">اختر كيان switch أولًا.</string>
+    <string name="dawon_sending_on">جارٍ إرسال أمر التشغيل عبر Z-Wave…</string>
+    <string name="dawon_sending_off">جارٍ إرسال أمر الإيقاف عبر Z-Wave…</string>
+    <string name="dawon_on_sent">تم إرسال أمر التشغيل وتحديث الحالة.</string>
+    <string name="dawon_off_sent">تم إرسال أمر الإيقاف وتحديث الحالة.</string>
+    <string name="dawon_state_format">%1$s
+%2$s
+الحالة: %3$s</string>
+    <string name="dawon_state_unavailable">غير متاح</string>
+    <string name="dawon_state_on">تشغيل</string>
+    <string name="dawon_state_off">إيقاف</string>
+    <string name="dawon_gateway_error">خطأ البوابة: %1$s</string>
+    <string name="dawon_on">تشغيل</string>
+    <string name="dawon_off">إيقاف</string>
+    <string name="dawon_refresh_state">تحديث الحالة</string>
+    <string name="dawon_gateway_idle">لم يتم الاتصال ببوابة Z-Wave بعد.</string>
+
 </resources>
