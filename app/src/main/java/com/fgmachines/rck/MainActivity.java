@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText[] outletNameInputs;
     private MaterialButton saveDeviceNamesButton;
     private MaterialSwitch alertsSwitch;
+    private MaterialSwitch[] autoOffSwitches;
+    private TextInputEditText[] autoOffMinutesInputs;
+    private MaterialSwitch[] scheduleSwitches;
+    private TextInputEditText[] scheduleOnInputs;
+    private TextInputEditText[] scheduleOffInputs;
+    private Spinner[] scheduleDaySpinners;
+    private MaterialButton saveAutomationButton;
+    private TextView automationSummary;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -166,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         configureEnergyDashboard();
         configureDeviceNaming();
         configureAlerts();
+        configureAutomationSettings();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -230,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
         roomNameInput = findViewById(R.id.roomNameInput);
         saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
         alertsSwitch = findViewById(R.id.alertsSwitch);
+        saveAutomationButton = findViewById(R.id.saveAutomationButton);
+        automationSummary = findViewById(R.id.automationSummary);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -245,6 +256,30 @@ public class MainActivity extends AppCompatActivity {
         outletNameInputs = new TextInputEditText[]{
                 findViewById(R.id.outlet1NameInput), findViewById(R.id.outlet2NameInput),
                 findViewById(R.id.outlet3NameInput), findViewById(R.id.outlet4NameInput)
+        };
+        autoOffSwitches = new MaterialSwitch[]{
+                findViewById(R.id.autoOffSwitch1), findViewById(R.id.autoOffSwitch2),
+                findViewById(R.id.autoOffSwitch3), findViewById(R.id.autoOffSwitch4)
+        };
+        autoOffMinutesInputs = new TextInputEditText[]{
+                findViewById(R.id.autoOffMinutes1), findViewById(R.id.autoOffMinutes2),
+                findViewById(R.id.autoOffMinutes3), findViewById(R.id.autoOffMinutes4)
+        };
+        scheduleSwitches = new MaterialSwitch[]{
+                findViewById(R.id.scheduleSwitch1), findViewById(R.id.scheduleSwitch2),
+                findViewById(R.id.scheduleSwitch3), findViewById(R.id.scheduleSwitch4)
+        };
+        scheduleOnInputs = new TextInputEditText[]{
+                findViewById(R.id.scheduleOn1), findViewById(R.id.scheduleOn2),
+                findViewById(R.id.scheduleOn3), findViewById(R.id.scheduleOn4)
+        };
+        scheduleOffInputs = new TextInputEditText[]{
+                findViewById(R.id.scheduleOff1), findViewById(R.id.scheduleOff2),
+                findViewById(R.id.scheduleOff3), findViewById(R.id.scheduleOff4)
+        };
+        scheduleDaySpinners = new Spinner[]{
+                findViewById(R.id.scheduleDayMode1), findViewById(R.id.scheduleDayMode2),
+                findViewById(R.id.scheduleDayMode3), findViewById(R.id.scheduleDayMode4)
         };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
@@ -447,6 +482,118 @@ public class MainActivity extends AppCompatActivity {
             return parsed > 0.0 && Double.isFinite(parsed) ? parsed : 0.0;
         } catch (NumberFormatException error) {
             return 0.0;
+        }
+    }
+
+    private void configureAutomationSettings() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                    this, R.array.automation_day_mode_labels, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            scheduleDaySpinners[i].setAdapter(adapter);
+
+            autoOffSwitches[i].setChecked(
+                    prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false));
+            autoOffMinutesInputs[i].setText(String.valueOf(
+                    prefs.getInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel, 30)));
+            scheduleSwitches[i].setChecked(
+                    prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false));
+            scheduleOnInputs[i].setText(
+                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel, ""));
+            scheduleOffInputs[i].setText(
+                    prefs.getString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel, ""));
+            int dayMode = prefs.getInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+                    LocalAutomationEngine.DAY_EVERY_DAY);
+            if (dayMode < LocalAutomationEngine.DAY_EVERY_DAY
+                    || dayMode > LocalAutomationEngine.DAY_WEEKENDS) {
+                dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
+            }
+            scheduleDaySpinners[i].setSelection(dayMode, false);
+        }
+        updateAutomationSummary();
+
+        saveAutomationButton.setOnClickListener(v -> saveAutomationSettings());
+    }
+
+    private void saveAutomationSettings() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        int enabledRules = 0;
+
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            boolean autoOffEnabled = autoOffSwitches[i].isChecked();
+            int minutes = parsePositiveInt(textOf(autoOffMinutesInputs[i]));
+            if (autoOffEnabled && minutes <= 0) {
+                autoOffMinutesInputs[i].setError(getString(R.string.automation_invalid_minutes));
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            boolean scheduleEnabled = scheduleSwitches[i].isChecked();
+            String onTime = textOf(scheduleOnInputs[i]);
+            String offTime = textOf(scheduleOffInputs[i]);
+            boolean hasScheduleTime = !onTime.isEmpty() || !offTime.isEmpty();
+            if (scheduleEnabled && (!hasScheduleTime
+                    || !LocalAutomationEngine.isValidTime(onTime)
+                    || !LocalAutomationEngine.isValidTime(offTime))) {
+                if (!LocalAutomationEngine.isValidTime(onTime)) {
+                    scheduleOnInputs[i].setError(getString(R.string.automation_invalid_time));
+                }
+                if (!LocalAutomationEngine.isValidTime(offTime)) {
+                    scheduleOffInputs[i].setError(getString(R.string.automation_invalid_time));
+                }
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            editor.putBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, autoOffEnabled);
+            editor.putInt(LocalAutomationEngine.KEY_AUTO_OFF_MINUTES + channel,
+                    minutes > 0 ? minutes : 30);
+            editor.putBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, scheduleEnabled);
+            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_ON + channel,
+                    LocalAutomationEngine.normalizeTime(onTime));
+            editor.putString(LocalAutomationEngine.KEY_SCHEDULE_OFF + channel,
+                    LocalAutomationEngine.normalizeTime(offTime));
+            editor.putInt(LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE + channel,
+                    scheduleDaySpinners[i].getSelectedItemPosition());
+
+            if (autoOffEnabled) enabledRules++;
+            if (scheduleEnabled) enabledRules++;
+
+            if (activeMac != null) {
+                editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
+            }
+        }
+        editor.apply();
+        updateAutomationSummary();
+        Snackbar.make(saveAutomationButton,
+                getString(R.string.automation_saved, enabledRules), Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void updateAutomationSummary() {
+        if (automationSummary == null) return;
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        int rules = 0;
+        for (int channel = 1; channel <= 4; channel++) {
+            if (prefs.getBoolean(LocalAutomationEngine.KEY_AUTO_OFF_ENABLED + channel, false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.KEY_SCHEDULE_ENABLED + channel, false)) rules++;
+        }
+        automationSummary.setText(rules == 0
+                ? getString(R.string.automation_none)
+                : getString(R.string.automation_active_count, rules));
+        automationSummary.setTextColor(getColor(rules == 0 ? R.color.fg_silver : R.color.fg_green));
+    }
+
+    private static int parsePositiveInt(String value) {
+        if (value == null || value.trim().isEmpty()) return 0;
+        try {
+            int parsed = Integer.parseInt(value.trim());
+            return parsed > 0 ? parsed : 0;
+        } catch (NumberFormatException error) {
+            return 0;
         }
     }
 
@@ -999,6 +1146,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
+        updateAutomationSummary();
     }
 
     @Override
