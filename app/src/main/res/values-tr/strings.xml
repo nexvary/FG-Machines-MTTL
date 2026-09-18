@@ -270,4 +270,7 @@
     </string-array>
     <string name="wpa2_password_invalid">WPA2-Personal parolası 8–63 karakter olmalı veya 64 karakterlik onaltılık PSK olmalıdır.</string>
     <string name="automation_select_device">Otomasyon kurallarını ayarlamak için bir filo cihazı seçin.</string>
+    <string name="forget_device">Çevrimdışı cihazı unut</string>
+    <string name="forget_device_disconnect_first">Cihazı filodan kaldırmadan önce bağlantısını kesin.</string>
+    <string name="device_forgotten">Cihaz yerel filodan kaldırıldı.</string>
 </resources>
