@@ -70,8 +70,10 @@ public final class ApplianceDiagnosticsCatalog {
 
         public boolean modelMatches(String model) {
             if (!hasModelRestriction()) return true;
-            String query = normalize(model);
-            return !query.isEmpty() && query.contains(normalize(modelPattern));
+            String query = normalizeModel(model);
+            String expected = normalizeModel(modelPattern);
+            return !query.isEmpty() && !expected.isEmpty() &&
+                    (query.contains(expected) || expected.contains(query));
         }
     }
 
@@ -502,6 +504,10 @@ public final class ApplianceDiagnosticsCatalog {
     static String normalize(String value) {
         if (value == null) return "";
         return value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    static String normalizeModel(String value) {
+        return normalize(value).replaceAll("[^a-z0-9]+", "");
     }
 
     private static boolean containsNormalized(String source, String query) {
