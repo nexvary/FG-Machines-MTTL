@@ -389,4 +389,21 @@
     <string name="camera_local_identity">Yerel olarak doğrulanmış kimlik eşleşti</string>
     <string name="diagnostics_bound_with_identifiers">Cihaz bağlandı. Gelecekte yerel tanıma için %1$d barkod kimliği kaydedildi.</string>
 
+
+    <string name="usb_ports_title">USB şarj bağlantı noktaları</string>
+    <string name="usb_ports_note">MTTL-W01 için dört kontrol edilebilir AC rölesi doğrulanmıştır. İki USB-A bağlantısı ayrı bir şarj kartındadır; bağımsız USB rölesi veya protokol komutu henüz doğrulanmamıştır.</string>
+    <string name="usb_port_1_status">USB 1 · şarj bağlantısı · bağımsız AÇ/KAPAT yalnızca donanım veya protokol kanıtı doğrulanırsa kullanılabilir</string>
+    <string name="usb_port_2_status">USB 2 · şarj bağlantısı · bağımsız AÇ/KAPAT yalnızca donanım veya protokol kanıtı doğrulanırsa kullanılabilir</string>
+    <string name="usb_discovery_start">USB keşfini başlat</string>
+    <string name="usb_discovery_refresh">Sonucu yenile</string>
+    <string name="usb_discovery_idle">Pasif keşif beklemede. Tahmini kanal 5/6 komutları gönderilmez.</string>
+    <string name="usb_discovery_select_device">USB keşfinden önce bağlı bir MTTL-W01 seçin.</string>
+    <string name="usb_discovery_requires_device">Pasif USB keşfi için bağlı bir MTTL-W01 gerekir.</string>
+    <string name="usb_discovery_started">USB keşfi 90 saniye için başladı. Düşük güçlü bir USB cihazını güvenle takıp çıkarın ve sonucu yenileyin. Prizi açmayın.</string>
+    <string name="usb_discovery_no_frames">Henüz bilinmeyen protokol çerçevesi yakalanmadı.</string>
+    <string name="usb_discovery_active_format">Keşif etkin · %1$d sn kaldı · bilinmeyen çerçeve %2$d
+Son: %3$s</string>
+    <string name="usb_discovery_complete_format">Keşif tamamlandı · bilinmeyen çerçeve %1$d
+Son: %2$s</string>
+
 </resources>
