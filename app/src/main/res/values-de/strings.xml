@@ -207,4 +207,65 @@
         <item>So–Do</item>
         <item>Fr–Sa</item>
     </string-array>
+    <string name="fleet_title">Geräte / Flotte</string>
+    <string name="local_first_badge">LOCAL-FIRST</string>
+    <string name="fleet_waiting">Warte auf bekannte oder verbundene MTTL-W01 Geräte.</string>
+    <string name="history_title">Energieverlauf</string>
+    <string name="history_waiting">Gerät auswählen, um den Verlauf zu sehen.</string>
+    <string name="history_no_events">Keine aktuellen Ereignisse.</string>
+    <string name="setup_guard_confirm">Ich habe geprüft, dass Ziel-WLAN/Hotspot 2,4 GHz und WPA2-Personal nutzt</string>
+    <string name="alert_limits_title">Warnschwellen</string>
+    <string name="alert_limits_note">Leistungswarnung standardmäßig 3000 W. Temperatur und Tagesenergie bleiben leer deaktiviert.</string>
+    <string name="alert_power_hint">Warnschwelle hohe Last (W)</string>
+    <string name="alert_temp_hint">Temperaturwarnung (°C, optional)</string>
+    <string name="alert_energy_hint">Tagesenergie-Warnung (kWh, optional)</string>
+    <string name="save_alert_limits">Warnschwellen speichern</string>
+    <string name="sharing_title">Benutzer, Freigabe und Home Assistant</string>
+    <string name="api_endpoint_waiting">Lokale API-IP noch nicht erkannt · Port 18086</string>
+    <string name="share_name_hint">Benutzer-/Integrationsname</string>
+    <string name="create_access">Zugriff erstellen</string>
+    <string name="create_ha_token">Home-Assistant-Token</string>
+    <string name="share_token_waiting">Neues Zugriffstoken erscheint hier. Antippen zum Kopieren.</string>
+    <string name="revoke_access">Ausgewählten Zugriff widerrufen</string>
+    <string name="sharing_security_note">View liest nur. Control schaltet Ausgänge. Admin enthält Control. API nur in vertrauenswürdigem LAN/VPN oder hinter HTTPS verwenden.</string>
+    <string name="remote_control_title">Fernsteuerung</string>
+    <string name="remote_control_note">Mit anderem FG Machines RCK über HTTPS/VPN verbinden. Lokale Steuerung bleibt Standard.</string>
+    <string name="remote_endpoint_hint">Remote-Endpunkt, z. B. https://rck.example.com</string>
+    <string name="remote_token_hint">Zugriffstoken</string>
+    <string name="remote_connect">Verbinden / Aktualisieren</string>
+    <string name="remote_on">EIN</string>
+    <string name="remote_off">AUS</string>
+    <string name="remote_not_connected">Remote-Controller nicht verbunden.</string>
+    <string name="power_limit_enable">Ausgang über Leistungsgrenze abschalten</string>
+    <string name="power_limit_w_hint">Leistungs-Abschaltschwelle (W)</string>
+    <string name="select_device_first">Zuerst ein Flottengerät auswählen.</string>
+    <string name="all_rooms">Alle Räume</string>
+    <string name="fleet_no_devices">Keine Geräte in diesem Raum</string>
+    <string name="unknown_value">unbekannt</string>
+    <string name="not_connected">offline</string>
+    <string name="fleet_status_format">Online %1$d / %2$d · Zuletzt %3$s · Laufzeit %4$s</string>
+    <string name="history_summary_format">Heute %1$.3f kWh · Woche %2$.3f · Monat %3$.3f · Spitzenwert heute %4$.0f W</string>
+    <string name="alert_limits_saved">Warnschwellen gespeichert</string>
+    <string name="token_copied">Zugriffstoken kopiert</string>
+    <string name="access_created">Zugriff für %1$s erstellt · %2$s</string>
+    <string name="no_shared_users">Keine freigegebenen Benutzer</string>
+    <string name="remote_connecting">Verbindung zum Remote-Controller…</string>
+    <string name="remote_no_devices">Keine Remote-Geräte zurückgegeben.</string>
+    <string name="remote_connected_count">Remote-Controller verbunden · %1$d Gerät(e)</string>
+    <string name="remote_failed">Fernsteuerung fehlgeschlagen: %1$s</string>
+    <string name="remote_sending">Remote-Befehl wird gesendet…</string>
+    <string name="remote_command_sent">%1$s · Ausgang %2$d · %3$s gesendet</string>
+    <string name="wizard_need_security">Vor Einrichtung 2,4 GHz + WPA2-Personal bestätigen.</string>
+    <string name="setup_guard_required">Setup Guard erfordert die Bestätigung 2,4 GHz + WPA2-Personal.</string>
+    <string name="automation_invalid_power_limit">Positive Watt-Grenze eingeben.</string>
+    <string name="temperature_alert_title">Temperaturwarnung der Steckdosenleiste</string>
+    <string name="temperature_alert_body">Temperatur erreichte %1$d°C (Schwelle %2$d°C).</string>
+    <string name="energy_alert_title">Tagesenergie-Warnung</string>
+    <string name="energy_alert_body">Heutige erfasste Energie erreichte %1$.2f kWh (Schwelle %2$.2f kWh).</string>
+    <string-array name="share_role_labels">
+        <item>Ansehen</item><item>Steuern</item><item>Admin</item>
+    </string-array>
+    <string-array name="remote_outlet_labels">
+        <item>Ausgang 1</item><item>Ausgang 2</item><item>Ausgang 3</item><item>Ausgang 4</item>
+    </string-array>
 </resources>
