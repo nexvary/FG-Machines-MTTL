@@ -150,7 +150,7 @@
     <string name="protection_event">تم الإبلاغ عن كود حماية/حدث: %1$s</string>
     <string name="high_load_warning">تنبيه حمل مرتفع: القدرة تجاوزت مستوى التشغيل الموصى به 3000 واط</string>
     <string name="outlet_telemetry_waiting">القدرة — واط · الطاقة — ك.و.س · الحرارة — °م</string>
-    <string name="outlet_telemetry_format">%.1f واط · %.3f ك.و.س · %d °م</string>
+    <string name="outlet_telemetry_format">%1$.1f واط · %2$.3f ك.و.س · %3$d °م</string>
     <string name="telemetry_device_offline">المشترك غير متصل بوحدة التحكم المحلية.</string>
     <string name="energy_cost_settings">حساب تكلفة الكهرباء</string>
     <string name="tariff_hint">سعر الكيلوواط/ساعة بالجنيه</string>
