@@ -441,4 +441,48 @@ FG Machines RCK bu cihaza MTTL TCP komutları göndermez.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
 
+
+    <string name="open_dawon_zwave_control">MTD-01 Z-Wave kontrolünü aç</string>
+    <string name="dawon_control_title">Dawon MTD-01 Kontrolü</string>
+    <string name="dawon_control_subtitle">Yerel Home Assistant / Z-Wave JS ağ geçidi üzerinden gerçek AÇ/KAPAT kontrolü. Telefonun Z-Wave radyosu varmış gibi davranılmaz.</string>
+    <string name="dawon_verified_profile">Doğrulanmış Z-Wave profili</string>
+    <string name="dawon_fingerprint_format">%1$s
+Üretici 0x%2$04X · Tür 0x%3$04X · Ürün 0x%4$04X
+%5$s
+%6$s</string>
+    <string name="dawon_kr_frequency_warning">Önemli: Bu Kore cihazı KR Z-Wave frekans planını kullanır. Denetleyici KR 920.90 / 921.70 / 923.10 MHz desteklemelidir.</string>
+    <string name="dawon_pairing_title">Eşleştirme / Inclusion</string>
+    <string name="dawon_pairing_steps">1. Z-Wave ağ geçidini Add/Inclusion moduna alın.
+2. MTD-01'i prize takın.
+3. Fiziksel düğmeyi yaklaşık 5 saniye basılı tutun ve LED yanıp sönünce bırakın.
+4. Inclusion tamamlanınca aşağıdan bağlanın ve bulunan switch varlığını seçin.</string>
+    <string name="dawon_gateway_title">Z-Wave Ağ Geçidi</string>
+    <string name="dawon_gateway_note">Z-Wave JS ve KR uyumlu denetleyici kullanan yerel Home Assistant kullanın. Özel LAN HTTP'ye izin verilir; genel uç noktalar HTTPS kullanmalıdır.</string>
+    <string name="dawon_gateway_endpoint_hint">Home Assistant URL, örn. http://192.168.1.20:8123</string>
+    <string name="dawon_gateway_token_hint">Home Assistant long-lived access token</string>
+    <string name="dawon_gateway_connect">Bağlan ve switch'leri bul</string>
+    <string name="dawon_gateway_endpoint_required">Home Assistant URL'sini girin.</string>
+    <string name="dawon_gateway_token_required">Home Assistant erişim tokenını girin.</string>
+    <string name="dawon_gateway_connecting">Z-Wave ağ geçidine bağlanılıyor…</string>
+    <string name="dawon_no_switch_entities">Switch varlığı bulunamadı</string>
+    <string name="dawon_gateway_connected_no_switches">Ağ geçidi bağlı ancak switch.* varlığı yok. Önce MTD-01'i eşleştirip tekrar deneyin.</string>
+    <string name="dawon_candidate_found">Muhtemel MTD-01 / Dawon switch bulundu ve seçildi.</string>
+    <string name="dawon_select_switch_manually">Ağ geçidi bağlı. MTD-01 switch'ini listeden seçin.</string>
+    <string name="dawon_select_switch_first">Önce bir switch varlığı seçin.</string>
+    <string name="dawon_sending_on">Z-Wave üzerinden AÇ komutu gönderiliyor…</string>
+    <string name="dawon_sending_off">Z-Wave üzerinden KAPAT komutu gönderiliyor…</string>
+    <string name="dawon_on_sent">AÇ komutu gönderildi ve durum yenilendi.</string>
+    <string name="dawon_off_sent">KAPAT komutu gönderildi ve durum yenilendi.</string>
+    <string name="dawon_state_format">%1$s
+%2$s
+Durum: %3$s</string>
+    <string name="dawon_state_unavailable">KULLANILAMIYOR</string>
+    <string name="dawon_state_on">AÇIK</string>
+    <string name="dawon_state_off">KAPALI</string>
+    <string name="dawon_gateway_error">Ağ geçidi hatası: %1$s</string>
+    <string name="dawon_on">AÇ</string>
+    <string name="dawon_off">KAPAT</string>
+    <string name="dawon_refresh_state">Durumu yenile</string>
+    <string name="dawon_gateway_idle">Henüz bir Z-Wave ağ geçidine bağlı değil.</string>
+
 </resources>
