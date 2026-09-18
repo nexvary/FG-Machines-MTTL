@@ -228,11 +228,30 @@ public final class DiagnosticsActivity extends AppCompatActivity {
                 DiagnosticVisionParser.parse(capturedText, capturedBarcodes);
 
         boolean applied = false;
+        ApplianceDiagnosticsStore.IdentityRecord localIdentity = null;
+
+        if (captureMode == CAPTURE_MODE_LABEL) {
+            for (String barcode : parsed.barcodes) {
+                ApplianceDiagnosticsStore.IdentityRecord candidate =
+                        diagnosticsStore.resolveIdentity(barcode);
+                if (candidate != null) {
+                    localIdentity = candidate;
+                    break;
+                }
+            }
+            if (localIdentity != null) {
+                if (!localIdentity.brand.isEmpty()) brandInput.setText(localIdentity.brand);
+                if (!localIdentity.category.isEmpty()) categoryInput.setText(localIdentity.category);
+                modelInput.setText(localIdentity.model);
+                applied = true;
+            }
+        }
+
         if (captureMode == CAPTURE_MODE_DISPLAY && !parsed.errorCode.isEmpty()) {
             codeInput.setText(parsed.errorCode);
             applied = true;
         }
-        if (captureMode == CAPTURE_MODE_LABEL) {
+        if (captureMode == CAPTURE_MODE_LABEL && localIdentity == null) {
             if (!parsed.brand.isEmpty()) {
                 brandInput.setText(parsed.brand);
                 applied = true;
@@ -244,6 +263,16 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         }
 
         StringBuilder summary = new StringBuilder();
+        if (localIdentity != null) {
+            summary.append(getString(R.string.camera_local_identity))
+                    .append(": ")
+                    .append(localIdentity.brand);
+            if (!localIdentity.model.isEmpty()) {
+                if (!localIdentity.brand.isEmpty()) summary.append(" ");
+                summary.append(localIdentity.model);
+            }
+            summary.append("\n");
+        }
         if (!parsed.brand.isEmpty()) {
             summary.append(getString(R.string.camera_detected_brand))
                     .append(": ").append(parsed.brand).append("\n");
@@ -541,10 +570,27 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         }
         int outlet = selectedOutlet();
         String nickname = fleetStore.outletName(activeMac, outlet);
-        diagnosticsStore.bind(activeMac, outlet, brand, category, model, nickname,
-                System.currentTimeMillis());
+        long now = System.currentTimeMillis();
+        diagnosticsStore.bind(activeMac, outlet, brand, category, model, nickname, now);
+
+        int identifiersSaved = 0;
+        if (captureMode == CAPTURE_MODE_LABEL && !model.isEmpty()) {
+            for (String barcode : capturedBarcodes) {
+                if (diagnosticsStore.saveIdentity(
+                        barcode, brand, category, model, "confirmed_by_user", now)) {
+                    identifiersSaved++;
+                }
+            }
+        }
+
         refreshBindingAndHistory();
-        Snackbar.make(bindingStatus, R.string.diagnostics_bound, Snackbar.LENGTH_SHORT).show();
+        if (identifiersSaved > 0) {
+            Snackbar.make(bindingStatus,
+                    getString(R.string.diagnostics_bound_with_identifiers, identifiersSaved),
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(bindingStatus, R.string.diagnostics_bound, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void recordIncident() {

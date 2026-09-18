@@ -385,4 +385,8 @@
     <string name="camera_no_result">Okunabilir metin veya barkod bulunamadı. Fotoğrafı daha yakından ve iyi ışıkta tekrar çekin.</string>
     <string name="camera_no_autofill">Görüntü okundu ancak güvenli otomatik doldurma değeri bulunamadı. OCR sonucunu elle kontrol edin.</string>
 
+
+    <string name="camera_local_identity">Yerel olarak doğrulanmış kimlik eşleşti</string>
+    <string name="diagnostics_bound_with_identifiers">Cihaz bağlandı. Gelecekte yerel tanıma için %1$d barkod kimliği kaydedildi.</string>
+
 </resources>

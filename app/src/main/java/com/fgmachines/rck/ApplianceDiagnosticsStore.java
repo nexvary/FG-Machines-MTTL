@@ -8,11 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /** Local-only appliance bindings and diagnostic incident history. */
 public final class ApplianceDiagnosticsStore extends SQLiteOpenHelper {
     private static final String DB_NAME = "fg_rck_appliance_diagnostics.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public ApplianceDiagnosticsStore(Context context) {
         super(context.getApplicationContext(), DB_NAME, null, DB_VERSION);
@@ -45,9 +46,22 @@ public final class ApplianceDiagnosticsStore extends SQLiteOpenHelper {
                 "rck_context TEXT NOT NULL DEFAULT '')");
         db.execSQL("CREATE INDEX idx_diag_incident_mac_outlet_ts " +
                 "ON diagnostic_incident(mac,outlet,ts)");
+        createIdentityTable(db);
     }
 
-    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) createIdentityTable(db);
+    }
+
+    private static void createIdentityTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS model_identity (" +
+                "identifier TEXT PRIMARY KEY," +
+                "brand TEXT NOT NULL DEFAULT ''," +
+                "category TEXT NOT NULL DEFAULT ''," +
+                "model TEXT NOT NULL DEFAULT ''," +
+                "source TEXT NOT NULL DEFAULT ''," +
+                "updated_ts INTEGER NOT NULL)");
+    }
 
     public synchronized void bind(String mac, int outlet, String brand, String category,
                                   String model, String nickname, long now) {
@@ -75,6 +89,37 @@ public final class ApplianceDiagnosticsStore extends SQLiteOpenHelper {
             if (!c.moveToFirst()) return null;
             return new BindingRecord(key, outlet, c.getString(0), c.getString(1),
                     c.getString(2), c.getString(3), c.getLong(4));
+        }
+    }
+
+    public synchronized boolean saveIdentity(String identifier, String brand,
+                                             String category, String model,
+                                             String source, long now) {
+        String key = normalizeIdentifier(identifier);
+        String cleanModel = clean(model);
+        if (key.isEmpty() || cleanModel.isEmpty()) return false;
+        ContentValues values = new ContentValues();
+        values.put("identifier", key);
+        values.put("brand", clean(brand));
+        values.put("category", clean(category));
+        values.put("model", cleanModel);
+        values.put("source", clean(source));
+        values.put("updated_ts", now);
+        return getWritableDatabase().insertWithOnConflict(
+                "model_identity", null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1;
+    }
+
+    public IdentityRecord resolveIdentity(String identifier) {
+        String key = normalizeIdentifier(identifier);
+        if (key.isEmpty()) return null;
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT brand,category,model,source,updated_ts FROM model_identity " +
+                        "WHERE identifier=? LIMIT 1",
+                new String[]{key})) {
+            if (!c.moveToFirst()) return null;
+            return new IdentityRecord(
+                    key, c.getString(0), c.getString(1), c.getString(2),
+                    c.getString(3), c.getLong(4));
         }
     }
 
@@ -120,6 +165,29 @@ public final class ApplianceDiagnosticsStore extends SQLiteOpenHelper {
 
     private static String clean(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private static String normalizeIdentifier(String value) {
+        return value == null ? "" : value.trim().toUpperCase(Locale.ROOT);
+    }
+
+    public static final class IdentityRecord {
+        public final String identifier;
+        public final String brand;
+        public final String category;
+        public final String model;
+        public final String source;
+        public final long updatedAt;
+
+        IdentityRecord(String identifier, String brand, String category,
+                       String model, String source, long updatedAt) {
+            this.identifier = identifier == null ? "" : identifier;
+            this.brand = brand == null ? "" : brand;
+            this.category = category == null ? "" : category;
+            this.model = model == null ? "" : model;
+            this.source = source == null ? "" : source;
+            this.updatedAt = updatedAt;
+        }
     }
 
     public static final class BindingRecord {
