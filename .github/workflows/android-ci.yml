@@ -94,3 +94,36 @@ jobs:
           name: FG-Machines-RCK-debug-separate-package
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
+
+  ui-screenshot:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download isolated debug APK
+        uses: actions/download-artifact@v4
+        with:
+          name: FG-Machines-RCK-debug-separate-package
+          path: apk
+
+      - name: Capture real app dashboard screenshot
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            adb install -r apk/app-debug.apk
+            adb shell am force-stop com.fgmachines.rck.debug
+            adb shell am start -n com.fgmachines.rck.debug/com.fgmachines.rck.MainActivity
+            sleep 8
+            adb exec-out screencap -p > FG-Machines-RCK-1.2.1-dashboard.png
+
+      - name: Upload real UI screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: FG-Machines-RCK-1.2.1-screenshot
+          path: FG-Machines-RCK-1.2.1-dashboard.png
+          if-no-files-found: error
