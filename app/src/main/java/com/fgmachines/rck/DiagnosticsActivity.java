@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +23,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -52,6 +62,9 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private MaterialButton guidedYesButton;
     private MaterialButton guidedNoButton;
     private MaterialButton guidedSourceButton;
+    private MaterialButton captureDisplayButton;
+    private MaterialButton captureLabelButton;
+    private TextView captureResultText;
 
     private FleetStore fleetStore;
     private ApplianceDiagnosticsStore diagnosticsStore;
@@ -65,6 +78,21 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private ApplianceDiagnosticsCatalog.Match lastMatch;
     private GuidedDiagnosticsEngine.Profile activeGuidedProfile;
     private int guidedQuestionIndex;
+    private static final int CAPTURE_MODE_DISPLAY = 1;
+    private static final int CAPTURE_MODE_LABEL = 2;
+    private int captureMode;
+    private int capturePending;
+    private String capturedText = "";
+    private final List<String> capturedBarcodes = new ArrayList<>();
+
+    private final ActivityResultLauncher<Void> diagnosticCameraLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
+                if (bitmap == null) {
+                    if (captureResultText != null) captureResultText.setText(R.string.camera_capture_cancelled);
+                    return;
+                }
+                processDiagnosticImage(bitmap);
+            });
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -107,6 +135,8 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         findViewById(R.id.diagnosticsBindButton).setOnClickListener(v -> saveBinding());
         findViewById(R.id.diagnosticsRecordButton).setOnClickListener(v -> recordIncident());
         sourceButton.setOnClickListener(v -> openCurrentSource());
+        captureDisplayButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_DISPLAY));
+        captureLabelButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_LABEL));
     }
 
     private void applySystemBarInsets() {
@@ -137,8 +167,118 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         guidedYesButton = findViewById(R.id.guidedYesButton);
         guidedNoButton = findViewById(R.id.guidedNoButton);
         guidedSourceButton = findViewById(R.id.guidedSourceButton);
+        captureDisplayButton = findViewById(R.id.captureDisplayButton);
+        captureLabelButton = findViewById(R.id.captureLabelButton);
+        captureResultText = findViewById(R.id.captureResultText);
         sourceButton.setEnabled(false);
         sourceButton.setAlpha(0.55f);
+    }
+
+    private void startDiagnosticCapture(int mode) {
+        captureMode = mode;
+        captureResultText.setText(R.string.camera_processing);
+        diagnosticCameraLauncher.launch(null);
+    }
+
+    private void processDiagnosticImage(Bitmap bitmap) {
+        capturedText = "";
+        capturedBarcodes.clear();
+        capturePending = 2;
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+
+        TextRecognizer recognizer =
+                TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        recognizer.process(image)
+                .addOnSuccessListener(text -> {
+                    capturedText = text == null ? "" : text.getText();
+                    recognizer.close();
+                    onCapturePartFinished();
+                })
+                .addOnFailureListener(error -> {
+                    recognizer.close();
+                    onCapturePartFinished();
+                });
+
+        BarcodeScanner scanner = BarcodeScanning.getClient();
+        scanner.process(image)
+                .addOnSuccessListener(barcodes -> {
+                    if (barcodes != null) {
+                        for (Barcode barcode : barcodes) {
+                            String raw = barcode.getRawValue();
+                            if (raw != null && !raw.trim().isEmpty()) capturedBarcodes.add(raw.trim());
+                        }
+                    }
+                    scanner.close();
+                    onCapturePartFinished();
+                })
+                .addOnFailureListener(error -> {
+                    scanner.close();
+                    onCapturePartFinished();
+                });
+    }
+
+    private void onCapturePartFinished() {
+        capturePending--;
+        if (capturePending > 0) return;
+        applyDiagnosticCapture();
+    }
+
+    private void applyDiagnosticCapture() {
+        DiagnosticVisionParser.Result parsed =
+                DiagnosticVisionParser.parse(capturedText, capturedBarcodes);
+
+        boolean applied = false;
+        if (captureMode == CAPTURE_MODE_DISPLAY && !parsed.errorCode.isEmpty()) {
+            codeInput.setText(parsed.errorCode);
+            applied = true;
+        }
+        if (captureMode == CAPTURE_MODE_LABEL) {
+            if (!parsed.brand.isEmpty()) {
+                brandInput.setText(parsed.brand);
+                applied = true;
+            }
+            if (!parsed.model.isEmpty()) {
+                modelInput.setText(parsed.model);
+                applied = true;
+            }
+        }
+
+        StringBuilder summary = new StringBuilder();
+        if (!parsed.brand.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_brand))
+                    .append(": ").append(parsed.brand).append("\n");
+        }
+        if (!parsed.model.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_model))
+                    .append(": ").append(parsed.model).append("\n");
+        }
+        if (!parsed.errorCode.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_code))
+                    .append(": ").append(parsed.errorCode).append("\n");
+        }
+        if (!parsed.barcodes.isEmpty()) {
+            summary.append(getString(R.string.camera_detected_barcodes))
+                    .append(": ").append(android.text.TextUtils.join(", ", parsed.barcodes))
+                    .append("\n")
+                    .append(getString(R.string.camera_barcode_note))
+                    .append("\n");
+        }
+        if (!parsed.recognizedText.isEmpty()) {
+            String preview = parsed.recognizedText.replace("\n", " · ");
+            if (preview.length() > 220) preview = preview.substring(0, 220) + "…";
+            summary.append(getString(R.string.camera_ocr_text))
+                    .append(": ").append(preview);
+        }
+
+        if (summary.length() == 0) {
+            captureResultText.setText(R.string.camera_no_result);
+        } else {
+            captureResultText.setText(summary.toString().trim());
+        }
+
+        if (!applied) {
+            Snackbar.make(captureResultText, R.string.camera_no_autofill, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void configureGuidedDiagnostics() {
