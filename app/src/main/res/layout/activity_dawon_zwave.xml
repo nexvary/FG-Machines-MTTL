@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dawonZWaveRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fg_black"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dawonBackButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/back"
+            android:textColor="@color/fg_silver"
+            app:cornerRadius="14dp"
+            app:strokeColor="@color/fg_silver_dark" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/dawon_control_title"
+            android:textAlignment="viewStart"
+            android:textColor="@color/fg_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/dawon_control_subtitle"
+            android:textAlignment="viewStart"
+            android:textColor="@color/fg_text_secondary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/fg_surface"
+            app:cardCornerRadius="18dp"
+            app:strokeColor="@color/fg_blue"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dawon_verified_profile"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_blue_bright"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dawonFingerprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:lineSpacingExtra="2dp"
+                    android:padding="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textIsSelectable="true"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/dawon_kr_frequency_warning"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_warning"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/fg_surface"
+            app:cardCornerRadius="18dp"
+            app:strokeColor="@color/fg_green"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dawon_pairing_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/dawon_pairing_steps"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/fg_surface"
+            app:cardCornerRadius="18dp"
+            app:strokeColor="@color/fg_warning"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dawon_gateway_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/dawon_gateway_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="11sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/dawon_gateway_endpoint_hint"
+                    app:boxStrokeColor="@color/fg_blue">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dawonGatewayEndpointInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text"
+                        android:textDirection="ltr" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/dawon_gateway_token_hint"
+                    app:boxStrokeColor="@color/fg_green">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/dawonGatewayTokenInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textColor="@color/fg_text"
+                        android:textDirection="ltr" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dawonGatewayConnectButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/dawon_gateway_connect"
+                    android:textColor="@color/fg_black"
+                    app:backgroundTint="@color/fg_green"
+                    app:cornerRadius="14dp" />
+
+                <Spinner
+                    android:id="@+id/dawonSwitchSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/fg_blue"
+                    android:popupBackground="@color/fg_surface_2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/dawonOnButton"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:text="@string/dawon_on"
+                        android:textColor="@color/fg_black"
+                        app:backgroundTint="@color/fg_green"
+                        app:cornerRadius="14dp" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/dawonOffButton"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:text="@string/dawon_off"
+                        android:textColor="@color/fg_text"
+                        app:backgroundTint="@color/fg_red"
+                        app:cornerRadius="14dp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dawonRefreshButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dawon_refresh_state"
+                    android:textColor="@color/fg_blue_bright"
+                    app:cornerRadius="14dp"
+                    app:strokeColor="@color/fg_blue" />
+
+                <TextView
+                    android:id="@+id/dawonGatewayStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:lineSpacingExtra="2dp"
+                    android:padding="12dp"
+                    android:text="@string/dawon_gateway_idle"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textIsSelectable="true"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
