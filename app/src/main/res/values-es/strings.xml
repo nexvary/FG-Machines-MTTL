@@ -306,4 +306,46 @@
     <string name="scene_selected_status">%1$s · %2$d de 4 salidas encendidas</string>
     <string name="scene_label_format">%1$s · %2$d/4 ENCENDIDAS</string>
     <string name="scene_ready">Escena lista. Aplicarla cambia el estado de las cuatro salidas.</string>
+
+    <string name="diagnostics_home_action">Diagnóstico de electrodomésticos</string>
+    <string name="diagnostics_back">Atrás</string>
+    <string name="diagnostics_title">Diagnóstico de electrodomésticos</string>
+    <string name="diagnostics_subtitle">Códigos y síntomas verificados por fuente, sin conexión, con historial vinculado a RCK</string>
+    <string name="diagnostics_device_binding">Vincular dispositivo y salida</string>
+    <string name="diagnostics_no_devices">No hay dispositivos MTTL-W01 guardados</string>
+    <string name="diagnostics_outlet_format">Salida %1$d</string>
+    <string name="diagnostics_binding_none">No hay ningún electrodoméstico vinculado a esta salida.</string>
+    <string name="diagnostics_binding_format">%1$s · salida %2$d</string>
+    <string name="diagnostics_brand_hint">Marca — p. ej., Samsung, Roborock</string>
+    <string name="diagnostics_category_hint">Categoría — lavadora, aire acondicionado, frigorífico, robot aspirador…</string>
+    <string name="diagnostics_model_hint">Modelo / serie exactos</string>
+    <string name="diagnostics_code_hint">Código / número de error</string>
+    <string name="diagnostics_symptom_hint">Síntoma — p. ej., no desagua, no carga</string>
+    <string name="diagnostics_search">Diagnosticar</string>
+    <string name="diagnostics_bind">Vincular equipo</string>
+    <string name="diagnostics_result_title">Resultado del diagnóstico</string>
+    <string name="diagnostics_result_empty">Introduce marca/modelo y un código de error o síntoma. Los resultados permanecen sin conexión.</string>
+    <string name="diagnostics_no_match">No se encontró una coincidencia verificada por fuente. Comprueba el modelo/serie y el código exactos en lugar de usar un significado genérico de Internet.</string>
+    <string name="diagnostics_open_source">Abrir fuente oficial</string>
+    <string name="diagnostics_record">Guardar en historial de fallos</string>
+    <string name="diagnostics_safety_title">Límite de seguridad</string>
+    <string name="diagnostics_safety_body">Solo se muestran comprobaciones seguras para el usuario. No abras compartimentos de tensión de red, no anules protecciones, no trabajes en circuitos energizados ni abras circuitos de refrigeración sellados o presurizados. Esos trabajos requieren un técnico cualificado.</string>
+    <string name="diagnostics_history_title">Historial de fallos de esta salida</string>
+    <string name="diagnostics_history_empty">No hay incidentes de diagnóstico registrados para esta salida.</string>
+    <string name="diagnostics_select_device">Selecciona o registra primero un MTTL-W01.</string>
+    <string name="diagnostics_binding_requires_identity">Introduce al menos una marca, categoría o modelo antes de vincular el equipo.</string>
+    <string name="diagnostics_bound">Equipo vinculado a la salida.</string>
+    <string name="diagnostics_search_before_record">Ejecuta un diagnóstico verificado por fuente antes de guardar un incidente.</string>
+    <string name="diagnostics_recorded">Incidente guardado con la instantánea actual de telemetría RCK.</string>
+    <string name="diagnostics_code_label">Código</string>
+    <string name="diagnostics_meaning_label">Significado</string>
+    <string name="diagnostics_causes_label">Posibles causas</string>
+    <string name="diagnostics_safe_checks_label">Comprobaciones seguras</string>
+    <string name="diagnostics_parts_label">Piezas posibles</string>
+    <string name="diagnostics_model_verify">Se debe verificar el modelo exacto antes de considerar este código específico del modelo.</string>
+    <string name="diagnostics_service_label">Límite de servicio</string>
+    <string name="diagnostics_scope_label">Alcance de la fuente</string>
+    <string name="diagnostics_symptom_label">Síntoma</string>
+    <string name="diagnostics_rck_unavailable">No había una instantánea de telemetría RCK en vivo disponible.</string>
+
 </resources>
