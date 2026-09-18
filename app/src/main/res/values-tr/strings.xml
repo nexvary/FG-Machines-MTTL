@@ -269,4 +269,5 @@
         <item>Priz 1</item><item>Priz 2</item><item>Priz 3</item><item>Priz 4</item>
     </string-array>
     <string name="wpa2_password_invalid">WPA2-Personal parolası 8–63 karakter olmalı veya 64 karakterlik onaltılık PSK olmalıdır.</string>
+    <string name="automation_select_device">Otomasyon kurallarını ayarlamak için bir filo cihazı seçin.</string>
 </resources>
