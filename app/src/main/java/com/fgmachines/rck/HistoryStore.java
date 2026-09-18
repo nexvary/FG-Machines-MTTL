@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,6 +146,54 @@ public final class HistoryStore extends SQLiteOpenHelper {
             }
         }
         return events;
+    }
+
+    public synchronized void writeCsv(String mac, Writer writer) throws IOException {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty()) throw new IOException("No device selected");
+
+        writer.write("section,timestamp_ms,mac,outlet,kind,detail,power_w,energy_kwh,max_temp_c\n");
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT ts,power_w,energy_kwh,max_temp_c FROM telemetry WHERE mac=? ORDER BY ts ASC",
+                new String[]{key})) {
+            while (c.moveToNext()) {
+                writer.write("telemetry,");
+                writer.write(String.valueOf(c.getLong(0)));
+                writer.write(",");
+                writer.write(csv(key));
+                writer.write(",,,,");
+                writer.write(String.valueOf(c.getDouble(1)));
+                writer.write(",");
+                writer.write(String.valueOf(c.getDouble(2)));
+                writer.write(",");
+                writer.write(String.valueOf(c.getInt(3)));
+                writer.write("\n");
+            }
+        }
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT ts,outlet,kind,detail FROM events WHERE mac=? ORDER BY ts ASC",
+                new String[]{key})) {
+            while (c.moveToNext()) {
+                writer.write("event,");
+                writer.write(String.valueOf(c.getLong(0)));
+                writer.write(",");
+                writer.write(csv(key));
+                writer.write(",");
+                writer.write(String.valueOf(c.getInt(1)));
+                writer.write(",");
+                writer.write(csv(c.getString(2)));
+                writer.write(",");
+                writer.write(csv(c.getString(3)));
+                writer.write(",,,\n");
+            }
+        }
+        writer.flush();
+    }
+
+    static String csv(String value) {
+        if (value == null) return "";
+        String escaped = value.replace("\"", "\"\"");
+        return "\"" + escaped + "\"";
     }
 
     public static final class Summary {
