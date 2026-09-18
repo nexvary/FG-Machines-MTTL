@@ -121,6 +121,10 @@ public final class ControllerHub implements Closeable {
         server.setOutlet(mac, outlet, on);
     }
 
+    public void setAll(String mac, boolean on) throws IOException {
+        server.setAll(mac, on);
+    }
+
     public void refresh(String mac) throws IOException {
         server.refresh(mac);
     }
