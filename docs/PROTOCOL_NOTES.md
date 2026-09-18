@@ -126,3 +126,22 @@ The protocol implementation now exists in FG Machines RCK, but support is descri
 
 Until the second gate is complete, the app accepts a device only after a valid `lgutap` boot frame,
 and it never sends relay commands to an unidentified TCP peer.
+
+
+## USB hardware status
+
+The MTTL-W01 has two USB-A charging ports in addition to the four AC outlets.
+
+As of the 1.3.1 hardware-discovery work, independent USB switching is **not verified** and FG Machines RCK deliberately does not invent channel 5/6 commands.
+
+Evidence reviewed:
+
+- Public reverse-engineering of the MTTL-W01 identifies four latching AC relays on the Power PCB and reports relay state as overall status + Relay1..Relay4.
+- The same teardown shows a separate USB PCB with two USB-A connectors, a charger IC and likely voltage regulation, with no identified USB relay.
+- The verified local protocol currently exposes relay commands and state for channels 1..4 only.
+
+FG Machines RCK therefore treats USB1/USB2 as charger ports with no independently verified ON/OFF command. A passive **USB Hardware Discovery** window can be started from the app for a connected strip. During that window the controller records only otherwise-unparsed frames already sent by the strip; it does not transmit guessed USB commands.
+
+External research references:
+- https://hackaday.io/project/202043/logs
+- https://manuals.plus/asin/B0DW45483F
