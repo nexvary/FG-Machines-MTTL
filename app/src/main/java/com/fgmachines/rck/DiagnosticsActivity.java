@@ -52,6 +52,8 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private TextInputEditText codeInput;
     private TextInputEditText symptomInput;
     private TextView bindingStatus;
+    private TextView liveElectricalText;
+    private MaterialButton refreshElectricalButton;
     private TextView resultText;
     private TextView historyText;
     private MaterialButton sourceButton;
@@ -137,6 +139,7 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         sourceButton.setOnClickListener(v -> openCurrentSource());
         captureDisplayButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_DISPLAY));
         captureLabelButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_LABEL));
+        refreshElectricalButton.setOnClickListener(v -> refreshLiveElectricalContext());
     }
 
     private void applySystemBarInsets() {
@@ -157,6 +160,8 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         codeInput = findViewById(R.id.diagnosticsCodeInput);
         symptomInput = findViewById(R.id.diagnosticsSymptomInput);
         bindingStatus = findViewById(R.id.diagnosticsBindingStatus);
+        liveElectricalText = findViewById(R.id.diagnosticsLiveElectrical);
+        refreshElectricalButton = findViewById(R.id.diagnosticsRefreshElectricalButton);
         resultText = findViewById(R.id.diagnosticsResult);
         historyText = findViewById(R.id.diagnosticsHistory);
         sourceButton = findViewById(R.id.diagnosticsSourceButton);
@@ -640,6 +645,7 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         if (activeMac.isEmpty()) {
             bindingStatus.setText(R.string.diagnostics_binding_none);
             historyText.setText(R.string.diagnostics_history_empty);
+            refreshLiveElectricalContext();
             return;
         }
 
@@ -655,6 +661,8 @@ public final class DiagnosticsActivity extends AppCompatActivity {
             if (!binding.category.isEmpty()) categoryInput.setText(binding.category);
             if (!binding.model.isEmpty()) modelInput.setText(binding.model);
         }
+
+        refreshLiveElectricalContext();
 
         List<ApplianceDiagnosticsStore.IncidentRecord> incidents =
                 diagnosticsStore.recent(activeMac, outlet, 8);
@@ -684,9 +692,65 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         historyText.setText(history.toString());
     }
 
+    private void refreshLiveElectricalContext() {
+        if (liveElectricalText == null) return;
+        if (activeMac == null || activeMac.isEmpty() || controllerHub == null) {
+            liveElectricalText.setText(R.string.diagnostics_live_unavailable);
+            if (refreshElectricalButton != null) refreshElectricalButton.setEnabled(false);
+            return;
+        }
+
+        ControllerHub.DeviceState state = controllerHub.state(activeMac);
+        if (state == null || !state.connected || state.telemetry == null) {
+            liveElectricalText.setText(R.string.diagnostics_live_device_offline);
+            if (refreshElectricalButton != null) refreshElectricalButton.setEnabled(true);
+            return;
+        }
+
+        int outlet = selectedOutlet();
+        for (MttlProtocol.OutletTelemetry telemetry : state.telemetry.outlets) {
+            if (telemetry.channel != outlet) continue;
+
+            String relay = telemetry.relayOn
+                    ? getString(R.string.diagnostics_live_on)
+                    : getString(R.string.diagnostics_live_off);
+            String overload = telemetry.overloadProtection
+                    ? getString(R.string.diagnostics_live_warning)
+                    : getString(R.string.diagnostics_live_normal);
+            String overheat = telemetry.overheatProtection
+                    ? getString(R.string.diagnostics_live_warning)
+                    : getString(R.string.diagnostics_live_normal);
+            String event = telemetry.eventCode == null || telemetry.eventCode.trim().isEmpty()
+                    ? getString(R.string.diagnostics_live_none)
+                    : telemetry.eventCode.trim();
+
+            liveElectricalText.setText(getString(
+                    R.string.diagnostics_live_format,
+                    outlet,
+                    relay,
+                    telemetry.powerW,
+                    telemetry.energyKWh,
+                    telemetry.temperatureC,
+                    overload,
+                    overheat,
+                    event));
+            if (refreshElectricalButton != null) refreshElectricalButton.setEnabled(true);
+            return;
+        }
+
+        liveElectricalText.setText(R.string.diagnostics_live_no_outlet_data);
+        if (refreshElectricalButton != null) refreshElectricalButton.setEnabled(true);
+    }
+
     private void openCurrentSource() {
         if (lastMatch == null || lastMatch.entry.sourceUrl.isEmpty()) return;
         openExternal(lastMatch.entry.sourceUrl, sourceButton);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (controllerHub != null) refreshLiveElectricalContext();
     }
 
     private static String textOf(TextInputEditText input) {
