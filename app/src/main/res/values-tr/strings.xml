@@ -273,4 +273,18 @@
     <string name="forget_device">Çevrimdışı cihazı unut</string>
     <string name="forget_device_disconnect_first">Cihazı filodan kaldırmadan önce bağlantısını kesin.</string>
     <string name="device_forgotten">Cihaz yerel filodan kaldırıldı.</string>
+    <string name="room_all_off">ODAYI KAPAT</string>
+    <string name="fleet_all_off">TÜMÜNÜ KAPAT</string>
+    <string name="emergency_off_note">Güvenlik kısayolu: seçili odadaki veya tüm bağlı prizlerdeki dört çıkışa KAPAT komutu gönderir. Onay gerekir.</string>
+    <string name="no_connected_devices">Bağlı priz bulunmuyor.</string>
+    <string name="no_room_selected">Önce bir oda filtresi veya odaya atanmış bir cihaz seçin.</string>
+    <string name="confirm_room_off">Bu odadaki tüm bağlı çıkışlar kapatılsın mı?</string>
+    <string name="confirm_fleet_off">Tüm bağlı prizlerdeki bütün çıkışlar kapatılsın mı?</string>
+    <string name="confirm_action">ONAYLA</string>
+    <string name="no_connected_targets">Bu hedefe uyan bağlı cihaz yok.</string>
+    <string name="emergency_off_result">Gönderilen KAPAT komutları: %1$d · hata: %2$d</string>
+    <string name="export_history_csv">Geçmişi CSV dışa aktar</string>
+    <string name="history_exported">Geçmiş CSV olarak dışa aktarıldı.</string>
+    <string name="history_export_failed">Geçmiş dışa aktarılamadı: %1$s</string>
+    <string name="remote_security_note">Genel uzak uç noktalar HTTPS kullanmalıdır. Düz HTTP yalnızca yerel/özel VPN adreslerinde kabul edilir.</string>
 </resources>
