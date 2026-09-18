@@ -73,7 +73,7 @@ public final class HardwareCatalog {
                     "다원디엔에스"
             ),
             Transport.Z_WAVE_GATEWAY,
-            SupportStatus.IDENTIFIED_GATEWAY_REQUIRED,
+            SupportStatus.VERIFIED_ZWAVE_PROFILE_GATEWAY_REQUIRED,
             -1,
             2,
             250,
