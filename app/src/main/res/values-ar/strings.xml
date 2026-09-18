@@ -303,4 +303,7 @@
     <string name="scene_applied">تم تطبيق المشهد · الأوامر المرسلة: %1$d · الفشل: %2$d</string>
     <string name="history_cost_waiting">حدد تعريفة الكهرباء لحساب التكلفة التاريخية.</string>
     <string name="history_cost_format">التكلفة · اليوم %1$.2f جنيه · الأسبوع %2$.2f · الشهر %3$.2f</string>
+    <string name="scene_selected_status">%1$s · عدد المخارج المشغلة %2$d من 4</string>
+    <string name="scene_label_format">%1$s · تشغيل %2$d/4</string>
+    <string name="scene_ready">المشهد جاهز. تطبيقه يغير حالات المخارج الأربعة.</string>
 </resources>
