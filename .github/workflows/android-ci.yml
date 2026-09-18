@@ -110,15 +110,18 @@ jobs:
       - name: Capture real app dashboard screenshot
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 29
           arch: x86_64
-          profile: pixel_6
+          profile: pixel_2
           disable-animations: true
           script: |
             adb install -r apk/app-debug.apk
             adb shell am force-stop com.fgmachines.rck.debug
             adb shell am start -n com.fgmachines.rck.debug/com.fgmachines.rck.MainActivity
-            sleep 8
+            sleep 20
+            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
+            adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
+            adb shell cat /sdcard/fg-rck-ui.xml || true
             adb exec-out screencap -p > FG-Machines-RCK-1.2.1-dashboard.png
 
       - name: Upload real UI screenshot
