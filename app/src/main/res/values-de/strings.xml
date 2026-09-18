@@ -150,7 +150,7 @@
     <string name="protection_event">Schutz-/Ereigniscode gemeldet: %1$s</string>
     <string name="high_load_warning">Hohe Last: über dem empfohlenen Betriebsniveau von 3.000 W</string>
     <string name="outlet_telemetry_waiting">Leistung — W · Energie — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">Die Steckdosenleiste ist nicht mit dem lokalen Controller verbunden.</string>
     <string name="energy_cost_settings">Energiekosten</string>
     <string name="tariff_hint">Stromtarif (EGP pro kWh)</string>
