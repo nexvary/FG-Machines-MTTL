@@ -268,4 +268,5 @@
     <string-array name="remote_outlet_labels">
         <item>المخرج 1</item><item>المخرج 2</item><item>المخرج 3</item><item>المخرج 4</item>
     </string-array>
+    <string name="wpa2_password_invalid">يجب أن تكون كلمة مرور WPA2-Personal من 8 إلى 63 حرفًا، أو مفتاح PSK سداسيًا من 64 حرفًا.</string>
 </resources>
