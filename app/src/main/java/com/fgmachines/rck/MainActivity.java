@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_SETUP_SSID = "setup_ssid";
     private static final String PREF_SETUP_MODE = "setup_mode";
     private static final String PREF_TARIFF = "energy_tariff_egp";
+    private static final String PREF_STRIP_NAME = "strip_name";
+    private static final String PREF_ROOM_NAME = "room_name";
+    private static final String PREF_OUTLET_NAME_PREFIX = "outlet_name_";
     private static final double NOMINAL_VOLTAGE_V = 220.0;
     private static final int SETUP_MODE_ROUTER = 0;
     private static final int SETUP_MODE_TWO_PHONE = 1;
@@ -88,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText tariffInput;
     private MaterialButton saveTariffButton;
     private MaterialButton refreshTelemetryButton;
+    private TextInputEditText stripNameInput;
+    private TextInputEditText roomNameInput;
+    private TextInputEditText[] outletNameInputs;
+    private MaterialButton saveDeviceNamesButton;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -148,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         configureSetupWorkflow();
         configureSetupReadiness();
         configureEnergyDashboard();
+        configureDeviceNaming();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -208,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
         tariffInput = findViewById(R.id.tariffInput);
         saveTariffButton = findViewById(R.id.saveTariffButton);
         refreshTelemetryButton = findViewById(R.id.refreshTelemetryButton);
+        stripNameInput = findViewById(R.id.stripNameInput);
+        roomNameInput = findViewById(R.id.roomNameInput);
+        saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
@@ -219,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
         outletTelemetryViews = new TextView[]{
                 findViewById(R.id.outlet1Telemetry), findViewById(R.id.outlet2Telemetry),
                 findViewById(R.id.outlet3Telemetry), findViewById(R.id.outlet4Telemetry)
+        };
+        outletNameInputs = new TextInputEditText[]{
+                findViewById(R.id.outlet1NameInput), findViewById(R.id.outlet2NameInput),
+                findViewById(R.id.outlet3NameInput), findViewById(R.id.outlet4NameInput)
         };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
@@ -264,6 +279,49 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    private void configureDeviceNaming() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        stripNameInput.setText(prefs.getString(PREF_STRIP_NAME, ""));
+        roomNameInput.setText(prefs.getString(PREF_ROOM_NAME, ""));
+        for (int i = 0; i < outletNameInputs.length; i++) {
+            outletNameInputs[i].setText(prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), ""));
+        }
+        applyDeviceNames();
+
+        saveDeviceNamesButton.setOnClickListener(v -> {
+            SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putString(PREF_STRIP_NAME, textOf(stripNameInput))
+                    .putString(PREF_ROOM_NAME, textOf(roomNameInput));
+            for (int i = 0; i < outletNameInputs.length; i++) {
+                editor.putString(PREF_OUTLET_NAME_PREFIX + (i + 1), textOf(outletNameInputs[i]));
+            }
+            editor.apply();
+            applyDeviceNames();
+            Snackbar.make(saveDeviceNamesButton, R.string.names_saved, Snackbar.LENGTH_SHORT).show();
+        });
+    }
+
+    private void applyDeviceNames() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        for (int i = 0; i < outletSwitches.length; i++) {
+            String name = prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), "");
+            if (name == null || name.trim().isEmpty()) {
+                outletSwitches[i].setText(getString(outletNameResource(i)));
+            } else {
+                outletSwitches[i].setText(name.trim());
+            }
+        }
+    }
+
+    private int outletNameResource(int index) {
+        switch (index) {
+            case 0: return R.string.outlet_1;
+            case 1: return R.string.outlet_2;
+            case 2: return R.string.outlet_3;
+            default: return R.string.outlet_4;
+        }
     }
 
     private void configureEnergyDashboard() {
@@ -762,7 +820,19 @@ public class MainActivity extends AppCompatActivity {
                     setOutletControlsEnabled(true);
                     deviceState.setText(getString(R.string.controller_connected,
                             ModelCatalog.PRIMARY_MODEL, bootInfo.firmwareVersion));
-                    discoveryDetail.setText(remoteAddress);
+                    String stripName = getSharedPreferences(PREFS, MODE_PRIVATE)
+                            .getString(PREF_STRIP_NAME, "");
+                    String roomName = getSharedPreferences(PREFS, MODE_PRIVATE)
+                            .getString(PREF_ROOM_NAME, "");
+                    if ((stripName == null || stripName.trim().isEmpty())
+                            && (roomName == null || roomName.trim().isEmpty())) {
+                        discoveryDetail.setText(remoteAddress);
+                    } else {
+                        discoveryDetail.setText(getString(R.string.device_location_detail,
+                                stripName == null ? "" : stripName.trim(),
+                                roomName == null ? "" : roomName.trim(),
+                                remoteAddress));
+                    }
                     showPage(0);
                 });
             }
