@@ -421,4 +421,8 @@
     <string name="room_all_off_count">إيقاف الغرفة (%1$d)</string>
     <string name="fleet_all_off_count">إيقاف الكل (%1$d)</string>
 
+
+    <string name="confirm_room_off_count">إيقاف المخارج الكهربائية الأربعة في %1$d مشترك متصل داخل هذه الغرفة؟</string>
+    <string name="confirm_fleet_off_count">إيقاف المخارج الكهربائية الأربعة في جميع المشتركات المتصلة وعددها %1$d؟</string>
+
 </resources>
