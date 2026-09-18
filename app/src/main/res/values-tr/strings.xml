@@ -421,4 +421,8 @@ Anlık yük %5$.0f W · Bildirilen enerji %6$.3f kWh</string>
     <string name="room_all_off_count">ODAYI KAPAT (%1$d)</string>
     <string name="fleet_all_off_count">TÜMÜNÜ KAPAT (%1$d)</string>
 
+
+    <string name="confirm_room_off_count">Bu odadaki bağlı %1$d prizde dört AC çıkışının tamamı kapatılsın mı?</string>
+    <string name="confirm_fleet_off_count">Bağlı %1$d prizin tamamında dört AC çıkışı kapatılsın mı?</string>
+
 </resources>
