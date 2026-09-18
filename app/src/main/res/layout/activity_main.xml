@@ -1255,6 +1255,133 @@
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/device_naming_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/device_naming_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/strip_name_hint"
+                            app:boxStrokeColor="@color/fg_blue">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/stripNameInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:hint="@string/room_name_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/roomNameInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet1NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_1"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet2NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_2"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet3NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_3"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet4NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_4"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveDeviceNamesButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/save_names"
+                            android:textColor="@color/fg_text"
+                            app:backgroundTint="@color/fg_blue"
+                            app:cornerRadius="14dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
                     app:strokeColor="@color/fg_green"
                     app:strokeWidth="1dp">
 
