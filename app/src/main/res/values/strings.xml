@@ -277,4 +277,5 @@
         <item>Outlet 1</item><item>Outlet 2</item><item>Outlet 3</item><item>Outlet 4</item>
     </string-array>
     <string name="wpa2_password_invalid">WPA2-Personal password must be 8–63 characters (or a 64-character hexadecimal PSK).</string>
+    <string name="automation_select_device">Select a fleet device to configure its automation rules.</string>
 </resources>
