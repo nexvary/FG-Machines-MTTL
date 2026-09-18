@@ -45,6 +45,13 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private TextView resultText;
     private TextView historyText;
     private MaterialButton sourceButton;
+    private Spinner guidedProfileSpinner;
+    private TextView guidedProgressText;
+    private TextView guidedQuestionText;
+    private TextView guidedResultText;
+    private MaterialButton guidedYesButton;
+    private MaterialButton guidedNoButton;
+    private MaterialButton guidedSourceButton;
 
     private FleetStore fleetStore;
     private ApplianceDiagnosticsStore diagnosticsStore;
@@ -52,8 +59,12 @@ public final class DiagnosticsActivity extends AppCompatActivity {
     private ControllerHub controllerHub;
 
     private final List<FleetStore.DeviceRecord> devices = new ArrayList<>();
+    private final List<GuidedDiagnosticsEngine.Profile> guidedProfiles = new ArrayList<>();
+    private final List<Boolean> guidedAnswers = new ArrayList<>();
     private String activeMac = "";
     private ApplianceDiagnosticsCatalog.Match lastMatch;
+    private GuidedDiagnosticsEngine.Profile activeGuidedProfile;
+    private int guidedQuestionIndex;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -89,6 +100,7 @@ public final class DiagnosticsActivity extends AppCompatActivity {
 
         configureDevices();
         configureOutlets();
+        configureGuidedDiagnostics();
 
         findViewById(R.id.diagnosticsBackButton).setOnClickListener(v -> finish());
         findViewById(R.id.diagnosticsSearchButton).setOnClickListener(v -> runSearch());
@@ -118,8 +130,142 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         resultText = findViewById(R.id.diagnosticsResult);
         historyText = findViewById(R.id.diagnosticsHistory);
         sourceButton = findViewById(R.id.diagnosticsSourceButton);
+        guidedProfileSpinner = findViewById(R.id.guidedProfileSpinner);
+        guidedProgressText = findViewById(R.id.guidedProgressText);
+        guidedQuestionText = findViewById(R.id.guidedQuestionText);
+        guidedResultText = findViewById(R.id.guidedResultText);
+        guidedYesButton = findViewById(R.id.guidedYesButton);
+        guidedNoButton = findViewById(R.id.guidedNoButton);
+        guidedSourceButton = findViewById(R.id.guidedSourceButton);
         sourceButton.setEnabled(false);
         sourceButton.setAlpha(0.55f);
+    }
+
+    private void configureGuidedDiagnostics() {
+        guidedProfiles.clear();
+        guidedProfiles.addAll(GuidedDiagnosticsEngine.profiles());
+
+        List<String> labels = new ArrayList<>();
+        for (GuidedDiagnosticsEngine.Profile profile : guidedProfiles) labels.add(profile.title);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        guidedProfileSpinner.setAdapter(adapter);
+
+        findViewById(R.id.guidedStartButton).setOnClickListener(v -> startGuidedDiagnosis());
+        guidedYesButton.setOnClickListener(v -> answerGuidedQuestion(true));
+        guidedNoButton.setOnClickListener(v -> answerGuidedQuestion(false));
+        guidedSourceButton.setOnClickListener(v -> openGuidedSource());
+        resetGuidedUi();
+    }
+
+    private void resetGuidedUi() {
+        activeGuidedProfile = null;
+        guidedQuestionIndex = 0;
+        guidedAnswers.clear();
+        guidedProgressText.setText(R.string.guided_not_started);
+        guidedQuestionText.setText(R.string.guided_question_waiting);
+        guidedResultText.setText(R.string.guided_result_waiting);
+        guidedYesButton.setEnabled(false);
+        guidedNoButton.setEnabled(false);
+        guidedSourceButton.setEnabled(false);
+        guidedSourceButton.setAlpha(0.55f);
+    }
+
+    private void startGuidedDiagnosis() {
+        int position = guidedProfileSpinner.getSelectedItemPosition();
+        if (position < 0 || position >= guidedProfiles.size()) {
+            Snackbar.make(guidedQuestionText, R.string.guided_select_profile, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        activeGuidedProfile = guidedProfiles.get(position);
+        guidedQuestionIndex = 0;
+        guidedAnswers.clear();
+
+        brandInput.setText(activeGuidedProfile.brand);
+        categoryInput.setText(activeGuidedProfile.category);
+        if (!activeGuidedProfile.modelHint.isEmpty()) modelInput.setText(activeGuidedProfile.modelHint);
+        symptomInput.setText(activeGuidedProfile.title);
+
+        guidedResultText.setText(R.string.guided_result_waiting);
+        guidedYesButton.setEnabled(true);
+        guidedNoButton.setEnabled(true);
+        guidedSourceButton.setEnabled(true);
+        guidedSourceButton.setAlpha(1f);
+        showGuidedQuestion();
+    }
+
+    private void showGuidedQuestion() {
+        if (activeGuidedProfile == null) return;
+        if (guidedQuestionIndex >= activeGuidedProfile.questions.size()) {
+            finishGuidedDiagnosis();
+            return;
+        }
+        guidedProgressText.setText(getString(
+                R.string.guided_progress_format,
+                guidedQuestionIndex + 1,
+                activeGuidedProfile.questions.size()));
+        guidedQuestionText.setText(activeGuidedProfile.questions.get(guidedQuestionIndex).prompt);
+    }
+
+    private void answerGuidedQuestion(boolean yes) {
+        if (activeGuidedProfile == null
+                || guidedQuestionIndex < 0
+                || guidedQuestionIndex >= activeGuidedProfile.questions.size()) {
+            return;
+        }
+        guidedAnswers.add(yes);
+        guidedQuestionIndex++;
+        showGuidedQuestion();
+    }
+
+    private void finishGuidedDiagnosis() {
+        if (activeGuidedProfile == null) return;
+
+        List<GuidedDiagnosticsEngine.RankedCause> causes =
+                GuidedDiagnosticsEngine.evaluate(activeGuidedProfile.id, guidedAnswers);
+        StringBuilder result = new StringBuilder();
+        result.append(getString(R.string.guided_complete)).append("\n");
+        result.append(getString(R.string.guided_score_note));
+
+        int count = Math.min(3, causes.size());
+        for (int i = 0; i < count; i++) {
+            GuidedDiagnosticsEngine.RankedCause cause = causes.get(i);
+            result.append("\n\n")
+                    .append(i + 1).append(". ")
+                    .append(cause.hypothesis.title)
+                    .append("\n")
+                    .append(getString(R.string.guided_safe_action_label))
+                    .append(": ").append(cause.hypothesis.safeAction)
+                    .append("\n")
+                    .append(getString(R.string.guided_service_boundary_label))
+                    .append(": ").append(cause.hypothesis.serviceBoundary)
+                    .append("\n")
+                    .append(getString(R.string.guided_compatibility_label))
+                    .append(": ").append(cause.compatibilityScore);
+        }
+
+        guidedProgressText.setText(getString(
+                R.string.guided_progress_done,
+                activeGuidedProfile.questions.size()));
+        guidedQuestionText.setText(R.string.guided_question_complete);
+        guidedResultText.setText(result.toString());
+        guidedYesButton.setEnabled(false);
+        guidedNoButton.setEnabled(false);
+    }
+
+    private void openGuidedSource() {
+        if (activeGuidedProfile == null || activeGuidedProfile.sourceUrl.isEmpty()) return;
+        openExternal(activeGuidedProfile.sourceUrl, guidedSourceButton);
+    }
+
+    private void openExternal(String url, View anchor) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (RuntimeException error) {
+            Snackbar.make(anchor, R.string.open_link_failed, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void configureDevices() {
@@ -354,11 +500,7 @@ public final class DiagnosticsActivity extends AppCompatActivity {
 
     private void openCurrentSource() {
         if (lastMatch == null || lastMatch.entry.sourceUrl.isEmpty()) return;
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(lastMatch.entry.sourceUrl)));
-        } catch (RuntimeException error) {
-            Snackbar.make(sourceButton, R.string.open_link_failed, Snackbar.LENGTH_LONG).show();
-        }
+        openExternal(lastMatch.entry.sourceUrl, sourceButton);
     }
 
     private static String textOf(TextInputEditText input) {
