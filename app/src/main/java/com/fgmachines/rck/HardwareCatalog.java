@@ -14,7 +14,7 @@ public final class HardwareCatalog {
     public static final String SOURCE_DAWON_ENERGY =
             "https://eep.energy.or.kr/electricity/elec_view_234.aspx?no=234170061";
     public static final String SOURCE_DAWON_ZWAVE =
-            "https://products.z-wavealliance.org/z-wave-product/smartplug-10a-2/";
+            "https://products.z-wavealliance.org/z-wave-product/power-manager-5/";
 
     public enum Transport {
         MTTL_LOCAL_TCP,
@@ -23,7 +23,7 @@ public final class HardwareCatalog {
 
     public enum SupportStatus {
         VERIFIED_LOCAL_CONTROL,
-        IDENTIFIED_GATEWAY_REQUIRED
+        VERIFIED_ZWAVE_PROFILE_GATEWAY_REQUIRED
     }
 
     public static final Profile MTTL_W01 = new Profile(
