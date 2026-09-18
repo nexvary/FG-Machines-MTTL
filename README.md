@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.2.0
+## Current Android baseline — 1.2.1
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -38,7 +38,9 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Remote Control rejects public plain-HTTP endpoints; public endpoints must use HTTPS while private LAN/VPN HTTP remains supported.
 - Local per-device scenes store the four outlet states as reusable presets and require confirmation before applying.
 - Historical energy cost is calculated for today, the current week and current month from locally recorded kWh and the user tariff.
-- GitHub Actions release gate: unit tests + Android lint + debug APK build.
+- GitHub Actions release gate: unit tests + Android lint + isolated debug APK build.
+- Production-package APKs use a **private stable signing key** supplied only through local environment variables or GitHub Actions secrets; signing keys and passwords are never committed to this public repository.
+- Debug CI builds now use the separate package ID `com.fgmachines.rck.debug`, so a runner-generated debug certificate can never block or impersonate updates to the production package `com.fgmachines.rck`.
 
 ## Compatibility catalog
 
@@ -99,6 +101,9 @@ The current software implementation has passed automated build/lint gates; physi
 
 ```bash
 gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
+
+# Stable release (requires the four FG_RCK signing environment variables)
+gradle --no-daemon assembleRelease
 ```
 
 Or open the repository in Android Studio and build the `app` module.
@@ -107,4 +112,5 @@ APK output:
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
+app/build/outputs/apk/release/app-release.apk
 ```
