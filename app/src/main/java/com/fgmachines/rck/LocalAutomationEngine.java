@@ -61,8 +61,8 @@ public final class LocalAutomationEngine implements Closeable {
         for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
             int channel = outlet.channel;
             if (channel < 1 || channel > 4) continue;
-            boolean enabled = prefs.getBoolean(KEY_POWER_LIMIT_ENABLED + channel, false);
-            int limitW = Math.max(1, prefs.getInt(KEY_POWER_LIMIT_W + channel, 0));
+            boolean enabled = prefs.getBoolean(deviceKey(KEY_POWER_LIMIT_ENABLED, mac, channel), false);
+            int limitW = Math.max(1, prefs.getInt(deviceKey(KEY_POWER_LIMIT_W, mac, channel), 0));
             String latchKey = "automation_power_latched_" + FleetStore.normalizeMac(mac) + "_" + channel;
 
             if (!enabled || !outlet.relayOn || outlet.powerW < limitW) {
@@ -85,8 +85,8 @@ public final class LocalAutomationEngine implements Closeable {
             int channel = outlet.channel;
             if (channel < 1 || channel > 4) continue;
             String deadlineKey = deadlineKey(mac, channel);
-            boolean enabled = prefs.getBoolean(KEY_AUTO_OFF_ENABLED + channel, false);
-            int minutes = Math.max(1, prefs.getInt(KEY_AUTO_OFF_MINUTES + channel, 30));
+            boolean enabled = prefs.getBoolean(deviceKey(KEY_AUTO_OFF_ENABLED, mac, channel), false);
+            int minutes = Math.max(1, prefs.getInt(deviceKey(KEY_AUTO_OFF_MINUTES, mac, channel), 30));
 
             if (!enabled || !outlet.relayOn) {
                 if (prefs.contains(deadlineKey)) prefs.edit().remove(deadlineKey).apply();
@@ -118,28 +118,31 @@ public final class LocalAutomationEngine implements Closeable {
     }
 
     private void runSchedules() {
-        String mac = hub.activeMac();
-        if (mac == null) return;
-
         LocalDateTime now = LocalDateTime.now();
         String minute = now.toLocalTime().format(TIME_FORMAT);
         LocalDate date = now.toLocalDate();
 
-        for (int channel = 1; channel <= 4; channel++) {
-            if (!prefs.getBoolean(KEY_SCHEDULE_ENABLED + channel, false)) continue;
-            int dayMode = prefs.getInt(KEY_SCHEDULE_DAY_MODE + channel, DAY_EVERY_DAY);
-            if (!dayMatches(dayMode, now.getDayOfWeek())) continue;
+        for (ControllerHub.DeviceState device : hub.connectedStates()) {
+            String mac = device.mac;
+            for (int channel = 1; channel <= 4; channel++) {
+                if (!prefs.getBoolean(deviceKey(KEY_SCHEDULE_ENABLED, mac, channel), false)) continue;
+                int dayMode = prefs.getInt(deviceKey(KEY_SCHEDULE_DAY_MODE, mac, channel), DAY_EVERY_DAY);
+                if (!dayMatches(dayMode, now.getDayOfWeek())) continue;
 
-            String onTime = normalizeTime(prefs.getString(KEY_SCHEDULE_ON + channel, ""));
-            String offTime = normalizeTime(prefs.getString(KEY_SCHEDULE_OFF + channel, ""));
-            if (minute.equals(onTime)) triggerOnce(mac, channel, true, date, minute);
-            if (minute.equals(offTime)) triggerOnce(mac, channel, false, date, minute);
+                String onTime = normalizeTime(prefs.getString(
+                        deviceKey(KEY_SCHEDULE_ON, mac, channel), ""));
+                String offTime = normalizeTime(prefs.getString(
+                        deviceKey(KEY_SCHEDULE_OFF, mac, channel), ""));
+                if (minute.equals(onTime)) triggerOnce(mac, channel, true, date, minute);
+                if (minute.equals(offTime)) triggerOnce(mac, channel, false, date, minute);
+            }
         }
     }
 
     private void triggerOnce(String mac, int channel, boolean on, LocalDate date, String minute) {
         String action = on ? "on" : "off";
-        String key = "automation_last_" + channel + "_" + action;
+        String key = "automation_last_" + FleetStore.normalizeMac(mac)
+                + "_" + channel + "_" + action;
         String stamp = date + "T" + minute;
         if (stamp.equals(prefs.getString(key, ""))) return;
         try {
@@ -166,6 +169,10 @@ public final class LocalAutomationEngine implements Closeable {
         if (value == null || value.trim().isEmpty()) return "";
         String trimmed = value.trim();
         return isValidTime(trimmed) ? trimmed : "";
+    }
+
+    public static String deviceKey(String base, String mac, int channel) {
+        return base + FleetStore.normalizeMac(mac) + "_" + channel;
     }
 
     public static String deadlinePreferenceKey(String mac, int channel) {
