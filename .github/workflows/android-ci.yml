@@ -149,16 +149,10 @@ jobs:
             adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
             adb shell cat /sdcard/fg-rck-ui.xml || true
             adb exec-out screencap -p > FG-Machines-RCK-1.3.4-sidecar-dashboard.png
-            adb shell am start -n com.fgmachines.rck.sidecar134/com.fgmachines.rck.DiagnosticsActivity
-            sleep 5
-            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.3.4-sidecar-diagnostics.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
           name: FG-Machines-RCK-1.3.4-sidecar-screenshot
-          path: |
-            FG-Machines-RCK-1.3.4-sidecar-dashboard.png
-            FG-Machines-RCK-1.3.4-sidecar-diagnostics.png
+          path: FG-Machines-RCK-1.3.4-sidecar-dashboard.png
           if-no-files-found: error
