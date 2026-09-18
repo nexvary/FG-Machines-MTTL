@@ -281,4 +281,18 @@
     <string name="forget_device">Forget offline device</string>
     <string name="forget_device_disconnect_first">Disconnect the device before removing it from the fleet.</string>
     <string name="device_forgotten">Device removed from the local fleet.</string>
+    <string name="room_all_off">ROOM OFF</string>
+    <string name="fleet_all_off">ALL OFF</string>
+    <string name="emergency_off_note">Safety shortcut: sends OFF to all four outlets on the selected room or every connected strip. Confirmation is required.</string>
+    <string name="no_connected_devices">No connected strips are available.</string>
+    <string name="no_room_selected">Select a room filter or a device assigned to a room first.</string>
+    <string name="confirm_room_off">Turn OFF every connected outlet in this room?</string>
+    <string name="confirm_fleet_off">Turn OFF every outlet on every connected strip?</string>
+    <string name="confirm_action">CONFIRM</string>
+    <string name="no_connected_targets">No connected devices match this target.</string>
+    <string name="emergency_off_result">OFF commands sent: %1$d · failures: %2$d</string>
+    <string name="export_history_csv">Export history CSV</string>
+    <string name="history_exported">History CSV exported.</string>
+    <string name="history_export_failed">History export failed: %1$s</string>
+    <string name="remote_security_note">Public remote endpoints must use HTTPS. Plain HTTP is accepted only for local/private VPN addresses.</string>
 </resources>
