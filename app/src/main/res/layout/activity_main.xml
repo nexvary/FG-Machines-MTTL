@@ -1524,6 +1524,31 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/scheduleSwitch1"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -1614,6 +1639,31 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
                                 android:singleLine="true"
                                 android:textColor="@color/fg_text"
                                 android:textDirection="ltr" />
@@ -1716,6 +1766,31 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/scheduleSwitch3"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -1806,6 +1881,31 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/powerLimitSwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/power_limit_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/power_limit_w_hint"
+                            app:boxStrokeColor="@color/fg_warning">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/powerLimitW4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="5"
                                 android:singleLine="true"
                                 android:textColor="@color/fg_text"
                                 android:textDirection="ltr" />
