@@ -389,4 +389,40 @@
     <string name="camera_local_identity">Lokal bestätigte Identität erkannt</string>
     <string name="diagnostics_bound_with_identifiers">Gerät verknüpft. %1$d Barcode-Kennung(en) für die spätere lokale Erkennung gespeichert.</string>
 
+
+    <string name="usb_ports_title">USB-Ladeanschlüsse</string>
+    <string name="usb_ports_note">Für den MTTL-W01 sind vier steuerbare AC-Relais bestätigt. Die beiden USB-A-Anschlüsse sitzen auf einer separaten Ladeplatine; ein unabhängiges USB-Relais oder Protokollkommando ist nicht verifiziert.</string>
+    <string name="usb_port_1_status">USB 1 · Ladeanschluss · separates EIN/AUS erst nach bestätigtem Hardware- oder Protokollnachweis verfügbar</string>
+    <string name="usb_port_2_status">USB 2 · Ladeanschluss · separates EIN/AUS erst nach bestätigtem Hardware- oder Protokollnachweis verfügbar</string>
+    <string name="usb_discovery_start">USB-Erkennung starten</string>
+    <string name="usb_discovery_refresh">Ergebnis aktualisieren</string>
+    <string name="usb_discovery_idle">Passive Erkennung ist inaktiv. Es werden keine geratenen Kanal-5/6-Befehle gesendet.</string>
+    <string name="usb_discovery_select_device">Vor der USB-Erkennung einen verbundenen MTTL-W01 auswählen.</string>
+    <string name="usb_discovery_requires_device">Für die passive USB-Erkennung ist ein verbundener MTTL-W01 erforderlich.</string>
+    <string name="usb_discovery_started">USB-Erkennung läuft 90 Sekunden. Ein USB-Gerät mit geringer Leistung sicher an- und abstecken und danach das Ergebnis aktualisieren. Gerät nicht öffnen.</string>
+    <string name="usb_discovery_no_frames">Noch keine unbekannten Protokollrahmen erfasst.</string>
+    <string name="usb_discovery_active_format">Erkennung aktiv · %1$d s verbleibend · unbekannte Rahmen %2$d
+Letzter: %3$s</string>
+    <string name="usb_discovery_complete_format">Erkennung abgeschlossen · unbekannte Rahmen %1$d
+Letzter: %2$s</string>
+
+
+    <string name="fleet_overview_waiting">Flottenübersicht erscheint nach dem Registrieren von Geräten.</string>
+    <string name="fleet_list_waiting">Keine Geräte entsprechen dem aktuellen Raumfilter.</string>
+    <string name="fleet_online">ONLINE</string>
+    <string name="fleet_offline">OFFLINE</string>
+    <string name="room_unassigned">Kein Raum</string>
+    <string name="fleet_scope_all">Alle Räume</string>
+    <string name="fleet_scope_room">Raum: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Geräte %2$d · Online %3$d · Offline %4$d
+Aktuelle Last %5$.0f W · Gemeldete Energie %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · ONLINE · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · OFFLINE · Zuletzt gesehen %3$s</string>
+    <string name="room_all_off_count">RAUM AUS (%1$d)</string>
+    <string name="fleet_all_off_count">ALLE AUS (%1$d)</string>
+
+
+    <string name="confirm_room_off_count">Alle vier AC-Ausgänge bei %1$d verbundenen Geräten in diesem Raum ausschalten?</string>
+    <string name="confirm_fleet_off_count">Alle vier AC-Ausgänge bei allen %1$d verbundenen Geräten ausschalten?</string>
+
 </resources>

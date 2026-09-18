@@ -389,4 +389,40 @@
     <string name="camera_local_identity">Identidad local confirmada encontrada</string>
     <string name="diagnostics_bound_with_identifiers">Equipo vinculado. Se guardaron %1$d identificador(es) de código de barras para reconocimiento local futuro.</string>
 
+
+    <string name="usb_ports_title">Puertos de carga USB</string>
+    <string name="usb_ports_note">En MTTL-W01 están confirmados cuatro relés de CA controlables. Los dos USB-A están en una placa de carga separada; no se ha verificado un relé USB independiente ni un comando de protocolo.</string>
+    <string name="usb_port_1_status">USB 1 · puerto de carga · ON/OFF independiente no disponible hasta confirmar evidencia de hardware o protocolo</string>
+    <string name="usb_port_2_status">USB 2 · puerto de carga · ON/OFF independiente no disponible hasta confirmar evidencia de hardware o protocolo</string>
+    <string name="usb_discovery_start">Iniciar descubrimiento USB</string>
+    <string name="usb_discovery_refresh">Actualizar resultado</string>
+    <string name="usb_discovery_idle">El descubrimiento pasivo está inactivo. No envía comandos supuestos para canales 5/6.</string>
+    <string name="usb_discovery_select_device">Selecciona un MTTL-W01 conectado antes de iniciar el descubrimiento USB.</string>
+    <string name="usb_discovery_requires_device">Se requiere un MTTL-W01 conectado para el descubrimiento USB pasivo.</string>
+    <string name="usb_discovery_started">El descubrimiento USB se inició durante 90 segundos. Conecta y desconecta de forma segura un dispositivo USB de bajo consumo y luego actualiza el resultado. No abras la regleta.</string>
+    <string name="usb_discovery_no_frames">Aún no se han capturado tramas de protocolo desconocidas.</string>
+    <string name="usb_discovery_active_format">Descubrimiento activo · quedan %1$d s · tramas desconocidas %2$d
+Última: %3$s</string>
+    <string name="usb_discovery_complete_format">Descubrimiento completado · tramas desconocidas %1$d
+Última: %2$s</string>
+
+
+    <string name="fleet_overview_waiting">El resumen de la flota aparecerá cuando haya dispositivos registrados.</string>
+    <string name="fleet_list_waiting">No hay dispositivos que coincidan con el filtro de habitación.</string>
+    <string name="fleet_online">EN LÍNEA</string>
+    <string name="fleet_offline">SIN CONEXIÓN</string>
+    <string name="room_unassigned">Sin habitación</string>
+    <string name="fleet_scope_all">Todas las habitaciones</string>
+    <string name="fleet_scope_room">Habitación: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Dispositivos %2$d · En línea %3$d · Sin conexión %4$d
+Carga actual %5$.0f W · Energía reportada %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · EN LÍNEA · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · SIN CONEXIÓN · Última vez %3$s</string>
+    <string name="room_all_off_count">APAGAR SALA (%1$d)</string>
+    <string name="fleet_all_off_count">APAGAR TODO (%1$d)</string>
+
+
+    <string name="confirm_room_off_count">¿Apagar las cuatro salidas de CA en %1$d regleta(s) conectada(s) de esta habitación?</string>
+    <string name="confirm_fleet_off_count">¿Apagar las cuatro salidas de CA en las %1$d regletas conectadas?</string>
+
 </resources>

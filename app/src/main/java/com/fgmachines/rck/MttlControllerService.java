@@ -46,6 +46,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private HistoryStore historyStore;
     private AccessControlStore accessStore;
     private LocalApiServer localApiServer;
+    private UsbDiscoveryStore usbDiscoveryStore;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -56,6 +57,7 @@ public final class MttlControllerService extends Service implements MttlControll
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
         accessStore = new AccessControlStore(this);
+        usbDiscoveryStore = new UsbDiscoveryStore(this);
         localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
         automationEngine = new LocalAutomationEngine(this, hub);
         automationEngine.start();
@@ -259,7 +261,15 @@ public final class MttlControllerService extends Service implements MttlControll
         postAlert(title, body, id);
     }
 
-    @Override public void onProtocolFrame(String mac, String frame) { }
+    @Override public void onProtocolFrame(String mac, String frame) {
+        if (usbDiscoveryStore == null) return;
+        long now = System.currentTimeMillis();
+        if (usbDiscoveryStore.recordUnknownFrame(mac, frame, now) && historyStore != null) {
+            String safe = frame == null ? "" : frame.replace("\\r", " ").replace("\\n", " ").trim();
+            if (safe.length() > 512) safe = safe.substring(0, 512);
+            historyStore.recordEvent(mac, 0, "usb_discovery_frame", safe, now);
+        }
+    }
 
     @Override public void onError(String message, Throwable error) { }
 

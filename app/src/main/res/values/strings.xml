@@ -397,4 +397,40 @@
     <string name="camera_local_identity">Matched local confirmed identity</string>
     <string name="diagnostics_bound_with_identifiers">Appliance linked. Saved %1$d barcode identifier(s) for future local recognition.</string>
 
+
+    <string name="usb_ports_title">USB charging ports</string>
+    <string name="usb_ports_note">MTTL-W01 hardware evidence confirms four controllable AC relays. The two USB-A ports are on a separate charger board; no independent USB relay or protocol command is verified yet.</string>
+    <string name="usb_port_1_status">USB 1 · charging port · independent ON/OFF unavailable until hardware/protocol evidence confirms it</string>
+    <string name="usb_port_2_status">USB 2 · charging port · independent ON/OFF unavailable until hardware/protocol evidence confirms it</string>
+    <string name="usb_discovery_start">Start USB discovery</string>
+    <string name="usb_discovery_refresh">Refresh result</string>
+    <string name="usb_discovery_idle">Passive discovery is idle. It never sends channel 5/6 or other guessed commands.</string>
+    <string name="usb_discovery_select_device">Select a connected MTTL-W01 before starting USB discovery.</string>
+    <string name="usb_discovery_requires_device">A connected MTTL-W01 is required for passive USB discovery.</string>
+    <string name="usb_discovery_started">USB discovery started for 90 seconds. Safely connect/disconnect a low-power USB device and then refresh the result. Do not open the power strip.</string>
+    <string name="usb_discovery_no_frames">No unknown protocol frames captured yet.</string>
+    <string name="usb_discovery_active_format">Discovery active · %1$d s remaining · unknown frames %2$d
+Last: %3$s</string>
+    <string name="usb_discovery_complete_format">Discovery complete · unknown frames %1$d
+Last: %2$s</string>
+
+
+    <string name="fleet_overview_waiting">Fleet totals will appear when devices are registered.</string>
+    <string name="fleet_list_waiting">No devices match the current room filter.</string>
+    <string name="fleet_online">ONLINE</string>
+    <string name="fleet_offline">OFFLINE</string>
+    <string name="room_unassigned">No room</string>
+    <string name="fleet_scope_all">All rooms</string>
+    <string name="fleet_scope_room">Room: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Devices %2$d · Online %3$d · Offline %4$d
+Live load %5$.0f W · Reported energy %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · ONLINE · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · OFFLINE · Last seen %3$s</string>
+    <string name="room_all_off_count">ROOM OFF (%1$d)</string>
+    <string name="fleet_all_off_count">ALL OFF (%1$d)</string>
+
+
+    <string name="confirm_room_off_count">Turn OFF all four AC outlets on %1$d connected strip(s) in this room?</string>
+    <string name="confirm_fleet_off_count">Turn OFF all four AC outlets on all %1$d connected strip(s)?</string>
+
 </resources>

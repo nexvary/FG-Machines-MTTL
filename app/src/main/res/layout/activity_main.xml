@@ -188,6 +188,34 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/fleetOverview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:lineSpacingExtra="2dp"
+                            android:padding="12dp"
+                            android:text="@string/fleet_overview_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/fleetDevicesList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:lineSpacingExtra="4dp"
+                            android:padding="12dp"
+                            android:text="@string/fleet_list_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textIsSelectable="true"
+                            android:textSize="11sp" />
+
                         <Spinner
                             android:id="@+id/fleetRoomSpinner"
                             android:layout_width="match_parent"
@@ -830,6 +858,98 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="@color/fg_divider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/usb_ports_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/usb_ports_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/usbPort1Status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="12dp"
+                            android:text="@string/usb_port_1_status"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/usbPort2Status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="12dp"
+                            android:text="@string/usb_port_2_status"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/usbDiscoveryStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/usb_discovery_idle"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textIsSelectable="true"
+                            android:textSize="11sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/startUsbDiscoveryButton"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:text="@string/usb_discovery_start"
+                                android:textColor="@color/fg_black"
+                                app:backgroundTint="@color/fg_green"
+                                app:cornerRadius="14dp" />
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/refreshUsbDiscoveryButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:text="@string/usb_discovery_refresh"
+                                android:textColor="@color/fg_blue_bright"
+                                app:cornerRadius="14dp"
+                                app:strokeColor="@color/fg_blue" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
