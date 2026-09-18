@@ -368,4 +368,21 @@
     <string name="guided_compatibility_label">Puntuación de compatibilidad</string>
     <string name="guided_open_source">Abrir fuente del perfil</string>
 
+
+    <string name="camera_assist_title">Asistente de cámara</string>
+    <string name="camera_assist_subtitle">Lee localmente la pantalla de error o la etiqueta del aparato con OCR y código de barras integrados.</string>
+    <string name="camera_scan_display">Escanear pantalla de error</string>
+    <string name="camera_scan_label">Escanear etiqueta del modelo</string>
+    <string name="camera_result_waiting">Todavía no se ha escaneado ninguna imagen.</string>
+    <string name="camera_processing">Leyendo texto y códigos de barras…</string>
+    <string name="camera_capture_cancelled">Se canceló la captura de cámara.</string>
+    <string name="camera_detected_brand">Marca detectada</string>
+    <string name="camera_detected_model">Modelo detectado</string>
+    <string name="camera_detected_code">Código de error detectado</string>
+    <string name="camera_detected_barcodes">Código de barras detectado</string>
+    <string name="camera_barcode_note">Un código o número de serie no se considera modelo salvo que exista una asociación verificada en la base local.</string>
+    <string name="camera_ocr_text">Texto OCR</string>
+    <string name="camera_no_result">No se encontró texto ni código legible. Repite la foto más cerca y con buena luz.</string>
+    <string name="camera_no_autofill">La imagen se leyó, pero no hubo un valor seguro para autocompletar. Revisa el OCR manualmente.</string>
+
 </resources>
