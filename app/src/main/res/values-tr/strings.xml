@@ -183,4 +183,28 @@
     <string name="background_controller_note">Uygulamadan çıktığınızda TCP 10086 hizmetini açık tutarak prizin telefona bağlı kalmasını sağlar.</string>
     <string name="safety_alerts">Güvenlik ve çevrimdışı bildirimleri</string>
     <string name="safety_alerts_note">Bağlantı kesilmesi, koruma olayı veya 3.000 W üzerindeki yükler için yerel uyarılar üretir.</string>
+    <string name="automation_title">Yerel otomasyon</string>
+    <string name="automation_note">Zamanlayıcılar ve programlar bu denetleyici telefonda yerel olarak çalışır. Hotspot ve denetleyici hizmetini açık tutun.</string>
+    <string name="automation_none">Etkin otomasyon kuralı yok</string>
+    <string name="automation_active_count">Etkin otomasyon kuralı: %1$d</string>
+    <string name="automation_outlet_1">Priz 1 otomasyonu</string>
+    <string name="automation_outlet_2">Priz 2 otomasyonu</string>
+    <string name="automation_outlet_3">Priz 3 otomasyonu</string>
+    <string name="automation_outlet_4">Priz 4 otomasyonu</string>
+    <string name="auto_off_enable">Otomatik kapatma zamanlayıcısı</string>
+    <string name="auto_off_minutes_hint">Otomatik kapanmaya kalan dakika</string>
+    <string name="schedule_enable">Günlük program</string>
+    <string name="schedule_on_hint">AÇ HH:mm</string>
+    <string name="schedule_off_hint">KAPAT HH:mm</string>
+    <string name="save_automation">Otomasyonu kaydet</string>
+    <string name="automation_background_note">Programlar arka plan hizmetinde 15 saniyede bir kontrol edilir. Otomatik kapatma, canlı telemetri prizin açık olduğunu bildirdiğinde başlar.</string>
+    <string name="automation_invalid_minutes">Sıfırdan büyük bir dakika değeri girin.</string>
+    <string name="automation_invalid_time">24 saatlik HH:mm biçimini kullanın.</string>
+    <string name="automation_fix_fields">Kaydetmeden önce otomasyon değerlerini kontrol edin.</string>
+    <string name="automation_saved">Otomasyon kaydedildi · etkin kural: %1$d</string>
+    <string-array name="automation_day_mode_labels">
+        <item>Her gün</item>
+        <item>Paz–Per</item>
+        <item>Cum–Cmt</item>
+    </string-array>
 </resources>
