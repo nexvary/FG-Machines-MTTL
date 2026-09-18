@@ -273,4 +273,18 @@
     <string name="forget_device">Offline-Gerät vergessen</string>
     <string name="forget_device_disconnect_first">Gerät vor dem Entfernen aus der Flotte trennen.</string>
     <string name="device_forgotten">Gerät aus der lokalen Flotte entfernt.</string>
+    <string name="room_all_off">RAUM AUS</string>
+    <string name="fleet_all_off">ALLES AUS</string>
+    <string name="emergency_off_note">Sicherheitsfunktion: sendet AUS an alle vier Ausgänge im gewählten Raum oder an alle verbundenen Leisten. Bestätigung erforderlich.</string>
+    <string name="no_connected_devices">Keine verbundenen Steckdosenleisten verfügbar.</string>
+    <string name="no_room_selected">Zuerst einen Raumfilter oder ein einem Raum zugewiesenes Gerät wählen.</string>
+    <string name="confirm_room_off">Alle verbundenen Ausgänge in diesem Raum ausschalten?</string>
+    <string name="confirm_fleet_off">Alle Ausgänge aller verbundenen Steckdosenleisten ausschalten?</string>
+    <string name="confirm_action">BESTÄTIGEN</string>
+    <string name="no_connected_targets">Keine verbundenen Geräte für dieses Ziel.</string>
+    <string name="emergency_off_result">AUS-Befehle gesendet: %1$d · Fehler: %2$d</string>
+    <string name="export_history_csv">Verlauf als CSV exportieren</string>
+    <string name="history_exported">Verlauf als CSV exportiert.</string>
+    <string name="history_export_failed">Export des Verlaufs fehlgeschlagen: %1$s</string>
+    <string name="remote_security_note">Öffentliche Remote-Endpunkte müssen HTTPS verwenden. HTTP ist nur für lokale/private VPN-Adressen erlaubt.</string>
 </resources>
