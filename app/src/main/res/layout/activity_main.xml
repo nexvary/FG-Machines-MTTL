@@ -143,6 +143,244 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="3dp"
+                    app:strokeColor="@color/fg_blue_bright"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/energy_monitor_title"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_text"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/refreshTelemetryButton"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:text="@string/refresh_live"
+                                android:textColor="@color/fg_blue_bright"
+                                app:icon="@drawable/ic_network_scan"
+                                app:iconSize="18dp"
+                                app:iconTint="@color/fg_blue_bright" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/live_power"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/totalPowerValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/value_power_empty"
+                                    android:textColor="@color/fg_green"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/energy_meter"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/totalEnergyValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/value_energy_empty"
+                                    android:textColor="@color/fg_blue_bright"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/voltage"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/voltageValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/voltage_not_exposed"
+                                    android:textColor="@color/fg_warning"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/current_estimate"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/currentEstimateValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/value_current_empty"
+                                    android:textColor="@color/fg_silver"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/max_temperature"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/maxTemperatureValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/value_temperature_empty"
+                                    android:textColor="@color/fg_silver"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_status_pill"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/estimated_cost"
+                                    android:textColor="@color/fg_text_secondary"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/estimatedCostValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/value_cost_empty"
+                                    android:textColor="@color/fg_green"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/safetyStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/telemetry_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/voltage_capability_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver_dark"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -219,12 +457,36 @@
                             android:text="@string/outlet_1"
                             android:textColor="@color/fg_text" />
 
+                        <TextView
+                            android:id="@+id/outlet1Telemetry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="@string/outlet_telemetry_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet2"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
                             android:text="@string/outlet_2"
                             android:textColor="@color/fg_text" />
+
+                        <TextView
+                            android:id="@+id/outlet2Telemetry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="@string/outlet_telemetry_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet3"
@@ -233,12 +495,36 @@
                             android:text="@string/outlet_3"
                             android:textColor="@color/fg_text" />
 
+                        <TextView
+                            android:id="@+id/outlet3Telemetry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="@string/outlet_telemetry_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet4"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
                             android:text="@string/outlet_4"
                             android:textColor="@color/fg_text" />
+
+                        <TextView
+                            android:id="@+id/outlet4Telemetry"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="6dp"
+                            android:text="@string/outlet_telemetry_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -462,6 +748,19 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/setupSecurityNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/setup_security_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_warning"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -947,6 +1246,195 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="13sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/device_naming_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/device_naming_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/strip_name_hint"
+                            app:boxStrokeColor="@color/fg_blue">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/stripNameInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:hint="@string/room_name_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/roomNameInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet1NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_1"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet2NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_2"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet3NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_3"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/outlet4NameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/outlet_4"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textColorHint="@color/fg_text_secondary" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveDeviceNamesButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/save_names"
+                            android:textColor="@color/fg_text"
+                            app:backgroundTint="@color/fg_blue"
+                            app:cornerRadius="14dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/energy_cost_settings"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:hint="@string/tariff_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tariffInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveTariffButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/save_tariff"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="14dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/tariff_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
