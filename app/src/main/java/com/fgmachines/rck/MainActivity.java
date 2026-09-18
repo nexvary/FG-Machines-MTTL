@@ -35,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] LANGUAGE_TAGS = {"ar", "en", "tr", "es", "de"};
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
     private static final int NOTIFICATION_PERMISSION_REQUEST = 89;
+    private static final int EXPORT_HISTORY_REQUEST = 90;
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
     private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
     private static final String PREF_REMOTE_TOKEN = "remote_token";
@@ -121,9 +124,12 @@ public class MainActivity extends AppCompatActivity {
     private Spinner fleetDeviceSpinner;
     private Spinner fleetRoomSpinner;
     private TextView fleetStatus;
+    private MaterialButton emergencyRoomOffButton;
+    private MaterialButton emergencyAllOffButton;
     private HistorySparklineView historySparkline;
     private TextView historySummary;
     private TextView historyRecent;
+    private MaterialButton exportHistoryButton;
     private MaterialSwitch setupGuardCheck;
     private TextInputEditText alertPowerInput;
     private TextInputEditText alertTempInput;
@@ -172,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
     private final List<RemoteApiClient.RemoteDevice> remoteDevices = new ArrayList<>();
     private String fleetRoomFilter = "";
+    private String pendingExportMac;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -298,9 +305,12 @@ public class MainActivity extends AppCompatActivity {
         fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
         fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
         fleetStatus = findViewById(R.id.fleetStatus);
+        emergencyRoomOffButton = findViewById(R.id.emergencyRoomOffButton);
+        emergencyAllOffButton = findViewById(R.id.emergencyAllOffButton);
         historySparkline = findViewById(R.id.historySparkline);
         historySummary = findViewById(R.id.historySummary);
         historyRecent = findViewById(R.id.historyRecent);
+        exportHistoryButton = findViewById(R.id.exportHistoryButton);
         setupGuardCheck = findViewById(R.id.setupGuardCheck);
         alertPowerInput = findViewById(R.id.alertPowerInput);
         alertTempInput = findViewById(R.id.alertTempInput);
@@ -834,6 +844,8 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override public void onNothingSelected(AdapterView<?> parent) { }
         });
+        emergencyRoomOffButton.setOnClickListener(v -> requestEmergencyOff(true));
+        emergencyAllOffButton.setOnClickListener(v -> requestEmergencyOff(false));
         refreshFleetUi();
     }
 
@@ -985,6 +997,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureHistory() {
+        exportHistoryButton.setOnClickListener(v -> startHistoryExport());
         refreshHistory();
     }
 
@@ -1036,6 +1049,126 @@ public class MainActivity extends AppCompatActivity {
             }
             historyRecent.setText(text.toString());
         }
+    }
+
+    private void requestEmergencyOff(boolean roomOnly) {
+        if (controllerHub == null || controllerHub.connectedStates().isEmpty()) {
+            Snackbar.make(fleetStatus, R.string.no_connected_devices, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if (roomOnly && selectedEmergencyRoom().isEmpty()) {
+            Snackbar.make(fleetStatus, R.string.no_room_selected, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        int message = roomOnly ? R.string.confirm_room_off : R.string.confirm_fleet_off;
+        Snackbar.make(fleetStatus, message, Snackbar.LENGTH_LONG)
+                .setAction(R.string.confirm_action, v -> executeEmergencyOff(roomOnly))
+                .show();
+    }
+
+    private String selectedEmergencyRoom() {
+        if (fleetRoomFilter != null && !fleetRoomFilter.trim().isEmpty()) {
+            return fleetRoomFilter.trim();
+        }
+        FleetStore.DeviceRecord record = activeMac == null || fleetStore == null
+                ? null : fleetStore.get(activeMac);
+        return record == null || record.room == null ? "" : record.room.trim();
+    }
+
+    private void executeEmergencyOff(boolean roomOnly) {
+        String targetRoom = roomOnly ? selectedEmergencyRoom() : "";
+        List<ControllerHub.DeviceState> targets = new ArrayList<>();
+        for (ControllerHub.DeviceState state : controllerHub.connectedStates()) {
+            if (!roomOnly) {
+                targets.add(state);
+                continue;
+            }
+            FleetStore.DeviceRecord record = fleetStore.get(state.mac);
+            if (record != null && targetRoom.equalsIgnoreCase(record.room)) targets.add(state);
+        }
+        if (targets.isEmpty()) {
+            Snackbar.make(fleetStatus, R.string.no_connected_targets, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        emergencyRoomOffButton.setEnabled(false);
+        emergencyAllOffButton.setEnabled(false);
+        commandWorker.execute(() -> {
+            int commands = 0;
+            int failures = 0;
+            for (ControllerHub.DeviceState state : targets) {
+                for (int outlet = 1; outlet <= 4; outlet++) {
+                    try {
+                        controllerHub.setOutlet(state.mac, outlet, false);
+                        commands++;
+                    } catch (IOException error) {
+                        failures++;
+                    }
+                }
+                if (historyStore != null) {
+                    historyStore.recordEvent(state.mac, 0,
+                            roomOnly ? "room_all_off" : "fleet_all_off",
+                            roomOnly ? targetRoom : "all", System.currentTimeMillis());
+                }
+            }
+            final int sent = commands;
+            final int failed = failures;
+            runOnUiThread(() -> {
+                emergencyRoomOffButton.setEnabled(true);
+                emergencyAllOffButton.setEnabled(true);
+                Snackbar.make(fleetStatus,
+                        getString(R.string.emergency_off_result, sent, failed),
+                        failed == 0 ? Snackbar.LENGTH_SHORT : Snackbar.LENGTH_LONG).show();
+                refreshHistory();
+            });
+        });
+    }
+
+    private void startHistoryExport() {
+        if (activeMac == null || historyStore == null) {
+            Snackbar.make(historySummary, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        pendingExportMac = FleetStore.normalizeMac(activeMac);
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/csv");
+        intent.putExtra(Intent.EXTRA_TITLE, "FG-RCK-" + pendingExportMac + "-history.csv");
+        startActivityForResult(intent, EXPORT_HISTORY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != EXPORT_HISTORY_REQUEST || resultCode != RESULT_OK
+                || data == null || data.getData() == null || pendingExportMac == null) {
+            return;
+        }
+        Uri uri = data.getData();
+        String exportMac = pendingExportMac;
+        pendingExportMac = null;
+        exportHistoryButton.setEnabled(false);
+        commandWorker.execute(() -> {
+            try (OutputStream stream = getContentResolver().openOutputStream(uri, "w")) {
+                if (stream == null) throw new IOException("Could not open export destination");
+                try (OutputStreamWriter writer = new OutputStreamWriter(
+                        stream, java.nio.charset.StandardCharsets.UTF_8)) {
+                    historyStore.writeCsv(exportMac, writer);
+                }
+                runOnUiThread(() -> {
+                    exportHistoryButton.setEnabled(true);
+                    Snackbar.make(historySummary, R.string.history_exported,
+                            Snackbar.LENGTH_SHORT).show();
+                });
+            } catch (Exception error) {
+                runOnUiThread(() -> {
+                    exportHistoryButton.setEnabled(true);
+                    Snackbar.make(historySummary,
+                            getString(R.string.history_export_failed, safeMessage(error)),
+                            Snackbar.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 
     private void configureAlertLimits() {
