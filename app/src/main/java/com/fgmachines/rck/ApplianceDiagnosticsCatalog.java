@@ -419,7 +419,212 @@ public final class ApplianceDiagnosticsCatalog {
                     "If cooling remains weak after the documented user checks, request qualified service; do not open refrigerant or mains-voltage sections.",
                     "LG Support: Cooling operation fails / No cold air",
                     "https://www.lg.com/us/support/help-library/lg-air-conditioner-for-cooling-cooling-operation-fails-no-cold-air--20154629491668",
+
                     "General LG troubleshooting across models; exact filter access and service diagnosis depend on the specific model."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"1-0", "1-1", "1-2", "1-3", "1-4", "5-0", "5-1", "5-2", "5-3", "5-4", "5-5", "26-1", "26-2", "26-3", "26-4"},
+                    "Temperature, heat-exchanger, pipe, gas, dust, or related thermistor/sensor fault.",
+                    new String[]{
+                            "Sensor short circuit or open circuit",
+                            "Sensor connection or installation fault",
+                            "Internal sensor/control electronics fault"
+                    },
+                    new String[]{
+                            "Switch the air conditioner off and unplug/isolate normal power before user checks.",
+                            "Check only the user-accessible air filter and visible air-path obstruction.",
+                            "After more than one minute, restore normal power and check whether the same code returns."
+                    },
+                    new String[]{"Thermistor / temperature sensor", "Sensor wiring/connector", "Control electronics"},
+                    new String[]{"sensor", "thermistor", "temperature sensor", "حساس", "ثرمستور", "حساس حرارة"},
+                    Severity.SERVICE,
+                    "If the code returns after the documented external checks and normal restart, contact Sharp service; internal sensor circuits require qualified diagnosis.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list. Exact code availability varies by model; confirm the exact model manual."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"2-0", "2-1", "2-2", "2-3", "2-4", "2-5"},
+                    "High-temperature / overheat protection involving the compressor, heat exchanger, or inverter power module.",
+                    new String[]{
+                            "Restricted airflow or dirty filter",
+                            "Outdoor airflow obstruction",
+                            "Compressor, refrigerant, inverter/IPM, or heat-transfer fault"
+                    },
+                    new String[]{
+                            "Switch the unit off.",
+                            "Check and clean only the user-serviceable air filter.",
+                            "Remove safe, visible obstructions from indoor/outdoor air inlets and outlets.",
+                            "Do not open the outdoor unit, refrigerant circuit, compressor, or inverter electronics."
+                    },
+                    new String[]{"Air filter", "Compressor", "IPM / inverter electronics", "Refrigerant circuit"},
+                    new String[]{"overheat", "high temperature", "compressor hot", "سخونة", "حرارة عالية", "الكمبروسر ساخن"},
+                    Severity.SERVICE,
+                    "Persistent overheat codes require qualified HVAC service after the external airflow checks.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list; do not infer a sealed-system repair from the code alone."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"6-0", "6-1", "7-0", "7-1", "7-2", "7-3", "14-0", "14-1", "14-2", "14-4", "23-0", "23-1"},
+                    "Electrical current, inverter/PAM/PFC, or supply-voltage protection fault.",
+                    new String[]{
+                            "Supply voltage abnormality",
+                            "Over-current / current-sensing condition",
+                            "Inverter, PAM/PFC, or power electronics fault"
+                    },
+                    new String[]{
+                            "Switch the air conditioner off using its normal control.",
+                            "Do not open electrical panels or probe mains wiring.",
+                            "If safe to do so, confirm that no obvious external power interruption or incorrect supply condition exists.",
+                            "Restore normal operation only after the supply is known to be correct."
+                    },
+                    new String[]{"Power supply", "Current sensing", "Inverter / PAM / PFC electronics"},
+                    new String[]{"over current", "under voltage", "over voltage", "voltage", "current error", "جهد", "تيار", "فولت"},
+                    Severity.SERVICE,
+                    "Repeated current/voltage/inverter codes require qualified electrical/HVAC service.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list. Code 23-0/23-1 specifically concerns incorrect supply voltage."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"11-0", "11-1", "11-2", "11-3", "11-4", "11-5", "19-0", "19-1", "19-2", "19-3"},
+                    "Indoor or outdoor fan rotation / fan-drive fault.",
+                    new String[]{
+                            "Visible airflow/fan obstruction",
+                            "Fan motor or connector fault",
+                            "Fan driver / inverter electronics fault"
+                    },
+                    new String[]{
+                            "Switch the unit off before visual inspection.",
+                            "Remove only safe, visible external debris without opening the unit or reaching into a fan.",
+                            "Check whether the same code returns after a normal restart."
+                    },
+                    new String[]{"Indoor fan motor", "Outdoor fan motor", "Fan driver electronics", "Fan connector"},
+                    new String[]{"fan", "fan error", "fan not running", "مروحة", "المروحة لا تعمل", "خطأ المروحة"},
+                    Severity.SERVICE,
+                    "If the fan code persists with no safe external obstruction, stop use and contact Sharp service.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list covering outdoor fan 11-x and indoor fan 19-x faults."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"17-0", "18-0", "18-1", "18-2"},
+                    "Serial communication or wiring fault between air-conditioner control sections.",
+                    new String[]{
+                            "Open or short communication circuit",
+                            "Incorrect communication wiring",
+                            "High-speed serial communication fault"
+                    },
+                    new String[]{
+                            "Switch the air conditioner off normally.",
+                            "Do not open control boards or inspect energized communication wiring.",
+                            "If the fault followed installation or relocation, contact the installer."
+                    },
+                    new String[]{"Communication wiring", "Indoor/outdoor control boards"},
+                    new String[]{"communication", "serial", "wiring", "اتصال", "توصيل", "سيريال"},
+                    Severity.SERVICE,
+                    "Communication/wiring codes require installer or qualified service inspection if they return after a normal restart.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"9-3", "13-0", "13-1", "13-2", "13-3"},
+                    "Compressor startup, rotation, torque-control, or inverter-current detection fault.",
+                    new String[]{
+                            "Compressor startup/rotation fault",
+                            "Inverter current-detection fault",
+                            "Compressor drive/control fault"
+                    },
+                    new String[]{
+                            "Switch the unit off and stop repeated restart attempts.",
+                            "Check only external airflow and the user-serviceable filter.",
+                            "Do not open the compressor, inverter, or refrigerant system."
+                    },
+                    new String[]{"Compressor", "Inverter drive", "Current detection electronics"},
+                    new String[]{"compressor", "startup error", "rotation error", "كمبروسر", "ضاغط", "لا يبدأ"},
+                    Severity.SERVICE,
+                    "Compressor/inverter fault codes require qualified HVAC service.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"9-0", "9-4", "9-5", "9-6"},
+                    "Valve / thermistor-installation / refrigerant-flow condition; code 9-4 may indicate a 4-way-valve fault or gas leak.",
+                    new String[]{
+                            "4-way valve or solenoid-valve fault",
+                            "Closed 2-way/3-way service valve condition",
+                            "Possible refrigerant/gas leak",
+                            "Thermistor installation fault"
+                    },
+                    new String[]{
+                            "Switch the unit off.",
+                            "Do not open service valves, refrigerant lines, or attempt refrigerant charging.",
+                            "Record the exact model and full main-sub error code for the technician."
+                    },
+                    new String[]{"4-way valve", "2-way / 3-way valve", "Solenoid valve", "Refrigerant circuit"},
+                    new String[]{"gas leak", "refrigerant", "valve", "فريون", "تسريب غاز", "صمام"},
+                    Severity.SERVICE,
+                    "These codes require qualified HVAC diagnosis; refrigerant and service-valve work is not a user procedure.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list. 9-4 is documented as 4-way valve error or gas leak error."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "Sharp air conditioners covered by the official SHARP AIR error-code list", "*",
+                    new String[]{"10-0", "10-1", "10-2", "20-0", "20-1", "20-2", "20-3", "31-0", "31-6", "31-7"},
+                    "EEPROM, CPU/RAM, sub-microcomputer, or control-board data/communication fault.",
+                    new String[]{
+                            "EEPROM data/read/verify fault",
+                            "CPU/RAM or sub-microcomputer fault",
+                            "Internal control-board communication fault"
+                    },
+                    new String[]{
+                            "Switch the unit off normally.",
+                            "After more than one minute, restore normal power once.",
+                            "Do not open or reprogram the control board."
+                    },
+                    new String[]{"Indoor/outdoor control board", "EEPROM / controller electronics"},
+                    new String[]{"eeprom", "cpu", "ram", "control board", "لوحة التحكم", "ذاكرة", "بوردة"},
+                    Severity.SERVICE,
+                    "If the code returns after one normal restart, contact Sharp service.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "Official Sharp global error-code list."
+            ),
+            entry(
+                    "Sharp", "Air Conditioner", "General Sharp air-conditioner external checks", "*",
+                    new String[]{},
+                    "Sharp's official error guidance recommends checking the filter and visible indoor/outdoor airflow obstructions before requesting service.",
+                    new String[]{
+                            "Dirty air filter",
+                            "Indoor or outdoor air inlet/outlet obstruction",
+                            "Dust, leaves, or paper restricting the outdoor heat-exchanger fins",
+                            "Internal fault if the problem remains after safe external checks"
+                    },
+                    new String[]{
+                            "Switch the air conditioner off and isolate normal power.",
+                            "Check the user-serviceable air filter for dirt.",
+                            "Check that nothing covers the indoor/outdoor air inlet or outlet.",
+                            "Check for safe, visible paper, leaves, or dust obstructing the outdoor fins without dismantling the unit.",
+                            "Wait more than one minute before restoring normal power."
+                    },
+                    new String[]{"Air filter", "External airflow path", "Internal HVAC parts require service diagnosis"},
+                    new String[]{"not cooling", "weak cooling", "no cold air", "airflow", "filter", "لا يبرد", "تبريد ضعيف", "فلتر", "هواء ضعيف"},
+                    Severity.WARNING,
+                    "If the error or cooling problem remains after Sharp's documented external checks and restart, contact service and report the exact error number and symptom.",
+                    "SHARP AIR APP: Air-Conditioner Error Code List",
+                    "https://global.sharp/smartapp/air/support/airconerror/",
+                    "General official Sharp guidance; exact maintenance access depends on the specific model."
             )
     ));
 

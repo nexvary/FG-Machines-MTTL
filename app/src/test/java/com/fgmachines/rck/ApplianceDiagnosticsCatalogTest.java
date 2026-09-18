@@ -57,4 +57,32 @@ public class ApplianceDiagnosticsCatalogTest {
         assertFalse(matches.isEmpty());
         assertTrue(matches.get(0).entry.sourceUrl.contains("lg.com"));
     }
+
+    @Test public void sharpFanCodeFindsOfficialSharpGuidance() {
+        List<ApplianceDiagnosticsCatalog.Match> matches =
+                ApplianceDiagnosticsCatalog.search(
+                        "Sharp", "Air Conditioner", "", "11-2", "");
+        assertFalse(matches.isEmpty());
+        assertEquals("Sharp", matches.get(0).entry.brand);
+        assertTrue(matches.get(0).entry.codes.contains("11-2"));
+        assertTrue(matches.get(0).entry.sourceUrl.contains("global.sharp"));
+    }
+
+    @Test public void sharpGasLeakCodeRemainsServiceScoped() {
+        List<ApplianceDiagnosticsCatalog.Match> matches =
+                ApplianceDiagnosticsCatalog.search(
+                        "Sharp", "Air Conditioner", "", "9-4", "");
+        assertFalse(matches.isEmpty());
+        assertEquals(ApplianceDiagnosticsCatalog.Severity.SERVICE,
+                matches.get(0).entry.severity);
+        assertTrue(matches.get(0).entry.meaning.toLowerCase().contains("gas leak"));
+    }
+
+    @Test public void sharpArabicNoCoolingFindsGeneralChecks() {
+        List<ApplianceDiagnosticsCatalog.Match> matches =
+                ApplianceDiagnosticsCatalog.search(
+                        "Sharp", "Air Conditioner", "", "", "لا يبرد");
+        assertFalse(matches.isEmpty());
+        assertEquals("Sharp", matches.get(0).entry.brand);
+    }
 }

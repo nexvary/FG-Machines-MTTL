@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.3
+## Current Android baseline — 1.3.4
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -27,7 +27,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Multi-device fleet registry with persistent device names, rooms, selected device, firmware, last-seen and connection uptime.
 - Room filtering turns room metadata into an actual fleet organization layer instead of a single free-text label.
 - Local SQLite telemetry/event history with daily, weekly and monthly energy summaries plus an in-app power sparkline.
-- Appliance Diagnostics now includes ten guided, source-aware flows across Samsung washers, Roborock S7, Xiaomi Mi Robot Vacuum-Mop and LG air conditioners.
+- Appliance Diagnostics includes ten guided, source-aware flows across Samsung washers, Roborock S7, Xiaomi Mi Robot Vacuum-Mop and LG air conditioners. The offline diagnostic catalog additionally supports Sharp air conditioners using Sharp's official main/sub error-code list and general external-check guidance.
 - Diagnostics can display a read-only **live electrical context** from the selected MTTL-W01 outlet: relay state, live power, energy, temperature, overload, overheat and firmware event code. These measurements are evidence only and are not presented as a failure probability.
 - Configurable alerts for high load, temperature and daily energy, while firmware protection/event codes remain authoritative.
 - Per-outlet automation also supports automatic cutoff above a user-defined watt threshold.
