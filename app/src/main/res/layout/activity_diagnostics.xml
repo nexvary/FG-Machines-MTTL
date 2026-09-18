@@ -133,6 +133,66 @@
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="@color/fg_surface"
                 app:cardCornerRadius="18dp"
+                app:strokeColor="@color/fg_warning"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/diagnostics_live_context_title"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_warning"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/diagnostics_live_context_note"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text_secondary"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/diagnosticsLiveElectrical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_status_pill"
+                        android:lineSpacingExtra="2dp"
+                        android:padding="10dp"
+                        android:text="@string/diagnostics_live_unavailable"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/fg_text"
+                        android:textIsSelectable="true"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/diagnosticsRefreshElectricalButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/diagnostics_refresh_live_context"
+                        android:textColor="@color/fg_warning"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_warning" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/fg_surface"
+                app:cardCornerRadius="18dp"
                 app:strokeColor="@color/fg_blue"
                 app:strokeWidth="1dp">
 
