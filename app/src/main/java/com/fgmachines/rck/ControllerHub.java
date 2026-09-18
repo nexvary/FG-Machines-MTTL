@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -34,6 +36,7 @@ public final class ControllerHub implements Closeable {
                 snapshot.bootInfo = bootInfo;
                 snapshot.remoteAddress = remoteAddress;
                 snapshot.connected = true;
+                snapshot.connectedSince = System.currentTimeMillis();
                 activeMac = key;
                 for (MttlControllerServer.Listener listener : listeners) {
                     listener.onDeviceConnected(bootInfo, remoteAddress);
@@ -44,7 +47,15 @@ public final class ControllerHub implements Closeable {
                 String key = mac == null ? "" : mac.toUpperCase();
                 DeviceSnapshot snapshot = snapshots.get(key);
                 if (snapshot != null) snapshot.connected = false;
-                if (key.equalsIgnoreCase(activeMac == null ? "" : activeMac)) activeMac = null;
+                if (key.equalsIgnoreCase(activeMac == null ? "" : activeMac)) {
+                    activeMac = null;
+                    for (Map.Entry<String, DeviceSnapshot> entry : snapshots.entrySet()) {
+                        if (entry.getValue().connected) {
+                            activeMac = entry.getKey();
+                            break;
+                        }
+                    }
+                }
                 for (MttlControllerServer.Listener listener : listeners) listener.onDeviceDisconnected(mac);
             }
 
@@ -117,6 +128,40 @@ public final class ControllerHub implements Closeable {
         return activeMac;
     }
 
+    public List<DeviceState> connectedStates() {
+        List<DeviceState> out = new ArrayList<>();
+        for (Map.Entry<String, DeviceSnapshot> entry : snapshots.entrySet()) {
+            DeviceSnapshot snapshot = entry.getValue();
+            if (!snapshot.connected || snapshot.bootInfo == null) continue;
+            out.add(toState(entry.getKey(), snapshot));
+        }
+        out.sort((a, b) -> a.mac.compareToIgnoreCase(b.mac));
+        return out;
+    }
+
+    public DeviceState state(String mac) {
+        String key = FleetStore.normalizeMac(mac);
+        DeviceSnapshot snapshot = snapshots.get(key);
+        return snapshot == null || snapshot.bootInfo == null ? null : toState(key, snapshot);
+    }
+
+    public boolean isConnected(String mac) {
+        DeviceSnapshot snapshot = snapshots.get(FleetStore.normalizeMac(mac));
+        return snapshot != null && snapshot.connected;
+    }
+
+    private static DeviceState toState(String mac, DeviceSnapshot snapshot) {
+        return new DeviceState(
+                mac,
+                snapshot.bootInfo.model,
+                snapshot.bootInfo.firmwareVersion,
+                snapshot.remoteAddress == null ? "" : snapshot.remoteAddress,
+                snapshot.connected,
+                snapshot.connectedSince,
+                snapshot.telemetry
+        );
+    }
+
     public void setOutlet(String mac, int outlet, boolean on) throws IOException {
         server.setOutlet(mac, outlet, on);
     }
@@ -135,8 +180,30 @@ public final class ControllerHub implements Closeable {
 
     private static final class DeviceSnapshot {
         volatile boolean connected;
+        volatile long connectedSince;
         volatile MttlProtocol.BootInfo bootInfo;
         volatile String remoteAddress;
         volatile MttlProtocol.Telemetry telemetry;
+    }
+
+    public static final class DeviceState {
+        public final String mac;
+        public final String model;
+        public final String firmwareVersion;
+        public final String remoteAddress;
+        public final boolean connected;
+        public final long connectedSince;
+        public final MttlProtocol.Telemetry telemetry;
+
+        DeviceState(String mac, String model, String firmwareVersion, String remoteAddress,
+                    boolean connected, long connectedSince, MttlProtocol.Telemetry telemetry) {
+            this.mac = mac;
+            this.model = model;
+            this.firmwareVersion = firmwareVersion;
+            this.remoteAddress = remoteAddress;
+            this.connected = connected;
+            this.connectedSince = connectedSince;
+            this.telemetry = telemetry;
+        }
     }
 }
