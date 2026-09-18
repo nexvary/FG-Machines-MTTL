@@ -429,4 +429,8 @@ Live load %5$.0f W · Reported energy %6$.3f kWh</string>
     <string name="room_all_off_count">ROOM OFF (%1$d)</string>
     <string name="fleet_all_off_count">ALL OFF (%1$d)</string>
 
+
+    <string name="confirm_room_off_count">Turn OFF all four AC outlets on %1$d connected strip(s) in this room?</string>
+    <string name="confirm_fleet_off_count">Turn OFF all four AC outlets on all %1$d connected strip(s)?</string>
+
 </resources>
