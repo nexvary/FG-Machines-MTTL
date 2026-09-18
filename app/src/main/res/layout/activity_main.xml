@@ -1300,7 +1300,460 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                
                 <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/automation_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/automation_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/automationSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/automation_none"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/automation_outlet_1"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/autoOffSwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="@string/auto_off_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/auto_off_minutes_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/autoOffMinutes1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/scheduleSwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/schedule_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_on_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOn1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_off_hint"
+                                app:boxStrokeColor="@color/fg_warning">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOff1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/scheduleDayMode1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/automation_outlet_2"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/autoOffSwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="@string/auto_off_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/auto_off_minutes_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/autoOffMinutes2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/scheduleSwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/schedule_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_on_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOn2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_off_hint"
+                                app:boxStrokeColor="@color/fg_warning">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOff2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/scheduleDayMode2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/automation_outlet_3"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/autoOffSwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="@string/auto_off_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/auto_off_minutes_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/autoOffMinutes3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/scheduleSwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/schedule_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_on_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOn3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_off_hint"
+                                app:boxStrokeColor="@color/fg_warning">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOff3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/scheduleDayMode3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/automation_outlet_4"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/autoOffSwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="@string/auto_off_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/auto_off_minutes_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/autoOffMinutes4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/scheduleSwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/schedule_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_on_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOn4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/schedule_off_hint"
+                                app:boxStrokeColor="@color/fg_warning">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/scheduleOff4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <Spinner
+                            android:id="@+id/scheduleDayMode4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveAutomationButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/save_automation"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="15dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/automation_background_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver_dark"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+<com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
