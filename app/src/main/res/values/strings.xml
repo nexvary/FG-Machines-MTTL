@@ -133,4 +133,5 @@
     <string name="wizard_need_network">Enter the strip setup SSID and target 2.4 GHz network.</string>
     <string name="wizard_ready_to_write">Ready. Connect this setup phone to TONLY_TAP, then press Continue.</string>
     <string name="wizard_complete">Provisioning completed. Waiting for the strip to join the controller network.</string>
+    <string name="legacy_binary_wifi_success">Legacy MTTL setup protocol detected. Wi-Fi credentials were written and the strip was rebooted. Check whether it appears on the target Wi-Fi/hotspot. Direct TCP 10086 controller support is not confirmed for this firmware yet.</string>
 </resources>
