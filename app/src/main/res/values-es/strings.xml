@@ -421,4 +421,8 @@ Carga actual %5$.0f W · Energía reportada %6$.3f kWh</string>
     <string name="room_all_off_count">APAGAR SALA (%1$d)</string>
     <string name="fleet_all_off_count">APAGAR TODO (%1$d)</string>
 
+
+    <string name="confirm_room_off_count">¿Apagar las cuatro salidas de CA en %1$d regleta(s) conectada(s) de esta habitación?</string>
+    <string name="confirm_fleet_off_count">¿Apagar las cuatro salidas de CA en las %1$d regletas conectadas?</string>
+
 </resources>
