@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText roomNameInput;
     private TextInputEditText[] outletNameInputs;
     private MaterialButton saveDeviceNamesButton;
+    private MaterialButton forgetDeviceButton;
     private MaterialSwitch alertsSwitch;
     private MaterialSwitch[] autoOffSwitches;
     private TextInputEditText[] autoOffMinutesInputs;
@@ -290,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
         stripNameInput = findViewById(R.id.stripNameInput);
         roomNameInput = findViewById(R.id.roomNameInput);
         saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
+        forgetDeviceButton = findViewById(R.id.forgetDeviceButton);
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
@@ -428,6 +430,27 @@ public class MainActivity extends AppCompatActivity {
             applyDeviceNames();
             refreshFleetUi();
             Snackbar.make(saveDeviceNamesButton, R.string.names_saved, Snackbar.LENGTH_SHORT).show();
+        });
+
+        forgetDeviceButton.setOnClickListener(v -> {
+            if (activeMac == null || fleetStore == null) {
+                Snackbar.make(forgetDeviceButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            if (controllerHub != null && controllerHub.isConnected(activeMac)) {
+                Snackbar.make(forgetDeviceButton, R.string.forget_device_disconnect_first, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            String forgottenMac = activeMac;
+            fleetStore.remove(forgottenMac);
+            activeMac = null;
+            activeFirmwareVersion = null;
+            clearDeviceNamingFields();
+            clearTelemetryUi();
+            setOutletControlsEnabled(false);
+            refreshFleetUi();
+            refreshHistory();
+            Snackbar.make(forgetDeviceButton, R.string.device_forgotten, Snackbar.LENGTH_SHORT).show();
         });
     }
 
