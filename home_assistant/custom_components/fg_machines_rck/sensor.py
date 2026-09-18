@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from homeassistant.components.sensor import SensorEntity, SensorDeviceClass, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfEnergy, UnitOfPower, UnitOfTemperature
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -34,14 +34,26 @@ SENSORS = (
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities):
     coordinator: RckCoordinator = hass.data[DOMAIN][entry.entry_id]
-    entities = []
-    for device in coordinator.data or []:
-        mac = str(device.get("mac", ""))
-        if not mac:
-            continue
-        for description in SENSORS:
-            entities.append(RckSensor(coordinator, mac, description))
-    async_add_entities(entities)
+    known: set[str] = set()
+
+    @callback
+    def add_new_devices() -> None:
+        entities = []
+        for device in coordinator.data or []:
+            mac = str(device.get("mac", ""))
+            if not mac:
+                continue
+            for description in SENSORS:
+                unique = f"{mac}_{description.key}"
+                if unique in known:
+                    continue
+                known.add(unique)
+                entities.append(RckSensor(coordinator, mac, description))
+        if entities:
+            async_add_entities(entities)
+
+    add_new_devices()
+    entry.async_on_unload(coordinator.async_add_listener(add_new_devices))
 
 
 class RckSensor(CoordinatorEntity[RckCoordinator], SensorEntity):
