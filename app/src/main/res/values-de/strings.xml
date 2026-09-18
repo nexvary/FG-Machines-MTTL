@@ -270,4 +270,7 @@
     </string-array>
     <string name="wpa2_password_invalid">Das WPA2-Personal-Kennwort muss 8–63 Zeichen lang sein oder ein 64-stelliger hexadezimaler PSK sein.</string>
     <string name="automation_select_device">Ein Flottengerät auswählen, um dessen Automatisierungen zu konfigurieren.</string>
+    <string name="forget_device">Offline-Gerät vergessen</string>
+    <string name="forget_device_disconnect_first">Gerät vor dem Entfernen aus der Flotte trennen.</string>
+    <string name="device_forgotten">Gerät aus der lokalen Flotte entfernt.</string>
 </resources>
