@@ -150,7 +150,7 @@
     <string name="protection_event">Koruma/olay kodu bildirildi: %1$s</string>
     <string name="high_load_warning">Yüksek yük: önerilen 3.000 W çalışma seviyesinin üzerinde</string>
     <string name="outlet_telemetry_waiting">Güç — W · Enerji — kWh · Sıcaklık — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">Priz yerel denetleyiciye bağlı değil.</string>
     <string name="energy_cost_settings">Enerji maliyeti</string>
     <string name="tariff_hint">Elektrik tarifesi (kWh başına EGP)</string>
