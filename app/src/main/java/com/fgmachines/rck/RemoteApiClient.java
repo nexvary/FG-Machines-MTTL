@@ -64,7 +64,7 @@ public final class RemoteApiClient {
     }
 
     private JSONObject request(String method, String path) throws IOException {
-        if (baseUrl.isEmpty()) throw new IOException("Remote endpoint is empty");
+        EndpointSecurity.validateRemoteEndpoint(baseUrl);
         URL url = new URL(baseUrl + path);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(method);
