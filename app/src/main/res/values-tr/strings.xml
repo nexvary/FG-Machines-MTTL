@@ -159,7 +159,7 @@
     <string name="tariff_saved">Tarife kaydedildi</string>
     <string name="setup_security_note">Önemli: hedef hotspot/router 2.4 GHz ve WPA2-Personal kullanmalıdır. Bu gereksinim MTTL-W01 üzerinde fiziksel olarak doğrulandı.</string>
     <string name="device_naming_title">Adlar ve oda</string>
-    <string name="device_naming_note">Yerel etiketler yalnızca bu telefonda saklanır ve priz firmware'ini değiştirmez.</string>
+    <string name="device_naming_note">Yerel etiketler yalnızca bu telefonda saklanır ve priz firmware’ini değiştirmez.</string>
     <string name="strip_name_hint">Priz adı</string>
     <string name="room_name_hint">Oda</string>
     <string name="save_names">Adları kaydet</string>
