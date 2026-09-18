@@ -493,4 +493,5 @@ State: %3$s</string>
     <string name="dawon_refresh_state">Refresh state</string>
     <string name="dawon_gateway_idle">Not connected to a Z-Wave gateway yet.</string>
 
+    <string name="dawon_back">Back</string>
 </resources>
