@@ -406,4 +406,19 @@
     <string name="usb_discovery_complete_format">Descubrimiento completado · tramas desconocidas %1$d
 Última: %2$s</string>
 
+
+    <string name="fleet_overview_waiting">El resumen de la flota aparecerá cuando haya dispositivos registrados.</string>
+    <string name="fleet_list_waiting">No hay dispositivos que coincidan con el filtro de habitación.</string>
+    <string name="fleet_online">EN LÍNEA</string>
+    <string name="fleet_offline">SIN CONEXIÓN</string>
+    <string name="room_unassigned">Sin habitación</string>
+    <string name="fleet_scope_all">Todas las habitaciones</string>
+    <string name="fleet_scope_room">Habitación: %1$s</string>
+    <string name="fleet_overview_format">%1$s · Dispositivos %2$d · En línea %3$d · Sin conexión %4$d
+Carga actual %5$.0f W · Energía reportada %6$.3f kWh</string>
+    <string name="fleet_device_line_online">%1$s · %2$s · EN LÍNEA · %3$.0f W · %4$.3f kWh</string>
+    <string name="fleet_device_line_offline">%1$s · %2$s · SIN CONEXIÓN · Última vez %3$s</string>
+    <string name="room_all_off_count">APAGAR SALA (%1$d)</string>
+    <string name="fleet_all_off_count">APAGAR TODO (%1$d)</string>
+
 </resources>
