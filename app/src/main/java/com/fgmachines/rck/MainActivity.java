@@ -417,6 +417,13 @@ public class MainActivity extends AppCompatActivity {
         }
         findViewById(R.id.homeToSetup).setOnClickListener(v -> showPage(1));
         findViewById(R.id.homeToScan).setOnClickListener(v -> showPage(2));
+        findViewById(R.id.homeToDiagnostics).setOnClickListener(v -> {
+            Intent intent = new Intent(this, DiagnosticsActivity.class);
+            if (activeMac != null && !activeMac.trim().isEmpty()) {
+                intent.putExtra(DiagnosticsActivity.EXTRA_MAC, activeMac);
+            }
+            startActivity(intent);
+        });
         showPage(0);
     }
 
