@@ -150,7 +150,7 @@
     <string name="protection_event">Código de protección/evento reportado: %1$s</string>
     <string name="high_load_warning">Carga alta: por encima del nivel recomendado de 3.000 W</string>
     <string name="outlet_telemetry_waiting">Potencia — W · Energía — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">La regleta no está conectada al controlador local.</string>
     <string name="energy_cost_settings">Coste de energía</string>
     <string name="tariff_hint">Tarifa eléctrica (EGP por kWh)</string>
