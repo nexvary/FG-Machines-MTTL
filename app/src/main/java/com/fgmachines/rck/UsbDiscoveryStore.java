@@ -45,8 +45,7 @@ public final class UsbDiscoveryStore {
 
     public synchronized boolean recordUnknownFrame(String mac, String frame, long now) {
         if (!isActiveFor(mac, now)) return false;
-        String safe = frame == null ? "" : frame.replace('', ' ').replace('
-', ' ').trim();
+        String safe = frame == null ? "" : frame.replace("\\r", " ").replace("\\n", " ").trim();
         if (safe.isEmpty()) return false;
         if (safe.length() > MAX_FRAME_CHARS) safe = safe.substring(0, MAX_FRAME_CHARS);
         int count = prefs.getInt(KEY_COUNT, 0) + 1;
