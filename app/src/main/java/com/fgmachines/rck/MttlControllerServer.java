@@ -77,6 +77,13 @@ public final class MttlControllerServer implements Closeable {
         connection.send(MttlProtocol.setOutlet(outlet, on));
     }
 
+    public void setAll(String mac, boolean on) throws IOException {
+        DeviceConnection connection = requireDevice(mac);
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            connection.send(MttlProtocol.setOutlet(outlet, on));
+        }
+    }
+
     private DeviceConnection requireDevice(String mac) throws IOException {
         if (mac == null) throw new IOException("No MTTL device selected");
         DeviceConnection connection = devices.get(mac.toUpperCase());
