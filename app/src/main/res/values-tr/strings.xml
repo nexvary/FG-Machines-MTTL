@@ -355,7 +355,7 @@
     <string name="guided_yes">Evet</string>
     <string name="guided_no">Hayır</string>
     <string name="guided_not_started">Yönlendirmeli teşhis başlatılmadı</string>
-    <string name="guided_question_waiting">Bir belirti profili seçin ve Başlat'a dokunun.</string>
+    <string name="guided_question_waiting">Bir belirti profili seçin ve Başlat düğmesine dokunun.</string>
     <string name="guided_result_waiting">Sorular tamamlanınca sıralı nedenler burada görünecek.</string>
     <string name="guided_select_profile">Önce bir belirti profili seçin.</string>
     <string name="guided_progress_format">Soru %1$d / %2$d</string>
