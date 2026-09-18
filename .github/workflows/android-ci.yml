@@ -10,6 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      FG_RCK_KEYSTORE_B64: ${{ secrets.FG_RCK_KEYSTORE_B64 }}
+      FG_RCK_KEYSTORE_PASSWORD: ${{ secrets.FG_RCK_KEYSTORE_PASSWORD }}
+      FG_RCK_KEY_ALIAS: ${{ secrets.FG_RCK_KEY_ALIAS }}
+      FG_RCK_KEY_PASSWORD: ${{ secrets.FG_RCK_KEY_PASSWORD }}
+      FG_RCK_CERT_SHA256: ${{ secrets.FG_RCK_CERT_SHA256 }}
 
     steps:
       - name: Checkout
@@ -26,15 +32,65 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Reject tracked signing secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files | grep -E '\.(jks|keystore|p12|pfx)$'; then
+            echo "Signing key material must never be committed to this public repository."
+            exit 1
+          fi
+
       - name: Validate Home Assistant integration syntax
         run: python3 -m compileall -q home_assistant/custom_components/fg_machines_rck
 
-      - name: Test, lint and build debug APK
+      - name: Test, lint and build isolated debug APK
         run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
 
-      - name: Upload debug APK
+      - name: Prepare private release signing
+        if: env.FG_RCK_KEYSTORE_B64 != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$FG_RCK_KEYSTORE_PASSWORD"
+          test -n "$FG_RCK_KEY_ALIAS"
+          test -n "$FG_RCK_KEY_PASSWORD"
+          test -n "$FG_RCK_CERT_SHA256"
+          KEYSTORE="$RUNNER_TEMP/fg-machines-rck-release.keystore"
+          printf '%s' "$FG_RCK_KEYSTORE_B64" | base64 --decode > "$KEYSTORE"
+          chmod 600 "$KEYSTORE"
+          echo "FG_RCK_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+
+      - name: Build stable signed release APK
+        if: env.FG_RCK_KEYSTORE_B64 != ''
+        run: gradle --no-daemon assembleRelease
+
+      - name: Verify stable release certificate
+        if: env.FG_RCK_KEYSTORE_B64 != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)"
+          test -n "$APKSIGNER"
+          APK="app/build/outputs/apk/release/app-release.apk"
+          "$APKSIGNER" verify --print-certs "$APK" | tee /tmp/apk-certs.txt
+          ACTUAL="$(grep -i 'certificate SHA-256 digest' /tmp/apk-certs.txt | head -n 1 | awk '{print $NF}' | tr 'A-F' 'a-f' | tr -d ':')"
+          EXPECTED="$(printf '%s' "$FG_RCK_CERT_SHA256" | tr 'A-F' 'a-f' | tr -d ':')"
+          echo "Release signing SHA-256: $ACTUAL"
+          test -n "$ACTUAL"
+          test "$ACTUAL" = "$EXPECTED"
+
+      - name: Upload stable signed release APK
+        if: env.FG_RCK_KEYSTORE_B64 != ''
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-debug
+          name: FG-Machines-RCK-stable-release
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
+      - name: Upload isolated debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FG-Machines-RCK-debug-separate-package
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
