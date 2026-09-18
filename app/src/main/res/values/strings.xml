@@ -376,4 +376,21 @@
     <string name="guided_compatibility_label">Compatibility score</string>
     <string name="guided_open_source">Open profile source</string>
 
+
+    <string name="camera_assist_title">Camera Assist</string>
+    <string name="camera_assist_subtitle">Read an error display or appliance label locally with bundled OCR and barcode models.</string>
+    <string name="camera_scan_display">Scan error display</string>
+    <string name="camera_scan_label">Scan model label</string>
+    <string name="camera_result_waiting">No image scanned yet.</string>
+    <string name="camera_processing">Reading text and barcodes…</string>
+    <string name="camera_capture_cancelled">Camera capture was cancelled.</string>
+    <string name="camera_detected_brand">Detected brand</string>
+    <string name="camera_detected_model">Detected model</string>
+    <string name="camera_detected_code">Detected error code</string>
+    <string name="camera_detected_barcodes">Detected barcode</string>
+    <string name="camera_barcode_note">A raw barcode/serial is not treated as a model unless the local database has a verified mapping.</string>
+    <string name="camera_ocr_text">OCR text</string>
+    <string name="camera_no_result">No readable text or barcode was found. Retake the photo closer and in good light.</string>
+    <string name="camera_no_autofill">The capture was read, but no value was safe to auto-fill. Review the OCR result manually.</string>
+
 </resources>
