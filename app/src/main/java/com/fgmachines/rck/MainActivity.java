@@ -405,36 +405,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureDeviceNaming() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        stripNameInput.setText(prefs.getString(PREF_STRIP_NAME, ""));
-        roomNameInput.setText(prefs.getString(PREF_ROOM_NAME, ""));
-        for (int i = 0; i < outletNameInputs.length; i++) {
-            outletNameInputs[i].setText(prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), ""));
-        }
-        applyDeviceNames();
-
+        clearDeviceNamingFields();
         saveDeviceNamesButton.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit()
-                    .putString(PREF_STRIP_NAME, textOf(stripNameInput))
-                    .putString(PREF_ROOM_NAME, textOf(roomNameInput));
-            for (int i = 0; i < outletNameInputs.length; i++) {
-                editor.putString(PREF_OUTLET_NAME_PREFIX + (i + 1), textOf(outletNameInputs[i]));
+            if (activeMac == null || fleetStore == null) {
+                Snackbar.make(saveDeviceNamesButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+                return;
             }
-            editor.apply();
+            fleetStore.updateLabels(activeMac, textOf(stripNameInput), textOf(roomNameInput));
+            for (int i = 0; i < outletNameInputs.length; i++) {
+                fleetStore.updateOutletName(activeMac, i + 1, textOf(outletNameInputs[i]));
+            }
             applyDeviceNames();
+            refreshFleetUi();
             Snackbar.make(saveDeviceNamesButton, R.string.names_saved, Snackbar.LENGTH_SHORT).show();
         });
     }
 
     private void applyDeviceNames() {
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         for (int i = 0; i < outletSwitches.length; i++) {
-            String name = prefs.getString(PREF_OUTLET_NAME_PREFIX + (i + 1), "");
-            if (name == null || name.trim().isEmpty()) {
-                outletSwitches[i].setText(getString(outletNameResource(i)));
-            } else {
-                outletSwitches[i].setText(name.trim());
-            }
+            String name = activeMac == null || fleetStore == null
+                    ? "" : fleetStore.outletName(activeMac, i + 1);
+            outletSwitches[i].setText(name == null || name.trim().isEmpty()
+                    ? getString(outletNameResource(i)) : name.trim());
+        }
+        loadSelectedDeviceLabels();
+    }
+
+    private void loadSelectedDeviceLabels() {
+        if (stripNameInput == null || roomNameInput == null) return;
+        FleetStore.DeviceRecord record = activeMac == null || fleetStore == null
+                ? null : fleetStore.get(activeMac);
+        if (record == null) {
+            clearDeviceNamingFields();
+            return;
+        }
+        stripNameInput.setText(record.name);
+        roomNameInput.setText(record.room);
+        for (int i = 0; i < outletNameInputs.length; i++) {
+            outletNameInputs[i].setText(fleetStore.outletName(activeMac, i + 1));
+        }
+    }
+
+    private void clearDeviceNamingFields() {
+        if (stripNameInput != null) stripNameInput.setText("");
+        if (roomNameInput != null) roomNameInput.setText("");
+        if (outletNameInputs != null) {
+            for (TextInputEditText input : outletNameInputs) if (input != null) input.setText("");
         }
     }
 
@@ -672,6 +688,382 @@ public class MainActivity extends AppCompatActivity {
         } catch (NumberFormatException error) {
             return 0;
         }
+    }
+
+    private void configureFleet() {
+        fleetRoomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object selected = parent.getItemAtPosition(position);
+                String value = selected == null ? "" : selected.toString();
+                fleetRoomFilter = position == 0 ? "" : value;
+                refreshFleetDeviceSpinner();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        fleetDeviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position < 0 || position >= visibleFleetDevices.size()) return;
+                selectFleetDevice(visibleFleetDevices.get(position).mac);
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        refreshFleetUi();
+    }
+
+    private void refreshFleetUi() {
+        if (fleetStore == null || fleetRoomSpinner == null) return;
+        List<String> rooms = new ArrayList<>();
+        rooms.add(getString(R.string.all_rooms));
+        rooms.addAll(fleetStore.rooms());
+        ArrayAdapter<String> roomAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, rooms);
+        roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fleetRoomSpinner.setAdapter(roomAdapter);
+        int roomIndex = 0;
+        if (!fleetRoomFilter.isEmpty()) {
+            for (int i = 1; i < rooms.size(); i++) {
+                if (fleetRoomFilter.equalsIgnoreCase(rooms.get(i))) {
+                    roomIndex = i;
+                    break;
+                }
+            }
+        }
+        fleetRoomSpinner.setSelection(roomIndex, false);
+        refreshFleetDeviceSpinner();
+        updateApiEndpoint();
+    }
+
+    private void refreshFleetDeviceSpinner() {
+        visibleFleetDevices.clear();
+        List<String> labels = new ArrayList<>();
+        for (FleetStore.DeviceRecord record : fleetStore.list()) {
+            if (!fleetRoomFilter.isEmpty() && !fleetRoomFilter.equalsIgnoreCase(record.room)) continue;
+            visibleFleetDevices.add(record);
+            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
+            String label = record.displayName();
+            if (!record.room.isEmpty()) label += " · " + record.room;
+            label += live != null && live.connected ? " · ONLINE" : " · OFFLINE";
+            labels.add(label);
+        }
+        if (labels.isEmpty()) labels.add(getString(R.string.fleet_no_devices));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fleetDeviceSpinner.setAdapter(adapter);
+
+        if (!visibleFleetDevices.isEmpty()) {
+            String preferred = activeMac != null ? FleetStore.normalizeMac(activeMac) : fleetStore.selectedMac();
+            int selected = 0;
+            for (int i = 0; i < visibleFleetDevices.size(); i++) {
+                if (visibleFleetDevices.get(i).mac.equalsIgnoreCase(preferred)) {
+                    selected = i;
+                    break;
+                }
+            }
+            fleetDeviceSpinner.setSelection(selected, false);
+            selectFleetDevice(visibleFleetDevices.get(selected).mac);
+        } else {
+            fleetStatus.setText(R.string.fleet_waiting);
+        }
+    }
+
+    private void selectFleetDevice(String mac) {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty()) return;
+        activeMac = key;
+        fleetStore.select(key);
+        ControllerHub.DeviceState state = controllerHub.state(key);
+        activeFirmwareVersion = state == null ? null : state.firmwareVersion;
+        applyDeviceNames();
+
+        if (state != null && state.connected) {
+            setOutletControlsEnabled(true);
+            deviceState.setText(getString(R.string.controller_connected,
+                    ModelCatalog.PRIMARY_MODEL, state.firmwareVersion));
+            FleetStore.DeviceRecord record = fleetStore.get(key);
+            discoveryDetail.setText(getString(R.string.device_location_detail,
+                    record == null ? "" : record.displayName(),
+                    record == null ? "" : record.room,
+                    state.remoteAddress));
+            if (state.telemetry != null) {
+                applyingDeviceState = true;
+                try {
+                    for (MttlProtocol.OutletTelemetry outlet : state.telemetry.outlets) {
+                        if (outlet.channel >= 1 && outlet.channel <= outletSwitches.length) {
+                            outletSwitches[outlet.channel - 1].setChecked(outlet.relayOn);
+                        }
+                    }
+                    updateTelemetryUi(state.telemetry);
+                } finally {
+                    applyingDeviceState = false;
+                }
+            }
+        } else {
+            setOutletControlsEnabled(false);
+            clearTelemetryUi();
+            deviceState.setText(R.string.controller_disconnected);
+        }
+        updateFleetStatus();
+        refreshHistory();
+    }
+
+    private void updateFleetStatus() {
+        if (fleetStatus == null || fleetStore == null) return;
+        int total = fleetStore.list().size();
+        int connected = controllerHub == null ? 0 : controllerHub.connectedStates().size();
+        FleetStore.DeviceRecord record = activeMac == null ? null : fleetStore.get(activeMac);
+        ControllerHub.DeviceState state = activeMac == null ? null : controllerHub.state(activeMac);
+        String lastSeen = record == null || record.lastSeenAt <= 0
+                ? getString(R.string.unknown_value)
+                : DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                        .format(new java.util.Date(record.lastSeenAt));
+        String uptime = state == null || !state.connected || state.connectedSince <= 0
+                ? getString(R.string.not_connected)
+                : formatDuration(System.currentTimeMillis() - state.connectedSince);
+        fleetStatus.setText(getString(R.string.fleet_status_format,
+                connected, total, lastSeen, uptime));
+    }
+
+    private void configureHistory() {
+        refreshHistory();
+    }
+
+    private void refreshHistory() {
+        if (historyStore == null || historySparkline == null) return;
+        if (activeMac == null) {
+            historySparkline.setPoints(new ArrayList<>());
+            historySummary.setText(R.string.history_waiting);
+            historyRecent.setText(R.string.history_no_events);
+            return;
+        }
+        long now = System.currentTimeMillis();
+        Calendar day = Calendar.getInstance();
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+
+        Calendar week = (Calendar) day.clone();
+        int dow = week.get(Calendar.DAY_OF_WEEK);
+        int daysSinceSunday = dow - Calendar.SUNDAY;
+        week.add(Calendar.DAY_OF_MONTH, -daysSinceSunday);
+
+        Calendar month = (Calendar) day.clone();
+        month.set(Calendar.DAY_OF_MONTH, 1);
+
+        HistoryStore.Summary daily = historyStore.summary(activeMac, day.getTimeInMillis());
+        HistoryStore.Summary weekly = historyStore.summary(activeMac, week.getTimeInMillis());
+        HistoryStore.Summary monthly = historyStore.summary(activeMac, month.getTimeInMillis());
+        historySummary.setText(getString(R.string.history_summary_format,
+                daily.energyDeltaKWh, weekly.energyDeltaKWh, monthly.energyDeltaKWh,
+                daily.maxPowerW));
+        historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
+
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        if (events.isEmpty()) {
+            historyRecent.setText(R.string.history_no_events);
+        } else {
+            StringBuilder text = new StringBuilder();
+            DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+            for (HistoryStore.EventRecord event : events) {
+                if (text.length() > 0) text.append('\n');
+                text.append(format.format(new java.util.Date(event.ts)))
+                        .append(" · ").append(event.kind);
+                if (event.outlet > 0) text.append(" #").append(event.outlet);
+                if (event.detail != null && !event.detail.isEmpty()) {
+                    text.append(" · ").append(event.detail);
+                }
+            }
+            historyRecent.setText(text.toString());
+        }
+    }
+
+    private void configureAlertLimits() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        double power = Double.longBitsToDouble(prefs.getLong(
+                MttlControllerService.PREF_ALERT_POWER_W, Double.doubleToRawLongBits(3000.0)));
+        int temp = prefs.getInt(MttlControllerService.PREF_ALERT_TEMP_C, 0);
+        double energy = Double.longBitsToDouble(prefs.getLong(
+                MttlControllerService.PREF_ALERT_DAILY_ENERGY_KWH, Double.doubleToRawLongBits(0.0)));
+        alertPowerInput.setText(String.format(Locale.US, "%.0f", power));
+        if (temp > 0) alertTempInput.setText(String.valueOf(temp));
+        if (energy > 0) alertEnergyInput.setText(String.format(Locale.US, "%.2f", energy));
+
+        saveAlertLimitsButton.setOnClickListener(v -> {
+            double powerLimit = parsePositiveDouble(textOf(alertPowerInput));
+            int tempLimit = parsePositiveInt(textOf(alertTempInput));
+            double energyLimit = parsePositiveDouble(textOf(alertEnergyInput));
+            if (powerLimit <= 0) powerLimit = 3000.0;
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putLong(MttlControllerService.PREF_ALERT_POWER_W,
+                            Double.doubleToRawLongBits(powerLimit))
+                    .putInt(MttlControllerService.PREF_ALERT_TEMP_C, tempLimit)
+                    .putLong(MttlControllerService.PREF_ALERT_DAILY_ENERGY_KWH,
+                            Double.doubleToRawLongBits(energyLimit))
+                    .apply();
+            Snackbar.make(saveAlertLimitsButton, R.string.alert_limits_saved,
+                    Snackbar.LENGTH_SHORT).show();
+        });
+    }
+
+    private void configureSharing() {
+        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(
+                this, R.array.share_role_labels, android.R.layout.simple_spinner_item);
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shareRoleSpinner.setAdapter(roleAdapter);
+
+        createShareButton.setOnClickListener(v -> {
+            AccessControlStore.Role role = roleForPosition(shareRoleSpinner.getSelectedItemPosition());
+            AccessControlStore.AccessEntry entry = accessStore.create(textOf(shareNameInput), role);
+            showAccessToken(entry);
+            refreshSharingEntries();
+        });
+        createHaTokenButton.setOnClickListener(v -> {
+            AccessControlStore.AccessEntry entry = accessStore.create(
+                    "Home Assistant", AccessControlStore.Role.CONTROL);
+            showAccessToken(entry);
+            refreshSharingEntries();
+        });
+        revokeShareButton.setOnClickListener(v -> {
+            int position = shareEntriesSpinner.getSelectedItemPosition();
+            if (position < 0 || position >= visibleAccessEntries.size()) return;
+            accessStore.revoke(visibleAccessEntries.get(position).token);
+            refreshSharingEntries();
+            shareTokenText.setText(R.string.share_token_waiting);
+        });
+        shareTokenText.setOnClickListener(v -> {
+            CharSequence value = shareTokenText.getText();
+            if (value == null || value.length() == 0) return;
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("FG Machines access token", value));
+            Snackbar.make(shareTokenText, R.string.token_copied, Snackbar.LENGTH_SHORT).show();
+        });
+        refreshSharingEntries();
+        updateApiEndpoint();
+    }
+
+    private void showAccessToken(AccessControlStore.AccessEntry entry) {
+        shareTokenText.setText(entry.token);
+        Snackbar.make(shareTokenText,
+                getString(R.string.access_created, entry.name, entry.role.name()),
+                Snackbar.LENGTH_LONG).show();
+    }
+
+    private void refreshSharingEntries() {
+        visibleAccessEntries.clear();
+        visibleAccessEntries.addAll(accessStore.list());
+        List<String> labels = new ArrayList<>();
+        for (AccessControlStore.AccessEntry entry : visibleAccessEntries) {
+            labels.add(entry.name + " · " + entry.role.name());
+        }
+        if (labels.isEmpty()) labels.add(getString(R.string.no_shared_users));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shareEntriesSpinner.setAdapter(adapter);
+        revokeShareButton.setEnabled(!visibleAccessEntries.isEmpty());
+    }
+
+    private AccessControlStore.Role roleForPosition(int position) {
+        if (position == 2) return AccessControlStore.Role.ADMIN;
+        if (position == 1) return AccessControlStore.Role.CONTROL;
+        return AccessControlStore.Role.VIEW;
+    }
+
+    private void updateApiEndpoint() {
+        if (apiEndpointText == null) return;
+        String ip = HotspotSupport.findControllerIpv4();
+        apiEndpointText.setText(ip == null
+                ? getString(R.string.api_endpoint_waiting)
+                : "http://" + ip + ":" + LocalApiServer.PORT);
+    }
+
+    private void configureRemoteControl() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        remoteEndpointInput.setText(prefs.getString(PREF_REMOTE_ENDPOINT, ""));
+        remoteTokenInput.setText(prefs.getString(PREF_REMOTE_TOKEN, ""));
+
+        ArrayAdapter<CharSequence> outletAdapter = ArrayAdapter.createFromResource(
+                this, R.array.remote_outlet_labels, android.R.layout.simple_spinner_item);
+        outletAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        remoteOutletSpinner.setAdapter(outletAdapter);
+
+        remoteRefreshButton.setOnClickListener(v -> refreshRemoteDevices());
+        remoteOnButton.setOnClickListener(v -> sendRemoteOutlet(true));
+        remoteOffButton.setOnClickListener(v -> sendRemoteOutlet(false));
+        remoteOnButton.setEnabled(false);
+        remoteOffButton.setEnabled(false);
+    }
+
+    private void refreshRemoteDevices() {
+        String endpoint = textOf(remoteEndpointInput);
+        String token = textOf(remoteTokenInput);
+        getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                .putString(PREF_REMOTE_ENDPOINT, endpoint)
+                .putString(PREF_REMOTE_TOKEN, token)
+                .apply();
+        remoteStatus.setText(R.string.remote_connecting);
+        remoteRefreshButton.setEnabled(false);
+        commandWorker.execute(() -> {
+            try {
+                List<RemoteApiClient.RemoteDevice> result =
+                        new RemoteApiClient(endpoint, token).listDevices();
+                runOnUiThread(() -> {
+                    remoteDevices.clear();
+                    remoteDevices.addAll(result);
+                    List<String> labels = new ArrayList<>();
+                    for (RemoteApiClient.RemoteDevice device : result) labels.add(device.toString());
+                    if (labels.isEmpty()) labels.add(getString(R.string.remote_no_devices));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            MainActivity.this, android.R.layout.simple_spinner_item, labels);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    remoteDeviceSpinner.setAdapter(adapter);
+                    boolean available = !result.isEmpty();
+                    remoteOnButton.setEnabled(available);
+                    remoteOffButton.setEnabled(available);
+                    remoteStatus.setText(available
+                            ? getString(R.string.remote_connected_count, result.size())
+                            : getString(R.string.remote_no_devices));
+                    remoteRefreshButton.setEnabled(true);
+                });
+            } catch (IOException error) {
+                runOnUiThread(() -> {
+                    remoteStatus.setText(getString(R.string.remote_failed, safeMessage(error)));
+                    remoteOnButton.setEnabled(false);
+                    remoteOffButton.setEnabled(false);
+                    remoteRefreshButton.setEnabled(true);
+                });
+            }
+        });
+    }
+
+    private void sendRemoteOutlet(boolean on) {
+        int devicePosition = remoteDeviceSpinner.getSelectedItemPosition();
+        int outlet = remoteOutletSpinner.getSelectedItemPosition() + 1;
+        if (devicePosition < 0 || devicePosition >= remoteDevices.size()) return;
+        RemoteApiClient.RemoteDevice device = remoteDevices.get(devicePosition);
+        String endpoint = textOf(remoteEndpointInput);
+        String token = textOf(remoteTokenInput);
+        remoteStatus.setText(R.string.remote_sending);
+        commandWorker.execute(() -> {
+            try {
+                new RemoteApiClient(endpoint, token).setOutlet(device.mac, outlet, on);
+                runOnUiThread(() -> remoteStatus.setText(getString(
+                        R.string.remote_command_sent, device.name, outlet,
+                        on ? getString(R.string.remote_on) : getString(R.string.remote_off))));
+            } catch (IOException error) {
+                runOnUiThread(() -> remoteStatus.setText(
+                        getString(R.string.remote_failed, safeMessage(error))));
+            }
+        });
+    }
+
+    private static String formatDuration(long millis) {
+        long minutes = Math.max(0, millis / 60000L);
+        long hours = minutes / 60;
+        long remaining = minutes % 60;
+        return hours > 0 ? hours + "h " + remaining + "m" : remaining + "m";
     }
 
     private void configureAlerts() {
