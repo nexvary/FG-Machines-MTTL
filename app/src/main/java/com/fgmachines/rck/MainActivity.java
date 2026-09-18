@@ -1,6 +1,8 @@
 package com.fgmachines.rck;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +35,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
     private static final int NOTIFICATION_PERMISSION_REQUEST = 89;
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
+    private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
+    private static final String PREF_REMOTE_TOKEN = "remote_token";
     private static final String FG_MACHINES_FACEBOOK_URL = "https://www.facebook.com/share/1Hx66RKhd2/";
     private static final String ALAA_MOHAMED_FACEBOOK_URL = "https://www.facebook.com/share/1DGDH6q8xV/";
 
@@ -107,6 +115,33 @@ public class MainActivity extends AppCompatActivity {
     private Spinner[] scheduleDaySpinners;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
+    private Spinner fleetDeviceSpinner;
+    private Spinner fleetRoomSpinner;
+    private TextView fleetStatus;
+    private HistorySparklineView historySparkline;
+    private TextView historySummary;
+    private TextView historyRecent;
+    private MaterialSwitch setupGuardCheck;
+    private TextInputEditText alertPowerInput;
+    private TextInputEditText alertTempInput;
+    private TextInputEditText alertEnergyInput;
+    private MaterialButton saveAlertLimitsButton;
+    private TextView apiEndpointText;
+    private TextInputEditText shareNameInput;
+    private Spinner shareRoleSpinner;
+    private MaterialButton createShareButton;
+    private MaterialButton createHaTokenButton;
+    private TextView shareTokenText;
+    private Spinner shareEntriesSpinner;
+    private MaterialButton revokeShareButton;
+    private TextInputEditText remoteEndpointInput;
+    private TextInputEditText remoteTokenInput;
+    private MaterialButton remoteRefreshButton;
+    private Spinner remoteDeviceSpinner;
+    private Spinner remoteOutletSpinner;
+    private MaterialButton remoteOnButton;
+    private MaterialButton remoteOffButton;
+    private TextView remoteStatus;
     private TextView step1Status;
     private TextView step2Status;
     private TextView step3Status;
@@ -127,6 +162,13 @@ public class MainActivity extends AppCompatActivity {
     private Runnable pendingWifiAction;
     private boolean provisionBusy;
     private boolean provisioningSucceeded;
+    private FleetStore fleetStore;
+    private HistoryStore historyStore;
+    private AccessControlStore accessStore;
+    private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
+    private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
+    private final List<RemoteApiClient.RemoteDevice> remoteDevices = new ArrayList<>();
+    private String fleetRoomFilter = "";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -161,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
         bindViews();
 
         provisioner = new MttlProvisioner(this);
+        fleetStore = new FleetStore(this);
+        historyStore = new HistoryStore(this);
+        accessStore = new AccessControlStore(this);
         controllerHub = ControllerHub.get(this);
         Intent controllerIntent = new Intent(this, MttlControllerService.class);
         controllerIntent.setAction(MttlControllerService.ACTION_START);
@@ -175,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
         configureDeviceNaming();
         configureAlerts();
         configureAutomationSettings();
+        configureFleet();
+        configureHistory();
+        configureAlertLimits();
+        configureSharing();
+        configureRemoteControl();
         configureAboutLinks();
         restoreSetupProfile();
         startLocalController();
@@ -241,6 +291,33 @@ public class MainActivity extends AppCompatActivity {
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
+        fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
+        fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
+        fleetStatus = findViewById(R.id.fleetStatus);
+        historySparkline = findViewById(R.id.historySparkline);
+        historySummary = findViewById(R.id.historySummary);
+        historyRecent = findViewById(R.id.historyRecent);
+        setupGuardCheck = findViewById(R.id.setupGuardCheck);
+        alertPowerInput = findViewById(R.id.alertPowerInput);
+        alertTempInput = findViewById(R.id.alertTempInput);
+        alertEnergyInput = findViewById(R.id.alertEnergyInput);
+        saveAlertLimitsButton = findViewById(R.id.saveAlertLimitsButton);
+        apiEndpointText = findViewById(R.id.apiEndpointText);
+        shareNameInput = findViewById(R.id.shareNameInput);
+        shareRoleSpinner = findViewById(R.id.shareRoleSpinner);
+        createShareButton = findViewById(R.id.createShareButton);
+        createHaTokenButton = findViewById(R.id.createHaTokenButton);
+        shareTokenText = findViewById(R.id.shareTokenText);
+        shareEntriesSpinner = findViewById(R.id.shareEntriesSpinner);
+        revokeShareButton = findViewById(R.id.revokeShareButton);
+        remoteEndpointInput = findViewById(R.id.remoteEndpointInput);
+        remoteTokenInput = findViewById(R.id.remoteTokenInput);
+        remoteRefreshButton = findViewById(R.id.remoteRefreshButton);
+        remoteDeviceSpinner = findViewById(R.id.remoteDeviceSpinner);
+        remoteOutletSpinner = findViewById(R.id.remoteOutletSpinner);
+        remoteOnButton = findViewById(R.id.remoteOnButton);
+        remoteOffButton = findViewById(R.id.remoteOffButton);
+        remoteStatus = findViewById(R.id.remoteStatus);
         step1Status = findViewById(R.id.step1Status);
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
