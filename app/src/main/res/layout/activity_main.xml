@@ -2118,6 +2118,17 @@
                             android:textColor="@color/fg_text"
                             app:backgroundTint="@color/fg_blue"
                             app:cornerRadius="14dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/forgetDeviceButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/forget_device"
+                            android:textColor="@color/fg_warning"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_warning" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
