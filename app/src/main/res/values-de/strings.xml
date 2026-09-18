@@ -348,4 +348,24 @@
     <string name="diagnostics_symptom_label">Symptom</string>
     <string name="diagnostics_rck_unavailable">Kein Live-RCK-Telemetrie-Snapshot verfügbar.</string>
 
+
+    <string name="guided_title">Geführte Symptomdiagnose</string>
+    <string name="guided_subtitle">Beantworten Sie kurze Fragen. Quellenbasierte Ursachen werden nach Regelübereinstimmung sortiert; der Wert ist keine Ausfallwahrscheinlichkeit.</string>
+    <string name="guided_start">Geführte Diagnose starten</string>
+    <string name="guided_yes">Ja</string>
+    <string name="guided_no">Nein</string>
+    <string name="guided_not_started">Geführte Diagnose nicht gestartet</string>
+    <string name="guided_question_waiting">Symptomprofil wählen und Start drücken.</string>
+    <string name="guided_result_waiting">Nach den Fragen erscheinen hier die sortierten Ursachen.</string>
+    <string name="guided_select_profile">Zuerst ein Symptomprofil auswählen.</string>
+    <string name="guided_progress_format">Frage %1$d von %2$d</string>
+    <string name="guided_progress_done">Abgeschlossen · %1$d Fragen</string>
+    <string name="guided_question_complete">Fragebogen abgeschlossen.</string>
+    <string name="guided_complete">Am besten passende Ursachen aus diesem Regelsatz:</string>
+    <string name="guided_score_note">Kompatibilitätspunkte sind Regelgewichte, keine Wahrscheinlichkeiten und kein Ersatz für eine modellspezifische Servicediagnose.</string>
+    <string name="guided_safe_action_label">Sichere Prüfung</string>
+    <string name="guided_service_boundary_label">Servicegrenze</string>
+    <string name="guided_compatibility_label">Kompatibilitätswert</string>
+    <string name="guided_open_source">Profilquelle öffnen</string>
+
 </resources>
