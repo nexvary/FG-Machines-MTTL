@@ -639,6 +639,17 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/historyCostSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/history_cost_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
                             android:id="@+id/historyRecent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
