@@ -37,6 +37,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".DawonZWaveActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
