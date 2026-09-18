@@ -215,4 +215,65 @@
         <item>Sun–Thu</item>
         <item>Fri–Sat</item>
     </string-array>
+    <string name="fleet_title">Devices / Fleet</string>
+    <string name="local_first_badge">LOCAL-FIRST</string>
+    <string name="fleet_waiting">Waiting for known or connected MTTL-W01 devices.</string>
+    <string name="history_title">Energy history</string>
+    <string name="history_waiting">Select a device to view history.</string>
+    <string name="history_no_events">No recent events.</string>
+    <string name="setup_guard_confirm">I verified the target Wi-Fi/hotspot is 2.4 GHz and WPA2-Personal</string>
+    <string name="alert_limits_title">Alert thresholds</string>
+    <string name="alert_limits_note">Power alert defaults to 3000 W. Temperature and daily-energy alerts stay disabled when left blank.</string>
+    <string name="alert_power_hint">High-load alert threshold (W)</string>
+    <string name="alert_temp_hint">Temperature alert threshold (°C, optional)</string>
+    <string name="alert_energy_hint">Daily energy alert (kWh, optional)</string>
+    <string name="save_alert_limits">Save alert thresholds</string>
+    <string name="sharing_title">Users, Sharing & Home Assistant</string>
+    <string name="api_endpoint_waiting">Local API IP not detected yet · port 18086</string>
+    <string name="share_name_hint">User / integration name</string>
+    <string name="create_access">Create access</string>
+    <string name="create_ha_token">Home Assistant token</string>
+    <string name="share_token_waiting">New access token appears here. Tap to copy.</string>
+    <string name="revoke_access">Revoke selected access</string>
+    <string name="sharing_security_note">View tokens can read status. Control tokens can switch outlets. Admin includes Control permissions. Use the API only on trusted LAN/VPN or behind HTTPS.</string>
+    <string name="remote_control_title">Remote Control</string>
+    <string name="remote_control_note">Connect to another FG Machines RCK controller through its HTTPS/VPN endpoint. Local control remains the default.</string>
+    <string name="remote_endpoint_hint">Remote endpoint, e.g. https://rck.example.com</string>
+    <string name="remote_token_hint">Access token</string>
+    <string name="remote_connect">Connect / Refresh</string>
+    <string name="remote_on">ON</string>
+    <string name="remote_off">OFF</string>
+    <string name="remote_not_connected">Remote controller not connected.</string>
+    <string name="power_limit_enable">Cut off outlet above power limit</string>
+    <string name="power_limit_w_hint">Power cutoff threshold (W)</string>
+    <string name="select_device_first">Select a fleet device first.</string>
+    <string name="all_rooms">All rooms</string>
+    <string name="fleet_no_devices">No devices in this room</string>
+    <string name="unknown_value">unknown</string>
+    <string name="not_connected">offline</string>
+    <string name="fleet_status_format">Online %1$d / %2$d · Last seen %3$s · Uptime %4$s</string>
+    <string name="history_summary_format">Today %1$.3f kWh · Week %2$.3f kWh · Month %3$.3f kWh · Peak today %4$.0f W</string>
+    <string name="alert_limits_saved">Alert thresholds saved</string>
+    <string name="token_copied">Access token copied</string>
+    <string name="access_created">Access created for %1$s · %2$s</string>
+    <string name="no_shared_users">No shared users</string>
+    <string name="remote_connecting">Connecting to remote controller…</string>
+    <string name="remote_no_devices">No remote devices returned.</string>
+    <string name="remote_connected_count">Remote controller connected · %1$d device(s)</string>
+    <string name="remote_failed">Remote control failed: %1$s</string>
+    <string name="remote_sending">Sending remote command…</string>
+    <string name="remote_command_sent">%1$s · outlet %2$d · %3$s sent</string>
+    <string name="wizard_need_security">Confirm 2.4 GHz + WPA2-Personal before provisioning.</string>
+    <string name="setup_guard_required">Setup Guard requires confirmation of 2.4 GHz + WPA2-Personal.</string>
+    <string name="automation_invalid_power_limit">Enter a positive watt limit.</string>
+    <string name="temperature_alert_title">Power strip temperature alert</string>
+    <string name="temperature_alert_body">Temperature reached %1$d°C (threshold %2$d°C).</string>
+    <string name="energy_alert_title">Daily energy alert</string>
+    <string name="energy_alert_body">Today's recorded energy reached %1$.2f kWh (threshold %2$.2f kWh).</string>
+    <string-array name="share_role_labels">
+        <item>View</item><item>Control</item><item>Admin</item>
+    </string-array>
+    <string-array name="remote_outlet_labels">
+        <item>Outlet 1</item><item>Outlet 2</item><item>Outlet 3</item><item>Outlet 4</item>
+    </string-array>
 </resources>
