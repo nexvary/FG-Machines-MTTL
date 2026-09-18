@@ -278,4 +278,7 @@
     </string-array>
     <string name="wpa2_password_invalid">WPA2-Personal password must be 8–63 characters (or a 64-character hexadecimal PSK).</string>
     <string name="automation_select_device">Select a fleet device to configure its automation rules.</string>
+    <string name="forget_device">Forget offline device</string>
+    <string name="forget_device_disconnect_first">Disconnect the device before removing it from the fleet.</string>
+    <string name="device_forgotten">Device removed from the local fleet.</string>
 </resources>
