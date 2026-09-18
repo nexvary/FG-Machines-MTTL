@@ -125,4 +125,5 @@
     <string name="wizard_need_network">Introduce el SSID de configuración y la red de destino de 2,4 GHz.</string>
     <string name="wizard_ready_to_write">Listo. Conecta este teléfono a TONLY_TAP y pulsa Continuar.</string>
     <string name="wizard_complete">Configuración completada. Esperando que el dispositivo se una a la red del controlador.</string>
+    <string name="legacy_binary_wifi_success">Se detectó el protocolo de configuración MTTL antiguo. Se escribieron las credenciales Wi-Fi y se reinició el dispositivo. Comprueba si aparece en la Wi-Fi/hotspot de destino. El soporte directo del controlador TCP 10086 aún no está confirmado para este firmware.</string>
 </resources>

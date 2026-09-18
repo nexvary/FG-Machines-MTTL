@@ -125,4 +125,5 @@
     <string name="wizard_need_network">Setup-SSID der Leiste und das 2,4-GHz-Zielnetz eingeben.</string>
     <string name="wizard_ready_to_write">Bereit. Dieses Setup-Telefon mit TONLY_TAP verbinden und dann Weiter drücken.</string>
     <string name="wizard_complete">Einrichtung abgeschlossen. Die Leiste soll sich nun mit dem Controller-Netz verbinden.</string>
+    <string name="legacy_binary_wifi_success">Älteres MTTL-Einrichtungsprotokoll erkannt. Die WLAN-Daten wurden geschrieben und die Leiste neu gestartet. Prüfe, ob sie im Ziel-WLAN/Hotspot erscheint. Direkte TCP-10086-Controller-Unterstützung ist für diese Firmware noch nicht bestätigt.</string>
 </resources>

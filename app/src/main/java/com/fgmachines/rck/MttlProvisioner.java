@@ -13,6 +13,8 @@ import android.os.Build;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -20,6 +22,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +33,11 @@ import java.util.regex.Pattern;
 
 /** Provisions known MTTL setup APs without the manufacturer cloud. */
 public final class MttlProvisioner {
+    public enum ProvisioningDialect {
+        TEXT_LOCAL_CONTROLLER,
+        LEGACY_BINARY_WIFI
+    }
+
     private static final Pattern IPV4 = Pattern.compile(
             "^(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$"
     );
@@ -43,6 +53,7 @@ public final class MttlProvisioner {
     private final AtomicBoolean active = new AtomicBoolean(false);
     private ConnectivityManager.NetworkCallback networkCallback;
     private volatile boolean processBoundToSetupWifi;
+    private volatile ProvisioningDialect lastDialect = ProvisioningDialect.TEXT_LOCAL_CONTROLLER;
 
     public MttlProvisioner(Context context) {
         Context app = context.getApplicationContext();
@@ -51,6 +62,10 @@ public final class MttlProvisioner {
 
     public boolean isActive() {
         return active.get();
+    }
+
+    public ProvisioningDialect getLastDialect() {
+        return lastDialect;
     }
 
     /** Automatic Android Wi-Fi request path. Useful on devices that really support STA+AP concurrency. */
@@ -80,7 +95,7 @@ public final class MttlProvisioner {
                 bindProcessToSetupWifi(network);
                 String setupHost = findSetupHost(network);
                 callback.onStatus("Connected to strip setup AP at " + setupHost + ". Writing local controller settings…");
-                worker.execute(() -> configure(network, setupHost, homeSsid.trim(), safePassword(homePassword),
+                worker.execute(() -> configureAuto(network, setupHost, homeSsid.trim(), safePassword(homePassword),
                         controllerIp.trim(), callback));
             }
 
@@ -132,7 +147,7 @@ public final class MttlProvisioner {
                 }
 
                 callback.onStatus("Strip setup service detected. Writing hotspot and controller settings…");
-                configure(setupNetwork, setupHost, homeSsid.trim(), safePassword(homePassword),
+                configureAuto(setupNetwork, setupHost, homeSsid.trim(), safePassword(homePassword),
                         controllerIp.trim(), callback);
             } catch (Exception error) {
                 fail(callback, "Could not use the current strip Wi-Fi connection", error);
@@ -247,8 +262,48 @@ public final class MttlProvisioner {
         return false;
     }
 
-    private void configure(Network network, String setupHost, String homeSsid, String homePassword,
-                           String controllerIp, Callback callback) {
+    private void configureAuto(Network network, String setupHost, String homeSsid, String homePassword,
+                               String controllerIp, Callback callback) {
+        try {
+            if (detectBinarySetupProtocol(network, setupHost)) {
+                lastDialect = ProvisioningDialect.LEGACY_BINARY_WIFI;
+                callback.onStatus("Legacy MTTL setup protocol detected. Writing Wi-Fi credentials with the binary AP protocol…");
+                configureBinaryWifi(network, setupHost, homeSsid, homePassword);
+            } else {
+                lastDialect = ProvisioningDialect.TEXT_LOCAL_CONTROLLER;
+                callback.onStatus("Local-controller setup protocol detected. Writing controller and Wi-Fi settings…");
+                configureText(network, setupHost, homeSsid, homePassword, controllerIp, callback);
+            }
+
+            finishNetwork();
+            active.set(false);
+            callback.onComplete();
+        } catch (Exception error) {
+            fail(callback, "MTTL provisioning failed", error);
+        }
+    }
+
+    /**
+     * Older MTTL-W01 firmware exposes the AP-mode protocol using a fixed binary
+     * header (LGAPMODE0010). A non-destructive command 103 probe lets us distinguish
+     * it from the later text provisioning dialect before writing credentials.
+     */
+    private boolean detectBinarySetupProtocol(Network network, String setupHost) {
+        try (Socket socket = network.getSocketFactory().createSocket()) {
+            socket.connect(new InetSocketAddress(setupHost, ModelCatalog.SETUP_PORT), 4_000);
+            socket.setSoTimeout(1_600);
+            OutputStream output = socket.getOutputStream();
+            output.write(binaryCommand(103));
+            output.flush();
+            byte[] response = readBinaryResponse(socket, 512);
+            return startsWithBinaryHeader(response);
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    private void configureText(Network network, String setupHost, String homeSsid, String homePassword,
+                               String controllerIp, Callback callback) throws IOException {
         try (Socket socket = network.getSocketFactory().createSocket()) {
             socket.connect(new InetSocketAddress(setupHost, ModelCatalog.SETUP_PORT), 7_000);
             socket.setSoTimeout(3_500);
@@ -263,13 +318,78 @@ public final class MttlProvisioner {
             send(writer, reader, "up:connect:" + homeSsid + ":" + homePassword, true);
             callback.onStatus("Network settings accepted. Rebooting strip…");
             send(writer, reader, "up:reboot:0", false);
-
-            finishNetwork();
-            active.set(false);
-            callback.onComplete();
-        } catch (Exception error) {
-            fail(callback, "MTTL provisioning failed", error);
         }
+    }
+
+    private void configureBinaryWifi(Network network, String setupHost, String homeSsid,
+                                     String homePassword) throws Exception {
+        try (Socket socket = network.getSocketFactory().createSocket()) {
+            socket.connect(new InetSocketAddress(setupHost, ModelCatalog.SETUP_PORT), 7_000);
+            socket.setSoTimeout(4_000);
+            OutputStream output = socket.getOutputStream();
+
+            byte[] wifi = binaryWifiCommand(homeSsid, homePassword);
+            output.write(wifi, 0, 20);
+            output.flush();
+            Thread.sleep(100L);
+            output.write(wifi, 20, wifi.length - 20);
+            output.flush();
+
+            Thread.sleep(500L);
+            output.write(binaryCommand(102));
+            output.flush();
+            readBinaryResponse(socket, 512);
+        }
+    }
+
+    private static byte[] binaryCommand(int command) {
+        ByteBuffer buffer = ByteBuffer.allocate(20).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put("LGAPMODE0010".getBytes(StandardCharsets.US_ASCII));
+        buffer.putInt(command);
+        buffer.putInt(0);
+        return buffer.array();
+    }
+
+    private static byte[] binaryWifiCommand(String ssid, String password) {
+        final int payloadLength = 236;
+        ByteBuffer buffer = ByteBuffer.allocate(20 + payloadLength).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put("LGAPMODE0010".getBytes(StandardCharsets.US_ASCII));
+        buffer.putInt(101);
+        buffer.putInt(payloadLength);
+        putFixedUtf8(buffer, ssid, 32);
+        putFixedUtf8(buffer, password, 32);
+        buffer.position(buffer.capacity());
+        return buffer.array();
+    }
+
+    private static void putFixedUtf8(ByteBuffer buffer, String value, int fieldLength) {
+        byte[] encoded = value.getBytes(StandardCharsets.UTF_8);
+        int count = Math.min(encoded.length, fieldLength - 1);
+        buffer.put(encoded, 0, count);
+        buffer.position(buffer.position() + fieldLength - count);
+    }
+
+    private static byte[] readBinaryResponse(Socket socket, int maxBytes) throws IOException {
+        ByteArrayOutputStream data = new ByteArrayOutputStream();
+        byte[] buffer = new byte[Math.min(512, maxBytes)];
+        try {
+            int count;
+            while (data.size() < maxBytes && (count = socket.getInputStream().read(buffer)) > 0) {
+                int allowed = Math.min(count, maxBytes - data.size());
+                data.write(buffer, 0, allowed);
+                if (count < buffer.length) break;
+            }
+        } catch (SocketTimeoutException ignored) { }
+        return data.toByteArray();
+    }
+
+    private static boolean startsWithBinaryHeader(byte[] response) {
+        byte[] header = "LGAPMODE0010".getBytes(StandardCharsets.US_ASCII);
+        if (response == null || response.length < header.length) return false;
+        for (int i = 0; i < header.length; i++) {
+            if (response[i] != header[i]) return false;
+        }
+        return true;
     }
 
     private static void send(BufferedWriter writer, BufferedReader reader,
