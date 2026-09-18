@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.1.0
+## Current Android baseline — 1.2.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -36,6 +36,8 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - History can be exported to CSV through Android's Storage Access Framework without requesting broad storage permissions.
 - The local API now accepts clients only from loopback, private LAN/link-local ranges, IPv6 unique-local ranges and private CGNAT/VPN space.
 - Remote Control rejects public plain-HTTP endpoints; public endpoints must use HTTPS while private LAN/VPN HTTP remains supported.
+- Local per-device scenes store the four outlet states as reusable presets and require confirmation before applying.
+- Historical energy cost is calculated for today, the current week and current month from locally recorded kWh and the user tariff.
 - GitHub Actions release gate: unit tests + Android lint + debug APK build.
 
 ## Compatibility catalog
