@@ -166,4 +166,11 @@
     <string name="tariff_note">Used only on this phone to estimate cost from the energy reported by the strip.</string>
     <string name="tariff_saved">Tariff saved</string>
     <string name="setup_security_note">Important: the target hotspot/router must use 2.4 GHz Wi-Fi with WPA2-Personal. This requirement was physically verified on MTTL-W01.</string>
+    <string name="device_naming_title">Names & room</string>
+    <string name="device_naming_note">Local labels are stored only on this phone and do not alter the strip firmware.</string>
+    <string name="strip_name_hint">Power strip name</string>
+    <string name="room_name_hint">Room</string>
+    <string name="save_names">Save names</string>
+    <string name="names_saved">Names saved</string>
+    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
 </resources>
