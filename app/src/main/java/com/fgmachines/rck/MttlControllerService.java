@@ -265,7 +265,7 @@ public final class MttlControllerService extends Service implements MttlControll
         if (usbDiscoveryStore == null) return;
         long now = System.currentTimeMillis();
         if (usbDiscoveryStore.recordUnknownFrame(mac, frame, now) && historyStore != null) {
-            String safe = frame == null ? "" : frame.replace('\r', ' ').replace('\n', ' ').trim();
+            String safe = frame == null ? "" : frame.replace("\\r", " ").replace("\\n", " ").trim();
             if (safe.length() > 512) safe = safe.substring(0, 512);
             historyStore.recordEvent(mac, 0, "usb_discovery_frame", safe, now);
         }
