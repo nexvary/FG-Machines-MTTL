@@ -259,6 +259,103 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_green"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/scenes_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/scenes_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/sceneNameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/scene_name_hint"
+                            android:maxLength="40"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveSceneButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/save_current_scene"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="14dp" />
+                        <Spinner
+                            android:id="@+id/sceneSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/applySceneButton"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:text="@string/apply_scene"
+                                android:textColor="@color/fg_text"
+                                app:backgroundTint="@color/fg_blue"
+                                app:cornerRadius="14dp" />
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/deleteSceneButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:text="@string/delete_scene"
+                                android:textColor="@color/fg_warning"
+                                app:cornerRadius="14dp"
+                                app:strokeColor="@color/fg_warning" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/sceneStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/scenes_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
