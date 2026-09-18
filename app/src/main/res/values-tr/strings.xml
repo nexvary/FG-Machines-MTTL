@@ -213,7 +213,7 @@
     <string name="history_title">Enerji geçmişi</string>
     <string name="history_waiting">Geçmişi görmek için bir cihaz seçin.</string>
     <string name="history_no_events">Yakın zamanda olay yok.</string>
-    <string name="setup_guard_confirm">Hedef Wi-Fi/hotspot'un 2.4 GHz ve WPA2-Personal olduğunu doğruladım</string>
+    <string name="setup_guard_confirm">Hedef Wi-Fi/hotspot’un 2.4 GHz ve WPA2-Personal olduğunu doğruladım</string>
     <string name="alert_limits_title">Uyarı eşikleri</string>
     <string name="alert_limits_note">Güç uyarısı varsayılan 3000 W. Sıcaklık ve günlük enerji boş bırakılırsa devre dışıdır.</string>
     <string name="alert_power_hint">Yüksek yük uyarı eşiği (W)</string>
@@ -227,7 +227,7 @@
     <string name="create_ha_token">Home Assistant tokeni</string>
     <string name="share_token_waiting">Yeni erişim tokeni burada görünür. Kopyalamak için dokunun.</string>
     <string name="revoke_access">Seçili erişimi iptal et</string>
-    <string name="sharing_security_note">View yalnızca okur. Control prizleri anahtarlar. Admin Control yetkisini içerir. API'yi güvenilir LAN/VPN veya HTTPS arkasında kullanın.</string>
+    <string name="sharing_security_note">View yalnızca okur. Control prizleri anahtarlar. Admin Control yetkisini içerir. API’yi güvenilir LAN/VPN veya HTTPS arkasında kullanın.</string>
     <string name="remote_control_title">Uzaktan Kontrol</string>
     <string name="remote_control_note">Başka bir FG Machines RCK denetleyicisine HTTPS/VPN uç noktası üzerinden bağlanın. Yerel kontrol varsayılandır.</string>
     <string name="remote_endpoint_hint">Uzak uç nokta, ör. https://rck.example.com</string>
@@ -259,7 +259,7 @@
     <string name="setup_guard_required">Setup Guard için 2.4 GHz + WPA2-Personal onayı gerekir.</string>
     <string name="automation_invalid_power_limit">Pozitif bir watt sınırı girin.</string>
     <string name="temperature_alert_title">Priz sıcaklık uyarısı</string>
-    <string name="temperature_alert_body">Sıcaklık %1$d°C'ye ulaştı (eşik %2$d°C).</string>
+    <string name="temperature_alert_body">Sıcaklık %1$d°C’ye ulaştı (eşik %2$d°C).</string>
     <string name="energy_alert_title">Günlük enerji uyarısı</string>
     <string name="energy_alert_body">Bugünkü kayıtlı enerji %1$.2f kWh oldu (eşik %2$.2f kWh).</string>
     <string-array name="share_role_labels">
