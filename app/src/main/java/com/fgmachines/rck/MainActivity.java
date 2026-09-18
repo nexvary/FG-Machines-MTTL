@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton identifyHardwareButton;
     private TextView hardwareCatalogSummary;
     private TextView hardwareIdentityResult;
+    private MaterialButton openDawonZWaveButton;
     private MaterialButton provisionButton;
     private MaterialButton manualProvisionButton;
     private MaterialButton openHotspotButton;
@@ -303,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
         identifyHardwareButton = findViewById(R.id.identifyHardwareButton);
         hardwareCatalogSummary = findViewById(R.id.hardwareCatalogSummary);
         hardwareIdentityResult = findViewById(R.id.hardwareIdentityResult);
+        openDawonZWaveButton = findViewById(R.id.openDawonZWaveButton);
         provisionButton = findViewById(R.id.provisionButton);
         manualProvisionButton = findViewById(R.id.manualProvisionButton);
         openHotspotButton = findViewById(R.id.openHotspotButton);
@@ -2242,6 +2244,8 @@ public class MainActivity extends AppCompatActivity {
         if (identifyHardwareButton == null || hardwareIdentityInput == null) return;
 
         identifyHardwareButton.setOnClickListener(v -> identifyHardware());
+        openDawonZWaveButton.setOnClickListener(v ->
+                startActivity(new Intent(this, DawonZWaveActivity.class)));
         hardwareIdentityInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 identifyHardware();
