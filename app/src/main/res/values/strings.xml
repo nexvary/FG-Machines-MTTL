@@ -295,4 +295,20 @@
     <string name="history_exported">History CSV exported.</string>
     <string name="history_export_failed">History export failed: %1$s</string>
     <string name="remote_security_note">Public remote endpoints must use HTTPS. Plain HTTP is accepted only for local/private VPN addresses.</string>
+    <string name="scenes_title">Scenes</string>
+    <string name="scenes_note">Save the current four-outlet state for this strip and apply it later with one confirmation.</string>
+    <string name="scene_name_hint">Scene name</string>
+    <string name="save_current_scene">Save current state</string>
+    <string name="apply_scene">Apply</string>
+    <string name="delete_scene">Delete</string>
+    <string name="scenes_waiting">Select a fleet device to use local scenes.</string>
+    <string name="no_scenes">No scenes saved for this device.</string>
+    <string name="scene_saved">Scene saved: %1$s</string>
+    <string name="scene_deleted">Scene deleted.</string>
+    <string name="scene_name_required">Enter a scene name first.</string>
+    <string name="scene_device_offline">The selected strip must be connected to apply a scene.</string>
+    <string name="confirm_scene_apply">Apply scene %1$s? %2$d outlet(s) will be ON.</string>
+    <string name="scene_applied">Scene applied · commands sent: %1$d · failures: %2$d</string>
+    <string name="history_cost_waiting">Set an electricity tariff to calculate historical cost.</string>
+    <string name="history_cost_format">Cost · today %1$.2f EGP · week %2$.2f EGP · month %3$.2f EGP</string>
 </resources>
