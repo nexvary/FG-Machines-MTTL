@@ -158,7 +158,7 @@
     <string name="protection_event">Protection/event code reported: %1$s</string>
     <string name="high_load_warning">High load: above the recommended 3,000 W operating level</string>
     <string name="outlet_telemetry_waiting">Power — W · Energy — kWh · Temp — °C</string>
-    <string name="outlet_telemetry_format">%.1f W · %.3f kWh · %d °C</string>
+    <string name="outlet_telemetry_format">%1$.1f W · %2$.3f kWh · %3$d °C</string>
     <string name="telemetry_device_offline">The strip is not connected to the local controller.</string>
     <string name="energy_cost_settings">Energy cost</string>
     <string name="tariff_hint">Electricity tariff (EGP per kWh)</string>
