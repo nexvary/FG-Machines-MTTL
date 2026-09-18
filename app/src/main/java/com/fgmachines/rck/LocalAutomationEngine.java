@@ -27,6 +27,8 @@ public final class LocalAutomationEngine implements Closeable {
     public static final String KEY_SCHEDULE_ON = "automation_schedule_on_";
     public static final String KEY_SCHEDULE_OFF = "automation_schedule_off_";
     public static final String KEY_SCHEDULE_DAY_MODE = "automation_schedule_day_mode_";
+    public static final String KEY_POWER_LIMIT_ENABLED = "automation_power_limit_enabled_";
+    public static final String KEY_POWER_LIMIT_W = "automation_power_limit_w_";
 
     public static final int DAY_EVERY_DAY = 0;
     public static final int DAY_WEEKDAYS = 1;
@@ -49,7 +51,32 @@ public final class LocalAutomationEngine implements Closeable {
 
     public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
         if (mac == null || telemetry == null) return;
-        worker.execute(() -> evaluateAutoOff(mac, telemetry));
+        worker.execute(() -> {
+            evaluatePowerLimits(mac, telemetry);
+            evaluateAutoOff(mac, telemetry);
+        });
+    }
+
+    private void evaluatePowerLimits(String mac, MttlProtocol.Telemetry telemetry) {
+        for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+            int channel = outlet.channel;
+            if (channel < 1 || channel > 4) continue;
+            boolean enabled = prefs.getBoolean(KEY_POWER_LIMIT_ENABLED + channel, false);
+            int limitW = Math.max(1, prefs.getInt(KEY_POWER_LIMIT_W + channel, 0));
+            String latchKey = "automation_power_latched_" + FleetStore.normalizeMac(mac) + "_" + channel;
+
+            if (!enabled || !outlet.relayOn || outlet.powerW < limitW) {
+                if (prefs.getBoolean(latchKey, false)) prefs.edit().remove(latchKey).apply();
+                continue;
+            }
+            if (prefs.getBoolean(latchKey, false)) continue;
+            try {
+                hub.setOutlet(mac, channel, false);
+                prefs.edit().putBoolean(latchKey, true).apply();
+            } catch (IOException ignored) {
+                // Retry on the next telemetry sample.
+            }
+        }
     }
 
     private void evaluateAutoOff(String mac, MttlProtocol.Telemetry telemetry) {
