@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner fleetDeviceSpinner;
     private Spinner fleetRoomSpinner;
     private TextView fleetStatus;
+    private TextView fleetOverview;
+    private TextView fleetDevicesList;
     private MaterialButton emergencyRoomOffButton;
     private MaterialButton emergencyAllOffButton;
     private HistorySparklineView historySparkline;
@@ -324,6 +326,8 @@ public class MainActivity extends AppCompatActivity {
         fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
         fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
         fleetStatus = findViewById(R.id.fleetStatus);
+        fleetOverview = findViewById(R.id.fleetOverview);
+        fleetDevicesList = findViewById(R.id.fleetDevicesList);
         emergencyRoomOffButton = findViewById(R.id.emergencyRoomOffButton);
         emergencyAllOffButton = findViewById(R.id.emergencyAllOffButton);
         historySparkline = findViewById(R.id.historySparkline);
@@ -920,7 +924,9 @@ public class MainActivity extends AppCompatActivity {
             ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
             String label = record.displayName();
             if (!record.room.isEmpty()) label += " · " + record.room;
-            label += live != null && live.connected ? " · ONLINE" : " · OFFLINE";
+            label += live != null && live.connected
+                    ? " · " + getString(R.string.fleet_online)
+                    : " · " + getString(R.string.fleet_offline);
             labels.add(label);
         }
         if (labels.isEmpty()) labels.add(getString(R.string.fleet_no_devices));
@@ -928,6 +934,8 @@ public class MainActivity extends AppCompatActivity {
                 this, android.R.layout.simple_spinner_item, labels);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fleetDeviceSpinner.setAdapter(adapter);
+
+        refreshFleetOverviewAndList();
 
         if (!visibleFleetDevices.isEmpty()) {
             String preferred = activeMac != null ? FleetStore.normalizeMac(activeMac) : fleetStore.selectedMac();
@@ -943,6 +951,83 @@ public class MainActivity extends AppCompatActivity {
         } else {
             fleetStatus.setText(R.string.fleet_waiting);
         }
+    }
+
+    private void refreshFleetOverviewAndList() {
+        if (fleetOverview == null || fleetDevicesList == null || fleetStore == null) return;
+
+        List<FleetStore.DeviceRecord> records = new ArrayList<>();
+        for (FleetStore.DeviceRecord record : fleetStore.list()) {
+            if (!fleetRoomFilter.isEmpty() && !fleetRoomFilter.equalsIgnoreCase(record.room)) continue;
+            records.add(record);
+        }
+
+        int total = records.size();
+        int online = 0;
+        double totalPowerW = 0.0;
+        double totalEnergyKWh = 0.0;
+        StringBuilder list = new StringBuilder();
+
+        for (FleetStore.DeviceRecord record : records) {
+            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
+            boolean connected = live != null && live.connected;
+            if (connected) online++;
+
+            double powerW = fleetPowerW(live);
+            double energyKWh = fleetEnergyKWh(live);
+            totalPowerW += powerW;
+            totalEnergyKWh += energyKWh;
+
+            if (list.length() > 0) list.append("\n");
+            boolean selected = activeMac != null && record.mac.equalsIgnoreCase(activeMac);
+            list.append(selected ? "▶ " : "  ");
+            if (connected) {
+                list.append(getString(R.string.fleet_device_line_online,
+                        record.displayName(),
+                        record.room == null || record.room.trim().isEmpty()
+                                ? getString(R.string.room_unassigned) : record.room.trim(),
+                        powerW,
+                        energyKWh));
+            } else {
+                String lastSeen = record.lastSeenAt <= 0
+                        ? getString(R.string.unknown_value)
+                        : DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+                                .format(new java.util.Date(record.lastSeenAt));
+                list.append(getString(R.string.fleet_device_line_offline,
+                        record.displayName(),
+                        record.room == null || record.room.trim().isEmpty()
+                                ? getString(R.string.room_unassigned) : record.room.trim(),
+                        lastSeen));
+            }
+        }
+
+        int offline = Math.max(0, total - online);
+        String scope = fleetRoomFilter == null || fleetRoomFilter.trim().isEmpty()
+                ? getString(R.string.fleet_scope_all)
+                : getString(R.string.fleet_scope_room, fleetRoomFilter.trim());
+        fleetOverview.setText(getString(R.string.fleet_overview_format,
+                scope, total, online, offline, totalPowerW, totalEnergyKWh));
+        fleetDevicesList.setText(list.length() == 0
+                ? getString(R.string.fleet_list_waiting)
+                : list.toString());
+    }
+
+    private static double fleetPowerW(ControllerHub.DeviceState state) {
+        if (state == null || !state.connected || state.telemetry == null) return 0.0;
+        double total = 0.0;
+        for (MttlProtocol.OutletTelemetry outlet : state.telemetry.outlets) {
+            total += Math.max(0.0, outlet.powerW);
+        }
+        return total;
+    }
+
+    private static double fleetEnergyKWh(ControllerHub.DeviceState state) {
+        if (state == null || !state.connected || state.telemetry == null) return 0.0;
+        double total = 0.0;
+        for (MttlProtocol.OutletTelemetry outlet : state.telemetry.outlets) {
+            total += Math.max(0.0, outlet.energyKWh);
+        }
+        return total;
     }
 
     private void selectFleetDevice(String mac) {
@@ -984,6 +1069,7 @@ public class MainActivity extends AppCompatActivity {
             deviceState.setText(R.string.controller_disconnected);
         }
         updateFleetStatus();
+        refreshFleetOverviewAndList();
         refreshUsbDiscoveryStatus();
         refreshScenes();
         refreshHistory();
@@ -2051,6 +2137,7 @@ public class MainActivity extends AppCompatActivity {
                         clearDeviceNamingFields();
                         deviceState.setText(R.string.controller_disconnected);
                         discoveryDetail.setText(R.string.locked);
+                        refreshFleetOverviewAndList();
                         refreshHistory();
                     } else if (selectedDisconnected) {
                         selectFleetDevice(activeMac);
@@ -2077,6 +2164,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         updateTelemetryUi(telemetry);
                         updateFleetStatus();
+                        refreshFleetOverviewAndList();
                         refreshHistory();
                     } finally { applyingDeviceState = false; }
                 });
