@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 0.7.0
+## Current Android baseline — 0.8.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -18,6 +18,8 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Current estimate derived from live power at nominal 220 V and clearly labelled as an estimate.
 - Voltage is intentionally not fabricated: stock firmware does not expose a verified live-voltage field through the currently implemented controller protocol.
 - Setup assistant now explicitly requires 2.4 GHz WPA2-Personal for the target hotspot/router, based on physical MTTL-W01 validation.
+- A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
+- Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
 - GitHub Actions release gate: unit tests + Android lint + debug APK build.
 
 ## Compatibility catalog
