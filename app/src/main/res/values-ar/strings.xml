@@ -273,4 +273,18 @@
     <string name="forget_device">حذف الجهاز غير المتصل</string>
     <string name="forget_device_disconnect_first">افصل الجهاز أولًا قبل حذفه من الأسطول.</string>
     <string name="device_forgotten">تم حذف الجهاز من الأسطول المحلي.</string>
+    <string name="room_all_off">إيقاف الغرفة</string>
+    <string name="fleet_all_off">إيقاف الكل</string>
+    <string name="emergency_off_note">اختصار أمان: يرسل أمر الإيقاف للمخارج الأربعة في الغرفة المحددة أو لكل المشتركات المتصلة. يلزم تأكيد قبل التنفيذ.</string>
+    <string name="no_connected_devices">لا توجد مشتركات متصلة حاليًا.</string>
+    <string name="no_room_selected">اختر غرفة أو جهازًا مسندًا إلى غرفة أولًا.</string>
+    <string name="confirm_room_off">إيقاف كل المخارج المتصلة في هذه الغرفة؟</string>
+    <string name="confirm_fleet_off">إيقاف كل المخارج في جميع المشتركات المتصلة؟</string>
+    <string name="confirm_action">تأكيد</string>
+    <string name="no_connected_targets">لا توجد أجهزة متصلة تطابق الهدف المحدد.</string>
+    <string name="emergency_off_result">أوامر الإيقاف المرسلة: %1$d · الفشل: %2$d</string>
+    <string name="export_history_csv">تصدير السجل CSV</string>
+    <string name="history_exported">تم تصدير سجل CSV.</string>
+    <string name="history_export_failed">فشل تصدير السجل: %1$s</string>
+    <string name="remote_security_note">العناوين البعيدة العامة يجب أن تستخدم HTTPS. يُسمح بـ HTTP فقط داخل الشبكة المحلية أو VPN خاص.</string>
 </resources>
