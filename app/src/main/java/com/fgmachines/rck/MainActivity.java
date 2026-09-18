@@ -955,7 +955,7 @@ public class MainActivity extends AppCompatActivity {
         revokeShareButton.setOnClickListener(v -> {
             int position = shareEntriesSpinner.getSelectedItemPosition();
             if (position < 0 || position >= visibleAccessEntries.size()) return;
-            accessStore.revoke(visibleAccessEntries.get(position).token);
+            accessStore.revokeKey(visibleAccessEntries.get(position).tokenHash);
             refreshSharingEntries();
             shareTokenText.setText(R.string.share_token_waiting);
         });
