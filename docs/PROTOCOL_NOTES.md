@@ -145,3 +145,37 @@ FG Machines RCK therefore treats USB1/USB2 as charger ports with no independentl
 External research references:
 - https://hackaday.io/project/202043/logs
 - https://manuals.plus/asin/B0DW45483F
+
+
+## Dawon DNS MTD-01 / PM-M130-ZW
+
+A physical unit supplied for FG testing carries these non-unique product identifiers:
+
+- Sticker model: `MTD-01`
+- Manufacturer: Dawon DNS Co., Ltd. / (주)다원디엔에스
+- Safety approval: `JH04151-17006`
+- Wireless conformity marking: `MSIP-CMM-DaW-PM-M130-ZW`
+- AC outlet rating shown on the label: 250 V~, 16 A, 3500 W
+- USB output shown on the label: DC 5 V / 2 A, two ports (shared output behavior)
+- Label date: 2017.12
+
+The unit-specific barcode/serial is intentionally not stored in this public repository.
+
+The Korea Energy Agency standby-power database lists Dawon DNS model `PM-M130-ZW`, completed
+2017-04-07, as an automatic standby-power-cutoff power strip with a wireless communication interface:
+https://eep.energy.or.kr/electricity/elec_view_234.aspx?no=234170061
+
+Dawon DNS has certified Z-Wave products using manufacturer ID `0x018C`, and its current product
+history/catalog documents Z-Wave smart-plug families. Based on the `-ZW` model family and vendor
+ecosystem, FG Machines RCK classifies this device into a **Z-Wave gateway/controller path** rather
+than the MTTL local TCP path.
+
+This transport classification is deliberately treated as a hardware-family routing decision, not as
+proof that the exact MTD-01 unit has completed an FG physical Z-Wave inclusion test. Until that test
+is recorded, the app identifies the model but does not send MTTL commands or claim direct phone-only
+control.
+
+References:
+- https://eep.energy.or.kr/electricity/elec_view_234.aspx?no=234170061
+- https://products.z-wavealliance.org/z-wave-product/smartplug-10a-2/
+- https://dawondns.com/new/03_about_eng/

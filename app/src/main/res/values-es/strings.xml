@@ -425,4 +425,20 @@ Carga actual %5$.0f W · Energía reportada %6$.3f kWh</string>
     <string name="confirm_room_off_count">¿Apagar las cuatro salidas de CA en %1$d regleta(s) conectada(s) de esta habitación?</string>
     <string name="confirm_fleet_off_count">¿Apagar las cuatro salidas de CA en las %1$d regletas conectadas?</string>
 
+
+    <string name="hardware_catalog_title">Hardware compatible</string>
+    <string name="hardware_catalog_summary">MTTL-W01 · control TCP local directo
+Dawon DNS MTD-01 / PM-M130-ZW · familia de gateway Z-Wave identificada; el control directo desde el teléfono no está habilitado sin un controlador Z-Wave.</string>
+    <string name="hardware_identity_hint">Modelo / ID de certificación, p. ej. MTD-01</string>
+    <string name="identify_hardware">Identificar hardware</string>
+    <string name="hardware_identity_waiting">Introduce el modelo o texto de certificación de la etiqueta.</string>
+    <string name="hardware_identity_required">Introduce un modelo o ID de certificación.</string>
+    <string name="hardware_identity_unknown">Hardware no reconocido. No se adivinará ningún protocolo.</string>
+    <string name="hardware_identity_gateway_format">%1$s · %2$s
+Familia reconocida · se requiere gateway/controlador Z-Wave
+Puertos USB: %3$d · Clasificación: %4$d V / %5$d A · Máx.: %6$d W
+FG Machines RCK no enviará comandos MTTL TCP a este dispositivo.</string>
+    <string name="hardware_identity_local_format">%1$s · %2$s
+Hardware de control local reconocido. Usa la ruta de configuración/detección MTTL.</string>
+
 </resources>

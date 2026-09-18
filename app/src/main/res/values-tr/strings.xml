@@ -425,4 +425,20 @@ Anlık yük %5$.0f W · Bildirilen enerji %6$.3f kWh</string>
     <string name="confirm_room_off_count">Bu odadaki bağlı %1$d prizde dört AC çıkışının tamamı kapatılsın mı?</string>
     <string name="confirm_fleet_off_count">Bağlı %1$d prizin tamamında dört AC çıkışı kapatılsın mı?</string>
 
+
+    <string name="hardware_catalog_title">Desteklenen donanım</string>
+    <string name="hardware_catalog_summary">MTTL-W01 · doğrudan yerel TCP kontrolü
+Dawon DNS MTD-01 / PM-M130-ZW · tanımlanmış Z-Wave ağ geçidi ailesi; Z-Wave denetleyicisi olmadan telefondan doğrudan kontrol etkin değildir.</string>
+    <string name="hardware_identity_hint">Model / sertifika kimliği, örn. MTD-01</string>
+    <string name="identify_hardware">Donanımı tanımla</string>
+    <string name="hardware_identity_waiting">Cihaz etiketindeki model veya sertifika metnini girin.</string>
+    <string name="hardware_identity_required">Bir model veya sertifika kimliği girin.</string>
+    <string name="hardware_identity_unknown">Donanım tanınmadı. Protokol tahmin edilmeyecek.</string>
+    <string name="hardware_identity_gateway_format">%1$s · %2$s
+Donanım ailesi tanındı · Z-Wave ağ geçidi/denetleyicisi gerekli
+USB bağlantıları: %3$d · Değer: %4$d V / %5$d A · Maks.: %6$d W
+FG Machines RCK bu cihaza MTTL TCP komutları göndermez.</string>
+    <string name="hardware_identity_local_format">%1$s · %2$s
+Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
+
 </resources>

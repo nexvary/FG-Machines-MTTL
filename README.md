@@ -2,12 +2,13 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.1
+## Current Android baseline — 1.3.2
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
 - Correct RTL layout direction for Arabic.
 - Compatibility catalog based on model, certificate revision, setup SSID, boot signature and firmware family.
+- Product-level hardware catalog now identifies the Dawon DNS `MTD-01 / PM-M130-ZW` family separately from MTTL. It is routed to a Z-Wave gateway/controller path rather than the MTTL TCP scanner; direct phone-only control is not claimed until physical Z-Wave inclusion is verified.
 - Setup-service diagnostics for TCP `30300`.
 - Local TCP controller on port `10086` for compatible MTTL firmware.
 - Validated parser for `bootinfo`, four-channel `getinfo` telemetry and outlet state events.

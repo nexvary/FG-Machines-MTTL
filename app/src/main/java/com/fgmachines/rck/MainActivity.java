@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     private LinearProgressIndicator progress;
     private MaterialButton scanButton;
     private MaterialButton probeButton;
+    private TextInputEditText hardwareIdentityInput;
+    private MaterialButton identifyHardwareButton;
+    private TextView hardwareCatalogSummary;
+    private TextView hardwareIdentityResult;
     private MaterialButton provisionButton;
     private MaterialButton manualProvisionButton;
     private MaterialButton openHotspotButton;
@@ -263,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
         scanButton.setOnClickListener(v -> startScan());
         probeButton.setOnClickListener(v -> probeCurrentHost());
+        configureHardwareIdentification();
         ipInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 probeCurrentHost();
@@ -294,6 +299,10 @@ public class MainActivity extends AppCompatActivity {
         progress = findViewById(R.id.progress);
         scanButton = findViewById(R.id.scanButton);
         probeButton = findViewById(R.id.probeButton);
+        hardwareIdentityInput = findViewById(R.id.hardwareIdentityInput);
+        identifyHardwareButton = findViewById(R.id.identifyHardwareButton);
+        hardwareCatalogSummary = findViewById(R.id.hardwareCatalogSummary);
+        hardwareIdentityResult = findViewById(R.id.hardwareIdentityResult);
         provisionButton = findViewById(R.id.provisionButton);
         manualProvisionButton = findViewById(R.id.manualProvisionButton);
         openHotspotButton = findViewById(R.id.openHotspotButton);
@@ -2227,6 +2236,55 @@ public class MainActivity extends AppCompatActivity {
 
     private void setOutletControlsEnabled(boolean enabled) {
         for (MaterialSwitch outletSwitch : outletSwitches) outletSwitch.setEnabled(enabled);
+    }
+
+    private void configureHardwareIdentification() {
+        if (identifyHardwareButton == null || hardwareIdentityInput == null) return;
+
+        identifyHardwareButton.setOnClickListener(v -> identifyHardware());
+        hardwareIdentityInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                identifyHardware();
+                return true;
+            }
+            return false;
+        });
+        if (hardwareCatalogSummary != null) {
+            hardwareCatalogSummary.setText(R.string.hardware_catalog_summary);
+        }
+        if (hardwareIdentityResult != null) {
+            hardwareIdentityResult.setText(R.string.hardware_identity_waiting);
+        }
+    }
+
+    private void identifyHardware() {
+        String label = textOf(hardwareIdentityInput);
+        if (label.isEmpty()) {
+            hardwareIdentityInput.setError(getString(R.string.hardware_identity_required));
+            return;
+        }
+
+        HardwareCatalog.Profile profile = HardwareCatalog.identifyFromLabel(label);
+        if (profile == null) {
+            hardwareIdentityResult.setText(R.string.hardware_identity_unknown);
+            return;
+        }
+
+        if (profile.requiresGateway()) {
+            hardwareIdentityResult.setText(getString(
+                    R.string.hardware_identity_gateway_format,
+                    profile.manufacturer,
+                    profile.displayModel,
+                    profile.usbPortCount,
+                    profile.ratedVac,
+                    profile.ratedA,
+                    profile.maxPowerW));
+        } else {
+            hardwareIdentityResult.setText(getString(
+                    R.string.hardware_identity_local_format,
+                    profile.manufacturer,
+                    profile.displayModel));
+        }
     }
 
     private void startScan() {
