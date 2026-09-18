@@ -128,7 +128,14 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton emergencyAllOffButton;
     private HistorySparklineView historySparkline;
     private TextView historySummary;
+    private TextView historyCostSummary;
     private TextView historyRecent;
+    private TextInputEditText sceneNameInput;
+    private MaterialButton saveSceneButton;
+    private Spinner sceneSpinner;
+    private MaterialButton applySceneButton;
+    private MaterialButton deleteSceneButton;
+    private TextView sceneStatus;
     private MaterialButton exportHistoryButton;
     private MaterialSwitch setupGuardCheck;
     private TextInputEditText alertPowerInput;
@@ -174,9 +181,11 @@ public class MainActivity extends AppCompatActivity {
     private FleetStore fleetStore;
     private HistoryStore historyStore;
     private AccessControlStore accessStore;
+    private SceneStore sceneStore;
     private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
     private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
     private final List<RemoteApiClient.RemoteDevice> remoteDevices = new ArrayList<>();
+    private final List<SceneStore.Scene> visibleScenes = new ArrayList<>();
     private String fleetRoomFilter = "";
     private String pendingExportMac;
 
@@ -216,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
         accessStore = new AccessControlStore(this);
+        sceneStore = new SceneStore(this);
         controllerHub = ControllerHub.get(this);
         Intent controllerIntent = new Intent(this, MttlControllerService.class);
         controllerIntent.setAction(MttlControllerService.ACTION_START);
@@ -231,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         configureAlerts();
         configureAutomationSettings();
         configureFleet();
+        configureScenes();
         configureHistory();
         configureAlertLimits();
         configureSharing();
@@ -309,7 +320,14 @@ public class MainActivity extends AppCompatActivity {
         emergencyAllOffButton = findViewById(R.id.emergencyAllOffButton);
         historySparkline = findViewById(R.id.historySparkline);
         historySummary = findViewById(R.id.historySummary);
+        historyCostSummary = findViewById(R.id.historyCostSummary);
         historyRecent = findViewById(R.id.historyRecent);
+        sceneNameInput = findViewById(R.id.sceneNameInput);
+        saveSceneButton = findViewById(R.id.saveSceneButton);
+        sceneSpinner = findViewById(R.id.sceneSpinner);
+        applySceneButton = findViewById(R.id.applySceneButton);
+        deleteSceneButton = findViewById(R.id.deleteSceneButton);
+        sceneStatus = findViewById(R.id.sceneStatus);
         exportHistoryButton = findViewById(R.id.exportHistoryButton);
         setupGuardCheck = findViewById(R.id.setupGuardCheck);
         alertPowerInput = findViewById(R.id.alertPowerInput);
@@ -945,6 +963,7 @@ public class MainActivity extends AppCompatActivity {
             deviceState.setText(R.string.controller_disconnected);
         }
         updateFleetStatus();
+        refreshScenes();
         refreshHistory();
     }
 
@@ -996,6 +1015,120 @@ public class MainActivity extends AppCompatActivity {
                 connected, total, lastSeen, uptime));
     }
 
+    private void configureScenes() {
+        sceneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position < 0 || position >= visibleScenes.size()) {
+                    sceneStatus.setText(R.string.no_scenes);
+                    return;
+                }
+                SceneStore.Scene scene = visibleScenes.get(position);
+                sceneStatus.setText(getString(R.string.scene_selected_status,
+                        scene.name, scene.onCount()));
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        saveSceneButton.setOnClickListener(v -> {
+            if (activeMac == null || !controllerHub.isConnected(activeMac)) {
+                Snackbar.make(sceneStatus, R.string.scene_device_offline, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            String name = textOf(sceneNameInput);
+            if (name.isEmpty()) {
+                sceneNameInput.setError(getString(R.string.scene_name_required));
+                return;
+            }
+            int mask = 0;
+            for (int i = 0; i < outletSwitches.length; i++) {
+                if (outletSwitches[i].isChecked()) mask |= (1 << i);
+            }
+            SceneStore.Scene scene = sceneStore.save(activeMac, name, mask);
+            sceneNameInput.setText("");
+            refreshScenes();
+            Snackbar.make(sceneStatus,
+                    getString(R.string.scene_saved, scene.name), Snackbar.LENGTH_SHORT).show();
+        });
+
+        applySceneButton.setOnClickListener(v -> {
+            int position = sceneSpinner.getSelectedItemPosition();
+            if (position < 0 || position >= visibleScenes.size()) return;
+            SceneStore.Scene scene = visibleScenes.get(position);
+            if (activeMac == null || !controllerHub.isConnected(activeMac)) {
+                Snackbar.make(sceneStatus, R.string.scene_device_offline, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            Snackbar.make(sceneStatus,
+                    getString(R.string.confirm_scene_apply, scene.name, scene.onCount()),
+                    Snackbar.LENGTH_LONG)
+                    .setAction(R.string.confirm_action, action -> applyScene(scene))
+                    .show();
+        });
+
+        deleteSceneButton.setOnClickListener(v -> {
+            int position = sceneSpinner.getSelectedItemPosition();
+            if (position < 0 || position >= visibleScenes.size()) return;
+            sceneStore.delete(visibleScenes.get(position).id);
+            refreshScenes();
+            Snackbar.make(sceneStatus, R.string.scene_deleted, Snackbar.LENGTH_SHORT).show();
+        });
+        refreshScenes();
+    }
+
+    private void refreshScenes() {
+        if (sceneSpinner == null || sceneStore == null) return;
+        visibleScenes.clear();
+        if (activeMac != null) visibleScenes.addAll(sceneStore.list(activeMac));
+        List<String> labels = new ArrayList<>();
+        for (SceneStore.Scene scene : visibleScenes) {
+            labels.add(getString(R.string.scene_label_format, scene.name, scene.onCount()));
+        }
+        if (labels.isEmpty()) labels.add(getString(activeMac == null
+                ? R.string.scenes_waiting : R.string.no_scenes));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, labels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sceneSpinner.setAdapter(adapter);
+        boolean enabled = activeMac != null && !visibleScenes.isEmpty();
+        applySceneButton.setEnabled(enabled);
+        deleteSceneButton.setEnabled(enabled);
+        saveSceneButton.setEnabled(activeMac != null && controllerHub.isConnected(activeMac));
+        sceneStatus.setText(activeMac == null
+                ? R.string.scenes_waiting
+                : (visibleScenes.isEmpty() ? R.string.no_scenes : R.string.scene_ready));
+    }
+
+    private void applyScene(SceneStore.Scene scene) {
+        if (scene == null || activeMac == null || !scene.mac.equalsIgnoreCase(activeMac)) return;
+        String mac = activeMac;
+        applySceneButton.setEnabled(false);
+        commandWorker.execute(() -> {
+            int sent = 0;
+            int failures = 0;
+            for (int outlet = 1; outlet <= 4; outlet++) {
+                try {
+                    controllerHub.setOutlet(mac, outlet, scene.outletOn(outlet));
+                    sent++;
+                } catch (IOException error) {
+                    failures++;
+                }
+            }
+            if (historyStore != null) {
+                historyStore.recordEvent(mac, 0, "scene_apply", scene.name,
+                        System.currentTimeMillis());
+            }
+            final int sentCount = sent;
+            final int failedCount = failures;
+            runOnUiThread(() -> {
+                refreshScenes();
+                refreshHistory();
+                Snackbar.make(sceneStatus,
+                        getString(R.string.scene_applied, sentCount, failedCount),
+                        failedCount == 0 ? Snackbar.LENGTH_SHORT : Snackbar.LENGTH_LONG).show();
+            });
+        });
+    }
+
     private void configureHistory() {
         exportHistoryButton.setOnClickListener(v -> startHistoryExport());
         refreshHistory();
@@ -1006,6 +1139,7 @@ public class MainActivity extends AppCompatActivity {
         if (activeMac == null) {
             historySparkline.setPoints(new ArrayList<>());
             historySummary.setText(R.string.history_waiting);
+            historyCostSummary.setText(R.string.history_cost_waiting);
             historyRecent.setText(R.string.history_no_events);
             return;
         }
@@ -1030,6 +1164,16 @@ public class MainActivity extends AppCompatActivity {
         historySummary.setText(getString(R.string.history_summary_format,
                 daily.energyDeltaKWh, weekly.energyDeltaKWh, monthly.energyDeltaKWh,
                 daily.maxPowerW));
+        double tariff = Double.longBitsToDouble(getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getLong(PREF_TARIFF, Double.doubleToRawLongBits(0.0)));
+        if (tariff > 0.0) {
+            historyCostSummary.setText(getString(R.string.history_cost_format,
+                    daily.energyDeltaKWh * tariff,
+                    weekly.energyDeltaKWh * tariff,
+                    monthly.energyDeltaKWh * tariff));
+        } else {
+            historyCostSummary.setText(R.string.history_cost_waiting);
+        }
         historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
 
         List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
