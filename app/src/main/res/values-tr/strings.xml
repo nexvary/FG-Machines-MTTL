@@ -368,4 +368,21 @@
     <string name="guided_compatibility_label">Uyum puanı</string>
     <string name="guided_open_source">Profil kaynağını aç</string>
 
+
+    <string name="camera_assist_title">Kamera Yardımı</string>
+    <string name="camera_assist_subtitle">Hata ekranını veya cihaz etiketini uygulamayla birlikte gelen OCR ve barkod modelleriyle yerel olarak okuyun.</string>
+    <string name="camera_scan_display">Hata ekranını tara</string>
+    <string name="camera_scan_label">Model etiketini tara</string>
+    <string name="camera_result_waiting">Henüz görüntü taranmadı.</string>
+    <string name="camera_processing">Metin ve barkodlar okunuyor…</string>
+    <string name="camera_capture_cancelled">Kamera çekimi iptal edildi.</string>
+    <string name="camera_detected_brand">Algılanan marka</string>
+    <string name="camera_detected_model">Algılanan model</string>
+    <string name="camera_detected_code">Algılanan hata kodu</string>
+    <string name="camera_detected_barcodes">Algılanan barkod</string>
+    <string name="camera_barcode_note">Ham barkod veya seri numarası, yerel veritabanında doğrulanmış eşleme olmadıkça model olarak kabul edilmez.</string>
+    <string name="camera_ocr_text">OCR metni</string>
+    <string name="camera_no_result">Okunabilir metin veya barkod bulunamadı. Fotoğrafı daha yakından ve iyi ışıkta tekrar çekin.</string>
+    <string name="camera_no_autofill">Görüntü okundu ancak güvenli otomatik doldurma değeri bulunamadı. OCR sonucunu elle kontrol edin.</string>
+
 </resources>
