@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -134,21 +132,13 @@ public final class LocalAutomationEngine implements Closeable {
 
     public static boolean isValidTime(String value) {
         if (value == null || value.trim().isEmpty()) return true;
-        try {
-            LocalTime.parse(value.trim(), TIME_FORMAT);
-            return true;
-        } catch (DateTimeParseException error) {
-            return false;
-        }
+        return value.trim().matches("^(?:[01]\\d|2[0-3]):[0-5]\\d$");
     }
 
     public static String normalizeTime(String value) {
         if (value == null || value.trim().isEmpty()) return "";
-        try {
-            return LocalTime.parse(value.trim(), TIME_FORMAT).format(TIME_FORMAT);
-        } catch (DateTimeParseException error) {
-            return "";
-        }
+        String trimmed = value.trim();
+        return isValidTime(trimmed) ? trimmed : "";
     }
 
     public static String deadlinePreferenceKey(String mac, int channel) {
