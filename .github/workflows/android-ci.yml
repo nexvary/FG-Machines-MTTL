@@ -122,11 +122,17 @@ jobs:
             adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
             adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
             adb shell cat /sdcard/fg-rck-ui.xml || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.3.2-dashboard.png
+            adb exec-out screencap -p > FG-Machines-RCK-1.3.3-dashboard.png
+            adb shell am start -n com.fgmachines.rck.debug/com.fgmachines.rck.DiagnosticsActivity
+            sleep 5
+            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
+            adb exec-out screencap -p > FG-Machines-RCK-1.3.3-diagnostics.png
 
-      - name: Upload real UI screenshot
+      - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.2-screenshot
-          path: FG-Machines-RCK-1.3.2-dashboard.png
+          name: FG-Machines-RCK-1.3.3-screenshot
+          path: |
+            FG-Machines-RCK-1.3.3-dashboard.png
+            FG-Machines-RCK-1.3.3-diagnostics.png
           if-no-files-found: error

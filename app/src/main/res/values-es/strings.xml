@@ -441,4 +441,20 @@ FG Machines RCK no enviará comandos MTTL TCP a este dispositivo.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Hardware de control local reconocido. Usa la ruta de configuración/detección MTTL.</string>
 
+
+    <string name="diagnostics_live_context_title">Contexto eléctrico en vivo</string>
+    <string name="diagnostics_live_context_note">Datos de solo lectura del enchufe MTTL-W01 seleccionado. Ayudan al diagnóstico, pero no sustituyen la información de servicio específica del modelo.</string>
+    <string name="diagnostics_refresh_live_context">Actualizar contexto eléctrico</string>
+    <string name="diagnostics_live_unavailable">Selecciona un MTTL-W01 registrado y una salida para ver los datos eléctricos en vivo.</string>
+    <string name="diagnostics_live_device_offline">La regleta seleccionada está sin conexión o no tiene telemetría en vivo.</string>
+    <string name="diagnostics_live_no_outlet_data">No hay telemetría en vivo para la salida seleccionada.</string>
+    <string name="diagnostics_live_on">ON</string>
+    <string name="diagnostics_live_off">OFF</string>
+    <string name="diagnostics_live_warning">ADVERTENCIA</string>
+    <string name="diagnostics_live_normal">Normal</string>
+    <string name="diagnostics_live_none">Ninguno</string>
+    <string name="diagnostics_live_format">Salida %1$d · Relé %2$s
+Potencia %3$.1f W · Energía %4$.3f kWh · Temperatura %5$d°C
+Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
+
 </resources>

@@ -441,4 +441,20 @@ FG Machines RCK bu cihaza MTTL TCP komutları göndermez.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
 
+
+    <string name="diagnostics_live_context_title">Canlı elektrik bağlamı</string>
+    <string name="diagnostics_live_context_note">Seçilen MTTL-W01 çıkışından salt okunur gerçek zamanlı veriler. Teşhisi destekler ancak modele özel servis verilerinin yerini almaz.</string>
+    <string name="diagnostics_refresh_live_context">Elektrik bağlamını yenile</string>
+    <string name="diagnostics_live_unavailable">Canlı elektrik verilerini görmek için kayıtlı bir MTTL-W01 ve çıkış seçin.</string>
+    <string name="diagnostics_live_device_offline">Seçilen priz çevrimdışı veya canlı telemetri yok.</string>
+    <string name="diagnostics_live_no_outlet_data">Seçilen çıkış için canlı telemetri yok.</string>
+    <string name="diagnostics_live_on">AÇIK</string>
+    <string name="diagnostics_live_off">KAPALI</string>
+    <string name="diagnostics_live_warning">UYARI</string>
+    <string name="diagnostics_live_normal">Normal</string>
+    <string name="diagnostics_live_none">Yok</string>
+    <string name="diagnostics_live_format">Çıkış %1$d · Röle %2$s
+Güç %3$.1f W · Enerji %4$.3f kWh · Sıcaklık %5$d°C
+Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
+
 </resources>
