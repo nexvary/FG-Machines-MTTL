@@ -389,4 +389,21 @@
     <string name="camera_local_identity">تم التعرف من هوية محلية مؤكدة</string>
     <string name="diagnostics_bound_with_identifiers">تم ربط الجهاز وحفظ %1$d معرف باركود للتعرف المحلي عليه لاحقًا.</string>
 
+
+    <string name="usb_ports_title">منافذ شحن USB</string>
+    <string name="usb_ports_note">المثبت في عتاد MTTL-W01 هو وجود أربع ريليهات قابلة للتحكم لمخارج الكهرباء. منفذا USB-A موجودان على لوحة شحن منفصلة، ولم يثبت حتى الآن وجود ريليه USB مستقل أو أمر بروتوكول خاص بهما.</string>
+    <string name="usb_port_1_status">USB 1 · منفذ شحن · تشغيل/إيقاف مستقل غير متاح حتى يتم إثباته من العتاد أو البروتوكول</string>
+    <string name="usb_port_2_status">USB 2 · منفذ شحن · تشغيل/إيقاف مستقل غير متاح حتى يتم إثباته من العتاد أو البروتوكول</string>
+    <string name="usb_discovery_start">بدء اكتشاف USB</string>
+    <string name="usb_discovery_refresh">تحديث النتيجة</string>
+    <string name="usb_discovery_idle">الاكتشاف السلبي متوقف. التطبيق لا يرسل أوامر تخمينية للقنوات 5 أو 6.</string>
+    <string name="usb_discovery_select_device">اختر مشترك MTTL-W01 متصلًا قبل بدء اكتشاف USB.</string>
+    <string name="usb_discovery_requires_device">يلزم وجود مشترك MTTL-W01 متصل لإجراء اكتشاف USB السلبي.</string>
+    <string name="usb_discovery_started">بدأ اكتشاف USB لمدة 90 ثانية. صِل وافصل جهاز USB منخفض الاستهلاك بأمان ثم اضغط تحديث النتيجة. لا تفتح جسم المشترك.</string>
+    <string name="usb_discovery_no_frames">لم يتم التقاط أي إطار بروتوكول غير معروف حتى الآن.</string>
+    <string name="usb_discovery_active_format">الاكتشاف يعمل · متبقٍ %1$d ثانية · الإطارات غير المعروفة %2$d
+الأخير: %3$s</string>
+    <string name="usb_discovery_complete_format">اكتمل الاكتشاف · الإطارات غير المعروفة %1$d
+الأخير: %2$s</string>
+
 </resources>
