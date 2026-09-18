@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -12,14 +12,26 @@ from .coordinator import RckCoordinator
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities):
     coordinator: RckCoordinator = hass.data[DOMAIN][entry.entry_id]
-    entities = []
-    for device in coordinator.data or []:
-        mac = str(device.get("mac", ""))
-        if not mac:
-            continue
-        for outlet in range(1, 5):
-            entities.append(RckOutletSwitch(coordinator, mac, outlet))
-    async_add_entities(entities)
+    known: set[str] = set()
+
+    @callback
+    def add_new_devices() -> None:
+        entities = []
+        for device in coordinator.data or []:
+            mac = str(device.get("mac", ""))
+            if not mac:
+                continue
+            for outlet in range(1, 5):
+                unique = f"{mac}_outlet_{outlet}"
+                if unique in known:
+                    continue
+                known.add(unique)
+                entities.append(RckOutletSwitch(coordinator, mac, outlet))
+        if entities:
+            async_add_entities(entities)
+
+    add_new_devices()
+    entry.async_on_unload(coordinator.async_add_listener(add_new_devices))
 
 
 class RckOutletSwitch(CoordinatorEntity[RckCoordinator], SwitchEntity):
