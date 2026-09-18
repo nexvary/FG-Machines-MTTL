@@ -2470,6 +2470,18 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="9dp"
+                            android:text="@string/remote_security_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_warning"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/remoteEndpointInput"
                             android:layout_width="match_parent"
