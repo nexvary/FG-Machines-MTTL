@@ -62,10 +62,10 @@ public final class LocalAutomationEngine implements Closeable {
             int channel = outlet.channel;
             if (channel < 1 || channel > 4) continue;
             boolean enabled = prefs.getBoolean(deviceKey(KEY_POWER_LIMIT_ENABLED, mac, channel), false);
-            int limitW = Math.max(1, prefs.getInt(deviceKey(KEY_POWER_LIMIT_W, mac, channel), 0));
+            int limitW = prefs.getInt(deviceKey(KEY_POWER_LIMIT_W, mac, channel), 0);
             String latchKey = "automation_power_latched_" + FleetStore.normalizeMac(mac) + "_" + channel;
 
-            if (!enabled || !outlet.relayOn || outlet.powerW < limitW) {
+            if (!enabled || limitW <= 0 || !outlet.relayOn || outlet.powerW < limitW) {
                 if (prefs.getBoolean(latchKey, false)) prefs.edit().remove(latchKey).apply();
                 continue;
             }
