@@ -449,4 +449,20 @@ FG Machines RCK will not send MTTL TCP commands to this device.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Recognized local-control hardware. Use the MTTL setup/discovery path.</string>
 
+
+    <string name="diagnostics_live_context_title">Live electrical context</string>
+    <string name="diagnostics_live_context_note">Read-only evidence from the selected MTTL-W01 outlet. It supports diagnosis but does not replace model-specific service data.</string>
+    <string name="diagnostics_refresh_live_context">Refresh electrical context</string>
+    <string name="diagnostics_live_unavailable">Select a registered MTTL-W01 device and outlet to view live electrical context.</string>
+    <string name="diagnostics_live_device_offline">Selected strip is offline or has no live telemetry.</string>
+    <string name="diagnostics_live_no_outlet_data">No live telemetry was returned for the selected outlet.</string>
+    <string name="diagnostics_live_on">ON</string>
+    <string name="diagnostics_live_off">OFF</string>
+    <string name="diagnostics_live_warning">WARNING</string>
+    <string name="diagnostics_live_normal">Normal</string>
+    <string name="diagnostics_live_none">None</string>
+    <string name="diagnostics_live_format">Outlet %1$d · Relay %2$s
+Power %3$.1f W · Energy %4$.3f kWh · Temperature %5$d°C
+Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
+
 </resources>
