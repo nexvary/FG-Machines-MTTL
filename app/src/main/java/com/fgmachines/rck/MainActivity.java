@@ -125,6 +125,14 @@ public class MainActivity extends AppCompatActivity {
     private Spinner[] scheduleDaySpinners;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
+    private MaterialSwitch[] idleOffSwitches;
+    private TextInputEditText[] idleOffWInputs;
+    private TextInputEditText[] idleOffMinutesInputs;
+    private MaterialSwitch[] awaySwitches;
+    private TextInputEditText awayStartInput;
+    private TextInputEditText awayEndInput;
+    private MaterialButton saveSmartPlugFeaturesButton;
+    private TextView smartPlugFeaturesSummary;
     private Spinner fleetDeviceSpinner;
     private Spinner fleetRoomSpinner;
     private TextView fleetStatus;
@@ -135,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private HistorySparklineView historySparkline;
     private TextView historySummary;
     private TextView historyCostSummary;
+    private TextView runtimeSummary;
     private TextView historyRecent;
     private TextInputEditText sceneNameInput;
     private MaterialButton saveSceneButton;
@@ -254,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
         configureDeviceNaming();
         configureAlerts();
         configureAutomationSettings();
+        configureSmartPlugFeatures();
         configureFleet();
         configureScenes();
         configureHistory();
@@ -332,6 +342,10 @@ public class MainActivity extends AppCompatActivity {
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
+        awayStartInput = findViewById(R.id.awayStartInput);
+        awayEndInput = findViewById(R.id.awayEndInput);
+        saveSmartPlugFeaturesButton = findViewById(R.id.saveSmartPlugFeaturesButton);
+        smartPlugFeaturesSummary = findViewById(R.id.smartPlugFeaturesSummary);
         fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
         fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
         fleetStatus = findViewById(R.id.fleetStatus);
@@ -342,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
         historySparkline = findViewById(R.id.historySparkline);
         historySummary = findViewById(R.id.historySummary);
         historyCostSummary = findViewById(R.id.historyCostSummary);
+        runtimeSummary = findViewById(R.id.runtimeSummary);
         historyRecent = findViewById(R.id.historyRecent);
         sceneNameInput = findViewById(R.id.sceneNameInput);
         saveSceneButton = findViewById(R.id.saveSceneButton);
@@ -423,6 +438,22 @@ public class MainActivity extends AppCompatActivity {
         scheduleDaySpinners = new Spinner[]{
                 findViewById(R.id.scheduleDayMode1), findViewById(R.id.scheduleDayMode2),
                 findViewById(R.id.scheduleDayMode3), findViewById(R.id.scheduleDayMode4)
+        };
+        awaySwitches = new MaterialSwitch[]{
+                findViewById(R.id.awaySwitch1), findViewById(R.id.awaySwitch2),
+                findViewById(R.id.awaySwitch3), findViewById(R.id.awaySwitch4)
+        };
+        idleOffSwitches = new MaterialSwitch[]{
+                findViewById(R.id.idleOffSwitch1), findViewById(R.id.idleOffSwitch2),
+                findViewById(R.id.idleOffSwitch3), findViewById(R.id.idleOffSwitch4)
+        };
+        idleOffWInputs = new TextInputEditText[]{
+                findViewById(R.id.idleOffW1), findViewById(R.id.idleOffW2),
+                findViewById(R.id.idleOffW3), findViewById(R.id.idleOffW4)
+        };
+        idleOffMinutesInputs = new TextInputEditText[]{
+                findViewById(R.id.idleOffMinutes1), findViewById(R.id.idleOffMinutes2),
+                findViewById(R.id.idleOffMinutes3), findViewById(R.id.idleOffMinutes4)
         };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
@@ -712,6 +743,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             boolean scheduleEnabled = scheduleSwitches[i].isChecked();
+            boolean awayEnabled = prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), false);
+            if (scheduleEnabled && awayEnabled) {
+                Snackbar.make(saveAutomationButton, R.string.away_schedule_conflict, Snackbar.LENGTH_LONG).show();
+                return;
+            }
             String onTime = textOf(scheduleOnInputs[i]);
             String offTime = textOf(scheduleOffInputs[i]);
             boolean hasScheduleTime = !onTime.isEmpty() || !offTime.isEmpty();
@@ -833,6 +870,146 @@ public class MainActivity extends AppCompatActivity {
             scheduleDaySpinners[i].setSelection(dayMode, false);
         }
         updateAutomationSummary();
+    }
+
+    private void configureSmartPlugFeatures() {
+        saveSmartPlugFeaturesButton.setOnClickListener(v -> saveSmartPlugFeatures());
+        loadSmartPlugFeaturesForActiveDevice();
+    }
+
+    private void saveSmartPlugFeatures() {
+        if (activeMac == null) {
+            Snackbar.make(saveSmartPlugFeaturesButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        String awayStart = textOf(awayStartInput);
+        String awayEnd = textOf(awayEndInput);
+        boolean anyAway = false;
+        for (MaterialSwitch awaySwitch : awaySwitches) anyAway |= awaySwitch.isChecked();
+        if (anyAway && !LocalAutomationEngine.isValidAwayWindow(awayStart, awayEnd)) {
+            awayStartInput.setError(getString(R.string.automation_invalid_time));
+            awayEndInput.setError(getString(R.string.automation_invalid_time));
+            Snackbar.make(saveSmartPlugFeaturesButton,
+                    R.string.away_window_invalid, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        int enabledRules = 0;
+
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            boolean awayEnabled = awaySwitches[i].isChecked();
+            boolean fixedScheduleEnabled = scheduleSwitches[i].isChecked()
+                    || prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                            LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false);
+            if (awayEnabled && fixedScheduleEnabled) {
+                Snackbar.make(saveSmartPlugFeaturesButton,
+                        getString(R.string.away_schedule_conflict_outlet, channel),
+                        Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            boolean idleEnabled = idleOffSwitches[i].isChecked();
+            int idleW = parsePositiveInt(textOf(idleOffWInputs[i]));
+            int idleMinutes = parsePositiveInt(textOf(idleOffMinutesInputs[i]));
+            if (idleEnabled && (idleW <= 0 || idleMinutes <= 0)) {
+                if (idleW <= 0) idleOffWInputs[i].setError(getString(R.string.idle_off_invalid_watts));
+                if (idleMinutes <= 0) idleOffMinutesInputs[i].setError(
+                        getString(R.string.automation_invalid_minutes));
+                Snackbar.make(saveSmartPlugFeaturesButton,
+                        R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), awayEnabled);
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_ENABLED, activeMac, channel), idleEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_W, activeMac, channel), idleW > 0 ? idleW : 5);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_MINUTES, activeMac, channel),
+                    idleMinutes > 0 ? idleMinutes : 10);
+
+            editor.remove(LocalAutomationEngine.idleDeadlinePreferenceKey(activeMac, channel));
+            editor.remove(LocalAutomationEngine.awayNextPreferenceKey(activeMac, channel));
+            editor.remove(LocalAutomationEngine.awayManagedPreferenceKey(activeMac, channel));
+
+            if (awayEnabled) enabledRules++;
+            if (idleEnabled) enabledRules++;
+        }
+
+        editor.putString(LocalAutomationEngine.awayWindowKey(
+                LocalAutomationEngine.KEY_AWAY_START, activeMac),
+                LocalAutomationEngine.normalizeTime(awayStart));
+        editor.putString(LocalAutomationEngine.awayWindowKey(
+                LocalAutomationEngine.KEY_AWAY_END, activeMac),
+                LocalAutomationEngine.normalizeTime(awayEnd));
+        editor.apply();
+
+        updateSmartPlugFeaturesSummary();
+        Snackbar.make(saveSmartPlugFeaturesButton,
+                getString(R.string.smart_features_saved, enabledRules), Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void loadSmartPlugFeaturesForActiveDevice() {
+        boolean enabled = activeMac != null;
+        saveSmartPlugFeaturesButton.setEnabled(enabled);
+        if (!enabled) {
+            awayStartInput.setText("");
+            awayEndInput.setText("");
+            for (int i = 0; i < 4; i++) {
+                awaySwitches[i].setChecked(false);
+                idleOffSwitches[i].setChecked(false);
+                idleOffWInputs[i].setText("5");
+                idleOffMinutesInputs[i].setText("10");
+            }
+            updateSmartPlugFeaturesSummary();
+            return;
+        }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        awayStartInput.setText(prefs.getString(LocalAutomationEngine.awayWindowKey(
+                LocalAutomationEngine.KEY_AWAY_START, activeMac), "18:00"));
+        awayEndInput.setText(prefs.getString(LocalAutomationEngine.awayWindowKey(
+                LocalAutomationEngine.KEY_AWAY_END, activeMac), "23:00"));
+
+        for (int i = 0; i < 4; i++) {
+            int channel = i + 1;
+            awaySwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), false));
+            idleOffSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_ENABLED, activeMac, channel), false));
+            idleOffWInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_W, activeMac, channel), 5)));
+            idleOffMinutesInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_MINUTES, activeMac, channel), 10)));
+        }
+        updateSmartPlugFeaturesSummary();
+    }
+
+    private void updateSmartPlugFeaturesSummary() {
+        if (smartPlugFeaturesSummary == null) return;
+        if (activeMac == null) {
+            smartPlugFeaturesSummary.setText(R.string.smart_features_select_device);
+            smartPlugFeaturesSummary.setTextColor(getColor(R.color.fg_silver));
+            return;
+        }
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        int away = 0;
+        int idle = 0;
+        for (int channel = 1; channel <= 4; channel++) {
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), false)) away++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_IDLE_OFF_ENABLED, activeMac, channel), false)) idle++;
+        }
+        smartPlugFeaturesSummary.setText(getString(R.string.smart_features_summary, away, idle));
+        smartPlugFeaturesSummary.setTextColor(getColor(
+                away + idle == 0 ? R.color.fg_silver : R.color.fg_green));
     }
 
     private void migrateLegacyAutomation(String mac) {
@@ -1054,6 +1231,7 @@ public class MainActivity extends AppCompatActivity {
         activeFirmwareVersion = state == null ? null : state.firmwareVersion;
         applyDeviceNames();
         loadAutomationSettingsForActiveDevice();
+        loadSmartPlugFeaturesForActiveDevice();
 
         if (state != null && state.connected) {
             setOutletControlsEnabled(true);
@@ -1262,6 +1440,7 @@ public class MainActivity extends AppCompatActivity {
             historySparkline.setPoints(new ArrayList<>());
             historySummary.setText(R.string.history_waiting);
             historyCostSummary.setText(R.string.history_cost_waiting);
+            runtimeSummary.setText(R.string.runtime_waiting);
             historyRecent.setText(R.string.history_no_events);
             return;
         }
@@ -1297,8 +1476,9 @@ public class MainActivity extends AppCompatActivity {
             historyCostSummary.setText(R.string.history_cost_waiting);
         }
         historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
+        refreshRuntimeSummary(day.getTimeInMillis(), now);
 
-        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 10);
         if (events.isEmpty()) {
             historyRecent.setText(R.string.history_no_events);
         } else {
@@ -1307,13 +1487,49 @@ public class MainActivity extends AppCompatActivity {
             for (HistoryStore.EventRecord event : events) {
                 if (text.length() > 0) text.append('\n');
                 text.append(format.format(new java.util.Date(event.ts)))
-                        .append(" · ").append(event.kind);
+                        .append(" · ").append(eventKindLabel(event.kind));
                 if (event.outlet > 0) text.append(" #").append(event.outlet);
                 if (event.detail != null && !event.detail.isEmpty()) {
                     text.append(" · ").append(event.detail);
                 }
             }
             historyRecent.setText(text.toString());
+        }
+    }
+
+    private void refreshRuntimeSummary(long since, long now) {
+        if (runtimeSummary == null || activeMac == null) return;
+        StringBuilder text = new StringBuilder();
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            HistoryStore.RuntimeSummary stats = historyStore.runtimeSummary(activeMac, outlet, since, now);
+            long totalMinutes = stats.onMillis / 60_000L;
+            long hours = totalMinutes / 60L;
+            long minutes = totalMinutes % 60L;
+            String name = fleetStore == null ? "" : fleetStore.outletName(activeMac, outlet);
+            if (name == null || name.trim().isEmpty()) name = getString(outletNameResource(outlet - 1));
+            if (text.length() > 0) text.append('\n');
+            text.append(getString(R.string.runtime_outlet_format,
+                    name.trim(), hours, minutes, stats.onCycles,
+                    getString(stats.currentlyOn ? R.string.runtime_state_on : R.string.runtime_state_off)));
+        }
+        runtimeSummary.setText(text);
+    }
+
+    private String eventKindLabel(String kind) {
+        if (kind == null) return "";
+        switch (kind) {
+            case "connected": return getString(R.string.event_connected);
+            case "disconnected": return getString(R.string.event_disconnected);
+            case "relay_state": return getString(R.string.event_relay_state);
+            case "auto_off": return getString(R.string.event_auto_off);
+            case "idle_auto_off": return getString(R.string.event_idle_auto_off);
+            case "power_cutoff": return getString(R.string.event_power_cutoff);
+            case "schedule": return getString(R.string.event_schedule);
+            case "away_toggle": return getString(R.string.event_away_toggle);
+            case "away_window_end": return getString(R.string.event_away_window_end);
+            case "scene_apply": return getString(R.string.event_scene_apply);
+            case "alert": return getString(R.string.event_alert);
+            default: return kind.replace('_', ' ');
         }
     }
 
