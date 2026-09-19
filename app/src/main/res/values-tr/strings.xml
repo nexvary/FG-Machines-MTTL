@@ -566,4 +566,19 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="automation_invalid_standby_w_range">1–100 W arasında seçin.</string>
     <string name="automation_invalid_standby_minutes_range">1–120 dakika arasında seçin.</string>
     <string name="controller_watchdog_retry">Yerel denetleyici yeniden başlatılamadı: %1$s</string>
+
+    <string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
+    <string name="free_remote_note">VPS veya aylık abonelik gerekmez. Denetleyici telefonda ZeroTier ya da ZeroTier/OpenWrt yönlendirici ağ geçidi seçin.</string>
+    <string name="free_remote_mode_label">Ücretsiz erişim modu</string>
+    <string name="free_remote_host_hint">Özel ZeroTier / denetleyici LAN IP adresi</string>
+    <string name="free_remote_apply">Ücretsiz uzaktan erişimi kullan</string>
+    <string name="free_remote_phone_help">Telefon modu: FG Machines RCK denetleyici telefonuna ZeroTier kurun. Telefonun özel ZeroTier IP adresini girin; RCK yerel API için 18086 portunu kullanır.</string>
+    <string name="free_remote_router_help">Yönlendirici modu: ZeroTier OpenWrt erişim noktası/yönlendirici üzerinde çalışır ve yerel ağı yönlendirir. Denetleyici telefonun LAN IP adresini girin. Uygulama yönlendiriciyi otomatik olarak flashlamaz.</string>
+    <string name="free_remote_ready">Ücretsiz uzaktan erişim hazır · %1$s · %2$s</string>
+    <string name="free_remote_invalid">Ücretsiz uzaktan erişim hatası: %1$s</string>
+    <string name="free_remote_router_warning">Deneysel yönlendirici hedefi: LG GAPM-7100 / RTL8198C rev B. Yalnızca tam kart modeli için doğrulanmış firmware kullanın; genel RTL8198C imajı flashlamayın.</string>
+    <string-array name="free_remote_mode_labels">
+        <item>Denetleyici telefonda ZeroTier</item>
+        <item>ZeroTier / OpenWrt yönlendirici ağ geçidi</item>
+    </string-array>
 </resources>
