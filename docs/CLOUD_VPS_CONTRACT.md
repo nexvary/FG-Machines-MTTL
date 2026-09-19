@@ -64,7 +64,7 @@ stable.
 
 ## Voice control boundary
 
-Version 1.3.6 uses the Android speech-recognition activity and requests offline
+Version 1.3.7 uses the Android speech-recognition activity and requests offline
 recognition when available. Availability depends on the phone's speech provider.
 Voice commands do not require the future FG Machines cloud backend.
 
@@ -94,3 +94,19 @@ bridge. The phone's TCP 10086 and local API 18086 remain private and are not
 published through the VPS.
 
 See `server/README.md` for deployment and API details.
+
+
+## Android controller relay (1.3.7)
+
+The controller phone can now sign in to the VPS from the app and explicitly
+enable **Cloud controller relay**. When enabled it:
+
+- creates and privately stores a controller ID/key,
+- claims the local MTTL-W01 devices for the signed-in owner,
+- sends heartbeat and telemetry over outbound HTTPS,
+- polls the bounded command queue,
+- executes authorized outlet commands through the verified local MTTL protocol,
+- acknowledges success/failure back to the VPS.
+
+The relay is disabled by default. Local timers, automation, scenes, alerts and
+direct control continue working when the VPS is absent or unreachable.

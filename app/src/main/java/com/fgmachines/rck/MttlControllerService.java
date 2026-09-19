@@ -48,6 +48,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private LocalApiServer localApiServer;
     private UsbDiscoveryStore usbDiscoveryStore;
     private OutletRuntimeStore runtimeStore;
+    private CloudRelayManager cloudRelayManager;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -60,6 +61,7 @@ public final class MttlControllerService extends Service implements MttlControll
         accessStore = new AccessControlStore(this);
         usbDiscoveryStore = new UsbDiscoveryStore(this);
         runtimeStore = new OutletRuntimeStore(this);
+        cloudRelayManager = new CloudRelayManager(this, hub, fleetStore);
         localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
         automationEngine = new LocalAutomationEngine(this, hub, historyStore);
         automationEngine.start();
@@ -77,6 +79,7 @@ public final class MttlControllerService extends Service implements MttlControll
         try {
             hub.start();
             localApiServer.start();
+            cloudRelayManager.start();
         } catch (IOException error) {
             postAlert(getString(R.string.controller_service_error), safeMessage(error), ALERT_BASE_ID + 99);
         }
@@ -87,6 +90,7 @@ public final class MttlControllerService extends Service implements MttlControll
         if (hub != null) hub.removeListener(this);
         if (automationEngine != null) automationEngine.close();
         if (localApiServer != null) localApiServer.close();
+        if (cloudRelayManager != null) cloudRelayManager.close();
         if (historyStore != null) historyStore.close();
         super.onDestroy();
     }

@@ -527,4 +527,20 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="event_device_share">إنشاء مشاركة جهاز</string>
     <string name="event_voice_command">أمر صوتي</string>
 
+
+    <string name="cloud_account_title">حساب FG Machines Cloud / VPS</string>
+    <string name="cloud_account_note">اختياري. يظل التحكم المحلي في MTTL-W01 والمؤقتات والأتمتة تعمل بدون VPS. سجّل الدخول فقط عندما يكون خادم HTTPS جاهزًا.</string>
+    <string name="cloud_endpoint_hint">عنوان VPS الآمن HTTPS</string>
+    <string name="cloud_email_hint">البريد الإلكتروني لحساب السحابة</string>
+    <string name="cloud_password_hint">كلمة مرور حساب السحابة</string>
+    <string name="cloud_register">إنشاء حساب</string>
+    <string name="cloud_login">تسجيل الدخول</string>
+    <string name="cloud_sync_enable">استخدام هذا الهاتف كجسر تحكم للسحابة</string>
+    <string name="cloud_status_signed_out">غير مسجل الدخول. التحكم المحلي ما زال يعمل.</string>
+    <string name="cloud_status_missing">أدخل عنوان VPS عبر HTTPS والبريد وكلمة المرور.</string>
+    <string name="cloud_status_authenticating">جارٍ الاتصال بالسحابة…</string>
+    <string name="cloud_status_ready">تم حفظ حساب السحابة. فعّل الجسر على هاتف التحكم عندما تكون جاهزًا.</string>
+    <string name="cloud_status_failed">خطأ في السحابة: %1$s</string>
+    <string name="cloud_sync_requires_login">سجّل الدخول أولًا ثم فعّل جسر التحكم.</string>
+
 </resources>

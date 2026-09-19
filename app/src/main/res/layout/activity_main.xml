@@ -3263,6 +3263,133 @@
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cloud_account_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/cloud_account_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cloudEndpointInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/cloud_endpoint_hint"
+                            android:inputType="textUri"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cloudEmailInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/cloud_email_hint"
+                            android:inputType="textEmailAddress"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/cloudPasswordInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/cloud_password_hint"
+                            android:inputType="textPassword"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/cloudRegisterButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/cloud_register"
+                                android:textColor="@color/fg_black"
+                                app:backgroundTint="@color/fg_blue_bright"
+                                app:cornerRadius="14dp" />
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/cloudLoginButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:text="@string/cloud_login"
+                                android:textColor="@color/fg_black"
+                                app:backgroundTint="@color/fg_green"
+                                app:cornerRadius="14dp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/cloudSyncSwitch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/cloud_sync_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <TextView
+                            android:id="@+id/cloudStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/cloud_status_signed_out"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_green"
                     app:strokeWidth="1dp">
                     <LinearLayout

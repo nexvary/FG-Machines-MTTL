@@ -183,6 +183,13 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton remoteOnButton;
     private MaterialButton remoteOffButton;
     private TextView remoteStatus;
+    private TextInputEditText cloudEndpointInput;
+    private TextInputEditText cloudEmailInput;
+    private TextInputEditText cloudPasswordInput;
+    private MaterialButton cloudRegisterButton;
+    private MaterialButton cloudLoginButton;
+    private MaterialSwitch cloudSyncSwitch;
+    private TextView cloudStatus;
     private TextView usbPort1Status;
     private TextView usbPort2Status;
     private TextView usbDiscoveryStatus;
@@ -282,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
         configureAlertLimits();
         configureSharing();
         configureVoiceControl();
+        configureCloudAccount();
         configureRemoteControl();
         configureAboutLinks();
         restoreSetupProfile();
@@ -407,6 +415,13 @@ public class MainActivity extends AppCompatActivity {
         remoteOnButton = findViewById(R.id.remoteOnButton);
         remoteOffButton = findViewById(R.id.remoteOffButton);
         remoteStatus = findViewById(R.id.remoteStatus);
+        cloudEndpointInput = findViewById(R.id.cloudEndpointInput);
+        cloudEmailInput = findViewById(R.id.cloudEmailInput);
+        cloudPasswordInput = findViewById(R.id.cloudPasswordInput);
+        cloudRegisterButton = findViewById(R.id.cloudRegisterButton);
+        cloudLoginButton = findViewById(R.id.cloudLoginButton);
+        cloudSyncSwitch = findViewById(R.id.cloudSyncSwitch);
+        cloudStatus = findViewById(R.id.cloudStatus);
         usbPort1Status = findViewById(R.id.usbPort1Status);
         usbPort2Status = findViewById(R.id.usbPort2Status);
         usbDiscoveryStatus = findViewById(R.id.usbDiscoveryStatus);
@@ -1943,6 +1958,88 @@ public class MainActivity extends AppCompatActivity {
                         sentCount, failureCount));
                 refreshHistory();
             });
+        });
+    }
+
+    private void configureCloudAccount() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        cloudEndpointInput.setText(prefs.getString(PREF_REMOTE_ENDPOINT, ""));
+        cloudSyncSwitch.setChecked(
+                prefs.getBoolean(CloudRelayManager.PREF_CLOUD_SYNC_ENABLED, false));
+        String savedToken = prefs.getString(PREF_REMOTE_TOKEN, "");
+        cloudStatus.setText(savedToken == null || savedToken.isEmpty()
+                ? R.string.cloud_status_signed_out : R.string.cloud_status_ready);
+
+        cloudRegisterButton.setOnClickListener(v -> authenticateCloud(true));
+        cloudLoginButton.setOnClickListener(v -> authenticateCloud(false));
+        cloudSyncSwitch.setOnCheckedChangeListener((button, checked) -> {
+            String endpoint = textOf(cloudEndpointInput);
+            String token = getSharedPreferences(PREFS, MODE_PRIVATE)
+                    .getString(PREF_REMOTE_TOKEN, "");
+            if (checked && (endpoint.isEmpty() || token == null || token.isEmpty())) {
+                cloudStatus.setText(R.string.cloud_sync_requires_login);
+                button.setChecked(false);
+                return;
+            }
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putBoolean(CloudRelayManager.PREF_CLOUD_SYNC_ENABLED, checked)
+                    .putString(PREF_REMOTE_ENDPOINT, endpoint)
+                    .apply();
+            cloudStatus.setText(checked
+                    ? R.string.cloud_status_ready : R.string.cloud_status_signed_out);
+        });
+    }
+
+    private void authenticateCloud(boolean createAccount) {
+        String endpoint = textOf(cloudEndpointInput);
+        String email = textOf(cloudEmailInput);
+        String password = textOf(cloudPasswordInput);
+        if (endpoint.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            cloudStatus.setText(R.string.cloud_status_missing);
+            return;
+        }
+
+        cloudRegisterButton.setEnabled(false);
+        cloudLoginButton.setEnabled(false);
+        cloudStatus.setText(R.string.cloud_status_authenticating);
+        commandWorker.execute(() -> {
+            try {
+                CloudApiClient api = new CloudApiClient(endpoint);
+                CloudApiClient.AuthSession session = createAccount
+                        ? api.register(email, password) : api.login(email, password);
+                if (session.accessToken.isEmpty()) {
+                    throw new IOException("Cloud login returned an empty access token");
+                }
+
+                SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+                String previousEndpoint = prefs.getString(PREF_REMOTE_ENDPOINT, "");
+                SharedPreferences.Editor editor = prefs.edit()
+                        .putString(PREF_REMOTE_ENDPOINT, endpoint)
+                        .putString(PREF_REMOTE_TOKEN, session.accessToken);
+                if (previousEndpoint != null && !previousEndpoint.isEmpty()
+                        && !previousEndpoint.equals(endpoint)) {
+                    editor.remove(CloudRelayManager.PREF_CLOUD_CONTROLLER_ID)
+                            .remove(CloudRelayManager.PREF_CLOUD_CONTROLLER_KEY)
+                            .remove(CloudRelayManager.PREF_CLOUD_REGISTERED_MACS);
+                }
+                editor.apply();
+
+                runOnUiThread(() -> {
+                    remoteEndpointInput.setText(endpoint);
+                    remoteTokenInput.setText(session.accessToken);
+                    cloudPasswordInput.setText("");
+                    cloudStatus.setText(R.string.cloud_status_ready);
+                    cloudRegisterButton.setEnabled(true);
+                    cloudLoginButton.setEnabled(true);
+                });
+            } catch (IOException error) {
+                runOnUiThread(() -> {
+                    cloudStatus.setText(getString(
+                            R.string.cloud_status_failed, safeMessage(error)));
+                    cloudRegisterButton.setEnabled(true);
+                    cloudLoginButton.setEnabled(true);
+                });
+            }
         });
     }
 
