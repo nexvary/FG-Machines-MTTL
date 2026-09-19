@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,19 +32,35 @@ public final class LocalAutomationEngine implements Closeable {
     public static final String KEY_POWER_LIMIT_ENABLED = "automation_power_limit_enabled_";
     public static final String KEY_POWER_LIMIT_W = "automation_power_limit_w_";
 
+    public static final String KEY_IDLE_OFF_ENABLED = "automation_idle_off_enabled_";
+    public static final String KEY_IDLE_OFF_W = "automation_idle_off_w_";
+    public static final String KEY_IDLE_OFF_MINUTES = "automation_idle_off_minutes_";
+    public static final String KEY_AWAY_ENABLED = "automation_away_enabled_";
+    public static final String KEY_AWAY_START = "automation_away_start_";
+    public static final String KEY_AWAY_END = "automation_away_end_";
+
     public static final int DAY_EVERY_DAY = 0;
     public static final int DAY_WEEKDAYS = 1;
     public static final int DAY_WEEKENDS = 2;
+
+    public static final int AWAY_MIN_DELAY_MINUTES = 20;
+    public static final int AWAY_MAX_DELAY_MINUTES = 60;
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm", Locale.US);
 
     private final SharedPreferences prefs;
     private final ControllerHub hub;
+    private final HistoryStore historyStore;
     private final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
 
     public LocalAutomationEngine(Context context, ControllerHub hub) {
+        this(context, hub, null);
+    }
+
+    public LocalAutomationEngine(Context context, ControllerHub hub, HistoryStore historyStore) {
         this.prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         this.hub = hub;
+        this.historyStore = historyStore;
     }
 
     public void start() {
@@ -54,6 +72,7 @@ public final class LocalAutomationEngine implements Closeable {
         worker.execute(() -> {
             evaluatePowerLimits(mac, telemetry);
             evaluateAutoOff(mac, telemetry);
+            evaluateIdleAutoOff(mac, telemetry);
         });
     }
 
@@ -73,6 +92,8 @@ public final class LocalAutomationEngine implements Closeable {
             try {
                 hub.setOutlet(mac, channel, false);
                 prefs.edit().putBoolean(latchKey, true).apply();
+                recordAutomationEvent(mac, channel, "power_cutoff",
+                        String.format(Locale.US, "%.1fW >= %dW", outlet.powerW, limitW));
             } catch (IOException ignored) {
                 // Retry on the next telemetry sample.
             }
@@ -84,7 +105,7 @@ public final class LocalAutomationEngine implements Closeable {
         for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
             int channel = outlet.channel;
             if (channel < 1 || channel > 4) continue;
-            String deadlineKey = deadlineKey(mac, channel);
+            String deadlineKey = deadlinePreferenceKey(mac, channel);
             boolean enabled = prefs.getBoolean(deviceKey(KEY_AUTO_OFF_ENABLED, mac, channel), false);
             int minutes = Math.max(1, prefs.getInt(deviceKey(KEY_AUTO_OFF_MINUTES, mac, channel), 30));
 
@@ -103,8 +124,45 @@ public final class LocalAutomationEngine implements Closeable {
             try {
                 hub.setOutlet(mac, channel, false);
                 prefs.edit().remove(deadlineKey).apply();
+                recordAutomationEvent(mac, channel, "auto_off", minutes + " min");
             } catch (IOException ignored) {
                 // Keep the deadline so the next telemetry sample retries after reconnect.
+            }
+        }
+    }
+
+    private void evaluateIdleAutoOff(String mac, MttlProtocol.Telemetry telemetry) {
+        long now = System.currentTimeMillis();
+        for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+            int channel = outlet.channel;
+            if (channel < 1 || channel > 4) continue;
+
+            String deadlineKey = idleDeadlinePreferenceKey(mac, channel);
+            boolean enabled = prefs.getBoolean(deviceKey(KEY_IDLE_OFF_ENABLED, mac, channel), false);
+            int thresholdW = Math.max(0, prefs.getInt(deviceKey(KEY_IDLE_OFF_W, mac, channel), 0));
+            int minutes = Math.max(1, prefs.getInt(deviceKey(KEY_IDLE_OFF_MINUTES, mac, channel), 10));
+
+            boolean idle = enabled && thresholdW > 0 && outlet.relayOn
+                    && outlet.powerW >= 0.0 && outlet.powerW <= thresholdW;
+            if (!idle) {
+                if (prefs.contains(deadlineKey)) prefs.edit().remove(deadlineKey).apply();
+                continue;
+            }
+
+            long deadline = prefs.getLong(deadlineKey, 0L);
+            if (deadline <= 0L) {
+                prefs.edit().putLong(deadlineKey, now + TimeUnit.MINUTES.toMillis(minutes)).apply();
+                continue;
+            }
+            if (now < deadline) continue;
+
+            try {
+                hub.setOutlet(mac, channel, false);
+                prefs.edit().remove(deadlineKey).apply();
+                recordAutomationEvent(mac, channel, "idle_auto_off",
+                        String.format(Locale.US, "<= %dW for %d min", thresholdW, minutes));
+            } catch (IOException ignored) {
+                // Keep the deadline for a later retry.
             }
         }
     }
@@ -125,18 +183,101 @@ public final class LocalAutomationEngine implements Closeable {
         for (ControllerHub.DeviceState device : hub.connectedStates()) {
             String mac = device.mac;
             for (int channel = 1; channel <= 4; channel++) {
-                if (!prefs.getBoolean(deviceKey(KEY_SCHEDULE_ENABLED, mac, channel), false)) continue;
-                int dayMode = prefs.getInt(deviceKey(KEY_SCHEDULE_DAY_MODE, mac, channel), DAY_EVERY_DAY);
-                if (!dayMatches(dayMode, now.getDayOfWeek())) continue;
-
-                String onTime = normalizeTime(prefs.getString(
-                        deviceKey(KEY_SCHEDULE_ON, mac, channel), ""));
-                String offTime = normalizeTime(prefs.getString(
-                        deviceKey(KEY_SCHEDULE_OFF, mac, channel), ""));
-                if (minute.equals(onTime)) triggerOnce(mac, channel, true, date, minute);
-                if (minute.equals(offTime)) triggerOnce(mac, channel, false, date, minute);
+                boolean scheduleEnabled = prefs.getBoolean(
+                        deviceKey(KEY_SCHEDULE_ENABLED, mac, channel), false);
+                if (scheduleEnabled) {
+                    int dayMode = prefs.getInt(deviceKey(KEY_SCHEDULE_DAY_MODE, mac, channel), DAY_EVERY_DAY);
+                    if (dayMatches(dayMode, now.getDayOfWeek())) {
+                        String onTime = normalizeTime(prefs.getString(
+                                deviceKey(KEY_SCHEDULE_ON, mac, channel), ""));
+                        String offTime = normalizeTime(prefs.getString(
+                                deviceKey(KEY_SCHEDULE_OFF, mac, channel), ""));
+                        if (minute.equals(onTime)) triggerOnce(mac, channel, true, date, minute);
+                        if (minute.equals(offTime)) triggerOnce(mac, channel, false, date, minute);
+                    }
+                    // Fixed schedules take precedence over Away Mode on the same outlet.
+                    clearAwayRuntimeState(mac, channel);
+                    continue;
+                }
+                runAwayMode(device, channel, minute);
             }
         }
+    }
+
+    private void runAwayMode(ControllerHub.DeviceState device, int channel, String minute) {
+        String mac = device.mac;
+        boolean enabled = prefs.getBoolean(deviceKey(KEY_AWAY_ENABLED, mac, channel), false);
+        String start = normalizeTime(prefs.getString(awayWindowKey(KEY_AWAY_START, mac), ""));
+        String end = normalizeTime(prefs.getString(awayWindowKey(KEY_AWAY_END, mac), ""));
+
+        if (!enabled || !isValidAwayWindow(start, end)) {
+            clearAwayRuntimeState(mac, channel);
+            return;
+        }
+        if (!isWithinWindow(minute, start, end)) {
+            finishAwayWindow(device, channel);
+            return;
+        }
+
+        Boolean current = relayState(device, channel);
+        if (current == null) return;
+
+        long now = System.currentTimeMillis();
+        String nextKey = awayNextPreferenceKey(mac, channel);
+        long nextAt = prefs.getLong(nextKey, 0L);
+        if (nextAt <= 0L) {
+            prefs.edit().putLong(nextKey, now + randomAwayDelayMillis()).apply();
+            return;
+        }
+        if (now < nextAt) return;
+
+        boolean target = !current;
+        try {
+            hub.setOutlet(mac, channel, target);
+            prefs.edit()
+                    .putLong(nextKey, now + randomAwayDelayMillis())
+                    .putBoolean(awayManagedPreferenceKey(mac, channel), true)
+                    .apply();
+            recordAutomationEvent(mac, channel, "away_toggle", target ? "on" : "off");
+        } catch (IOException ignored) {
+            // Retry on the next scheduler pass without moving the due time.
+        }
+    }
+
+    private void finishAwayWindow(ControllerHub.DeviceState device, int channel) {
+        String mac = device.mac;
+        String managedKey = awayManagedPreferenceKey(mac, channel);
+        if (!prefs.getBoolean(managedKey, false)) {
+            clearAwayRuntimeState(mac, channel);
+            return;
+        }
+
+        Boolean current = relayState(device, channel);
+        if (current == null) return;
+        if (Boolean.TRUE.equals(current)) {
+            try {
+                hub.setOutlet(mac, channel, false);
+                recordAutomationEvent(mac, channel, "away_window_end", "off");
+            } catch (IOException ignored) {
+                return;
+            }
+        }
+        clearAwayRuntimeState(mac, channel);
+    }
+
+    private void clearAwayRuntimeState(String mac, int channel) {
+        prefs.edit()
+                .remove(awayNextPreferenceKey(mac, channel))
+                .remove(awayManagedPreferenceKey(mac, channel))
+                .apply();
+    }
+
+    private static Boolean relayState(ControllerHub.DeviceState device, int channel) {
+        if (device == null || device.telemetry == null) return null;
+        for (MttlProtocol.OutletTelemetry outlet : device.telemetry.outlets) {
+            if (outlet.channel == channel) return outlet.relayOn;
+        }
+        return null;
     }
 
     private void triggerOnce(String mac, int channel, boolean on, LocalDate date, String minute) {
@@ -148,8 +289,15 @@ public final class LocalAutomationEngine implements Closeable {
         try {
             hub.setOutlet(mac, channel, on);
             prefs.edit().putString(key, stamp).apply();
+            recordAutomationEvent(mac, channel, "schedule", action + "@" + minute);
         } catch (IOException ignored) {
             // Do not mark as completed: retry while the matching minute is still active.
+        }
+    }
+
+    private void recordAutomationEvent(String mac, int channel, String kind, String detail) {
+        if (historyStore != null) {
+            historyStore.recordEvent(mac, channel, kind, detail, System.currentTimeMillis());
         }
     }
 
@@ -171,8 +319,39 @@ public final class LocalAutomationEngine implements Closeable {
         return isValidTime(trimmed) ? trimmed : "";
     }
 
+    public static boolean isValidAwayWindow(String start, String end) {
+        String safeStart = normalizeTime(start);
+        String safeEnd = normalizeTime(end);
+        return !safeStart.isEmpty() && !safeEnd.isEmpty() && !safeStart.equals(safeEnd);
+    }
+
+    public static boolean isWithinWindow(String now, String start, String end) {
+        if (!isValidAwayWindow(start, end) || !isValidTime(now) || now == null || now.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            LocalTime n = LocalTime.parse(now.trim(), TIME_FORMAT);
+            LocalTime s = LocalTime.parse(start.trim(), TIME_FORMAT);
+            LocalTime e = LocalTime.parse(end.trim(), TIME_FORMAT);
+            if (s.isBefore(e)) return !n.isBefore(s) && n.isBefore(e);
+            return !n.isBefore(s) || n.isBefore(e);
+        } catch (RuntimeException error) {
+            return false;
+        }
+    }
+
+    static long randomAwayDelayMillis() {
+        long min = TimeUnit.MINUTES.toMillis(AWAY_MIN_DELAY_MINUTES);
+        long maxExclusive = TimeUnit.MINUTES.toMillis(AWAY_MAX_DELAY_MINUTES) + 1L;
+        return ThreadLocalRandom.current().nextLong(min, maxExclusive);
+    }
+
     public static String deviceKey(String base, String mac, int channel) {
         return base + FleetStore.normalizeMac(mac) + "_" + channel;
+    }
+
+    public static String awayWindowKey(String base, String mac) {
+        return base + FleetStore.normalizeMac(mac);
     }
 
     public static String deadlinePreferenceKey(String mac, int channel) {
@@ -180,8 +359,19 @@ public final class LocalAutomationEngine implements Closeable {
         return "automation_deadline_" + mac.replace(":", "").replace("-", "") + "_" + channel;
     }
 
-    private static String deadlineKey(String mac, int channel) {
-        return deadlinePreferenceKey(mac, channel);
+    public static String idleDeadlinePreferenceKey(String mac, int channel) {
+        if (mac == null) return "automation_idle_deadline_unknown_" + channel;
+        return "automation_idle_deadline_" + mac.replace(":", "").replace("-", "") + "_" + channel;
+    }
+
+    public static String awayNextPreferenceKey(String mac, int channel) {
+        if (mac == null) return "automation_away_next_unknown_" + channel;
+        return "automation_away_next_" + mac.replace(":", "").replace("-", "") + "_" + channel;
+    }
+
+    public static String awayManagedPreferenceKey(String mac, int channel) {
+        if (mac == null) return "automation_away_managed_unknown_" + channel;
+        return "automation_away_managed_" + mac.replace(":", "").replace("-", "") + "_" + channel;
     }
 
     @Override public void close() {

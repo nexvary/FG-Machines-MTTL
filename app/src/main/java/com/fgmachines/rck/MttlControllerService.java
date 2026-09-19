@@ -59,7 +59,7 @@ public final class MttlControllerService extends Service implements MttlControll
         accessStore = new AccessControlStore(this);
         usbDiscoveryStore = new UsbDiscoveryStore(this);
         localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
-        automationEngine = new LocalAutomationEngine(this, hub);
+        automationEngine = new LocalAutomationEngine(this, hub, historyStore);
         automationEngine.start();
         hub.addListener(this, true);
     }

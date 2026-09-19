@@ -456,5 +456,45 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="diagnostics_live_format">المخرج %1$d · الريليه %2$s
 القدرة %3$.1f واط · الطاقة %4$.3f ك.و.س · الحرارة %5$d°م
 حمل زائد: %6$s · حرارة زائدة: %7$s · الحدث: %8$s</string>
+    <string name="smart_features_title">مزايا Smart Plug+ المحلية</string>
+    <string name="smart_features_note">مزايا سوفتوير إضافية للمخارج الأربعة في MTTL-W01، تعمل محليًا على هاتف التحكم ولا تحتاج إلى كلاود.</string>
+    <string name="smart_features_select_device">اختر جهازًا من الأجهزة لإعداد مزايا Smart Plug+.</string>
+    <string name="smart_features_summary">مخارج وضع الغياب: %1$d · مخارج الإيقاف عند الخمول: %2$d</string>
+    <string name="away_mode_title">وضع الغياب Away Mode</string>
+    <string name="away_mode_note">يحاكي وجود أشخاص بتغيير حالة المخارج المحددة عشوائيًا كل 20–60 دقيقة داخل الفترة المختارة، ويطفئ المخرج عند نهاية الفترة. لا تستخدمه مع السخانات أو أجهزة الطهي أو المضخات أو المحركات أو أي حمل قد يكون خطرًا دون مراقبة.</string>
+    <string name="away_start_hint">البداية HH:mm</string>
+    <string name="away_end_hint">النهاية HH:mm</string>
+    <string name="away_outlet_1">تفعيل وضع الغياب للمخرج 1</string>
+    <string name="away_outlet_2">تفعيل وضع الغياب للمخرج 2</string>
+    <string name="away_outlet_3">تفعيل وضع الغياب للمخرج 3</string>
+    <string name="away_outlet_4">تفعيل وضع الغياب للمخرج 4</string>
+    <string name="idle_off_title">إيقاف تلقائي عند انخفاض الحمل</string>
+    <string name="idle_off_note">يطفئ المخرج فقط إذا ظل الاستهلاك الفعلي أقل من أو مساويًا للحد المحدد طوال المدة المحددة. مناسب للشواحن وأحمال الاستعداد.</string>
+    <string name="idle_off_watts_hint">حد الخمول بالواط</string>
+    <string name="idle_off_minutes_hint">مدة الخمول بالدقائق</string>
+    <string name="idle_off_invalid_watts">أدخل حدًا موجبًا لاستهلاك الخمول.</string>
+    <string name="save_smart_features">حفظ مزايا Smart Plug+</string>
+    <string name="smart_features_safety_note">قاعدة أمان محلية: لا يمكن لوضع الغياب والجدول اليومي الثابت التحكم في المخرج نفسه معًا. تظل قواعد الحماية وفصل الحمل الزائد فعالة دائمًا.</string>
+    <string name="smart_features_saved">تم حفظ Smart Plug+ · القواعد المفعلة: %1$d</string>
+    <string name="away_window_invalid">أدخل وقت بداية ونهاية صحيحين لوضع الغياب بصيغة HH:mm بنظام 24 ساعة، ويجب أن يختلف الوقتان.</string>
+    <string name="away_schedule_conflict">عطّل وضع الغياب لهذا المخرج قبل تفعيل الجدول الثابت.</string>
+    <string name="away_schedule_conflict_outlet">المخرج %1$d لديه جدول ثابت بالفعل. عطّل الجدول قبل تفعيل وضع الغياب.</string>
+    <string name="runtime_title">مدة تشغيل مخارج اليوم</string>
+    <string name="runtime_waiting">اختر جهازًا لعرض مدة تشغيل المخارج.</string>
+    <string name="runtime_outlet_format">%1$s · %2$d س %3$d د · مرات التشغيل %4$d · %5$s</string>
+    <string name="runtime_state_on">يعمل</string>
+    <string name="runtime_state_off">متوقف</string>
+    <string name="event_history_title">سجل الأحداث الأخير</string>
+    <string name="event_connected">تم الاتصال</string>
+    <string name="event_disconnected">انقطع الاتصال</string>
+    <string name="event_relay_state">حالة المخرج</string>
+    <string name="event_auto_off">إيقاف تلقائي</string>
+    <string name="event_idle_auto_off">إيقاف عند الخمول</string>
+    <string name="event_power_cutoff">فصل بسبب حد القدرة</string>
+    <string name="event_schedule">الجدول</string>
+    <string name="event_away_toggle">تغيير وضع الغياب</string>
+    <string name="event_away_window_end">انتهت فترة وضع الغياب</string>
+    <string name="event_scene_apply">تم تطبيق المشهد</string>
+    <string name="event_alert">تنبيه</string>
 
 </resources>

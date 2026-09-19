@@ -456,5 +456,45 @@ Bekannte Local-Control-Hardware. MTTL-Einrichtungs-/Erkennungspfad verwenden.</s
     <string name="diagnostics_live_format">Ausgang %1$d · Relais %2$s
 Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
 Überlast: %6$s · Überhitzung: %7$s · Ereignis: %8$s</string>
+    <string name="smart_features_title">Smart Plug+ lokale Funktionen</string>
+    <string name="smart_features_note">Zusätzliche Softwarefunktionen für die vier MTTL-W01-Ausgänge. Sie laufen lokal auf diesem Controller-Telefon ohne Cloud.</string>
+    <string name="smart_features_select_device">Wählen Sie ein Gerät für die Smart Plug+-Funktionen.</string>
+    <string name="smart_features_summary">Away-Mode-Ausgänge: %1$d · Leerlauf-Auto-Off: %2$d</string>
+    <string name="away_mode_title">Away Mode</string>
+    <string name="away_mode_note">Simuliert Anwesenheit durch zufällige Zustandswechsel alle 20–60 Minuten im gewählten Zeitfenster. Am Ende wird der Ausgang ausgeschaltet. Nicht für Heizgeräte, Kochgeräte, Pumpen, Motoren oder andere unbeaufsichtigt riskante Lasten verwenden.</string>
+    <string name="away_start_hint">Start HH:mm</string>
+    <string name="away_end_hint">Ende HH:mm</string>
+    <string name="away_outlet_1">Away Mode für Ausgang 1</string>
+    <string name="away_outlet_2">Away Mode für Ausgang 2</string>
+    <string name="away_outlet_3">Away Mode für Ausgang 3</string>
+    <string name="away_outlet_4">Away Mode für Ausgang 4</string>
+    <string name="idle_off_title">Leerlauf-Auto-Off</string>
+    <string name="idle_off_note">Schaltet erst aus, wenn die gemessene Leistung für die gewählte Dauer unter oder gleich dem Grenzwert bleibt.</string>
+    <string name="idle_off_watts_hint">Leerlauf-Watt</string>
+    <string name="idle_off_minutes_hint">Leerlauf-Minuten</string>
+    <string name="idle_off_invalid_watts">Geben Sie einen positiven Leerlauf-Grenzwert ein.</string>
+    <string name="save_smart_features">Smart Plug+ speichern</string>
+    <string name="smart_features_safety_note">Sicherheitsregel: Away Mode und fester Tagesplan können nicht denselben Ausgang steuern. Schutz- und Leistungsgrenzen bleiben aktiv.</string>
+    <string name="smart_features_saved">Smart Plug+ gespeichert · %1$d Regel(n) aktiv</string>
+    <string name="away_window_invalid">Gültige Start- und Endzeit im 24-Stunden-Format HH:mm eingeben. Die Zeiten müssen verschieden sein.</string>
+    <string name="away_schedule_conflict">Away Mode deaktivieren, bevor der feste Zeitplan aktiviert wird.</string>
+    <string name="away_schedule_conflict_outlet">Ausgang %1$d hat bereits einen festen Zeitplan. Diesen zuerst deaktivieren.</string>
+    <string name="runtime_title">Heutige Laufzeit je Ausgang</string>
+    <string name="runtime_waiting">Gerät auswählen, um Laufzeiten anzuzeigen.</string>
+    <string name="runtime_outlet_format">%1$s · %2$d h %3$d min · %4$d Start(s) · %5$s</string>
+    <string name="runtime_state_on">EIN</string>
+    <string name="runtime_state_off">AUS</string>
+    <string name="event_history_title">Letzte Ereignisse</string>
+    <string name="event_connected">Verbunden</string>
+    <string name="event_disconnected">Getrennt</string>
+    <string name="event_relay_state">Ausgangsstatus</string>
+    <string name="event_auto_off">Auto-Off</string>
+    <string name="event_idle_auto_off">Leerlauf-Auto-Off</string>
+    <string name="event_power_cutoff">Leistungsgrenze</string>
+    <string name="event_schedule">Zeitplan</string>
+    <string name="event_away_toggle">Away-Mode-Wechsel</string>
+    <string name="event_away_window_end">Away Mode beendet</string>
+    <string name="event_scene_apply">Szene angewendet</string>
+    <string name="event_alert">Warnung</string>
 
 </resources>

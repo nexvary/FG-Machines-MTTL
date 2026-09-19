@@ -464,5 +464,45 @@ Recognized local-control hardware. Use the MTTL setup/discovery path.</string>
     <string name="diagnostics_live_format">Outlet %1$d · Relay %2$s
 Power %3$.1f W · Energy %4$.3f kWh · Temperature %5$d°C
 Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
+    <string name="smart_features_title">Smart Plug+ local features</string>
+    <string name="smart_features_note">Extra software features for the four MTTL-W01 outlets. They run locally on this controller phone; no cloud is required.</string>
+    <string name="smart_features_select_device">Select a fleet device to configure Smart Plug+ features.</string>
+    <string name="smart_features_summary">Away Mode outlets: %1$d · Idle Auto-Off outlets: %2$d</string>
+    <string name="away_mode_title">Away Mode</string>
+    <string name="away_mode_note">Simulates occupancy by changing selected outlets at random 20–60 minute intervals inside the selected window. The outlet is turned OFF when the window ends. Do not use with heaters, cooking appliances, pumps, motors, or other unattended-risk loads.</string>
+    <string name="away_start_hint">Start HH:mm</string>
+    <string name="away_end_hint">End HH:mm</string>
+    <string name="away_outlet_1">Use Away Mode on Outlet 1</string>
+    <string name="away_outlet_2">Use Away Mode on Outlet 2</string>
+    <string name="away_outlet_3">Use Away Mode on Outlet 3</string>
+    <string name="away_outlet_4">Use Away Mode on Outlet 4</string>
+    <string name="idle_off_title">Idle-load Auto-Off</string>
+    <string name="idle_off_note">Turns an outlet OFF only after live power stays at or below the selected watt threshold for the selected duration. Useful for chargers and standby loads.</string>
+    <string name="idle_off_watts_hint">Idle watts</string>
+    <string name="idle_off_minutes_hint">Idle minutes</string>
+    <string name="idle_off_invalid_watts">Enter a positive idle-power threshold.</string>
+    <string name="save_smart_features">Save Smart Plug+ features</string>
+    <string name="smart_features_safety_note">Local safety rule: Away Mode and a fixed daily schedule cannot both control the same outlet. Protection and power-cutoff rules always remain active.</string>
+    <string name="smart_features_saved">Smart Plug+ saved · %1$d rule(s) enabled</string>
+    <string name="away_window_invalid">Enter a valid Away Mode start and end time in 24-hour HH:mm format. Start and end must differ.</string>
+    <string name="away_schedule_conflict">Disable Away Mode on this outlet before enabling its fixed schedule.</string>
+    <string name="away_schedule_conflict_outlet">Outlet %1$d already has a fixed schedule. Disable that schedule before enabling Away Mode.</string>
+    <string name="runtime_title">Today runtime by outlet</string>
+    <string name="runtime_waiting">Select a device to view outlet runtime.</string>
+    <string name="runtime_outlet_format">%1$s · %2$dh %3$dm · %4$d start(s) · %5$s</string>
+    <string name="runtime_state_on">ON</string>
+    <string name="runtime_state_off">OFF</string>
+    <string name="event_history_title">Recent event history</string>
+    <string name="event_connected">Connected</string>
+    <string name="event_disconnected">Disconnected</string>
+    <string name="event_relay_state">Outlet state</string>
+    <string name="event_auto_off">Auto-Off</string>
+    <string name="event_idle_auto_off">Idle Auto-Off</string>
+    <string name="event_power_cutoff">Power-limit cutoff</string>
+    <string name="event_schedule">Schedule</string>
+    <string name="event_away_toggle">Away Mode change</string>
+    <string name="event_away_window_end">Away Mode window ended</string>
+    <string name="event_scene_apply">Scene applied</string>
+    <string name="event_alert">Alert</string>
 
 </resources>

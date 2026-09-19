@@ -89,13 +89,29 @@ public final class HistoryStore extends SQLiteOpenHelper {
     public synchronized void recordEvent(String mac, int outlet, String kind, String detail, long now) {
         String key = FleetStore.normalizeMac(mac);
         if (key.isEmpty() || kind == null || kind.trim().isEmpty()) return;
+        String safeKind = kind.trim();
+        String safeDetail = detail == null ? "" : detail;
+        SQLiteDatabase db = getWritableDatabase();
+        pruneIfNeeded(db, now);
+
+        // Polling can report the same relay state repeatedly. Keep only state transitions so
+        // runtime/cycle statistics and event history remain meaningful.
+        if ("relay_state".equals(safeKind)) {
+            try (Cursor cursor = db.rawQuery(
+                    "SELECT detail FROM events WHERE mac=? AND outlet=? AND kind='relay_state' " +
+                            "ORDER BY ts DESC LIMIT 1",
+                    new String[]{key, String.valueOf(outlet)})) {
+                if (cursor.moveToFirst() && safeDetail.equalsIgnoreCase(cursor.getString(0))) return;
+            }
+        }
+
         android.content.ContentValues values = new android.content.ContentValues();
         values.put("ts", now);
         values.put("mac", key);
         values.put("outlet", outlet);
-        values.put("kind", kind.trim());
-        values.put("detail", detail == null ? "" : detail);
-        getWritableDatabase().insert("events", null, values);
+        values.put("kind", safeKind);
+        values.put("detail", safeDetail);
+        db.insert("events", null, values);
     }
 
     public Summary summary(String mac, long since) {
@@ -148,6 +164,49 @@ public final class HistoryStore extends SQLiteOpenHelper {
         return events;
     }
 
+    public RuntimeSummary runtimeSummary(String mac, int outlet, long since, long now) {
+        String key = FleetStore.normalizeMac(mac);
+        if (key.isEmpty() || outlet < 1 || outlet > 4 || now <= since) {
+            return new RuntimeSummary(0L, 0, false, 0L);
+        }
+
+        SQLiteDatabase db = getReadableDatabase();
+        boolean on = false;
+        long lastTs = since;
+        long lastTransitionTs = 0L;
+        int onCycles = 0;
+        long onMillis = 0L;
+
+        try (Cursor seed = db.rawQuery(
+                "SELECT detail,ts FROM events WHERE mac=? AND outlet=? AND kind='relay_state' " +
+                        "AND ts<=? ORDER BY ts DESC LIMIT 1",
+                new String[]{key, String.valueOf(outlet), String.valueOf(since)})) {
+            if (seed.moveToFirst()) {
+                on = "on".equalsIgnoreCase(seed.getString(0));
+                lastTransitionTs = seed.getLong(1);
+            }
+        }
+
+        try (Cursor cursor = db.rawQuery(
+                "SELECT ts,detail FROM events WHERE mac=? AND outlet=? AND kind='relay_state' " +
+                        "AND ts>? AND ts<=? ORDER BY ts ASC",
+                new String[]{key, String.valueOf(outlet), String.valueOf(since), String.valueOf(now)})) {
+            while (cursor.moveToNext()) {
+                long ts = cursor.getLong(0);
+                boolean nextOn = "on".equalsIgnoreCase(cursor.getString(1));
+                if (nextOn == on) continue;
+                if (on) onMillis += Math.max(0L, ts - lastTs);
+                on = nextOn;
+                lastTs = ts;
+                lastTransitionTs = ts;
+                if (on) onCycles++;
+            }
+        }
+
+        if (on) onMillis += Math.max(0L, now - lastTs);
+        return new RuntimeSummary(onMillis, onCycles, on, lastTransitionTs);
+    }
+
     public synchronized void writeCsv(String mac, Writer writer) throws IOException {
         String key = FleetStore.normalizeMac(mac);
         if (key.isEmpty()) throw new IOException("No device selected");
@@ -194,6 +253,20 @@ public final class HistoryStore extends SQLiteOpenHelper {
         if (value == null) return "";
         String escaped = value.replace("\"", "\"\"");
         return "\"" + escaped + "\"";
+    }
+
+    public static final class RuntimeSummary {
+        public final long onMillis;
+        public final int onCycles;
+        public final boolean currentlyOn;
+        public final long lastTransitionTs;
+
+        RuntimeSummary(long onMillis, int onCycles, boolean currentlyOn, long lastTransitionTs) {
+            this.onMillis = Math.max(0L, onMillis);
+            this.onCycles = Math.max(0, onCycles);
+            this.currentlyOn = currentlyOn;
+            this.lastTransitionTs = Math.max(0L, lastTransitionTs);
+        }
     }
 
     public static final class Summary {

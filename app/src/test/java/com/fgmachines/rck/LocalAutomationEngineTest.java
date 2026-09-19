@@ -25,6 +25,26 @@ public class LocalAutomationEngineTest {
     }
 
     @Test
+    public void validatesAwayWindowsIncludingOvernight() {
+        assertTrue(LocalAutomationEngine.isValidAwayWindow("18:00", "23:00"));
+        assertFalse(LocalAutomationEngine.isValidAwayWindow("18:00", "18:00"));
+        assertTrue(LocalAutomationEngine.isWithinWindow("20:30", "18:00", "23:00"));
+        assertFalse(LocalAutomationEngine.isWithinWindow("10:00", "18:00", "23:00"));
+        assertTrue(LocalAutomationEngine.isWithinWindow("23:30", "22:00", "06:00"));
+        assertTrue(LocalAutomationEngine.isWithinWindow("05:30", "22:00", "06:00"));
+        assertFalse(LocalAutomationEngine.isWithinWindow("12:00", "22:00", "06:00"));
+    }
+
+    @Test
+    public void awayDelayRemainsInsideConfiguredBounds() {
+        long delay = LocalAutomationEngine.randomAwayDelayMillis();
+        assertTrue(delay >= java.util.concurrent.TimeUnit.MINUTES.toMillis(
+                LocalAutomationEngine.AWAY_MIN_DELAY_MINUTES));
+        assertTrue(delay <= java.util.concurrent.TimeUnit.MINUTES.toMillis(
+                LocalAutomationEngine.AWAY_MAX_DELAY_MINUTES));
+    }
+
+    @Test
     public void createsStableDeadlinePreferenceKey() {
         assertEquals("automation_deadline_AABBCCDDEEFF_3",
                 LocalAutomationEngine.deadlinePreferenceKey("AA:BB:CC:DD:EE:FF", 3));
