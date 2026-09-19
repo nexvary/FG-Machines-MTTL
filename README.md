@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.6
+## Current Android baseline — 1.3.8
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -21,6 +21,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Voltage is intentionally not fabricated: stock firmware does not expose a verified live-voltage field through the currently implemented controller protocol.
 - Setup assistant now explicitly requires 2.4 GHz WPA2-Personal for the target hotspot/router, based on physical MTTL-W01 validation.
 - A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
+- Physical FG validation on an MTTL-W01 running firmware `1.0.66-0.1.54` confirmed that all four AC outlets remain controllable over the local Wi-Fi LAN with the router WAN/Internet link disconnected. The peer address shown by Android may include a changing high source port; normal control still terminates at the FG controller on TCP `10086`.
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
 - Per-outlet local automation: auto-off timers, standby low-power cutoff, watt-limit cutoff and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.- Local Away Mode can randomly toggle only explicitly selected outlets inside a configured time window, with no cloud dependency.- Per-outlet local runtime statistics track observed ON time and relay transition count on the controller phone.- Event history now labels automation, Away Mode, relay, scene and alert events more clearly and shows a longer recent-event list.
 - Schedule day modes are explicit: every day, Sun–Thu, or Fri–Sat. Time values use 24-hour HH:mm format.

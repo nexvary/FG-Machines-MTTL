@@ -164,7 +164,7 @@
     <string name="room_name_hint">Habitación</string>
     <string name="save_names">Guardar nombres</string>
     <string name="names_saved">Nombres guardados</string>
-    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="device_location_detail">%1$s · %2$s · par MTTL %3$s → controlador FG TCP 10086</string>
     <string name="controller_service_error">Error del servicio de control</string>
     <string name="controller_notification_channel">Controlador local</string>
     <string name="controller_notification_channel_desc">Mantiene disponible el controlador local MTTL en segundo plano.</string>

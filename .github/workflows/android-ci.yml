@@ -55,8 +55,8 @@ jobs:
           test -n "$AAPT"
           APK="app/build/outputs/apk/sidecar/app-sidecar.apk"
           "$AAPT" dump badging "$APK" | tee /tmp/sidecar-badging.txt
-          grep -q "package: name='com.fgmachines.rck.sidecar137'" /tmp/sidecar-badging.txt
-          grep -q "application-label:'FG Machines RCK 1.3.7 Test'" /tmp/sidecar-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar138'" /tmp/sidecar-badging.txt
+          grep -q "application-label:'FG Machines RCK 1.3.8 Test'" /tmp/sidecar-badging.txt
 
       - name: Verify ARM64 fast-install package
         shell: bash
@@ -67,8 +67,8 @@ jobs:
           test -n "$AAPT"
           test -n "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/arm64-badging.txt
-          grep -q "package: name='com.fgmachines.rck.sidecar137arm64'" /tmp/arm64-badging.txt
-          grep -q "application-label:'FG Machines RCK 1.3.7 Fast'" /tmp/arm64-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar138arm64'" /tmp/arm64-badging.txt
+          grep -q "application-label:'FG Machines RCK 1.3.8 Fast'" /tmp/arm64-badging.txt
           if unzip -l "$APK" | grep -E 'lib/(x86|x86_64|armeabi-v7a)/'; then
             echo "Unexpected non-ARM64 native library found."
             exit 1
@@ -123,17 +123,17 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
-      - name: Upload side-by-side 1.3.7 APK
+      - name: Upload side-by-side 1.3.8 APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.7-side-by-side
+          name: FG-Machines-RCK-1.3.8-side-by-side
           path: app/build/outputs/apk/sidecar/app-sidecar.apk
           if-no-files-found: error
 
       - name: Upload ARM64 fast-install APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.7-ARM64-Fast
+          name: FG-Machines-RCK-1.3.8-ARM64-Fast
           path: app/build/outputs/apk/sidecarArm64/*.apk
           if-no-files-found: error
 
@@ -152,7 +152,7 @@ jobs:
       - name: Download side-by-side APK
         uses: actions/download-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.7-side-by-side
+          name: FG-Machines-RCK-1.3.8-side-by-side
           path: apk-sidecar
 
       - name: Capture real app dashboard screenshot
@@ -165,20 +165,20 @@ jobs:
           script: |
             adb install apk-debug/app-debug.apk
             adb install apk-sidecar/app-sidecar.apk
-            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar137'
-            adb shell am force-stop com.fgmachines.rck.sidecar137
-            adb shell am start -n com.fgmachines.rck.sidecar137/com.fgmachines.rck.MainActivity
+            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar138'
+            adb shell am force-stop com.fgmachines.rck.sidecar138
+            adb shell am start -n com.fgmachines.rck.sidecar138/com.fgmachines.rck.MainActivity
             sleep 20
             adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
             adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
             adb shell cat /sdcard/fg-rck-ui.xml || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.3.7-sidecar-dashboard.png
+            adb exec-out screencap -p > FG-Machines-RCK-1.3.8-sidecar-dashboard.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.3.7-sidecar-screenshot
-          path: FG-Machines-RCK-1.3.7-sidecar-dashboard.png
+          name: FG-Machines-RCK-1.3.8-sidecar-screenshot
+          path: FG-Machines-RCK-1.3.8-sidecar-dashboard.png
           if-no-files-found: error
 
 

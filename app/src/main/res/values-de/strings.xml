@@ -164,7 +164,7 @@
     <string name="room_name_hint">Raum</string>
     <string name="save_names">Namen speichern</string>
     <string name="names_saved">Namen gespeichert</string>
-    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="device_location_detail">%1$s · %2$s · MTTL-Gegenstelle %3$s → FG-Controller TCP 10086</string>
     <string name="controller_service_error">Fehler des Controller-Dienstes</string>
     <string name="controller_notification_channel">Lokaler Controller</string>
     <string name="controller_notification_channel_desc">Hält den lokalen MTTL-Controller im Hintergrund verfügbar.</string>
