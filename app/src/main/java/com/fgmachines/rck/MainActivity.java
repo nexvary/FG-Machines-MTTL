@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView step2Status;
     private TextView step3Status;
     private LinearProgressIndicator setupProgress;
-    private MaterialSwitch[] outletSwitches;
+    private MaterialButton[] outletSwitches;
     private View[] outletCards;
     private View[] pages;
     private MaterialButton[] navButtons;
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
         step2Status = findViewById(R.id.step2Status);
         step3Status = findViewById(R.id.step3Status);
         setupProgress = findViewById(R.id.setupProgress);
-        outletSwitches = new MaterialSwitch[]{
+        outletSwitches = new MaterialButton[]{
                 findViewById(R.id.outlet1), findViewById(R.id.outlet2),
                 findViewById(R.id.outlet3), findViewById(R.id.outlet4)
         };
@@ -770,6 +770,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAutomationSettings() {
+        configureAutomationAccordion();
         configureAutomationPickers();
         for (int i = 0; i < 4; i++) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -781,6 +782,33 @@ public class MainActivity extends AppCompatActivity {
         loadAutomationSettingsForActiveDevice();
     }
 
+
+    private void configureAutomationAccordion() {
+        MaterialButton[] headers = new MaterialButton[]{
+                findViewById(R.id.automationHeader1), findViewById(R.id.automationHeader2),
+                findViewById(R.id.automationHeader3), findViewById(R.id.automationHeader4)
+        };
+        View[] panels = new View[]{
+                findViewById(R.id.automationPanel1), findViewById(R.id.automationPanel2),
+                findViewById(R.id.automationPanel3), findViewById(R.id.automationPanel4)
+        };
+
+        for (int i = 0; i < headers.length; i++) {
+            final int selected = i;
+            headers[i].setOnClickListener(v -> {
+                boolean opening = panels[selected].getVisibility() != View.VISIBLE;
+                for (int j = 0; j < panels.length; j++) {
+                    boolean visible = opening && j == selected;
+                    panels[j].setVisibility(visible ? View.VISIBLE : View.GONE);
+                    headers[j].setIconResource(visible
+                            ? R.drawable.ic_chevron_up : R.drawable.ic_chevron_down);
+                    headers[j].setStrokeColor(ColorStateList.valueOf(getColor(
+                            visible ? R.color.fg_green : R.color.fg_blue)));
+                    headers[j].setAlpha(visible ? 1f : 0.92f);
+                }
+            });
+        }
+    }
 
     private void configureAutomationPickers() {
         for (int i = 0; i < 4; i++) {
@@ -2825,7 +2853,7 @@ public class MainActivity extends AppCompatActivity {
             final int index = i;
             final int outlet = i + 1;
             updateOutletCardState(index, outletSwitches[i].isChecked());
-            outletSwitches[i].setOnCheckedChangeListener((button, checked) -> {
+            outletSwitches[i].addOnCheckedChangeListener((button, checked) -> {
                 updateOutletCardState(index, checked);
                 if (applyingDeviceState || !button.isEnabled()) return;
                 String mac = activeMac;
@@ -2846,7 +2874,17 @@ public class MainActivity extends AppCompatActivity {
         if (outletCards == null || index < 0 || index >= outletCards.length
                 || outletCards[index] == null) return;
         outletCards[index].setActivated(on);
-        outletCards[index].setAlpha(on ? 1f : 0.92f);
+        outletCards[index].setAlpha(on ? 1f : 0.94f);
+        if (outletSwitches != null && index < outletSwitches.length
+                && outletSwitches[index] != null) {
+            MaterialButton button = outletSwitches[index];
+            button.setElevation(on ? 2f : 7f);
+            button.animate()
+                    .scaleX(on ? 0.985f : 1f)
+                    .scaleY(on ? 0.965f : 1f)
+                    .setDuration(110)
+                    .start();
+        }
     }
 
     private void startLocalController() {
