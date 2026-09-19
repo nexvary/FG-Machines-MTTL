@@ -527,4 +527,20 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="event_device_share">Cihaz paylaşımı oluşturuldu</string>
     <string name="event_voice_command">Sesli komut</string>
 
+
+    <string name="cloud_account_title">FG Machines Cloud / VPS</string>
+    <string name="cloud_account_note">İsteğe bağlıdır. Yerel MTTL-W01 kontrolü, zamanlayıcılar ve otomasyon VPS olmadan çalışmaya devam eder. HTTPS sunucunuz hazır olduğunda giriş yapın.</string>
+    <string name="cloud_endpoint_hint">HTTPS VPS adresi</string>
+    <string name="cloud_email_hint">Bulut hesabı e-postası</string>
+    <string name="cloud_password_hint">Bulut hesabı parolası</string>
+    <string name="cloud_register">Hesap oluştur</string>
+    <string name="cloud_login">Giriş yap</string>
+    <string name="cloud_sync_enable">Bu telefonu bulut denetleyici rölesi olarak etkinleştir</string>
+    <string name="cloud_status_signed_out">Giriş yapılmadı. Yerel kontrol çalışmaya devam ediyor.</string>
+    <string name="cloud_status_missing">HTTPS VPS adresini, e-postayı ve parolayı girin.</string>
+    <string name="cloud_status_authenticating">Buluta bağlanılıyor…</string>
+    <string name="cloud_status_ready">Bulut hesabı kaydedildi. Hazır olduğunuzda denetleyici rölesini etkinleştirin.</string>
+    <string name="cloud_status_failed">Bulut hatası: %1$s</string>
+    <string name="cloud_sync_requires_login">Önce giriş yapın, ardından denetleyici rölesini etkinleştirin.</string>
+
 </resources>
