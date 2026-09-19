@@ -164,7 +164,7 @@
     <string name="room_name_hint">الغرفة</string>
     <string name="save_names">حفظ الأسماء</string>
     <string name="names_saved">تم حفظ الأسماء</string>
-    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="device_location_detail">%1$s · %2$s · طرف MTTL ‏%3$s ← وحدة تحكم FG على TCP 10086</string>
     <string name="controller_service_error">خطأ في خدمة وحدة التحكم</string>
     <string name="controller_notification_channel">وحدة التحكم المحلية</string>
     <string name="controller_notification_channel_desc">تحافظ على وحدة تحكم MTTL المحلية فعالة في الخلفية.</string>

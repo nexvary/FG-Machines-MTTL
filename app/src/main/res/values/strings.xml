@@ -172,7 +172,7 @@
     <string name="room_name_hint">Room</string>
     <string name="save_names">Save names</string>
     <string name="names_saved">Names saved</string>
-    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="device_location_detail">%1$s · %2$s · MTTL peer %3$s → FG controller TCP 10086</string>
     <string name="controller_service_error">Controller service error</string>
     <string name="controller_notification_channel">Local controller</string>
     <string name="controller_notification_channel_desc">Keeps the MTTL local controller available in the background.</string>

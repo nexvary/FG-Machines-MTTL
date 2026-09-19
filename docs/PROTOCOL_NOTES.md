@@ -44,6 +44,8 @@ handled without treating a failed text command as proof that the device is unsup
 After provisioning, compatible firmware initiates an outbound TCP connection to the configured
 controller. Public local-control implementations use TCP port `10086` for this controller service.
 
+The TCP peer address reported by Android can look like `192.168.1.100:30888`. The high port in that display is the strip's ephemeral **source port for that TCP session**, not the MTTL controller port. The strip connects **to the FG Machines RCK phone on TCP 10086**; the peer source port can change after reconnects.
+
 Identification frame:
 
 ```text
@@ -124,8 +126,9 @@ The protocol implementation now exists in FG Machines RCK, but support is descri
 - **FG hardware verified:** behavior has been exercised against the specific physical revision under
   test and its results recorded.
 
-Until the second gate is complete, the app accepts a device only after a valid `lgutap` boot frame,
-and it never sends relay commands to an unidentified TCP peer.
+FG physical validation has now been completed on an MTTL-W01 running firmware `1.0.66-0.1.54` for the four verified AC relay channels: ON/OFF control continued over the local Wi-Fi LAN after the router WAN/Internet link was disconnected. This validates the local controller path on that tested firmware/hardware combination.
+
+Other firmware/hardware revisions remain capability-gated. The app still accepts a device only after a valid `lgutap` boot frame, and it never sends relay commands to an unidentified TCP peer.
 
 
 ## USB hardware status

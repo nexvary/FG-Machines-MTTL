@@ -164,7 +164,7 @@
     <string name="room_name_hint">Oda</string>
     <string name="save_names">Adları kaydet</string>
     <string name="names_saved">Adlar kaydedildi</string>
-    <string name="device_location_detail">%1$s · %2$s · %3$s</string>
+    <string name="device_location_detail">%1$s · %2$s · MTTL eş ucu %3$s → FG denetleyici TCP 10086</string>
     <string name="controller_service_error">Denetleyici hizmeti hatası</string>
     <string name="controller_notification_channel">Yerel denetleyici</string>
     <string name="controller_notification_channel_desc">MTTL yerel denetleyicisini arka planda çalışır tutar.</string>
