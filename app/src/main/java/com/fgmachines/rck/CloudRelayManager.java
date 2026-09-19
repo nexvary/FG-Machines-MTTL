@@ -94,11 +94,11 @@ public final class CloudRelayManager implements Closeable {
         JSONArray heartbeatDevices = new JSONArray();
         for (FleetStore.DeviceRecord device : devices) {
             ControllerHub.DeviceState state = hub.state(device.mac);
-            JSONObject item = new JSONObject();
-            item.put("mac", device.mac);
-            item.put("connected", state != null && state.connected);
-            item.put("firmware", state != null && state.firmwareVersion != null
-                    ? state.firmwareVersion : device.firmware);
+            JSONObject item = CloudApiClient.json(
+                    "mac", device.mac,
+                    "connected", state != null && state.connected,
+                    "firmware", state != null && state.firmwareVersion != null
+                            ? state.firmwareVersion : device.firmware);
             heartbeatDevices.put(item);
         }
         api.heartbeat(controllerId, controllerKey, heartbeatDevices);
@@ -150,7 +150,7 @@ public final class CloudRelayManager implements Closeable {
         } catch (IOException ignored) { }
     }
 
-    static JSONObject toTelemetryJson(String mac, MttlProtocol.Telemetry telemetry) {
+    static JSONObject toTelemetryJson(String mac, MttlProtocol.Telemetry telemetry) throws IOException {
         double power = 0.0;
         double energy = 0.0;
         int maxTemp = 0;
@@ -167,14 +167,13 @@ public final class CloudRelayManager implements Closeable {
                 eventCode = outlet.eventCode;
             }
         }
-        JSONObject item = new JSONObject();
-        item.put("mac", FleetStore.normalizeMac(mac));
-        item.put("power_w", power);
-        item.put("energy_kwh", energy);
-        item.put("max_temp_c", maxTemp);
-        item.put("relay_mask", relayMask);
-        item.put("event_code", eventCode);
-        return item;
+        return CloudApiClient.json(
+                "mac", FleetStore.normalizeMac(mac),
+                "power_w", power,
+                "energy_kwh", energy,
+                "max_temp_c", maxTemp,
+                "relay_mask", relayMask,
+                "event_code", eventCode);
     }
 
     private static String safe(Throwable error) {
