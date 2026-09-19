@@ -667,6 +667,19 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/runtimeSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="8dp"
+                            android:text="@string/runtime_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
                             android:id="@+id/historyCostSummary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -1980,6 +1993,90 @@
                             android:layout_marginTop="6dp"
                             android:backgroundTint="@color/fg_blue"
                             android:popupBackground="@color/fg_surface_2" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awaySwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/away_mode_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_start_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayStart1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_end_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayEnd1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/linked_outlet_rule"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="11sp" />
+
+                        <Spinner
+                            android:id="@+id/followTarget1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/follow_delay_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/followDelay1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2101,6 +2198,90 @@
                             android:layout_marginTop="6dp"
                             android:backgroundTint="@color/fg_blue"
                             android:popupBackground="@color/fg_surface_2" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awaySwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/away_mode_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_start_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayStart2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_end_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayEnd2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/linked_outlet_rule"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="11sp" />
+
+                        <Spinner
+                            android:id="@+id/followTarget2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/follow_delay_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/followDelay2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2222,6 +2403,90 @@
                             android:layout_marginTop="6dp"
                             android:backgroundTint="@color/fg_blue"
                             android:popupBackground="@color/fg_surface_2" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awaySwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/away_mode_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_start_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayStart3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_end_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayEnd3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/linked_outlet_rule"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="11sp" />
+
+                        <Spinner
+                            android:id="@+id/followTarget3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/follow_delay_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/followDelay3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2343,6 +2608,90 @@
                             android:layout_marginTop="6dp"
                             android:backgroundTint="@color/fg_blue"
                             android:popupBackground="@color/fg_surface_2" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awaySwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/away_mode_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_start_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayStart4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_end_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayEnd4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/linked_outlet_rule"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="11sp" />
+
+                        <Spinner
+                            android:id="@+id/followTarget4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="4dp"
+                            android:backgroundTint="@color/fg_blue"
+                            android:popupBackground="@color/fg_surface_2" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/follow_delay_hint"
+                            app:boxStrokeColor="@color/fg_green">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/followDelay4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:singleLine="true"
+                                android:textColor="@color/fg_text"
+                                android:textDirection="ltr" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/saveAutomationButton"
