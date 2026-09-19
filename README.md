@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.4
+## Current Android baseline — 1.4.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -22,7 +22,11 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Setup assistant now explicitly requires 2.4 GHz WPA2-Personal for the target hotspot/router, based on physical MTTL-W01 validation.
 - A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
-- Per-outlet local automation: auto-off timers and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.
+- Per-outlet local automation: duration-based auto-off timers and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.
+- **Smart Plug+ local features:** Away Mode can simulate occupancy on selected outlets with randomized 20–60 minute changes inside a user-defined window; it is mutually exclusive with a fixed schedule on the same outlet and forces the outlet OFF when the Away window ends.
+- **Idle-load Auto-Off:** an outlet can turn itself off only after measured power stays at or below a configured watt threshold for a configured duration, useful for chargers and standby loads.
+- The history dashboard now calculates today's ON runtime and start-cycle count separately for all four outlets and shows a longer, localized recent-event timeline.
+- Automation actions such as schedule changes, Away Mode, idle auto-off and power-limit cutoff are persisted in the local event history for auditability.
 - Schedule day modes are explicit: every day, Sun–Thu, or Fri–Sat. Time values use 24-hour HH:mm format.
 - Multi-device fleet registry with persistent device names, rooms, selected device, firmware, last-seen and connection uptime.
 - Room filtering turns room metadata into an actual fleet organization layer instead of a single free-text label.
@@ -43,7 +47,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Local per-device scenes store the four outlet states as reusable presets and require confirmation before applying.
 - Historical energy cost is calculated for today, the current week and current month from locally recorded kWh and the user tariff.
 - GitHub Actions release gate: unit tests + Android lint + isolated debug APK build.
-- Production-package APKs use a **private stable signing key** supplied only through local environment variables or GitHub Actions secrets; signing keys and passwords are never committed to this public repository.
+- Production-package APKs use a **private stable signing key** supplied only through local environment variables or GitHub Actions secrets; signing keys and passwords are never committed to the repository.
 - Debug CI builds now use the separate package ID `com.fgmachines.rck.debug`, so a runner-generated debug certificate can never block or impersonate updates to the production package `com.fgmachines.rck`.
 
 ## Compatibility catalog
@@ -104,7 +108,7 @@ The current software implementation has passed automated build/lint gates; physi
 ## Build
 
 ```bash
-gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug
+gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar assembleSidecarArm64
 
 # Stable release (requires the four FG_RCK signing environment variables)
 gradle --no-daemon assembleRelease
@@ -117,4 +121,6 @@ APK output:
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 app/build/outputs/apk/release/app-release.apk
+app/build/outputs/apk/sidecar/app-sidecar.apk
+app/build/outputs/apk/sidecarArm64/app-sidecarArm64.apk
 ```
