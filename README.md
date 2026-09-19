@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.9
+## Current Android baseline — 1.4.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -23,6 +23,9 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
 - Physical FG validation on an MTTL-W01 running firmware `1.0.66-0.1.54` confirmed that all four AC outlets remain controllable over the local Wi-Fi LAN with the router WAN/Internet link disconnected. The UI now hides the strip's ephemeral TCP source port and shows the stable local path to controller TCP `10086`.
 - 1.3.9 Automation UX replaces manual numeric typing with wheel pickers for auto-off, low-consumption cutoff, power-limit cutoff and Away Mode intervals; schedule times use a native time picker.
+- 1.4.0 Professional UI Refresh introduces a calmer black/navy surface system, compact brand header, semantic connection colors, stateful per-outlet cards, clearer picker affordances, and a consistent selected-state bottom navigation.
+- Outlet cards now visually react to ON/OFF state while preserving the verified MTTL local control path; offline cards are visually de-emphasized rather than left looking active.
+- The dashboard connection panel is condensed to user-facing LOCAL status information while keeping the technical TCP 10086 path available in the detail line.
 - Numeric automation values are range-gated in the UI and again when saving: auto-off 1–720 min, low-consumption 1–100 W for 1–120 min, and power cutoff 100–3500 W.
 - Local controller reliability now remembers whether the controller service is wanted, restores it after device reboot/app update, keeps the foreground service detached from the UI task, and retries TCP 10086 startup through a bounded background watchdog.
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.

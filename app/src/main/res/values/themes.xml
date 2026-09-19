@@ -10,6 +10,8 @@
         <item name="colorSurfaceVariant">@color/fg_surface_2</item>
         <item name="colorOnSurface">@color/fg_text</item>
         <item name="android:fontFamily">sans</item>
+        <item name="colorOutline">@color/fg_border</item>
+        <item name="colorOutlineVariant">@color/fg_divider</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/fg_black</item>
         <item name="android:navigationBarColor">@color/fg_black</item>

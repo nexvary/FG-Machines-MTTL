@@ -11,13 +11,13 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
         app:cardBackgroundColor="@color/fg_black_soft"
-        app:cardCornerRadius="22dp"
-        app:cardElevation="5dp"
-        app:strokeColor="@color/fg_blue_bright"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="3dp"
+        app:strokeColor="@color/fg_border"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -26,11 +26,11 @@
             android:background="@drawable/bg_brand_header"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="14dp">
+            android:padding="12dp">
 
             <ImageView
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_fg_logo" />
 
@@ -48,7 +48,7 @@
                     android:text="@string/app_name"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_text"
-                    android:textSize="21sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -59,8 +59,21 @@
                     android:text="@string/app_subtitle"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_green"
-                    android:textSize="12sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_pill"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp"
+                android:text="@string/local_first_badge"
+                android:textColor="@color/fg_green"
+                android:textSize="9sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -106,40 +119,66 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/connectionCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="18dp"
+                    app:cardElevation="2dp"
                     app:strokeColor="@color/fg_blue"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:background="@drawable/bg_connection_panel"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
 
-                        <TextView
-                            android:id="@+id/deviceState"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/idle"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_blue_bright"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:gravity="center">
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:contentDescription="@string/local_first_badge"
+                                android:src="@drawable/ic_network_scan"
+                                app:tint="@color/fg_blue_bright" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/discoveryDetail"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:lineSpacingExtra="2dp"
-                            android:text="@string/locked"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text_secondary"
-                            android:textSize="13sp" />
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/deviceState"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/idle"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_blue_bright"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/discoveryDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:text="@string/locked"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/fg_text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -782,11 +821,20 @@
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="12sp" />
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
+                        <LinearLayout
+                            android:id="@+id/outletCard1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_outlet_state"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+<com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet1"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
-                            android:layout_marginTop="8dp"
                             android:text="@string/outlet_1"
                             android:textColor="@color/fg_text" />
 
@@ -801,8 +849,19 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+                        </LinearLayout>
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
+                        <LinearLayout
+                            android:id="@+id/outletCard2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_outlet_state"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+<com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet2"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
@@ -820,8 +879,19 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+                        </LinearLayout>
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
+                        <LinearLayout
+                            android:id="@+id/outletCard3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_outlet_state"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+<com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet3"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
@@ -839,8 +909,19 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+                        </LinearLayout>
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
+                        <LinearLayout
+                            android:id="@+id/outletCard4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_outlet_state"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+<com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/outlet4"
                             android:layout_width="match_parent"
                             android:layout_height="54dp"
@@ -858,6 +939,7 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="11sp" />
+                        </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -1339,6 +1421,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
@@ -1356,6 +1443,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -1371,6 +1463,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -1388,6 +1485,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -1557,6 +1659,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
@@ -1650,6 +1757,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
@@ -1879,12 +1991,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/auto_off_minutes_hint"
                             app:boxStrokeColor="@color/fg_green">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/autoOffMinutes1"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -1909,6 +2029,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1916,6 +2041,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyWatts1"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -1929,6 +2057,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1936,6 +2069,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyMinutes1"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -1956,12 +2092,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/power_limit_w_hint"
                             app:boxStrokeColor="@color/fg_warning">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/powerLimitW1"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -1986,6 +2130,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1993,6 +2142,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOn1"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2008,6 +2160,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2015,6 +2172,9 @@
                                 app:boxStrokeColor="@color/fg_warning">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOff1"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2052,12 +2212,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/auto_off_minutes_hint"
                             app:boxStrokeColor="@color/fg_green">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/autoOffMinutes2"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2082,6 +2250,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2089,6 +2262,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyWatts2"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2102,6 +2278,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2109,6 +2290,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyMinutes2"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2129,12 +2313,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/power_limit_w_hint"
                             app:boxStrokeColor="@color/fg_warning">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/powerLimitW2"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2159,6 +2351,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2166,6 +2363,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOn2"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2181,6 +2381,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2188,6 +2393,9 @@
                                 app:boxStrokeColor="@color/fg_warning">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOff2"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2225,12 +2433,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/auto_off_minutes_hint"
                             app:boxStrokeColor="@color/fg_green">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/autoOffMinutes3"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2255,6 +2471,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2262,6 +2483,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyWatts3"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2275,6 +2499,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2282,6 +2511,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyMinutes3"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2302,12 +2534,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/power_limit_w_hint"
                             app:boxStrokeColor="@color/fg_warning">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/powerLimitW3"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2332,6 +2572,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2339,6 +2584,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOn3"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2354,6 +2602,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2361,6 +2614,9 @@
                                 app:boxStrokeColor="@color/fg_warning">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOff3"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2398,12 +2654,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/auto_off_minutes_hint"
                             app:boxStrokeColor="@color/fg_green">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/autoOffMinutes4"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2428,6 +2692,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2435,6 +2704,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyWatts4"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2448,6 +2720,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2455,6 +2732,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/standbyMinutes4"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2475,12 +2755,20 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/power_limit_w_hint"
                             app:boxStrokeColor="@color/fg_warning">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/powerLimitW4"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
@@ -2505,6 +2793,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2512,6 +2805,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOn4"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2527,6 +2823,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2534,6 +2835,9 @@
                                 app:boxStrokeColor="@color/fg_warning">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/scheduleOff4"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2633,6 +2937,11 @@
                             android:orientation="horizontal">
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2640,6 +2949,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/awayStartInput"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2651,6 +2963,11 @@
                             <Space android:layout_width="8dp" android:layout_height="1dp" />
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2658,6 +2975,9 @@
                                 app:boxStrokeColor="@color/fg_blue">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/awayEndInput"
+                                    android:drawableEnd="@drawable/ic_clock"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="time"
@@ -2675,6 +2995,11 @@
                             android:orientation="horizontal">
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2682,6 +3007,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/awayMinMinutesInput"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2693,6 +3021,11 @@
                             <Space android:layout_width="8dp" android:layout_height="1dp" />
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -2700,6 +3033,9 @@
                                 app:boxStrokeColor="@color/fg_green">
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/awayMaxMinutesInput"
+                                    android:drawableEnd="@drawable/ic_chevron_down"
+                                    android:drawableTint="@color/fg_blue_bright"
+                                    android:drawablePadding="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="number"
@@ -2823,6 +3159,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -2838,6 +3179,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -2952,6 +3298,11 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            app:boxBackgroundColor="@color/fg_surface_2"
+                            app:boxCornerRadiusTopStart="14dp"
+                            app:boxCornerRadiusTopEnd="14dp"
+                            app:boxCornerRadiusBottomStart="14dp"
+                            app:boxCornerRadiusBottomEnd="14dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -3707,15 +4058,15 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="@color/fg_black_soft"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="6dp"
-        app:strokeColor="@color/fg_blue"
+        app:cardBackgroundColor="@color/fg_nav"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/fg_border"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -3734,12 +4085,12 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_home"
-                android:textColor="@color/fg_blue_bright"
-                android:textSize="9sp"
+                android:textColor="@color/fg_silver"
+                android:textSize="10sp"
                 app:icon="@drawable/ic_home"
                 app:iconGravity="textTop"
-                app:iconSize="20dp"
-                app:iconTint="@color/fg_blue_bright" />
+                app:iconSize="22dp"
+                app:iconTint="@color/fg_silver" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navSetup"
@@ -3750,12 +4101,12 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_setup"
-                android:textColor="@color/fg_green"
-                android:textSize="9sp"
+                android:textColor="@color/fg_silver"
+                android:textSize="10sp"
                 app:icon="@drawable/ic_setup"
                 app:iconGravity="textTop"
-                app:iconSize="20dp"
-                app:iconTint="@color/fg_green" />
+                app:iconSize="22dp"
+                app:iconTint="@color/fg_silver" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navScan"
@@ -3766,12 +4117,12 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_scan"
-                android:textColor="@color/fg_blue_bright"
-                android:textSize="9sp"
+                android:textColor="@color/fg_silver"
+                android:textSize="10sp"
                 app:icon="@drawable/ic_network_scan"
                 app:iconGravity="textTop"
-                app:iconSize="20dp"
-                app:iconTint="@color/fg_blue_bright" />
+                app:iconSize="22dp"
+                app:iconTint="@color/fg_silver" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navSettings"
@@ -3783,10 +4134,10 @@
                 android:insetBottom="0dp"
                 android:text="@string/nav_settings"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 app:icon="@drawable/ic_settings"
                 app:iconGravity="textTop"
-                app:iconSize="20dp"
+                app:iconSize="22dp"
                 app:iconTint="@color/fg_silver" />
 
             <com.google.android.material.button.MaterialButton
@@ -3798,12 +4149,12 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_about"
-                android:textColor="@color/fg_green"
-                android:textSize="9sp"
+                android:textColor="@color/fg_silver"
+                android:textSize="10sp"
                 app:icon="@drawable/ic_info"
                 app:iconGravity="textTop"
-                app:iconSize="20dp"
-                app:iconTint="@color/fg_green" />
+                app:iconSize="22dp"
+                app:iconTint="@color/fg_silver" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
