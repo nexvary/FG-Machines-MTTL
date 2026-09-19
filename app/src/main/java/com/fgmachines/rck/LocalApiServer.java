@@ -116,24 +116,27 @@ public final class LocalApiServer implements Closeable {
 
             AccessControlStore.Role required = "GET".equals(method)
                     ? AccessControlStore.Role.VIEW : AccessControlStore.Role.CONTROL;
-            if (!access.authorized(token, required)) {
+            AccessControlStore.AccessEntry accessEntry = access.entryForToken(token);
+            if (accessEntry == null || !accessEntry.role.allows(required)) {
                 writeJson(writer, 401, error("unauthorized"));
                 return;
             }
 
             ParsedTarget target = ParsedTarget.parse(rawTarget);
-            route(writer, method, target);
+            route(writer, method, target, accessEntry);
         } catch (Exception ignored) {
             // Per-client failures must not terminate the controller service.
         }
     }
 
-    private void route(BufferedWriter writer, String method, ParsedTarget target)
+    private void route(BufferedWriter writer, String method, ParsedTarget target,
+                       AccessControlStore.AccessEntry accessEntry)
             throws IOException, JSONException {
         String[] segments = target.path.split("/");
         if ("GET".equals(method) && "/api/v1/devices".equals(target.path)) {
             JSONArray devices = new JSONArray();
             for (FleetStore.DeviceRecord record : fleet.list()) {
+                if (!accessEntry.allowsMac(record.mac)) continue;
                 ControllerHub.DeviceState live = hub.state(record.mac);
                 JSONObject item = new JSONObject();
                 item.put("mac", record.mac);
@@ -170,6 +173,10 @@ public final class LocalApiServer implements Closeable {
                 writeJson(writer, 400, error("invalid_outlet_command"));
                 return;
             }
+            if (!accessEntry.allowsMac(mac)) {
+                writeJson(writer, 403, error("device_not_shared"));
+                return;
+            }
             if (!hub.isConnected(mac)) {
                 writeJson(writer, 409, error("device_offline"));
                 return;
@@ -191,6 +198,10 @@ public final class LocalApiServer implements Closeable {
                 && "v1".equals(segments[2])
                 && "history".equals(segments[3])) {
             String mac = FleetStore.normalizeMac(segments[4]);
+            if (!accessEntry.allowsMac(mac)) {
+                writeJson(writer, 403, error("device_not_shared"));
+                return;
+            }
             int hours = 24;
             try { hours = Integer.parseInt(target.query.getOrDefault("hours", "24")); }
             catch (NumberFormatException ignored) { }
@@ -268,6 +279,7 @@ public final class LocalApiServer implements Closeable {
             case 200: return "OK";
             case 400: return "Bad Request";
             case 401: return "Unauthorized";
+            case 403: return "Forbidden";
             case 404: return "Not Found";
             case 409: return "Conflict";
             case 431: return "Request Header Fields Too Large";

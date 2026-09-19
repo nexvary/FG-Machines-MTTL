@@ -220,16 +220,16 @@
     <string name="alert_temp_hint">Sıcaklık uyarı eşiği (°C, isteğe bağlı)</string>
     <string name="alert_energy_hint">Günlük enerji uyarısı (kWh, isteğe bağlı)</string>
     <string name="save_alert_limits">Uyarı eşiklerini kaydet</string>
-    <string name="sharing_title">Kullanıcılar, Paylaşım ve Home Assistant</string>
+    <string name="sharing_title">Cihaz Paylaşımı ve Home Assistant</string>
     <string name="api_endpoint_waiting">Yerel API IP henüz algılanmadı · port 18086</string>
     <string name="share_name_hint">Kullanıcı / entegrasyon adı</string>
-    <string name="create_access">Erişim oluştur</string>
+    <string name="create_access">Cihaz paylaşımı oluştur</string>
     <string name="create_ha_token">Home Assistant tokeni</string>
     <string name="share_token_waiting">Yeni erişim tokeni burada görünür. Kopyalamak için dokunun.</string>
     <string name="revoke_access">Seçili erişimi iptal et</string>
     <string name="sharing_security_note">View yalnızca okur. Control prizleri anahtarlar. Admin Control yetkisini içerir. API’yi güvenilir LAN/VPN veya HTTPS arkasında kullanın.</string>
-    <string name="remote_control_title">Uzaktan Kontrol</string>
-    <string name="remote_control_note">Başka bir FG Machines RCK denetleyicisine HTTPS/VPN uç noktası üzerinden bağlanın. Yerel kontrol varsayılandır.</string>
+    <string name="remote_control_title">Bulut / Uzaktan Kontrol</string>
+    <string name="remote_control_note">Şimdi LAN/VPN kontrolü için Cihaz Paylaşım Kodunu yapıştırın veya daha sonra HTTPS VPS uç noktası ekleyin. Yerel kontrol varsayılan kalır.</string>
     <string name="remote_endpoint_hint">Uzak uç nokta, ör. https://rck.example.com</string>
     <string name="remote_token_hint">Erişim tokeni</string>
     <string name="remote_connect">Bağlan / Yenile</string>
@@ -497,5 +497,34 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="event_away_config">Uzakta Modu ayarı</string>
     <string name="event_usb_discovery">USB keşfi başladı</string>
     <string name="event_usb_frame">USB keşif çerçevesi</string>
+
+    <string name="share_code_waiting">Erişim oluşturulduktan sonra Cihaz Paylaşım Kodu burada görünür. Kopyalamak için dokunun.</string>
+    <string name="share_code_unavailable">Denetleyici IPv4 adresi algılanana kadar paylaşım kodu kullanılamaz.</string>
+    <string name="share_code_copied">Cihaz Paylaşım Kodu kopyalandı</string>
+    <string name="share_code_secret_note">Paylaşım kodu etkin bir erişim belirteci içerir. Parola gibi koruyun ve gerekmediğinde iptal edin.</string>
+    <string name="share_scope_all">TÜM CİHAZLAR</string>
+    <string name="share_select_device">Cihaz paylaşımı oluşturmadan önce bir cihaz seçin.</string>
+    <string name="voice_control_title">Sesli Kontrol</string>
+    <string name="voice_control_note">Android konuşma tanımayı kullanır ve mümkünse çevrimdışı tanımayı tercih eder. Komutlar yalnızca seçili bağlı cihaza uygulanır.</string>
+    <string name="voice_control_start">Komut söyle</string>
+    <string name="voice_ready">Güvenli bir priz komutu için hazır.</string>
+    <string name="voice_prompt">Örnek: turn on outlet 1 veya turn off all outlets</string>
+    <string name="voice_listening">Dinleniyor…</string>
+    <string name="voice_unavailable">Bu telefonda uyumlu konuşma tanıyıcı yok.</string>
+    <string name="voice_no_result">Konuşma sonucu alınamadı.</string>
+    <string name="voice_cancelled">Sesli komut iptal edildi.</string>
+    <string name="voice_requires_connected_device">Sesli kontrol için bağlı bir MTTL-W01 seçin.</string>
+    <string name="voice_not_understood">“%1$s” güvenli bir priz komutuna dönüştürülemedi.</string>
+    <string name="voice_heard">Algılanan: %1$s</string>
+    <string name="voice_confirm_all_on">Seçili cihazdaki dört prizin tümü AÇILSIN mı?</string>
+    <string name="voice_command_result">Sesli komut gönderildi: %1$d · hata: %2$d</string>
+    <string name="remote_share_code_hint">Cihaz Paylaşım Kodunu yapıştırın</string>
+    <string name="import_share_code">Paylaşım Kodunu İçe Aktar</string>
+    <string name="share_code_invalid">Geçersiz veya desteklenmeyen paylaşım kodu.</string>
+    <string name="share_code_imported_device">Paylaşım kodu içe aktarıldı · kapsam %1$s</string>
+    <string name="share_code_imported_all">Paylaşım kodu içe aktarıldı · tüm cihazlar</string>
+    <string name="cloud_waiting_for_vps">Cloud/VPS henüz yapılandırılmadı. Yerel kontrol ve LAN/VPN cihaz paylaşımı kullanılabilir.</string>
+    <string name="event_device_share">Cihaz paylaşımı oluşturuldu</string>
+    <string name="event_voice_command">Sesli komut</string>
 
 </resources>

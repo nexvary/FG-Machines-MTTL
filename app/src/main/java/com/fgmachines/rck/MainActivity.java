@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int WIFI_SETUP_PERMISSION_REQUEST = 88;
     private static final int NOTIFICATION_PERMISSION_REQUEST = 89;
     private static final int EXPORT_HISTORY_REQUEST = 90;
+    private static final int VOICE_CONTROL_REQUEST = 91;
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
     private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
     private static final String PREF_REMOTE_TOKEN = "remote_token";
@@ -166,8 +168,13 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton createShareButton;
     private MaterialButton createHaTokenButton;
     private TextView shareTokenText;
+    private TextView shareCodeText;
     private Spinner shareEntriesSpinner;
     private MaterialButton revokeShareButton;
+    private MaterialButton voiceControlButton;
+    private TextView voiceStatus;
+    private TextInputEditText remoteShareCodeInput;
+    private MaterialButton importShareCodeButton;
     private TextInputEditText remoteEndpointInput;
     private TextInputEditText remoteTokenInput;
     private MaterialButton remoteRefreshButton;
@@ -274,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
         configureHistory();
         configureAlertLimits();
         configureSharing();
+        configureVoiceControl();
         configureRemoteControl();
         configureAboutLinks();
         restoreSetupProfile();
@@ -384,8 +392,13 @@ public class MainActivity extends AppCompatActivity {
         createShareButton = findViewById(R.id.createShareButton);
         createHaTokenButton = findViewById(R.id.createHaTokenButton);
         shareTokenText = findViewById(R.id.shareTokenText);
+        shareCodeText = findViewById(R.id.shareCodeText);
         shareEntriesSpinner = findViewById(R.id.shareEntriesSpinner);
         revokeShareButton = findViewById(R.id.revokeShareButton);
+        voiceControlButton = findViewById(R.id.voiceControlButton);
+        voiceStatus = findViewById(R.id.voiceStatus);
+        remoteShareCodeInput = findViewById(R.id.remoteShareCodeInput);
+        importShareCodeButton = findViewById(R.id.importShareCodeButton);
         remoteEndpointInput = findViewById(R.id.remoteEndpointInput);
         remoteTokenInput = findViewById(R.id.remoteTokenInput);
         remoteRefreshButton = findViewById(R.id.remoteRefreshButton);
@@ -1547,6 +1560,8 @@ public class MainActivity extends AppCompatActivity {
             case "automation_schedule": return getString(R.string.event_schedule);
             case "automation_away_toggle": return getString(R.string.event_away_toggle);
             case "away_mode_config": return getString(R.string.event_away_config);
+            case "device_share_created": return getString(R.string.event_device_share);
+            case "voice_command": return getString(R.string.event_voice_command);
             case "usb_discovery_started": return getString(R.string.event_usb_discovery);
             case "usb_discovery_frame": return getString(R.string.event_usb_frame);
             default: return kind;
@@ -1663,6 +1678,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == VOICE_CONTROL_REQUEST) {
+            if (resultCode == RESULT_OK && data != null) {
+                ArrayList<String> results =
+                        data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (results != null && !results.isEmpty()) {
+                    executeVoicePhrase(results.get(0));
+                } else {
+                    voiceStatus.setText(R.string.voice_no_result);
+                }
+            } else {
+                voiceStatus.setText(R.string.voice_cancelled);
+            }
+            return;
+        }
         if (requestCode != EXPORT_HISTORY_REQUEST || resultCode != RESULT_OK
                 || data == null || data.getData() == null || pendingExportMac == null) {
             return;
@@ -1729,9 +1758,20 @@ public class MainActivity extends AppCompatActivity {
         shareRoleSpinner.setAdapter(roleAdapter);
 
         createShareButton.setOnClickListener(v -> {
-            AccessControlStore.Role role = roleForPosition(shareRoleSpinner.getSelectedItemPosition());
-            AccessControlStore.AccessEntry entry = accessStore.create(textOf(shareNameInput), role);
+            if (activeMac == null) {
+                Snackbar.make(createShareButton, R.string.share_select_device,
+                        Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            AccessControlStore.Role role = roleForPosition(
+                    shareRoleSpinner.getSelectedItemPosition());
+            AccessControlStore.AccessEntry entry = accessStore.createScoped(
+                    textOf(shareNameInput), role, activeMac);
             showAccessToken(entry);
+            if (historyStore != null) {
+                historyStore.recordEvent(activeMac, 0, "device_share_created",
+                        role.name(), System.currentTimeMillis());
+            }
             refreshSharingEntries();
         });
         createHaTokenButton.setOnClickListener(v -> {
@@ -1746,20 +1786,39 @@ public class MainActivity extends AppCompatActivity {
             accessStore.revokeKey(visibleAccessEntries.get(position).tokenHash);
             refreshSharingEntries();
             shareTokenText.setText(R.string.share_token_waiting);
+            shareCodeText.setText(R.string.share_code_waiting);
         });
-        shareTokenText.setOnClickListener(v -> {
-            CharSequence value = shareTokenText.getText();
-            if (value == null || value.length() == 0) return;
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            clipboard.setPrimaryClip(ClipData.newPlainText("FG Machines access token", value));
-            Snackbar.make(shareTokenText, R.string.token_copied, Snackbar.LENGTH_SHORT).show();
-        });
+        shareTokenText.setOnClickListener(v -> copySensitiveText(
+                shareTokenText, "FG Machines access token", R.string.token_copied));
+        shareCodeText.setOnClickListener(v -> copySensitiveText(
+                shareCodeText, "FG Machines device share code", R.string.share_code_copied));
         refreshSharingEntries();
         updateApiEndpoint();
     }
 
+    private void copySensitiveText(TextView source, String label, int confirmationMessage) {
+        CharSequence value = source.getText();
+        if (value == null || value.length() == 0) return;
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, value));
+        Snackbar.make(source, confirmationMessage, Snackbar.LENGTH_SHORT).show();
+    }
+
     private void showAccessToken(AccessControlStore.AccessEntry entry) {
         shareTokenText.setText(entry.token);
+        String ip = HotspotSupport.findControllerIpv4();
+        if (ip != null && !entry.token.isEmpty()) {
+            try {
+                String code = ShareCode.encode(
+                        "http://" + ip + ":" + LocalApiServer.PORT,
+                        entry.token, entry.role, entry.scopeMac);
+                shareCodeText.setText(code);
+            } catch (IllegalArgumentException error) {
+                shareCodeText.setText(R.string.share_code_unavailable);
+            }
+        } else {
+            shareCodeText.setText(R.string.share_code_unavailable);
+        }
         Snackbar.make(shareTokenText,
                 getString(R.string.access_created, entry.name, entry.role.name()),
                 Snackbar.LENGTH_LONG).show();
@@ -1770,7 +1829,9 @@ public class MainActivity extends AppCompatActivity {
         visibleAccessEntries.addAll(accessStore.list());
         List<String> labels = new ArrayList<>();
         for (AccessControlStore.AccessEntry entry : visibleAccessEntries) {
-            labels.add(entry.name + " · " + entry.role.name());
+            String scope = entry.isDeviceScoped()
+                    ? entry.scopeMac : getString(R.string.share_scope_all);
+            labels.add(entry.name + " · " + entry.role.name() + " · " + scope);
         }
         if (labels.isEmpty()) labels.add(getString(R.string.no_shared_users));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -1794,16 +1855,110 @@ public class MainActivity extends AppCompatActivity {
                 : "http://" + ip + ":" + LocalApiServer.PORT);
     }
 
+    private void configureVoiceControl() {
+        voiceStatus.setText(R.string.voice_ready);
+        voiceControlButton.setOnClickListener(v -> startVoiceRecognition());
+    }
+
+    private void startVoiceRecognition() {
+        if (activeMac == null || !controllerHub.isConnected(activeMac)) {
+            voiceStatus.setText(R.string.voice_requires_connected_device);
+            return;
+        }
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault().toLanguageTag());
+        intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.voice_prompt));
+        try {
+            voiceStatus.setText(R.string.voice_listening);
+            startActivityForResult(intent, VOICE_CONTROL_REQUEST);
+        } catch (Exception error) {
+            voiceStatus.setText(R.string.voice_unavailable);
+        }
+    }
+
+    private void executeVoicePhrase(String phrase) {
+        VoiceCommandParser.Command command = VoiceCommandParser.parse(phrase);
+        if (!command.isKnown()) {
+            voiceStatus.setText(getString(R.string.voice_not_understood, phrase));
+            return;
+        }
+        if (activeMac == null || !controllerHub.isConnected(activeMac)) {
+            voiceStatus.setText(R.string.voice_requires_connected_device);
+            return;
+        }
+        if (command.type == VoiceCommandParser.Type.ALL_ON) {
+            voiceStatus.setText(getString(R.string.voice_heard, phrase));
+            Snackbar.make(voiceStatus, R.string.voice_confirm_all_on, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.confirm_action,
+                            v -> sendVoiceCommand(command, phrase))
+                    .show();
+            return;
+        }
+        sendVoiceCommand(command, phrase);
+    }
+
+    private void sendVoiceCommand(VoiceCommandParser.Command command, String phrase) {
+        final String mac = activeMac;
+        if (mac == null) return;
+        voiceControlButton.setEnabled(false);
+        voiceStatus.setText(getString(R.string.voice_heard, phrase));
+        commandWorker.execute(() -> {
+            int sent = 0;
+            int failures = 0;
+            int firstOutlet = 1;
+            int lastOutlet = 4;
+            boolean on = command.type == VoiceCommandParser.Type.OUTLET_ON
+                    || command.type == VoiceCommandParser.Type.ALL_ON;
+            if (command.type == VoiceCommandParser.Type.OUTLET_ON
+                    || command.type == VoiceCommandParser.Type.OUTLET_OFF) {
+                firstOutlet = command.outlet;
+                lastOutlet = command.outlet;
+            }
+            for (int outlet = firstOutlet; outlet <= lastOutlet; outlet++) {
+                try {
+                    controllerHub.setOutlet(mac, outlet, on);
+                    sent++;
+                } catch (IOException error) {
+                    failures++;
+                }
+            }
+            if (historyStore != null) {
+                String safePhrase = phrase == null ? "" : phrase.trim();
+                if (safePhrase.length() > 120) safePhrase = safePhrase.substring(0, 120);
+                historyStore.recordEvent(mac,
+                        firstOutlet == lastOutlet ? firstOutlet : 0,
+                        "voice_command",
+                        command.type.name() + " · " + safePhrase,
+                        System.currentTimeMillis());
+            }
+            try { controllerHub.refresh(mac); } catch (IOException ignored) { }
+            final int sentCount = sent;
+            final int failureCount = failures;
+            runOnUiThread(() -> {
+                voiceControlButton.setEnabled(true);
+                voiceStatus.setText(getString(R.string.voice_command_result,
+                        sentCount, failureCount));
+                refreshHistory();
+            });
+        });
+    }
+
     private void configureRemoteControl() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         remoteEndpointInput.setText(prefs.getString(PREF_REMOTE_ENDPOINT, ""));
         remoteTokenInput.setText(prefs.getString(PREF_REMOTE_TOKEN, ""));
+        remoteStatus.setText(textOf(remoteEndpointInput).isEmpty()
+                ? R.string.cloud_waiting_for_vps : R.string.remote_not_connected);
 
         ArrayAdapter<CharSequence> outletAdapter = ArrayAdapter.createFromResource(
                 this, R.array.remote_outlet_labels, android.R.layout.simple_spinner_item);
         outletAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         remoteOutletSpinner.setAdapter(outletAdapter);
 
+        importShareCodeButton.setOnClickListener(v -> importDeviceShareCode());
         remoteRefreshButton.setOnClickListener(v -> refreshRemoteDevices());
         remoteOnButton.setOnClickListener(v -> sendRemoteOutlet(true));
         remoteOffButton.setOnClickListener(v -> sendRemoteOutlet(false));
@@ -1811,9 +1966,29 @@ public class MainActivity extends AppCompatActivity {
         remoteOffButton.setEnabled(false);
     }
 
+    private void importDeviceShareCode() {
+        try {
+            ShareCode.Profile profile = ShareCode.parse(textOf(remoteShareCodeInput));
+            remoteEndpointInput.setText(profile.endpoint);
+            remoteTokenInput.setText(profile.token);
+            remoteStatus.setText(profile.isDeviceScoped()
+                    ? getString(R.string.share_code_imported_device, profile.scopeMac)
+                    : getString(R.string.share_code_imported_all));
+            refreshRemoteDevices();
+        } catch (IllegalArgumentException error) {
+            remoteStatus.setText(R.string.share_code_invalid);
+        }
+    }
+
     private void refreshRemoteDevices() {
         String endpoint = textOf(remoteEndpointInput);
         String token = textOf(remoteTokenInput);
+        if (endpoint.isEmpty()) {
+            remoteStatus.setText(R.string.cloud_waiting_for_vps);
+            remoteOnButton.setEnabled(false);
+            remoteOffButton.setEnabled(false);
+            return;
+        }
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                 .putString(PREF_REMOTE_ENDPOINT, endpoint)
                 .putString(PREF_REMOTE_TOKEN, token)

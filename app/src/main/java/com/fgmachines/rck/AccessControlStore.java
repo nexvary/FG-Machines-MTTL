@@ -2,7 +2,7 @@ package com.fgmachines.rck;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
+import java.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,15 +32,22 @@ public final class AccessControlStore {
         prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
+    /** Creates an all-device token. Kept for Home Assistant/admin compatibility. */
     public synchronized AccessEntry create(String name, Role role) {
+        return createScoped(name, role, "");
+    }
+
+    /** Creates a token limited to one selected strip when scopeMac is present. */
+    public synchronized AccessEntry createScoped(String name, Role role, String scopeMac) {
         String safeName = name == null || name.trim().isEmpty() ? "Shared user" : name.trim();
         Role safeRole = role == null ? Role.VIEW : role;
+        String safeScope = FleetStore.normalizeMac(scopeMac);
         String token = generateToken();
         String tokenHash = hashToken(token);
         Set<String> copy = new HashSet<>(prefs.getStringSet(KEY_ENTRIES, Collections.emptySet()));
-        copy.add(encode(safeName, safeRole, tokenHash));
+        copy.add(encode(safeName, safeRole, tokenHash, safeScope));
         prefs.edit().putStringSet(KEY_ENTRIES, copy).apply();
-        return new AccessEntry(safeName, safeRole, token, tokenHash);
+        return new AccessEntry(safeName, safeRole, token, tokenHash, safeScope);
     }
 
     public synchronized void revoke(String token) {
@@ -68,35 +75,52 @@ public final class AccessControlStore {
         return entries;
     }
 
-    public Role roleForToken(String token) {
+    public AccessEntry entryForToken(String token) {
         if (token == null || token.trim().isEmpty()) return null;
+        String requestedHash = hashToken(token.trim());
         for (AccessEntry entry : list()) {
-            if (constantTimeEquals(entry.tokenHash, hashToken(token.trim()))) return entry.role;
+            if (constantTimeEquals(entry.tokenHash, requestedHash)) return entry;
         }
         return null;
     }
 
+    public Role roleForToken(String token) {
+        AccessEntry entry = entryForToken(token);
+        return entry == null ? null : entry.role;
+    }
+
     public boolean authorized(String token, Role required) {
-        Role role = roleForToken(token);
-        return role != null && role.allows(required);
+        AccessEntry entry = entryForToken(token);
+        return entry != null && entry.role.allows(required);
+    }
+
+    public boolean authorized(String token, Role required, String mac) {
+        AccessEntry entry = entryForToken(token);
+        return entry != null && entry.role.allows(required) && entry.allowsMac(mac);
     }
 
     static String encode(String name, Role role, String tokenHash) {
-        String safeName = Base64.encodeToString(
-                name.getBytes(java.nio.charset.StandardCharsets.UTF_8), Base64.NO_WRAP);
-        return safeName + "|" + role.name() + "|" + tokenHash;
+        return encode(name, role, tokenHash, "");
+    }
+
+    static String encode(String name, Role role, String tokenHash, String scopeMac) {
+        String safeName = Base64.getEncoder().encodeToString(
+                name.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        String safeScope = FleetStore.normalizeMac(scopeMac);
+        return safeName + "|" + role.name() + "|" + tokenHash + "|" + safeScope;
     }
 
     static AccessEntry decode(String raw) {
         if (raw == null) return null;
         String[] parts = raw.split("\\|", -1);
-        if (parts.length != 3) return null;
+        if (parts.length != 3 && parts.length != 4) return null;
         try {
-            String name = new String(Base64.decode(parts[0], Base64.DEFAULT),
+            String name = new String(Base64.getDecoder().decode(parts[0]),
                     java.nio.charset.StandardCharsets.UTF_8);
             Role role = Role.valueOf(parts[1]);
             if (parts[2].length() < 20) return null;
-            return new AccessEntry(name, role, "", parts[2]);
+            String scopeMac = parts.length == 4 ? FleetStore.normalizeMac(parts[3]) : "";
+            return new AccessEntry(name, role, "", parts[2], scopeMac);
         } catch (IllegalArgumentException error) {
             return null;
         }
@@ -106,7 +130,7 @@ public final class AccessControlStore {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] bytes = digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         } catch (NoSuchAlgorithmException error) {
             throw new IllegalStateException("SHA-256 unavailable", error);
         }
@@ -115,7 +139,7 @@ public final class AccessControlStore {
     private static String generateToken() {
         byte[] bytes = new byte[24];
         RANDOM.nextBytes(bytes);
-        return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     private static boolean constantTimeEquals(String a, String b) {
@@ -133,11 +157,22 @@ public final class AccessControlStore {
         public final Role role;
         public final String token;
         public final String tokenHash;
-        AccessEntry(String name, Role role, String token, String tokenHash) {
+        public final String scopeMac;
+
+        AccessEntry(String name, Role role, String token, String tokenHash, String scopeMac) {
             this.name = name;
             this.role = role;
             this.token = token;
             this.tokenHash = tokenHash;
+            this.scopeMac = FleetStore.normalizeMac(scopeMac);
+        }
+
+        public boolean allowsMac(String mac) {
+            return scopeMac.isEmpty() || scopeMac.equals(FleetStore.normalizeMac(mac));
+        }
+
+        public boolean isDeviceScoped() {
+            return !scopeMac.isEmpty();
         }
     }
 }

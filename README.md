@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.5
+## Current Android baseline — 1.3.6
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -22,7 +22,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Setup assistant now explicitly requires 2.4 GHz WPA2-Personal for the target hotspot/router, based on physical MTTL-W01 validation.
 - A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
-- Per-outlet local automation: auto-off timers, standby low-power cutoff, watt-limit cutoff and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.\n- Local Away Mode can randomly toggle only explicitly selected outlets inside a configured time window, with no cloud dependency.\n- Per-outlet local runtime statistics track observed ON time and relay transition count on the controller phone.\n- Event history now labels automation, Away Mode, relay, scene and alert events more clearly and shows a longer recent-event list.
+- Per-outlet local automation: auto-off timers, standby low-power cutoff, watt-limit cutoff and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.- Local Away Mode can randomly toggle only explicitly selected outlets inside a configured time window, with no cloud dependency.- Per-outlet local runtime statistics track observed ON time and relay transition count on the controller phone.- Event history now labels automation, Away Mode, relay, scene and alert events more clearly and shows a longer recent-event list.
 - Schedule day modes are explicit: every day, Sun–Thu, or Fri–Sat. Time values use 24-hour HH:mm format.
 - Multi-device fleet registry with persistent device names, rooms, selected device, firmware, last-seen and connection uptime.
 - Room filtering turns room metadata into an actual fleet organization layer instead of a single free-text label.
@@ -32,8 +32,10 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Configurable alerts for high load, temperature and daily energy, while firmware protection/event codes remain authoritative.
 - Per-outlet automation also supports automatic cutoff above a user-defined watt threshold.
 - Mandatory Setup Guard blocks provisioning until 2.4 GHz + WPA2-Personal is confirmed and the WPA2 passphrase is structurally valid.
-- Authenticated local HTTP API on port `18086` with View / Control / Admin sharing roles; only token hashes are stored.
-- Optional Remote Control client can connect to another FG Machines RCK controller over a private VPN or HTTPS endpoint.
+- Authenticated local HTTP API on port `18086` with View / Control / Admin sharing roles; only token hashes are stored on the controller. Device Sharing tokens can now be scoped to one selected MTTL-W01 instead of exposing the whole fleet.
+- Device Share Codes package the LAN/VPN endpoint, bearer token, role and selected-device scope so another FG Machines RCK phone can import access without a cloud account.
+- Local in-app Voice Control supports safe outlet commands in Arabic, English, Turkish, Spanish and German. The app requests offline Android speech recognition when available; turning all four outlets ON requires explicit confirmation.
+- Cloud / Remote Control is VPS-ready: a Device Share Code can be used now on LAN/VPN, while a future HTTPS VPS can use the same client contract. No cloud service is claimed until the VPS/backend exists.
 - Home Assistant custom integration under `home_assistant/custom_components/fg_machines_rck` exposes each outlet as an independent switch plus power, energy and temperature sensors.
 - Local-first behavior remains the default: outlet control, automation, history and alerts do not require a subscription or external cloud.
 - Emergency fleet shutdown shortcuts can turn off every outlet in the selected room or all currently connected strips, with an explicit confirmation gate.
@@ -75,7 +77,7 @@ There are two different local roles:
 2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines RCK now implements that controller endpoint on Android.
 
 3. **Local API / Home Assistant:** the controller phone exposes an authenticated API on TCP `18086` for trusted LAN/VPN clients. Access tokens are created in the app and only their SHA-256 hashes are retained.
-4. **Remote Control:** another FG Machines RCK installation can use the same API through a private VPN or an HTTPS reverse proxy. Direct public exposure of the phone's plain HTTP port is not recommended.
+4. **Device Sharing / Remote Control:** another FG Machines RCK installation can import a scoped Device Share Code and use the same API over a trusted LAN/private VPN. A future HTTPS VPS can preserve this client contract. Direct public exposure of the phone's plain HTTP port is not recommended.
 
 Normal controller commands include:
 
@@ -88,7 +90,7 @@ up:onoff:4:on
 up:onoff:4:off
 ```
 
-See `docs/PROTOCOL_NOTES.md` for the research evidence, firmware distinctions and validation gates.
+See `docs/PROTOCOL_NOTES.md` for the research evidence, firmware distinctions and validation gates. See `docs/CLOUD_VPS_CONTRACT.md` for the Device Sharing and future VPS/cloud boundary.
 
 ## Safety and validation
 

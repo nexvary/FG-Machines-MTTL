@@ -220,16 +220,16 @@
     <string name="alert_temp_hint">Umbral de temperatura (°C, opcional)</string>
     <string name="alert_energy_hint">Alerta diaria de energía (kWh, opcional)</string>
     <string name="save_alert_limits">Guardar umbrales</string>
-    <string name="sharing_title">Usuarios, Compartir y Home Assistant</string>
+    <string name="sharing_title">Compartir dispositivo y Home Assistant</string>
     <string name="api_endpoint_waiting">IP de API local aún no detectada · puerto 18086</string>
     <string name="share_name_hint">Nombre de usuario / integración</string>
-    <string name="create_access">Crear acceso</string>
+    <string name="create_access">Crear acceso al dispositivo</string>
     <string name="create_ha_token">Token de Home Assistant</string>
     <string name="share_token_waiting">El nuevo token aparece aquí. Toca para copiar.</string>
     <string name="revoke_access">Revocar acceso seleccionado</string>
     <string name="sharing_security_note">View solo lee. Control puede accionar salidas. Admin incluye Control. Usa la API solo en LAN/VPN confiable o detrás de HTTPS.</string>
-    <string name="remote_control_title">Control remoto</string>
-    <string name="remote_control_note">Conecta con otro FG Machines RCK mediante HTTPS/VPN. El control local sigue siendo predeterminado.</string>
+    <string name="remote_control_title">Cloud / Control remoto</string>
+    <string name="remote_control_note">Pega ahora un código de dispositivo para control por LAN/VPN o configura más adelante un VPS HTTPS. El control local sigue siendo predeterminado.</string>
     <string name="remote_endpoint_hint">Endpoint remoto, ej. https://rck.example.com</string>
     <string name="remote_token_hint">Token de acceso</string>
     <string name="remote_connect">Conectar / Actualizar</string>
@@ -497,5 +497,34 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="event_away_config">Ajuste modo Ausencia</string>
     <string name="event_usb_discovery">Inicio de detección USB</string>
     <string name="event_usb_frame">Trama de detección USB</string>
+
+    <string name="share_code_waiting">El código para compartir el dispositivo aparecerá aquí. Toca para copiar.</string>
+    <string name="share_code_unavailable">El código no está disponible hasta detectar la IPv4 del controlador.</string>
+    <string name="share_code_copied">Código de dispositivo copiado</string>
+    <string name="share_code_secret_note">El código contiene un token de acceso activo. Trátalo como una contraseña y revócalo cuando ya no sea necesario.</string>
+    <string name="share_scope_all">TODOS LOS DISPOSITIVOS</string>
+    <string name="share_select_device">Selecciona un dispositivo antes de crear el acceso compartido.</string>
+    <string name="voice_control_title">Control por voz</string>
+    <string name="voice_control_note">Usa el reconocimiento de voz de Android y prefiere el modo sin conexión cuando está disponible. Solo actúa sobre el dispositivo seleccionado y conectado.</string>
+    <string name="voice_control_start">Decir comando</string>
+    <string name="voice_ready">Listo para un comando seguro.</string>
+    <string name="voice_prompt">Di: turn on outlet 1, turn off outlet 2 o turn off all outlets</string>
+    <string name="voice_listening">Escuchando…</string>
+    <string name="voice_unavailable">No hay un reconocedor de voz compatible en este teléfono.</string>
+    <string name="voice_no_result">No se recibió ningún resultado de voz.</string>
+    <string name="voice_cancelled">Comando de voz cancelado.</string>
+    <string name="voice_requires_connected_device">Selecciona un MTTL-W01 conectado antes de usar la voz.</string>
+    <string name="voice_not_understood">No se pudo convertir “%1$s” en un comando seguro.</string>
+    <string name="voice_heard">Escuchado: %1$s</string>
+    <string name="voice_confirm_all_on">¿Encender las cuatro salidas del dispositivo seleccionado?</string>
+    <string name="voice_command_result">Comando enviado: %1$d · fallos: %2$d</string>
+    <string name="remote_share_code_hint">Pegar código de dispositivo</string>
+    <string name="import_share_code">Importar código</string>
+    <string name="share_code_invalid">Código de dispositivo no válido o no compatible.</string>
+    <string name="share_code_imported_device">Código importado · alcance %1$s</string>
+    <string name="share_code_imported_all">Código importado · todos los dispositivos</string>
+    <string name="cloud_waiting_for_vps">Cloud/VPS aún no configurado. El control local y compartir por LAN/VPN siguen disponibles.</string>
+    <string name="event_device_share">Acceso compartido creado</string>
+    <string name="event_voice_command">Comando de voz</string>
 
 </resources>

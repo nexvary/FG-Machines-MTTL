@@ -26,6 +26,19 @@ public class PlatformFoundationTest {
     }
 
     @Test
+    public void scopedAccessEntryAllowsOnlySharedDevice() {
+        AccessControlStore.AccessEntry entry = AccessControlStore.decode(
+                AccessControlStore.encode(
+                        "Family", AccessControlStore.Role.CONTROL,
+                        "abcdefghijklmnopqrstuvwxyz123456",
+                        "88:D0:39:1C:0C:50"));
+        assertTrue(entry != null);
+        assertTrue(entry.isDeviceScoped());
+        assertTrue(entry.allowsMac("88:D0:39:1C:0C:50"));
+        assertFalse(entry.allowsMac("AA:BB:CC:DD:EE:FF"));
+    }
+
+    @Test
     public void localApiParsesOutletQuery() {
         LocalApiServer.ParsedTarget target =
                 LocalApiServer.ParsedTarget.parse("/api/v1/devices/ABC/outlets/2?state=ON");
