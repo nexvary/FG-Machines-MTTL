@@ -228,16 +228,16 @@
     <string name="alert_temp_hint">Temperature alert threshold (°C, optional)</string>
     <string name="alert_energy_hint">Daily energy alert (kWh, optional)</string>
     <string name="save_alert_limits">Save alert thresholds</string>
-    <string name="sharing_title">Users, Sharing &amp; Home Assistant</string>
+    <string name="sharing_title">Device Sharing &amp; Home Assistant</string>
     <string name="api_endpoint_waiting">Local API IP not detected yet · port 18086</string>
     <string name="share_name_hint">User / integration name</string>
-    <string name="create_access">Create access</string>
+    <string name="create_access">Create device share</string>
     <string name="create_ha_token">Home Assistant token</string>
     <string name="share_token_waiting">New access token appears here. Tap to copy.</string>
     <string name="revoke_access">Revoke selected access</string>
     <string name="sharing_security_note">View tokens can read status. Control tokens can switch outlets. Admin includes Control permissions. Use the API only on trusted LAN/VPN or behind HTTPS.</string>
-    <string name="remote_control_title">Remote Control</string>
-    <string name="remote_control_note">Connect to another FG Machines RCK controller through its HTTPS/VPN endpoint. Local control remains the default.</string>
+    <string name="remote_control_title">Cloud / Remote Control</string>
+    <string name="remote_control_note">Paste a Device Share Code for LAN/VPN control now, or configure an HTTPS VPS endpoint later. Local control remains the default.</string>
     <string name="remote_endpoint_hint">Remote endpoint, e.g. https://rck.example.com</string>
     <string name="remote_token_hint">Access token</string>
     <string name="remote_connect">Connect / Refresh</string>
@@ -505,5 +505,34 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="event_away_config">Away Mode setting</string>
     <string name="event_usb_discovery">USB discovery started</string>
     <string name="event_usb_frame">USB discovery frame</string>
+
+    <string name="share_code_waiting">Device Share Code appears here after creating access. Tap to copy.</string>
+    <string name="share_code_unavailable">Share Code unavailable until a controller IPv4 address is detected.</string>
+    <string name="share_code_copied">Device Share Code copied</string>
+    <string name="share_code_secret_note">Share Code contains a live access token. Treat it like a password and revoke it when no longer needed.</string>
+    <string name="share_scope_all">ALL DEVICES</string>
+    <string name="share_select_device">Select a fleet device before creating a device share.</string>
+    <string name="voice_control_title">Voice Control</string>
+    <string name="voice_control_note">Uses Android speech recognition and prefers offline recognition when available. Commands apply only to the selected connected strip.</string>
+    <string name="voice_control_start">Speak command</string>
+    <string name="voice_ready">Ready for a safe outlet command.</string>
+    <string name="voice_prompt">Say: turn on outlet 1, turn off outlet 2, or turn off all outlets</string>
+    <string name="voice_listening">Listening…</string>
+    <string name="voice_unavailable">No compatible speech recognizer is available on this phone.</string>
+    <string name="voice_no_result">No speech result was returned.</string>
+    <string name="voice_cancelled">Voice command cancelled.</string>
+    <string name="voice_requires_connected_device">Select a connected MTTL-W01 before using voice control.</string>
+    <string name="voice_not_understood">Could not map “%1$s” to a safe outlet command.</string>
+    <string name="voice_heard">Heard: %1$s</string>
+    <string name="voice_confirm_all_on">Turn ON all four outlets on the selected strip?</string>
+    <string name="voice_command_result">Voice command sent: %1$d · failures: %2$d</string>
+    <string name="remote_share_code_hint">Paste Device Share Code</string>
+    <string name="import_share_code">Import Device Share Code</string>
+    <string name="share_code_invalid">Invalid or unsupported Device Share Code.</string>
+    <string name="share_code_imported_device">Device Share Code imported · scope %1$s</string>
+    <string name="share_code_imported_all">Share Code imported · all-device scope</string>
+    <string name="cloud_waiting_for_vps">Cloud/VPS not configured. Local control and LAN/VPN Device Sharing remain available.</string>
+    <string name="event_device_share">Device share created</string>
+    <string name="event_voice_command">Voice command</string>
 
 </resources>
