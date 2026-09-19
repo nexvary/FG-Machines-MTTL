@@ -1,6 +1,7 @@
 package com.fgmachines.rck;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,10 +20,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -741,6 +744,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAutomationSettings() {
+        configureAutomationPickers();
         for (int i = 0; i < 4; i++) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                     this, R.array.automation_day_mode_labels, android.R.layout.simple_spinner_item);
@@ -749,6 +753,107 @@ public class MainActivity extends AppCompatActivity {
         }
         saveAutomationButton.setOnClickListener(v -> saveAutomationSettings());
         loadAutomationSettingsForActiveDevice();
+    }
+
+
+    private void configureAutomationPickers() {
+        for (int i = 0; i < 4; i++) {
+            configureNumberPickerInput(autoOffMinutesInputs[i],
+                    R.string.picker_auto_off_title, R.string.picker_auto_off_message,
+                    1, 720, 1, 30);
+            configureNumberPickerInput(standbyWattsInputs[i],
+                    R.string.picker_standby_w_title, R.string.picker_standby_w_message,
+                    1, 100, 1, 5);
+            configureNumberPickerInput(standbyMinutesInputs[i],
+                    R.string.picker_standby_minutes_title, R.string.picker_standby_minutes_message,
+                    1, 120, 1, 5);
+            configureNumberPickerInput(powerLimitInputs[i],
+                    R.string.picker_power_limit_title, R.string.picker_power_limit_message,
+                    100, 3500, 50, 3000);
+            configureTimePickerInput(scheduleOnInputs[i],
+                    R.string.picker_schedule_on_title, 8, 0);
+            configureTimePickerInput(scheduleOffInputs[i],
+                    R.string.picker_schedule_off_title, 22, 0);
+        }
+    }
+
+    private void configureAwayModePickers() {
+        configureTimePickerInput(awayStartInput, R.string.picker_away_start_title, 18, 0);
+        configureTimePickerInput(awayEndInput, R.string.picker_away_end_title, 23, 0);
+        configureNumberPickerInput(awayMinMinutesInput,
+                R.string.picker_away_min_title, R.string.picker_away_interval_message,
+                5, 180, 5, 15);
+        configureNumberPickerInput(awayMaxMinutesInput,
+                R.string.picker_away_max_title, R.string.picker_away_interval_message,
+                5, 180, 5, 45);
+    }
+
+    private void configureNumberPickerInput(TextInputEditText input, int titleRes, int messageRes,
+                                            int min, int max, int step, int defaultValue) {
+        input.setKeyListener(null);
+        input.setFocusable(false);
+        input.setCursorVisible(false);
+        input.setClickable(true);
+        input.setLongClickable(false);
+        input.setOnClickListener(v -> showNumberPicker(
+                input, titleRes, messageRes, min, max, step, defaultValue));
+    }
+
+    private void showNumberPicker(TextInputEditText input, int titleRes, int messageRes,
+                                  int min, int max, int step, int defaultValue) {
+        int current = parsePositiveInt(textOf(input));
+        if (current < min || current > max) current = defaultValue;
+
+        int count = ((max - min) / step) + 1;
+        String[] labels = new String[count];
+        for (int i = 0; i < count; i++) labels[i] = String.valueOf(min + (i * step));
+
+        NumberPicker picker = new NumberPicker(this);
+        picker.setMinValue(0);
+        picker.setMaxValue(count - 1);
+        picker.setDisplayedValues(labels);
+        int selected = Math.round((current - min) / (float) step);
+        picker.setValue(Math.max(0, Math.min(count - 1, selected)));
+        picker.setWrapSelectorWheel(false);
+
+        new AlertDialog.Builder(this)
+                .setTitle(titleRes)
+                .setMessage(messageRes)
+                .setView(picker)
+                .setPositiveButton(R.string.picker_apply, (dialog, which) ->
+                        input.setText(String.valueOf(min + (picker.getValue() * step))))
+                .setNegativeButton(R.string.picker_cancel, null)
+                .show();
+    }
+
+    private void configureTimePickerInput(TextInputEditText input, int titleRes,
+                                          int defaultHour, int defaultMinute) {
+        input.setKeyListener(null);
+        input.setFocusable(false);
+        input.setCursorVisible(false);
+        input.setClickable(true);
+        input.setLongClickable(false);
+        input.setOnClickListener(v -> {
+            int hour = defaultHour;
+            int minute = defaultMinute;
+            String value = textOf(input);
+            if (LocalAutomationEngine.isValidTime(value) && value.length() == 5) {
+                try {
+                    hour = Integer.parseInt(value.substring(0, 2));
+                    minute = Integer.parseInt(value.substring(3, 5));
+                } catch (NumberFormatException ignored) {
+                    hour = defaultHour;
+                    minute = defaultMinute;
+                }
+            }
+            TimePickerDialog dialog = new TimePickerDialog(this,
+                    (view, selectedHour, selectedMinute) ->
+                            input.setText(String.format(Locale.US, "%02d:%02d",
+                                    selectedHour, selectedMinute)),
+                    hour, minute, true);
+            dialog.setTitle(titleRes);
+            dialog.show();
+        });
     }
 
     private void saveAutomationSettings() {
@@ -764,16 +869,16 @@ public class MainActivity extends AppCompatActivity {
             int channel = i + 1;
             boolean autoOffEnabled = autoOffSwitches[i].isChecked();
             int minutes = parsePositiveInt(textOf(autoOffMinutesInputs[i]));
-            if (autoOffEnabled && minutes <= 0) {
-                autoOffMinutesInputs[i].setError(getString(R.string.automation_invalid_minutes));
+            if (autoOffEnabled && (minutes < 1 || minutes > 720)) {
+                autoOffMinutesInputs[i].setError(getString(R.string.automation_invalid_auto_off_range));
                 Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
                 return;
             }
 
             boolean powerLimitEnabled = powerLimitSwitches[i].isChecked();
             int powerLimitW = parsePositiveInt(textOf(powerLimitInputs[i]));
-            if (powerLimitEnabled && powerLimitW <= 0) {
-                powerLimitInputs[i].setError(getString(R.string.automation_invalid_power_limit));
+            if (powerLimitEnabled && (powerLimitW < 100 || powerLimitW > 3500)) {
+                powerLimitInputs[i].setError(getString(R.string.automation_invalid_power_limit_range));
                 Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
                 return;
             }
@@ -781,11 +886,12 @@ public class MainActivity extends AppCompatActivity {
             boolean standbyEnabled = standbySwitches[i].isChecked();
             int standbyW = parsePositiveInt(textOf(standbyWattsInputs[i]));
             int standbyMinutes = parsePositiveInt(textOf(standbyMinutesInputs[i]));
-            if (standbyEnabled && (standbyW <= 0 || standbyMinutes <= 0)) {
-                if (standbyW <= 0) standbyWattsInputs[i].setError(
-                        getString(R.string.automation_invalid_standby_w));
-                if (standbyMinutes <= 0) standbyMinutesInputs[i].setError(
-                        getString(R.string.automation_invalid_minutes));
+            if (standbyEnabled && (standbyW < 1 || standbyW > 100
+                    || standbyMinutes < 1 || standbyMinutes > 120)) {
+                if (standbyW < 1 || standbyW > 100) standbyWattsInputs[i].setError(
+                        getString(R.string.automation_invalid_standby_w_range));
+                if (standbyMinutes < 1 || standbyMinutes > 120) standbyMinutesInputs[i].setError(
+                        getString(R.string.automation_invalid_standby_minutes_range));
                 Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
                 return;
             }
@@ -885,9 +991,9 @@ public class MainActivity extends AppCompatActivity {
                 autoOffSwitches[i].setChecked(false);
                 autoOffMinutesInputs[i].setText("30");
                 powerLimitSwitches[i].setChecked(false);
-                powerLimitInputs[i].setText("");
+                powerLimitInputs[i].setText("3000");
                 standbySwitches[i].setChecked(false);
-                standbyWattsInputs[i].setText("");
+                standbyWattsInputs[i].setText("5");
                 standbyMinutesInputs[i].setText("5");
                 scheduleSwitches[i].setChecked(false);
                 scheduleOnInputs[i].setText("");
@@ -911,13 +1017,13 @@ public class MainActivity extends AppCompatActivity {
                     LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false));
             int power = prefs.getInt(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel), 0);
-            powerLimitInputs[i].setText(power > 0 ? String.valueOf(power) : "");
+            powerLimitInputs[i].setText(power > 0 ? String.valueOf(power) : "3000");
 
             standbySwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_STANDBY_ENABLED, activeMac, channel), false));
             int standbyW = prefs.getInt(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_STANDBY_W, activeMac, channel), 0);
-            standbyWattsInputs[i].setText(standbyW > 0 ? String.valueOf(standbyW) : "");
+            standbyWattsInputs[i].setText(standbyW > 0 ? String.valueOf(standbyW) : "5");
             standbyMinutesInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_STANDBY_MINUTES, activeMac, channel), 5)));
 
@@ -940,6 +1046,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAwayMode() {
+        configureAwayModePickers();
         saveAwayModeButton.setOnClickListener(v -> saveAwayModeSettings());
         loadAwayModeForActiveDevice();
         refreshRuntimeSummary();
@@ -1306,7 +1413,7 @@ public class MainActivity extends AppCompatActivity {
             discoveryDetail.setText(getString(R.string.device_location_detail,
                     record == null ? "" : record.displayName(),
                     record == null ? "" : record.room,
-                    state.remoteAddress));
+                    NetworkDisplay.peerHost(state.remoteAddress)));
             if (state.telemetry != null) {
                 applyingDeviceState = true;
                 try {

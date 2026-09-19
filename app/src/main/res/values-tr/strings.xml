@@ -164,7 +164,7 @@
     <string name="room_name_hint">Oda</string>
     <string name="save_names">Adları kaydet</string>
     <string name="names_saved">Adlar kaydedildi</string>
-    <string name="device_location_detail">%1$s · %2$s · MTTL eş ucu %3$s → FG denetleyici TCP 10086</string>
+    <string name="device_location_detail">%1$s · %2$s · YEREL %3$s · TCP 10086</string>
     <string name="controller_service_error">Denetleyici hizmeti hatası</string>
     <string name="controller_notification_channel">Yerel denetleyici</string>
     <string name="controller_notification_channel_desc">MTTL yerel denetleyicisini arka planda çalışır tutar.</string>
@@ -184,20 +184,20 @@
     <string name="safety_alerts">Güvenlik ve çevrimdışı bildirimleri</string>
     <string name="safety_alerts_note">Bağlantı kesilmesi, koruma olayı veya 3.000 W üzerindeki yükler için yerel uyarılar üretir.</string>
     <string name="automation_title">Yerel otomasyon</string>
-    <string name="automation_note">Zamanlayıcılar ve programlar bu denetleyici telefonda yerel olarak çalışır. Hotspot ve denetleyici hizmetini açık tutun.</string>
+    <string name="automation_note">Kuralı etkinleştirin, ardından değere dokunup çarktan seçin. Otomasyon bu denetleyici telefonda yerel çalışır ve İnternet gerektirmez.</string>
     <string name="automation_none">Etkin otomasyon kuralı yok</string>
     <string name="automation_active_count">Etkin otomasyon kuralı: %1$d</string>
     <string name="automation_outlet_1">Priz 1 otomasyonu</string>
     <string name="automation_outlet_2">Priz 2 otomasyonu</string>
     <string name="automation_outlet_3">Priz 3 otomasyonu</string>
     <string name="automation_outlet_4">Priz 4 otomasyonu</string>
-    <string name="auto_off_enable">Otomatik kapatma zamanlayıcısı</string>
-    <string name="auto_off_minutes_hint">Otomatik kapanmaya kalan dakika</string>
+    <string name="auto_off_enable">Belirli süre sonra otomatik kapat</string>
+    <string name="auto_off_minutes_hint">Süre (dakika) · seçmek için dokunun</string>
     <string name="schedule_enable">Günlük program</string>
     <string name="schedule_on_hint">AÇ HH:mm</string>
     <string name="schedule_off_hint">KAPAT HH:mm</string>
     <string name="save_automation">Otomasyonu kaydet</string>
-    <string name="automation_background_note">Programlar arka plan hizmetinde 15 saniyede bir kontrol edilir. Otomatik kapatma, canlı telemetri prizin açık olduğunu bildirdiğinde başlar.</string>
+    <string name="automation_background_note">Seçim çarkı geçersiz değerleri önler. Kurallar arka planda denetlenir; denetleyici hizmetini açık tutun.</string>
     <string name="automation_invalid_minutes">Sıfırdan büyük bir dakika değeri girin.</string>
     <string name="automation_invalid_time">24 saatlik HH:mm biçimini kullanın.</string>
     <string name="automation_fix_fields">Kaydetmeden önce otomasyon değerlerini kontrol edin.</string>
@@ -236,8 +236,8 @@
     <string name="remote_on">AÇ</string>
     <string name="remote_off">KAPAT</string>
     <string name="remote_not_connected">Uzak denetleyici bağlı değil.</string>
-    <string name="power_limit_enable">Güç sınırı aşılınca prizi kapat</string>
-    <string name="power_limit_w_hint">Güç kesme eşiği (W)</string>
+    <string name="power_limit_enable">Tüketim sınırı aşılınca kapat</string>
+    <string name="power_limit_w_hint">Kesme sınırı (W) · dokunun</string>
     <string name="select_device_first">Önce bir filo cihazı seçin.</string>
     <string name="all_rooms">Tüm odalar</string>
     <string name="fleet_no_devices">Bu odada cihaz yok</string>
@@ -458,9 +458,9 @@ Güç %3$.1f W · Enerji %4$.3f kWh · Sıcaklık %5$d°C
 Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
 
 
-    <string name="standby_cutoff_enable">Bekleme kesmesi</string>
-    <string name="standby_w_hint">Bekleme eşiği (W)</string>
-    <string name="standby_minutes_hint">Düşük güç süresi (dk)</string>
+    <string name="standby_cutoff_enable">Tüketim düşük kaldığında kapat</string>
+    <string name="standby_w_hint">Düşük tüketim eşiği (W) · dokunun</string>
+    <string name="standby_minutes_hint">Düşük tüketim süresi (dk) · dokunun</string>
     <string name="automation_invalid_standby_w">Pozitif bir bekleme gücü eşiği girin.</string>
     <string name="smart_extras_title">Akıllı priz ekleri</string>
     <string name="smart_extras_note">Bulut gerektirmeyen yerel akıllı priz özellikleri. Uzakta Modu yalnızca seçtiğiniz çıkışları değiştirir.</string>
@@ -543,4 +543,27 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="cloud_status_failed">Bulut hatası: %1$s</string>
     <string name="cloud_sync_requires_login">Önce giriş yapın, ardından denetleyici rölesini etkinleştirin.</string>
 
+
+    <string name="picker_apply">Uygula</string>
+    <string name="picker_cancel">İptal</string>
+    <string name="picker_auto_off_title">Otomatik kapatma süresi</string>
+    <string name="picker_auto_off_message">1–720 dakika seçin.</string>
+    <string name="picker_standby_w_title">Düşük tüketim eşiği</string>
+    <string name="picker_standby_w_message">1–100 W seçin.</string>
+    <string name="picker_standby_minutes_title">Düşük tüketim süresi</string>
+    <string name="picker_standby_minutes_message">1–120 dakika seçin.</string>
+    <string name="picker_power_limit_title">Maksimum izin verilen güç</string>
+    <string name="picker_power_limit_message">100–3500 W arasında 50 W adımlarla seçin.</string>
+    <string name="picker_schedule_on_title">Programlı açma saati</string>
+    <string name="picker_schedule_off_title">Programlı kapatma saati</string>
+    <string name="picker_away_start_title">Uzak modu başlangıcı</string>
+    <string name="picker_away_end_title">Uzak modu bitişi</string>
+    <string name="picker_away_min_title">En düşük Uzak aralığı</string>
+    <string name="picker_away_max_title">En yüksek Uzak aralığı</string>
+    <string name="picker_away_interval_message">Aralığı dakika olarak seçin.</string>
+    <string name="automation_invalid_auto_off_range">1–720 dakika arasında seçin.</string>
+    <string name="automation_invalid_power_limit_range">100–3500 W arasında seçin.</string>
+    <string name="automation_invalid_standby_w_range">1–100 W arasında seçin.</string>
+    <string name="automation_invalid_standby_minutes_range">1–120 dakika arasında seçin.</string>
+    <string name="controller_watchdog_retry">Yerel denetleyici yeniden başlatılamadı: %1$s</string>
 </resources>

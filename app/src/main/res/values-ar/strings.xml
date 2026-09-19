@@ -164,7 +164,7 @@
     <string name="room_name_hint">الغرفة</string>
     <string name="save_names">حفظ الأسماء</string>
     <string name="names_saved">تم حفظ الأسماء</string>
-    <string name="device_location_detail">%1$s · %2$s · طرف MTTL ‏%3$s ← وحدة تحكم FG على TCP 10086</string>
+    <string name="device_location_detail">%1$s · %2$s · محلي %3$s · TCP 10086</string>
     <string name="controller_service_error">خطأ في خدمة وحدة التحكم</string>
     <string name="controller_notification_channel">وحدة التحكم المحلية</string>
     <string name="controller_notification_channel_desc">تحافظ على وحدة تحكم MTTL المحلية فعالة في الخلفية.</string>
@@ -184,20 +184,20 @@
     <string name="safety_alerts">تنبيهات الحماية والانقطاع</string>
     <string name="safety_alerts_note">تنبيهات محلية عند انقطاع الاتصال أو وصول حدث حماية من المشترك أو تجاوز الحمل 3000 واط.</string>
     <string name="automation_title">الأتمتة المحلية</string>
-    <string name="automation_note">المؤقتات والجداول تعمل محليًا على هاتف التحكم. اترك نقطة الاتصال وخدمة وحدة التحكم تعمل.</string>
+    <string name="automation_note">فعّل القاعدة ثم اضغط على القيمة لاختيارها من البكرة. تعمل الأتمتة محليًا على هاتف التحكم ولا تحتاج إلى الإنترنت.</string>
     <string name="automation_none">لا توجد قواعد أتمتة مفعلة</string>
     <string name="automation_active_count">عدد قواعد الأتمتة المفعلة: %1$d</string>
     <string name="automation_outlet_1">أتمتة المخرج 1</string>
     <string name="automation_outlet_2">أتمتة المخرج 2</string>
     <string name="automation_outlet_3">أتمتة المخرج 3</string>
     <string name="automation_outlet_4">أتمتة المخرج 4</string>
-    <string name="auto_off_enable">مؤقت إيقاف تلقائي</string>
-    <string name="auto_off_minutes_hint">عدد الدقائق قبل الإيقاف</string>
+    <string name="auto_off_enable">إيقاف تلقائي بعد مدة</string>
+    <string name="auto_off_minutes_hint">المدة (دقيقة) · اضغط للاختيار</string>
     <string name="schedule_enable">جدول تشغيل يومي</string>
     <string name="schedule_on_hint">تشغيل HH:mm</string>
     <string name="schedule_off_hint">إيقاف HH:mm</string>
     <string name="save_automation">حفظ الأتمتة</string>
-    <string name="automation_background_note">يتم فحص الجداول كل 15 ثانية في خدمة الخلفية. يبدأ مؤقت الإيقاف عندما ترسل القياسات أن المخرج في حالة تشغيل.</string>
+    <string name="automation_background_note">البكرة تمنع إدخال قيم غير مناسبة. تعمل القواعد في الخلفية؛ اترك خدمة وحدة التحكم فعالة.</string>
     <string name="automation_invalid_minutes">أدخل عدد دقائق صحيحًا أكبر من صفر.</string>
     <string name="automation_invalid_time">استخدم تنسيق 24 ساعة HH:mm.</string>
     <string name="automation_fix_fields">راجع قيم الأتمتة قبل الحفظ.</string>
@@ -236,8 +236,8 @@
     <string name="remote_on">تشغيل</string>
     <string name="remote_off">إيقاف</string>
     <string name="remote_not_connected">وحدة التحكم البعيدة غير متصلة.</string>
-    <string name="power_limit_enable">إيقاف المخرج عند تجاوز حد القدرة</string>
-    <string name="power_limit_w_hint">حد فصل القدرة (واط)</string>
+    <string name="power_limit_enable">إيقاف عند تجاوز حد الاستهلاك</string>
+    <string name="power_limit_w_hint">حد الإيقاف (واط) · اضغط للاختيار</string>
     <string name="select_device_first">اختر جهازًا من الأسطول أولاً.</string>
     <string name="all_rooms">كل الغرف</string>
     <string name="fleet_no_devices">لا توجد أجهزة في هذه الغرفة</string>
@@ -458,9 +458,9 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
 حمل زائد: %6$s · حرارة زائدة: %7$s · الحدث: %8$s</string>
 
 
-    <string name="standby_cutoff_enable">إيقاف وضع الاستعداد</string>
-    <string name="standby_w_hint">حد الاستعداد (واط)</string>
-    <string name="standby_minutes_hint">دقائق القدرة المنخفضة</string>
+    <string name="standby_cutoff_enable">إيقاف عند انخفاض الاستهلاك</string>
+    <string name="standby_w_hint">حد الاستهلاك المنخفض (واط) · اضغط للاختيار</string>
+    <string name="standby_minutes_hint">مدة الانخفاض (دقيقة) · اضغط للاختيار</string>
     <string name="automation_invalid_standby_w">أدخل حدًا موجبًا للقدرة بالواط.</string>
     <string name="smart_extras_title">مزايا الفيشة الذكية</string>
     <string name="smart_extras_note">مزايا محلية مستوحاة من الفيش الذكية ولا تحتاج إلى كلاود. وضع الغياب يغيّر فقط المخارج التي تختارها صراحة.</string>
@@ -543,4 +543,27 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="cloud_status_failed">خطأ في السحابة: %1$s</string>
     <string name="cloud_sync_requires_login">سجّل الدخول أولًا ثم فعّل جسر التحكم.</string>
 
+
+    <string name="picker_apply">تطبيق</string>
+    <string name="picker_cancel">إلغاء</string>
+    <string name="picker_auto_off_title">مدة الإيقاف التلقائي</string>
+    <string name="picker_auto_off_message">اختر من 1 إلى 720 دقيقة. يتم إيقاف المخرج بعد بقائه في حالة تشغيل لهذه المدة.</string>
+    <string name="picker_standby_w_title">حد الاستهلاك المنخفض</string>
+    <string name="picker_standby_w_message">اختر من 1 إلى 100 واط. الاستهلاك عند هذه القيمة أو أقل يُعامل كاستهلاك منخفض أو استعداد.</string>
+    <string name="picker_standby_minutes_title">مدة انخفاض الاستهلاك</string>
+    <string name="picker_standby_minutes_message">اختر من 1 إلى 120 دقيقة. لا يُفصل المخرج إلا إذا استمر الاستهلاك المنخفض طوال هذه المدة.</string>
+    <string name="picker_power_limit_title">أقصى قدرة مسموحة</string>
+    <string name="picker_power_limit_message">اختر من 100 إلى 3500 واط بخطوات 50 واط. يُفصل المخرج إذا تجاوزت القدرة الحية هذا الحد.</string>
+    <string name="picker_schedule_on_title">وقت التشغيل المجدول</string>
+    <string name="picker_schedule_off_title">وقت الإيقاف المجدول</string>
+    <string name="picker_away_start_title">بداية وضع الغياب</string>
+    <string name="picker_away_end_title">نهاية وضع الغياب</string>
+    <string name="picker_away_min_title">أقل فاصل لوضع الغياب</string>
+    <string name="picker_away_max_title">أكبر فاصل لوضع الغياب</string>
+    <string name="picker_away_interval_message">اختر الفاصل بالدقائق. يعمل وضع الغياب فقط على المخارج التي تحددها أنت.</string>
+    <string name="automation_invalid_auto_off_range">اختر مدة من 1 إلى 720 دقيقة.</string>
+    <string name="automation_invalid_power_limit_range">اختر حدًا من 100 إلى 3500 واط.</string>
+    <string name="automation_invalid_standby_w_range">اختر حد استهلاك منخفض من 1 إلى 100 واط.</string>
+    <string name="automation_invalid_standby_minutes_range">اختر مدة انخفاض من 1 إلى 120 دقيقة.</string>
+    <string name="controller_watchdog_retry">تعذرت محاولة إعادة تشغيل وحدة التحكم المحلية: %1$s</string>
 </resources>

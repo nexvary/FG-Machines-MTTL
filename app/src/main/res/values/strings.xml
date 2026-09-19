@@ -172,7 +172,7 @@
     <string name="room_name_hint">Room</string>
     <string name="save_names">Save names</string>
     <string name="names_saved">Names saved</string>
-    <string name="device_location_detail">%1$s · %2$s · MTTL peer %3$s → FG controller TCP 10086</string>
+    <string name="device_location_detail">%1$s · %2$s · LOCAL %3$s · TCP 10086</string>
     <string name="controller_service_error">Controller service error</string>
     <string name="controller_notification_channel">Local controller</string>
     <string name="controller_notification_channel_desc">Keeps the MTTL local controller available in the background.</string>
@@ -192,20 +192,20 @@
     <string name="safety_alerts">Safety and offline notifications</string>
     <string name="safety_alerts_note">Alerts are generated locally for disconnects, reported protection events and loads above 3,000 W.</string>
     <string name="automation_title">Local automation</string>
-    <string name="automation_note">Timers and schedules run locally on this controller phone. Keep the hotspot/controller service active.</string>
+    <string name="automation_note">Enable a rule, then tap its value to choose it with the wheel. Automation runs locally on this controller phone and does not require Internet.</string>
     <string name="automation_none">No automation rules enabled</string>
     <string name="automation_active_count">%1$d automation rule(s) enabled</string>
     <string name="automation_outlet_1">Outlet 1 automation</string>
     <string name="automation_outlet_2">Outlet 2 automation</string>
     <string name="automation_outlet_3">Outlet 3 automation</string>
     <string name="automation_outlet_4">Outlet 4 automation</string>
-    <string name="auto_off_enable">Auto-off timer</string>
-    <string name="auto_off_minutes_hint">Minutes before automatic off</string>
+    <string name="auto_off_enable">Turn off automatically after a duration</string>
+    <string name="auto_off_minutes_hint">Duration (minutes) · tap to choose</string>
     <string name="schedule_enable">Daily schedule</string>
     <string name="schedule_on_hint">ON HH:mm</string>
     <string name="schedule_off_hint">OFF HH:mm</string>
     <string name="save_automation">Save automation</string>
-    <string name="automation_background_note">Schedules are checked every 15 seconds in the background service. Auto-off starts when live telemetry reports that the outlet is ON.</string>
+    <string name="automation_background_note">The wheel prevents invalid manual values. Rules are checked in the background; keep the controller service active.</string>
     <string name="automation_invalid_minutes">Enter a positive number of minutes.</string>
     <string name="automation_invalid_time">Use 24-hour HH:mm format.</string>
     <string name="automation_fix_fields">Check the automation values before saving.</string>
@@ -244,8 +244,8 @@
     <string name="remote_on">ON</string>
     <string name="remote_off">OFF</string>
     <string name="remote_not_connected">Remote controller not connected.</string>
-    <string name="power_limit_enable">Cut off outlet above power limit</string>
-    <string name="power_limit_w_hint">Power cutoff threshold (W)</string>
+    <string name="power_limit_enable">Turn off when consumption exceeds a limit</string>
+    <string name="power_limit_w_hint">Cutoff limit (W) · tap to choose</string>
     <string name="select_device_first">Select a fleet device first.</string>
     <string name="all_rooms">All rooms</string>
     <string name="fleet_no_devices">No devices in this room</string>
@@ -466,9 +466,9 @@ Power %3$.1f W · Energy %4$.3f kWh · Temperature %5$d°C
 Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
 
 
-    <string name="standby_cutoff_enable">Standby cutoff</string>
-    <string name="standby_w_hint">Standby threshold (W)</string>
-    <string name="standby_minutes_hint">Low-power minutes</string>
+    <string name="standby_cutoff_enable">Turn off when consumption stays low</string>
+    <string name="standby_w_hint">Low-consumption threshold (W) · tap to choose</string>
+    <string name="standby_minutes_hint">Low-consumption duration (min) · tap to choose</string>
     <string name="automation_invalid_standby_w">Enter a positive standby watt threshold.</string>
     <string name="smart_extras_title">Smart plug extras</string>
     <string name="smart_extras_note">Local-only features inspired by smart plugs. Cloud is not required. Away Mode toggles only the outlets you explicitly select.</string>
@@ -551,4 +551,27 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="cloud_status_failed">Cloud error: %1$s</string>
     <string name="cloud_sync_requires_login">Sign in first, then enable the controller relay.</string>
 
+
+    <string name="picker_apply">Apply</string>
+    <string name="picker_cancel">Cancel</string>
+    <string name="picker_auto_off_title">Automatic-off duration</string>
+    <string name="picker_auto_off_message">Choose 1–720 minutes. The outlet turns off after it has been ON for this duration.</string>
+    <string name="picker_standby_w_title">Low-consumption threshold</string>
+    <string name="picker_standby_w_message">Choose 1–100 W. Consumption at or below this value is treated as standby/low power.</string>
+    <string name="picker_standby_minutes_title">Low-consumption duration</string>
+    <string name="picker_standby_minutes_message">Choose 1–120 minutes. The outlet is switched off only after low consumption persists for this long.</string>
+    <string name="picker_power_limit_title">Maximum allowed power</string>
+    <string name="picker_power_limit_message">Choose 100–3500 W in 50 W steps. The outlet is switched off if live power rises above this limit.</string>
+    <string name="picker_schedule_on_title">Schedule ON time</string>
+    <string name="picker_schedule_off_title">Schedule OFF time</string>
+    <string name="picker_away_start_title">Away Mode start</string>
+    <string name="picker_away_end_title">Away Mode end</string>
+    <string name="picker_away_min_title">Minimum Away interval</string>
+    <string name="picker_away_max_title">Maximum Away interval</string>
+    <string name="picker_away_interval_message">Choose the interval in minutes. Away Mode operates only on the outlets you explicitly select.</string>
+    <string name="automation_invalid_auto_off_range">Choose an automatic-off duration from 1 to 720 minutes.</string>
+    <string name="automation_invalid_power_limit_range">Choose a cutoff limit from 100 to 3500 W.</string>
+    <string name="automation_invalid_standby_w_range">Choose a low-consumption threshold from 1 to 100 W.</string>
+    <string name="automation_invalid_standby_minutes_range">Choose a low-consumption duration from 1 to 120 minutes.</string>
+    <string name="controller_watchdog_retry">Local controller restart retry failed: %1$s</string>
 </resources>
