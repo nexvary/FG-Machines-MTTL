@@ -566,4 +566,19 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="automation_invalid_standby_w_range">1–100 W wählen.</string>
     <string name="automation_invalid_standby_minutes_range">1–120 Minuten wählen.</string>
     <string name="controller_watchdog_retry">Neustart des lokalen Controllers fehlgeschlagen: %1$s</string>
+
+    <string name="free_remote_title">Kostenloser Fernzugriff</string>
+    <string name="free_remote_note">Kein VPS und kein Monatsabo erforderlich. Wählen Sie ZeroTier auf dem Controller-Telefon oder ein ZeroTier/OpenWrt-Router-Gateway.</string>
+    <string name="free_remote_mode_label">Kostenloser Zugriffsmodus</string>
+    <string name="free_remote_host_hint">Private ZeroTier-/Controller-LAN-IP</string>
+    <string name="free_remote_apply">Kostenlosen Fernzugriff verwenden</string>
+    <string name="free_remote_phone_help">Telefonmodus: Installieren Sie ZeroTier auf dem FG Machines RCK Controller-Telefon. Geben Sie dessen private ZeroTier-IP ein; RCK verwendet den lokalen API-Port 18086.</string>
+    <string name="free_remote_router_help">Router-Gateway-Modus: ZeroTier läuft auf dem OpenWrt-Access-Point/Router und routet das lokale Netz. Geben Sie die LAN-IP des Controller-Telefons ein. Die App flasht den Router nicht automatisch.</string>
+    <string name="free_remote_ready">Kostenloser Fernzugriff bereit · %1$s · %2$s</string>
+    <string name="free_remote_invalid">Fehler beim kostenlosen Fernzugriff: %1$s</string>
+    <string name="free_remote_router_warning">Experimentelles Router-Ziel: LG GAPM-7100 / RTL8198C rev B. Nur ein für die exakte Platine geprüftes Firmware-Image verwenden; niemals ein generisches RTL8198C-Image flashen.</string>
+    <string-array name="free_remote_mode_labels">
+        <item>ZeroTier auf dem Controller-Telefon</item>
+        <item>ZeroTier / OpenWrt Router-Gateway</item>
+    </string-array>
 </resources>
