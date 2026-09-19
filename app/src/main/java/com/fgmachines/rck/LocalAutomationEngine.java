@@ -253,6 +253,7 @@ public final class LocalAutomationEngine implements Closeable {
         }
 
         Boolean current = relayState(device, channel);
+        if (current == null) return;
         if (Boolean.TRUE.equals(current)) {
             try {
                 hub.setOutlet(mac, channel, false);
