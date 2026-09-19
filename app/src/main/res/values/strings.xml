@@ -465,4 +465,45 @@ Recognized local-control hardware. Use the MTTL setup/discovery path.</string>
 Power %3$.1f W · Energy %4$.3f kWh · Temperature %5$d°C
 Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
 
+
+    <string name="standby_cutoff_enable">Standby cutoff</string>
+    <string name="standby_w_hint">Standby threshold (W)</string>
+    <string name="standby_minutes_hint">Low-power minutes</string>
+    <string name="automation_invalid_standby_w">Enter a positive standby watt threshold.</string>
+    <string name="smart_extras_title">Smart plug extras</string>
+    <string name="smart_extras_note">Local-only features inspired by smart plugs. Cloud is not required. Away Mode toggles only the outlets you explicitly select.</string>
+    <string name="away_mode_waiting">Select a fleet device to configure Away Mode.</string>
+    <string name="away_mode_enable">Away Mode</string>
+    <string name="away_start_hint">Start HH:mm</string>
+    <string name="away_end_hint">End HH:mm</string>
+    <string name="away_min_hint">Min interval (min)</string>
+    <string name="away_max_hint">Max interval (min)</string>
+    <string name="away_outlets_title">Outlets allowed to toggle</string>
+    <string name="save_away_mode">Save Away Mode</string>
+    <string name="away_interval_invalid">Use positive minutes and make max ≥ min.</string>
+    <string name="away_select_outlet">Select at least one outlet for Away Mode.</string>
+    <string name="away_mode_saved">Away Mode saved.</string>
+    <string name="away_mode_disabled">Away Mode disabled.</string>
+    <string name="away_mode_active_format">Away Mode active · %1$s–%2$s · %3$d outlet(s)</string>
+    <string name="away_mode_off">Away Mode is off.</string>
+    <string name="runtime_title">Outlet runtime statistics</string>
+    <string name="runtime_note">Local lifetime runtime and relay transition count. Statistics begin when this controller first observes the outlet state.</string>
+    <string name="runtime_waiting">Select a device to view outlet runtime.</string>
+    <string name="runtime_unknown_line">Outlet %1$d · waiting for first state</string>
+    <string name="runtime_line_format">Outlet %1$d · %2$s · runtime %3$s · switches %4$d</string>
+    <string name="event_other">Other event</string>
+    <string name="event_connected">Connected</string>
+    <string name="event_disconnected">Disconnected</string>
+    <string name="event_relay_state">Relay state</string>
+    <string name="event_scene_apply">Scene applied</string>
+    <string name="event_alert">Alert</string>
+    <string name="event_auto_off">Auto-off</string>
+    <string name="event_power_limit">Power-limit cutoff</string>
+    <string name="event_standby_cutoff">Standby cutoff</string>
+    <string name="event_schedule">Schedule</string>
+    <string name="event_away_toggle">Away Mode toggle</string>
+    <string name="event_away_config">Away Mode setting</string>
+    <string name="event_usb_discovery">USB discovery started</string>
+    <string name="event_usb_frame">USB discovery frame</string>
+
 </resources>
