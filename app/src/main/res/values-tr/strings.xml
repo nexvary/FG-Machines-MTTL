@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FG Machines RCK</string>
+    <string name="app_name">FG Machines Link</string>
     <string name="app_subtitle">Akıllı MTTL Ailesi Denetleyicisi</string>
     <string name="brand_tagline">Ticaret, teknoloji ve akıllı kontrol</string>
     <string name="brand_badge">MTTL-W01 ailesi · Wi‑Fi 2.4 GHz</string>
@@ -89,19 +89,19 @@
     <string name="settings_title">Ayarlar</string>
     <string name="settings_note">Dil değişikliği hemen uygulanır. Ağ kurulumu yereldir ve Kore abonelik hizmetine ihtiyaç duymaz.</string>
     <string name="about_title">Hakkında</string>
-    <string name="about_line">FG Machines RCK · MTTL ailesi · Önce yerel kontrol</string>
-    <string name="about_body">FG Machines RCK, uyumlu LG U+ / TONLY akıllı priz şeritleri için bağımsız bir yerel denetleyicidir. Resmî LG U+ uygulaması değildir. Proje yerel Wi‑Fi çalışmasına, anlaşılır tanılamaya ve güvenli röle kontrolüne öncelik verir.</string>
+    <string name="about_line">FG Machines Link · MTTL ailesi · Önce yerel kontrol</string>
+    <string name="about_body">FG Machines Link, uyumlu LG U+ / TONLY akıllı priz şeritleri için bağımsız bir yerel denetleyicidir. Resmî LG U+ uygulaması değildir. Proje yerel Wi‑Fi çalışmasına, anlaşılır tanılamaya ve güvenli röle kontrolüne öncelik verir.</string>
     <string name="supported_models_title">Uyumluluk</string>
     <string name="supported_models_body">Birincil doğrulanmış aile: MTTL-W01. Bilinen sertifika revizyonları HU04139-17002A/B/C/D/E. TONLY_TAP_* ve ONLY_TAP_* imzaları tanınır ve röle kontrolleri etkinleşmeden önce protokol doğrulanır.</string>
     <string name="setup_method_title">Kurulum yöntemini seçin</string>
     <string name="setup_recommended">ÖNERİLEN</string>
     <string name="setup_experimental">DENEYSEL</string>
     <string name="setup_mode_router_desc">En iyi seçenek. Bu telefonu 2.4 GHz yönlendiriciye bağlayıp IPv4 adresini kaydedin, sonra TONLY_TAP ağına bağlanıp yönlendirici bilgilerini yazın. Kurulumdan sonra aynı yönlendiriciye tekrar bağlanın.</string>
-    <string name="setup_mode_two_phone_desc">Yönlendirici yoksa en iyi seçenek. Telefon A 2.4 GHz hotspot’u ve FG Machines RCK’yi açık tutar. Telefon B TONLY_TAP ağına bağlanıp Telefon A’nın hotspot bilgilerini ve denetleyici IPv4 adresini yazar.</string>
+    <string name="setup_mode_two_phone_desc">Yönlendirici yoksa en iyi seçenek. Telefon A 2.4 GHz hotspot’u ve FG Machines Link’yi açık tutar. Telefon B TONLY_TAP ağına bağlanıp Telefon A’nın hotspot bilgilerini ve denetleyici IPv4 adresini yazar.</string>
     <string name="setup_mode_single_desc">Kurulum ve hotspot için aynı telefonu kullanır. Bazı Android telefonlar hotspot açıldığında Wi‑Fi’yi kapatır; yalnızca uyumlu cihazlarda kullanın.</string>
-    <string name="router_success">Ayarlar yazıldı. Bu telefonu hedef yönlendiriciye yeniden bağlayın. FG Machines RCK, TCP 10086 üzerinden prizi bekleyecek.</string>
-    <string name="two_phone_success">Ayarlar yazıldı. Telefon A hotspot’unu açık tutun ve Telefon A’ya dönün. Priz hotspot’a ve FG Machines RCK’ye bağlanmalıdır.</string>
-    <string name="single_phone_success">Ayarlar yazıldı. Aynı 2.4 GHz hotspot’u şimdi yeniden açın ve prizin FG Machines RCK’ye bağlanmasını bekleyin.</string>
+    <string name="router_success">Ayarlar yazıldı. Bu telefonu hedef yönlendiriciye yeniden bağlayın. FG Machines Link, TCP 10086 üzerinden prizi bekleyecek.</string>
+    <string name="two_phone_success">Ayarlar yazıldı. Telefon A hotspot’unu açık tutun ve Telefon A’ya dönün. Priz hotspot’a ve FG Machines Link’ye bağlanmalıdır.</string>
+    <string name="single_phone_success">Ayarlar yazıldı. Aynı 2.4 GHz hotspot’u şimdi yeniden açın ve prizin FG Machines Link’ye bağlanmasını bekleyin.</string>
     <string-array name="setup_mode_labels">
         <item>Yönlendirici Wi‑Fi (önerilen)</item>
         <item>İki telefon (yönlendiricisiz)</item>
@@ -170,7 +170,7 @@
     <string name="controller_notification_channel_desc">MTTL yerel denetleyicisini arka planda çalışır tutar.</string>
     <string name="alert_notification_channel">Priz uyarıları</string>
     <string name="alert_notification_channel_desc">Bağlantı, koruma olayı ve yüksek yük uyarıları.</string>
-    <string name="controller_notification_title">FG Machines RCK denetleyicisi aktif</string>
+    <string name="controller_notification_title">FG Machines Link denetleyicisi aktif</string>
     <string name="controller_notification_waiting">MTTL-W01 bağlantısı bekleniyor</string>
     <string name="controller_notification_connected">Yerel bağlı priz sayısı: %1$d</string>
     <string name="strip_offline_alert_title">Priz çevrimdışı</string>
@@ -310,7 +310,7 @@
     <string name="diagnostics_home_action">Cihaz Arıza Teşhisi</string>
     <string name="diagnostics_back">Geri</string>
     <string name="diagnostics_title">Cihaz Arıza Teşhisi</string>
-    <string name="diagnostics_subtitle">Kaynak doğrulamalı hata kodları, belirtiler ve RCK bağlantılı geçmiş; çevrimdışı çalışır</string>
+    <string name="diagnostics_subtitle">Kaynak doğrulamalı hata kodları, belirtiler ve FG Link bağlantılı geçmiş; çevrimdışı çalışır</string>
     <string name="diagnostics_device_binding">Cihaz ve çıkış eşleştirme</string>
     <string name="diagnostics_no_devices">Kayıtlı MTTL-W01 cihazı yok</string>
     <string name="diagnostics_outlet_format">Çıkış %1$d</string>
@@ -336,7 +336,7 @@
     <string name="diagnostics_binding_requires_identity">Cihazı bağlamadan önce en az marka, kategori veya model girin.</string>
     <string name="diagnostics_bound">Cihaz çıkışa bağlandı.</string>
     <string name="diagnostics_search_before_record">Olayı kaydetmeden önce kaynak doğrulamalı bir teşhis çalıştırın.</string>
-    <string name="diagnostics_recorded">Teşhis olayı güncel RCK telemetri anlık görüntüsüyle kaydedildi.</string>
+    <string name="diagnostics_recorded">Teşhis olayı güncel FG Link telemetri anlık görüntüsüyle kaydedildi.</string>
     <string name="diagnostics_code_label">Kod</string>
     <string name="diagnostics_meaning_label">Anlam</string>
     <string name="diagnostics_causes_label">Olası nedenler</string>
@@ -346,7 +346,7 @@
     <string name="diagnostics_service_label">Servis sınırı</string>
     <string name="diagnostics_scope_label">Kaynak kapsamı</string>
     <string name="diagnostics_symptom_label">Belirti</string>
-    <string name="diagnostics_rck_unavailable">Canlı RCK telemetri anlık görüntüsü mevcut değildi.</string>
+    <string name="diagnostics_rck_unavailable">Canlı FG Link telemetri anlık görüntüsü mevcut değildi.</string>
 
 
     <string name="guided_title">Yönlendirmeli Belirti Teşhisi</string>
@@ -437,7 +437,7 @@ Dawon DNS MTD-01 / PM-M130-ZW · tanımlanmış Z-Wave ağ geçidi ailesi; Z-Wav
     <string name="hardware_identity_gateway_format">%1$s · %2$s
 Donanım ailesi tanındı · Z-Wave ağ geçidi/denetleyicisi gerekli
 USB bağlantıları: %3$d · Değer: %4$d V / %5$d A · Maks.: %6$d W
-FG Machines RCK bu cihaza MTTL TCP komutları göndermez.</string>
+FG Machines Link bu cihaza MTTL TCP komutları göndermez.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
 
@@ -572,7 +572,7 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="free_remote_mode_label">Ücretsiz erişim modu</string>
     <string name="free_remote_host_hint">Özel ZeroTier / denetleyici LAN IP adresi</string>
     <string name="free_remote_apply">Ücretsiz uzaktan erişimi kullan</string>
-    <string name="free_remote_phone_help">Telefon modu: FG Machines RCK denetleyici telefonuna ZeroTier kurun. Telefonun özel ZeroTier IP adresini girin; RCK yerel API için 18086 portunu kullanır.</string>
+    <string name="free_remote_phone_help">Telefon modu: FG Machines Link denetleyici telefonuna ZeroTier kurun. Telefonun özel ZeroTier IP adresini girin; FG Link yerel API için 18086 portunu kullanır.</string>
     <string name="free_remote_router_help">Yönlendirici modu: ZeroTier OpenWrt erişim noktası/yönlendirici üzerinde çalışır ve yerel ağı yönlendirir. Denetleyici telefonun LAN IP adresini girin. Uygulama yönlendiriciyi otomatik olarak flashlamaz.</string>
     <string name="free_remote_ready">Ücretsiz uzaktan erişim hazır · %1$s · %2$s</string>
     <string name="free_remote_invalid">Ücretsiz uzaktan erişim hatası: %1$s</string>
