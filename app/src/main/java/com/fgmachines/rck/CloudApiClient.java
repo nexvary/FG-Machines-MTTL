@@ -30,16 +30,16 @@ public final class CloudApiClient {
     }
 
     private AuthSession auth(String path, String email, String password) throws IOException {
-        JSONObject body = new JSONObject();
-        body.put("email", email == null ? "" : email.trim());
-        body.put("password", password == null ? "" : password);
+        JSONObject body = json(
+                "email", email == null ? "" : email.trim(),
+                "password", password == null ? "" : password);
         JSONObject response = request("POST", path, "", "", body);
         return new AuthSession(response.optString("access_token"), response.optString("user_id"));
     }
 
     public ControllerCredentials createController(String bearer, String name) throws IOException {
-        JSONObject body = new JSONObject();
-        body.put("name", name == null || name.trim().isEmpty() ? "FG Machines RCK Android" : name.trim());
+        JSONObject body = json(
+                "name", name == null || name.trim().isEmpty() ? "FG Machines RCK Android" : name.trim());
         JSONObject response = request("POST", "/api/v1/controllers", bearer, "", body);
         return new ControllerCredentials(
                 response.optString("controller_id"),
@@ -48,19 +48,18 @@ public final class CloudApiClient {
 
     public void registerDevice(String bearer, String controllerId, FleetStore.DeviceRecord device)
             throws IOException {
-        JSONObject body = new JSONObject();
-        body.put("controller_id", controllerId);
-        body.put("mac", device.mac);
-        body.put("name", device.name);
-        body.put("room", device.room);
-        body.put("firmware", device.firmware);
+        JSONObject body = json(
+                "controller_id", controllerId,
+                "mac", device.mac,
+                "name", device.name,
+                "room", device.room,
+                "firmware", device.firmware);
         request("POST", "/api/v1/devices", bearer, "", body);
     }
 
     public void heartbeat(String controllerId, String controllerKey, JSONArray devices)
             throws IOException {
-        JSONObject body = new JSONObject();
-        body.put("devices", devices == null ? new JSONArray() : devices);
+        JSONObject body = json("devices", devices == null ? new JSONArray() : devices);
         request("POST", "/api/v1/controllers/" + controllerId + "/heartbeat",
                 "", controllerKey, body);
     }
@@ -68,8 +67,7 @@ public final class CloudApiClient {
     public void telemetry(String controllerId, String controllerKey, JSONArray items)
             throws IOException {
         if (items == null || items.length() == 0) return;
-        JSONObject body = new JSONObject();
-        body.put("items", items);
+        JSONObject body = json("items", items);
         request("POST", "/api/v1/controllers/" + controllerId + "/telemetry",
                 "", controllerKey, body);
     }
@@ -84,11 +82,26 @@ public final class CloudApiClient {
 
     public void ack(String controllerId, String controllerKey, String commandId,
                     String status, String detail) throws IOException {
-        JSONObject body = new JSONObject();
-        body.put("status", status);
-        body.put("detail", detail == null ? "" : detail);
+        JSONObject body = json(
+                "status", status,
+                "detail", detail == null ? "" : detail);
         request("POST", "/api/v1/controllers/" + controllerId + "/commands/" + commandId + "/ack",
                 "", controllerKey, body);
+    }
+
+    static JSONObject json(Object... pairs) throws IOException {
+        if (pairs == null || pairs.length % 2 != 0) {
+            throw new IOException("Invalid JSON field list");
+        }
+        JSONObject object = new JSONObject();
+        try {
+            for (int i = 0; i < pairs.length; i += 2) {
+                object.put(String.valueOf(pairs[i]), pairs[i + 1]);
+            }
+            return object;
+        } catch (Exception error) {
+            throw new IOException("Unable to build JSON request", error);
+        }
     }
 
     private JSONObject request(String method, String path, String bearer,
