@@ -21,16 +21,22 @@ public final class VoiceCommandParser {
 
         boolean wantsOff = containsAny(value,
                 "turn off", "switch off", "power off", " off ",
-                "اقفل", "اطفئ", "اطفي", "ايقاف", "وقف");
+                "اقفل", "اطفئ", "اطفي", "ايقاف", "وقف",
+                "kapat", "apaga", "apagar", "desactiva",
+                "ausschalten", "schalte aus");
         boolean wantsOn = containsAny(value,
                 "turn on", "switch on", "power on", " on ",
-                "شغل", "تشغيل", "افتح");
+                "شغل", "تشغيل", "افتح",
+                "ac ", " aç ", "enciende", "encender", "activa",
+                "einschalten", "schalte ein");
 
         if (!wantsOn && !wantsOff) return new Command(Type.UNKNOWN, 0, phrase);
 
         boolean all = containsAny(value,
                 " all ", "everything", "all outlets", "all sockets",
-                "الكل", "كل المخارج", "كل الفيش", "كل الفيشات");
+                "الكل", "كل المخارج", "كل الفيش", "كل الفيشات",
+                " hepsi ", " tumu ", " tümü ",
+                " todos ", " todas ", " alle ");
 
         if (all) {
             if (wantsOff) return new Command(Type.ALL_OFF, 0, phrase);
@@ -61,10 +67,14 @@ public final class VoiceCommandParser {
         for (int outlet = 1; outlet <= 4; outlet++) {
             if (value.contains(" " + outlet + " ")) return outlet;
         }
-        if (containsAny(value, " الاول ", " اول ", " واحد ", " one ", " first ")) return 1;
-        if (containsAny(value, " الثاني ", " ثاني ", " اثنين ", " اتنين ", " two ", " second ")) return 2;
-        if (containsAny(value, " الثالث ", " ثالث ", " ثلاثه ", " three ", " third ")) return 3;
-        if (containsAny(value, " الرابع ", " رابع ", " اربعه ", " four ", " fourth ")) return 4;
+        if (containsAny(value, " الاول ", " الاولي ", " اول ", " واحد ",
+                " one ", " first ", " bir ", " uno ", " eins ", " erste ")) return 1;
+        if (containsAny(value, " الثاني ", " الثانيه ", " ثاني ", " اثنين ", " اتنين ",
+                " two ", " second ", " iki ", " dos ", " zwei ", " zweite ")) return 2;
+        if (containsAny(value, " الثالث ", " الثالثه ", " ثالث ", " ثلاثه ",
+                " three ", " third ", " uc ", " üç ", " tres ", " drei ", " dritte ")) return 3;
+        if (containsAny(value, " الرابع ", " الرابعه ", " رابع ", " رابعه ", " اربعه ",
+                " four ", " fourth ", " dort ", " dört ", " cuatro ", " vier ", " vierte ")) return 4;
         return 0;
     }
 
