@@ -103,7 +103,12 @@ correct and ports 80/443 are reachable.
 
 ## Android controller integration
 
-The next Android integration uses these outbound endpoints:
+The relay is opt-in from the Android UI. The controller phone stores the
+one-time controller key in private app preferences and communicates with the VPS
+using outbound HTTPS only. Local control remains independent of cloud availability.
+
+
+The Android controller integration in app version 1.3.7 uses these outbound endpoints:
 
 - `POST /api/v1/controllers/{id}/heartbeat`
 - `POST /api/v1/controllers/{id}/telemetry`
