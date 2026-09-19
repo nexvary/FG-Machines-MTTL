@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.4.0
+## Current Android baseline — 1.5.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -24,6 +24,10 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Physical FG validation on an MTTL-W01 running firmware `1.0.66-0.1.54` confirmed that all four AC outlets remain controllable over the local Wi-Fi LAN with the router WAN/Internet link disconnected. The UI now hides the strip's ephemeral TCP source port and shows the stable local path to controller TCP `10086`.
 - 1.3.9 Automation UX replaces manual numeric typing with wheel pickers for auto-off, low-consumption cutoff, power-limit cutoff and Away Mode intervals; schedule times use a native time picker.
 - 1.4.0 Professional UI Refresh introduces a calmer black/navy surface system, compact brand header, semantic connection colors, stateful per-outlet cards, clearer picker affordances, and a consistent selected-state bottom navigation.
+- 1.5.0 Free Remote Access adds two zero-subscription remote paths: ZeroTier directly on the controller phone, or a ZeroTier/OpenWrt router gateway that routes the site LAN. Both reuse the authenticated local API on TCP 18086 and keep MTTL control local on TCP 10086.
+- Free remote profiles deliberately accept only private/VPN HTTP endpoints. Public Internet HTTP is rejected; no port-forwarding is required.
+- Device Share Codes prefer the configured free remote endpoint, so a client can import one code and use the same authenticated device scope over ZeroTier.
+- Router gateway flashing is not automated by the Android app. LG GAPM-7100 / RTL8198C rev B remains an experimental hardware target and requires a board-verified OpenWrt image before any flash is attempted.
 - Outlet cards now visually react to ON/OFF state while preserving the verified MTTL local control path; offline cards are visually de-emphasized rather than left looking active.
 - The dashboard connection panel is condensed to user-facing LOCAL status information while keeping the technical TCP 10086 path available in the detail line.
 - Numeric automation values are range-gated in the UI and again when saving: auto-off 1–720 min, low-consumption 1–100 W for 1–120 min, and power cutoff 100–3500 W.
