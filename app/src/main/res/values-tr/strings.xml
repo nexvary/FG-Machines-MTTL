@@ -456,5 +456,45 @@ Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
     <string name="diagnostics_live_format">Çıkış %1$d · Röle %2$s
 Güç %3$.1f W · Enerji %4$.3f kWh · Sıcaklık %5$d°C
 Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
+    <string name="smart_features_title">Smart Plug+ yerel özellikleri</string>
+    <string name="smart_features_note">Dört MTTL-W01 çıkışı için ek yazılım özellikleri. Bulut gerektirmeden bu kontrol telefonunda yerel çalışır.</string>
+    <string name="smart_features_select_device">Smart Plug+ ayarları için bir cihaz seçin.</string>
+    <string name="smart_features_summary">Away Mode çıkışı: %1$d · Boşta otomatik kapanma: %2$d</string>
+    <string name="away_mode_title">Away Mode</string>
+    <string name="away_mode_note">Seçilen zaman aralığında çıkışları 20–60 dakikalık rastgele aralıklarla değiştirerek evde biri varmış gibi davranır. Süre sonunda çıkışı kapatır. Isıtıcı, pişirme cihazı, pompa, motor veya gözetimsiz riskli yüklerde kullanmayın.</string>
+    <string name="away_start_hint">Başlangıç HH:mm</string>
+    <string name="away_end_hint">Bitiş HH:mm</string>
+    <string name="away_outlet_1">Çıkış 1 için Away Mode</string>
+    <string name="away_outlet_2">Çıkış 2 için Away Mode</string>
+    <string name="away_outlet_3">Çıkış 3 için Away Mode</string>
+    <string name="away_outlet_4">Çıkış 4 için Away Mode</string>
+    <string name="idle_off_title">Boşta yük otomatik kapanma</string>
+    <string name="idle_off_note">Ölçülen güç seçilen süre boyunca eşik değerin altında veya eşit kaldığında çıkışı kapatır.</string>
+    <string name="idle_off_watts_hint">Boşta watt</string>
+    <string name="idle_off_minutes_hint">Boşta dakika</string>
+    <string name="idle_off_invalid_watts">Pozitif bir boşta güç eşiği girin.</string>
+    <string name="save_smart_features">Smart Plug+ kaydet</string>
+    <string name="smart_features_safety_note">Güvenlik kuralı: Away Mode ve sabit günlük program aynı çıkışı birlikte kontrol edemez. Koruma ve güç sınırı kuralları aktif kalır.</string>
+    <string name="smart_features_saved">Smart Plug+ kaydedildi · %1$d kural etkin</string>
+    <string name="away_window_invalid">24 saat HH:mm biçiminde geçerli başlangıç ve bitiş saati girin. Saatler farklı olmalıdır.</string>
+    <string name="away_schedule_conflict">Sabit programı açmadan önce bu çıkışta Away Mode özelliğini kapatın.</string>
+    <string name="away_schedule_conflict_outlet">Çıkış %1$d için sabit program zaten etkin. Away Mode öncesinde programı kapatın.</string>
+    <string name="runtime_title">Bugünkü çıkış çalışma süreleri</string>
+    <string name="runtime_waiting">Çalışma süresini görmek için cihaz seçin.</string>
+    <string name="runtime_outlet_format">%1$s · %2$d sa %3$d dk · %4$d başlatma · %5$s</string>
+    <string name="runtime_state_on">AÇIK</string>
+    <string name="runtime_state_off">KAPALI</string>
+    <string name="event_history_title">Son olay geçmişi</string>
+    <string name="event_connected">Bağlandı</string>
+    <string name="event_disconnected">Bağlantı kesildi</string>
+    <string name="event_relay_state">Çıkış durumu</string>
+    <string name="event_auto_off">Otomatik kapanma</string>
+    <string name="event_idle_auto_off">Boşta otomatik kapanma</string>
+    <string name="event_power_cutoff">Güç sınırı kesmesi</string>
+    <string name="event_schedule">Program</string>
+    <string name="event_away_toggle">Away Mode değişimi</string>
+    <string name="event_away_window_end">Away Mode süresi bitti</string>
+    <string name="event_scene_apply">Sahne uygulandı</string>
+    <string name="event_alert">Uyarı</string>
 
 </resources>
