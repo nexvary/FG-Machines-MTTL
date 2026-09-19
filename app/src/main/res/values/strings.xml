@@ -535,4 +535,20 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="event_device_share">Device share created</string>
     <string name="event_voice_command">Voice command</string>
 
+
+    <string name="cloud_account_title">FG Machines Cloud / VPS</string>
+    <string name="cloud_account_note">Optional. Local MTTL-W01 control, timers and automation continue without a VPS. Sign in only when your HTTPS server is ready.</string>
+    <string name="cloud_endpoint_hint">HTTPS VPS address</string>
+    <string name="cloud_email_hint">Cloud account email</string>
+    <string name="cloud_password_hint">Cloud account password</string>
+    <string name="cloud_register">Create account</string>
+    <string name="cloud_login">Sign in</string>
+    <string name="cloud_sync_enable">Enable this phone as the cloud controller relay</string>
+    <string name="cloud_status_signed_out">Not signed in. Local control remains active.</string>
+    <string name="cloud_status_missing">Enter the HTTPS VPS address, email and password.</string>
+    <string name="cloud_status_authenticating">Contacting cloud…</string>
+    <string name="cloud_status_ready">Cloud account saved. Enable relay on the controller phone when ready.</string>
+    <string name="cloud_status_failed">Cloud error: %1$s</string>
+    <string name="cloud_sync_requires_login">Sign in first, then enable the controller relay.</string>
+
 </resources>
