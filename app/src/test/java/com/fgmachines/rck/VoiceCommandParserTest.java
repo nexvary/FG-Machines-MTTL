@@ -27,6 +27,20 @@ public class VoiceCommandParserTest {
     }
 
     @Test
+    public void parsesSupportedLanguageCommands() {
+        assertEquals(VoiceCommandParser.Type.OUTLET_OFF,
+                VoiceCommandParser.parse("kapat priz 2").type);
+        assertEquals(2, VoiceCommandParser.parse("kapat priz 2").outlet);
+
+        assertEquals(VoiceCommandParser.Type.OUTLET_ON,
+                VoiceCommandParser.parse("enciende salida 3").type);
+        assertEquals(3, VoiceCommandParser.parse("enciende salida 3").outlet);
+
+        assertEquals(VoiceCommandParser.Type.ALL_OFF,
+                VoiceCommandParser.parse("alle ausschalten").type);
+    }
+
+    @Test
     public void rejectsAmbiguousSpeech() {
         assertEquals(VoiceCommandParser.Type.UNKNOWN,
                 VoiceCommandParser.parse("make the room comfortable").type);
