@@ -457,4 +457,19 @@ Bekannte Local-Control-Hardware. MTTL-Einrichtungs-/Erkennungspfad verwenden.</s
 Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
 Überlast: %6$s · Überhitzung: %7$s · Ereignis: %8$s</string>
 
+
+    <string name="away_mode_enable">Abwesenheitsmodus · zufälliges EIN/AUS im Zeitfenster</string>
+    <string name="away_start_hint">Abwesenheit Start HH:mm</string>
+    <string name="away_end_hint">Abwesenheit Ende HH:mm</string>
+    <string name="linked_outlet_rule">Verknüpfte Steckdose · EIN/AUS-Zustand auf eine andere Steckdose spiegeln</string>
+    <string name="follow_delay_hint">Verzögerung der verknüpften Steckdose (Sekunden, 0–3600)</string>
+    <string name="automation_invalid_follow_target">Eine Steckdose kann nicht mit sich selbst verknüpft werden.</string>
+    <string name="runtime_waiting">Laufzeit heute · warte auf lokale Telemetrie.</string>
+    <string name="runtime_summary_format">Heute · S1 %1$s · S2 %2$s · S3 %3$s · S4 %4$s</string>
+    <string name="runtime_hours_minutes">%1$dh %2$dmin</string>
+    <string name="runtime_minutes">%1$dmin</string>
+    <string-array name="automation_follow_target_labels">
+        <item>Keine Verknüpfung</item><item>Steckdose 1</item><item>Steckdose 2</item><item>Steckdose 3</item><item>Steckdose 4</item>
+    </string-array>
+
 </resources>
