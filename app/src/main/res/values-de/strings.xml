@@ -220,16 +220,16 @@
     <string name="alert_temp_hint">Temperaturwarnung (°C, optional)</string>
     <string name="alert_energy_hint">Tagesenergie-Warnung (kWh, optional)</string>
     <string name="save_alert_limits">Warnschwellen speichern</string>
-    <string name="sharing_title">Benutzer, Freigabe und Home Assistant</string>
+    <string name="sharing_title">Gerätefreigabe und Home Assistant</string>
     <string name="api_endpoint_waiting">Lokale API-IP noch nicht erkannt · Port 18086</string>
     <string name="share_name_hint">Benutzer-/Integrationsname</string>
-    <string name="create_access">Zugriff erstellen</string>
+    <string name="create_access">Gerätefreigabe erstellen</string>
     <string name="create_ha_token">Home-Assistant-Token</string>
     <string name="share_token_waiting">Neues Zugriffstoken erscheint hier. Antippen zum Kopieren.</string>
     <string name="revoke_access">Ausgewählten Zugriff widerrufen</string>
     <string name="sharing_security_note">View liest nur. Control schaltet Ausgänge. Admin enthält Control. API nur in vertrauenswürdigem LAN/VPN oder hinter HTTPS verwenden.</string>
-    <string name="remote_control_title">Fernsteuerung</string>
-    <string name="remote_control_note">Mit anderem FG Machines RCK über HTTPS/VPN verbinden. Lokale Steuerung bleibt Standard.</string>
+    <string name="remote_control_title">Cloud / Fernsteuerung</string>
+    <string name="remote_control_note">Jetzt einen Gerätefreigabe-Code für LAN/VPN einfügen oder später einen HTTPS-VPS-Endpunkt konfigurieren. Lokale Steuerung bleibt Standard.</string>
     <string name="remote_endpoint_hint">Remote-Endpunkt, z. B. https://rck.example.com</string>
     <string name="remote_token_hint">Zugriffstoken</string>
     <string name="remote_connect">Verbinden / Aktualisieren</string>
@@ -497,5 +497,34 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="event_away_config">Abwesenheitsmodus-Einstellung</string>
     <string name="event_usb_discovery">USB-Erkennung gestartet</string>
     <string name="event_usb_frame">USB-Erkennungsrahmen</string>
+
+    <string name="share_code_waiting">Der Gerätefreigabe-Code erscheint nach dem Erstellen des Zugriffs hier. Zum Kopieren antippen.</string>
+    <string name="share_code_unavailable">Freigabe-Code erst verfügbar, wenn eine Controller-IPv4 erkannt wurde.</string>
+    <string name="share_code_copied">Gerätefreigabe-Code kopiert</string>
+    <string name="share_code_secret_note">Der Code enthält ein aktives Zugriffstoken. Wie ein Passwort behandeln und bei Nichtgebrauch widerrufen.</string>
+    <string name="share_scope_all">ALLE GERÄTE</string>
+    <string name="share_select_device">Vor der Gerätefreigabe ein Gerät auswählen.</string>
+    <string name="voice_control_title">Sprachsteuerung</string>
+    <string name="voice_control_note">Verwendet Android-Spracherkennung und bevorzugt Offline-Erkennung, wenn verfügbar. Befehle gelten nur für das ausgewählte verbundene Gerät.</string>
+    <string name="voice_control_start">Befehl sprechen</string>
+    <string name="voice_ready">Bereit für einen sicheren Steckdosenbefehl.</string>
+    <string name="voice_prompt">Zum Beispiel: turn on outlet 1 oder turn off all outlets</string>
+    <string name="voice_listening">Hört zu…</string>
+    <string name="voice_unavailable">Auf diesem Telefon ist keine kompatible Spracherkennung verfügbar.</string>
+    <string name="voice_no_result">Kein Sprachergebnis erhalten.</string>
+    <string name="voice_cancelled">Sprachbefehl abgebrochen.</string>
+    <string name="voice_requires_connected_device">Vor der Sprachsteuerung ein verbundenes MTTL-W01 auswählen.</string>
+    <string name="voice_not_understood">„%1$s“ konnte keinem sicheren Steckdosenbefehl zugeordnet werden.</string>
+    <string name="voice_heard">Erkannt: %1$s</string>
+    <string name="voice_confirm_all_on">Alle vier Ausgänge des ausgewählten Geräts EINSCHALTEN?</string>
+    <string name="voice_command_result">Sprachbefehl gesendet: %1$d · Fehler: %2$d</string>
+    <string name="remote_share_code_hint">Gerätefreigabe-Code einfügen</string>
+    <string name="import_share_code">Freigabe-Code importieren</string>
+    <string name="share_code_invalid">Ungültiger oder nicht unterstützter Freigabe-Code.</string>
+    <string name="share_code_imported_device">Freigabe-Code importiert · Bereich %1$s</string>
+    <string name="share_code_imported_all">Freigabe-Code importiert · alle Geräte</string>
+    <string name="cloud_waiting_for_vps">Cloud/VPS ist noch nicht konfiguriert. Lokale Steuerung und LAN/VPN-Gerätefreigabe bleiben verfügbar.</string>
+    <string name="event_device_share">Gerätefreigabe erstellt</string>
+    <string name="event_voice_command">Sprachbefehl</string>
 
 </resources>
