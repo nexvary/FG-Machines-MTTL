@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Keeps the local TCP controller available while the app is in the background.
@@ -34,7 +37,8 @@ public final class MttlControllerService extends Service implements MttlControll
     private static final String CHANNEL_ALERTS = "fg_rck_alerts";
     private static final int CONTROLLER_NOTIFICATION_ID = 1001;
     private static final int ALERT_BASE_ID = 2000;
-    private static final String PREFS = "fg_rck_settings";
+    public static final String PREFS = "fg_rck_settings";
+    public static final String PREF_CONTROLLER_WANTED = "controller_wanted";
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
     public static final String PREF_ALERT_POWER_W = "alert_power_w";
     public static final String PREF_ALERT_TEMP_C = "alert_temp_c";
@@ -51,6 +55,8 @@ public final class MttlControllerService extends Service implements MttlControll
     private CloudRelayManager cloudRelayManager;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
+    private final ScheduledExecutorService watchdog = Executors.newSingleThreadScheduledExecutor();
+    private volatile long lastWatchdogAlertAt;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -66,15 +72,21 @@ public final class MttlControllerService extends Service implements MttlControll
         automationEngine = new LocalAutomationEngine(this, hub, historyStore);
         automationEngine.start();
         hub.addListener(this, true);
+        watchdog.scheduleWithFixedDelay(this::ensureControllerRunning,
+                15, 30, TimeUnit.SECONDS);
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putBoolean(PREF_CONTROLLER_WANTED, false).apply();
             stopForeground(STOP_FOREGROUND_REMOVE);
             stopSelf();
             return START_NOT_STICKY;
         }
 
+        getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                .putBoolean(PREF_CONTROLLER_WANTED, true).apply();
         startForeground(CONTROLLER_NOTIFICATION_ID, buildControllerNotification());
         try {
             hub.start();
@@ -86,7 +98,23 @@ public final class MttlControllerService extends Service implements MttlControll
         return START_STICKY;
     }
 
+    private void ensureControllerRunning() {
+        if (hub == null || hub.isRunning()) return;
+        try {
+            hub.start();
+        } catch (IOException error) {
+            long now = System.currentTimeMillis();
+            if (now - lastWatchdogAlertAt >= TimeUnit.MINUTES.toMillis(5)) {
+                lastWatchdogAlertAt = now;
+                postAlert(getString(R.string.controller_service_error),
+                        getString(R.string.controller_watchdog_retry, safeMessage(error)),
+                        ALERT_BASE_ID + 98);
+            }
+        }
+    }
+
     @Override public void onDestroy() {
+        watchdog.shutdownNow();
         if (hub != null) hub.removeListener(this);
         if (automationEngine != null) automationEngine.close();
         if (localApiServer != null) localApiServer.close();
