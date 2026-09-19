@@ -37,7 +37,7 @@ jobs:
         run: |
           set -euo pipefail
           if git ls-files | grep -E '\.(jks|keystore|p12|pfx)$'; then
-            echo "Signing key material must never be committed to this public repository."
+            echo "Signing key material must never be committed to the repository."
             exit 1
           fi
 
