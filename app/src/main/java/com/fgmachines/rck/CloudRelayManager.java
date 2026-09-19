@@ -24,6 +24,7 @@ public final class CloudRelayManager implements Closeable {
     public static final String PREF_CLOUD_SYNC_ENABLED = "cloud_sync_enabled";
     public static final String PREF_CLOUD_CONTROLLER_ID = "cloud_controller_id";
     public static final String PREF_CLOUD_CONTROLLER_KEY = "cloud_controller_key";
+    public static final String PREF_CLOUD_REGISTERED_MACS = "cloud_registered_macs";
     private static final String PREFS = "fg_rck_settings";
     private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
     private static final String PREF_REMOTE_TOKEN = "remote_token";
@@ -39,6 +40,8 @@ public final class CloudRelayManager implements Closeable {
         this.prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         this.hub = hub;
         this.fleetStore = fleetStore;
+        this.registeredMacs.addAll(
+                prefs.getStringSet(PREF_CLOUD_REGISTERED_MACS, java.util.Collections.emptySet()));
     }
 
     public synchronized void start() {
@@ -81,6 +84,7 @@ public final class CloudRelayManager implements Closeable {
                     .putString(PREF_CLOUD_CONTROLLER_KEY, controllerKey)
                     .apply();
             registeredMacs.clear();
+            prefs.edit().remove(PREF_CLOUD_REGISTERED_MACS).apply();
         }
 
         List<FleetStore.DeviceRecord> devices = fleetStore.list();
@@ -88,6 +92,8 @@ public final class CloudRelayManager implements Closeable {
             if (!registeredMacs.contains(device.mac)) {
                 api.registerDevice(bearer, controllerId, device);
                 registeredMacs.add(device.mac);
+                prefs.edit().putStringSet(
+                        PREF_CLOUD_REGISTERED_MACS, new HashSet<>(registeredMacs)).apply();
             }
         }
 
