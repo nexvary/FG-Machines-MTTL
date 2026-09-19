@@ -3155,6 +3155,28 @@
                             android:textDirection="ltr"
                             android:textIsSelectable="true"
                             android:textSize="11sp" />
+                        <TextView
+                            android:id="@+id/shareCodeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/share_code_waiting"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textDirection="ltr"
+                            android:textIsSelectable="true"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/share_code_secret_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_warning"
+                            android:textSize="10sp" />
+
                         <Spinner
                             android:id="@+id/shareEntriesSpinner"
                             android:layout_width="match_parent"
@@ -3180,6 +3202,58 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
                             android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/voice_control_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/voice_control_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/voiceControlButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/voice_control_start"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_blue_bright"
+                            app:cornerRadius="14dp" />
+                        <TextView
+                            android:id="@+id/voiceStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/voice_ready"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -3224,6 +3298,31 @@
                             android:textColor="@color/fg_warning"
                             android:textSize="10sp"
                             android:textStyle="bold" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remoteShareCodeInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:hint="@string/remote_share_code_hint"
+                            android:inputType="text"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:singleLine="true"
+                            android:textColor="@color/fg_text"
+                            android:textDirection="ltr" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/importShareCodeButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/import_share_code"
+                            android:textColor="@color/fg_blue_bright"
+                            app:cornerRadius="14dp"
+                            app:strokeColor="@color/fg_blue" />
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/remoteEndpointInput"
                             android:layout_width="match_parent"
