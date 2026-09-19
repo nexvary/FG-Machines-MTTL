@@ -2019,7 +2019,8 @@ public class MainActivity extends AppCompatActivity {
                 if (previousEndpoint != null && !previousEndpoint.isEmpty()
                         && !previousEndpoint.equals(endpoint)) {
                     editor.remove(CloudRelayManager.PREF_CLOUD_CONTROLLER_ID)
-                            .remove(CloudRelayManager.PREF_CLOUD_CONTROLLER_KEY);
+                            .remove(CloudRelayManager.PREF_CLOUD_CONTROLLER_KEY)
+                            .remove(CloudRelayManager.PREF_CLOUD_REGISTERED_MACS);
                 }
                 editor.apply();
 
