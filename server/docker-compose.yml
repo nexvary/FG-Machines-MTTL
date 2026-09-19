@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fgrck
+      POSTGRES_USER: fgrck
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - fgrck_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fgrck -d fgrck"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [backend]
+
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      FGRCK_ENV: production
+      FGRCK_DATABASE_URL: postgresql+psycopg://fgrck:${POSTGRES_PASSWORD}@db:5432/fgrck
+      FGRCK_JWT_SECRET: ${FGRCK_JWT_SECRET:?set FGRCK_JWT_SECRET}
+      FGRCK_TOKEN_PEPPER: ${FGRCK_TOKEN_PEPPER:?set FGRCK_TOKEN_PEPPER}
+      FGRCK_JWT_TTL_MINUTES: ${FGRCK_JWT_TTL_MINUTES:-720}
+      FGRCK_COMMAND_TTL_SECONDS: ${FGRCK_COMMAND_TTL_SECONDS:-180}
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks: [backend]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      FGRCK_DOMAIN: ${FGRCK_DOMAIN:?set FGRCK_DOMAIN}
+      FGRCK_ACME_EMAIL: ${FGRCK_ACME_EMAIL:?set FGRCK_ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - fgrck_caddy_data:/data
+      - fgrck_caddy_config:/config
+    depends_on: [api]
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  fgrck_postgres:
+  fgrck_caddy_data:
+  fgrck_caddy_config:

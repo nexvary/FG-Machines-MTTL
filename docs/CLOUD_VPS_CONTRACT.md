@@ -69,3 +69,28 @@ recognition when available. Availability depends on the phone's speech provider.
 Voice commands do not require the future FG Machines cloud backend.
 
 Turning on all four outlets requires an explicit confirmation in the app.
+
+
+## Deployable cloud backend
+
+The repository now includes a deployable VPS backend under `server/`.
+
+Its first production architecture is:
+
+```
+MTTL-W01
+    │ verified local TCP
+    ▼
+Android controller
+    │ outbound HTTPS only
+    ▼
+Caddy TLS → FastAPI → PostgreSQL
+```
+
+The cloud backend adds account authentication, owner/admin/control/view sharing,
+single-use share invites, controller heartbeat, telemetry/history, a bounded
+outlet command queue, controller acknowledgements and an internal voice-intent
+bridge. The phone's TCP 10086 and local API 18086 remain private and are not
+published through the VPS.
+
+See `server/README.md` for deployment and API details.

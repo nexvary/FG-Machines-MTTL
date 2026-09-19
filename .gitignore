@@ -12,3 +12,10 @@ app/build/
 *.p12
 *.pfx
 signing/
+
+# VPS/cloud local state and secrets
+server/.env
+server/.venv/
+server/**/*.db
+server/**/__pycache__/
+.pytest_cache/
