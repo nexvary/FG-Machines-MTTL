@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -203,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView step3Status;
     private LinearProgressIndicator setupProgress;
     private MaterialSwitch[] outletSwitches;
+    private View[] outletCards;
     private View[] pages;
     private MaterialButton[] navButtons;
     private int currentPage;
@@ -494,6 +496,10 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.scheduleDayMode1), findViewById(R.id.scheduleDayMode2),
                 findViewById(R.id.scheduleDayMode3), findViewById(R.id.scheduleDayMode4)
         };
+        outletCards = new View[]{
+                findViewById(R.id.outletCard1), findViewById(R.id.outletCard2),
+                findViewById(R.id.outletCard3), findViewById(R.id.outletCard4)
+        };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
                 findViewById(R.id.pageScan), findViewById(R.id.pageSettings),
@@ -529,10 +535,15 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < pages.length; i++) {
             boolean selected = i == page;
             pages[i].setVisibility(selected ? View.VISIBLE : View.GONE);
-            navButtons[i].setAlpha(selected ? 1f : 0.62f);
+            int tint = getColor(selected ? R.color.fg_blue_bright : R.color.fg_silver);
+            navButtons[i].setTextColor(tint);
+            navButtons[i].setIconTint(ColorStateList.valueOf(tint));
+            navButtons[i].setBackgroundTintList(ColorStateList.valueOf(
+                    getColor(selected ? R.color.fg_blue_dim : android.R.color.transparent)));
+            navButtons[i].setAlpha(selected ? 1f : 0.78f);
             navButtons[i].animate()
-                    .scaleX(selected ? 1.04f : 0.96f)
-                    .scaleY(selected ? 1.04f : 0.96f)
+                    .scaleX(selected ? 1.02f : 0.98f)
+                    .scaleY(selected ? 1.02f : 0.98f)
                     .setDuration(140)
                     .start();
         }
@@ -1409,6 +1420,7 @@ public class MainActivity extends AppCompatActivity {
             setOutletControlsEnabled(true);
             deviceState.setText(getString(R.string.controller_connected,
                     ModelCatalog.PRIMARY_MODEL, state.firmwareVersion));
+            deviceState.setTextColor(getColor(R.color.fg_green));
             FleetStore.DeviceRecord record = fleetStore.get(key);
             discoveryDetail.setText(getString(R.string.device_location_detail,
                     record == null ? "" : record.displayName(),
@@ -1431,6 +1443,7 @@ public class MainActivity extends AppCompatActivity {
             setOutletControlsEnabled(false);
             clearTelemetryUi();
             deviceState.setText(R.string.controller_disconnected);
+            deviceState.setTextColor(getColor(R.color.fg_red));
         }
         updateFleetStatus();
         refreshFleetOverviewAndList();
@@ -2717,8 +2730,11 @@ public class MainActivity extends AppCompatActivity {
     private void configureOutletControls() {
         setOutletControlsEnabled(false);
         for (int i = 0; i < outletSwitches.length; i++) {
+            final int index = i;
             final int outlet = i + 1;
+            updateOutletCardState(index, outletSwitches[i].isChecked());
             outletSwitches[i].setOnCheckedChangeListener((button, checked) -> {
+                updateOutletCardState(index, checked);
                 if (applyingDeviceState || !button.isEnabled()) return;
                 String mac = activeMac;
                 if (mac == null || controllerHub == null) return;
@@ -2734,12 +2750,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateOutletCardState(int index, boolean on) {
+        if (outletCards == null || index < 0 || index >= outletCards.length
+                || outletCards[index] == null) return;
+        outletCards[index].setActivated(on);
+        outletCards[index].setAlpha(on ? 1f : 0.92f);
+    }
+
     private void startLocalController() {
         controllerListener = new MttlControllerServer.Listener() {
             @Override public void onListening(int port) {
                 runOnUiThread(() -> {
                     if (activeMac == null) {
                         deviceState.setText(R.string.controller_listening);
+                        deviceState.setTextColor(getColor(R.color.fg_blue_bright));
                         discoveryDetail.setText(R.string.scan_explanation);
                     }
                 });
@@ -2786,6 +2810,7 @@ public class MainActivity extends AppCompatActivity {
                         clearTelemetryUi();
                         clearDeviceNamingFields();
                         deviceState.setText(R.string.controller_disconnected);
+            deviceState.setTextColor(getColor(R.color.fg_red));
                         discoveryDetail.setText(R.string.locked);
                         refreshFleetOverviewAndList();
                         loadAwayModeForActiveDevice();
@@ -2828,6 +2853,7 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onError(String message, Throwable error) {
                 runOnUiThread(() -> {
                     deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
+                    deviceState.setTextColor(getColor(R.color.fg_red));
                     if (activeMac == null) setOutletControlsEnabled(false);
                 });
             }
@@ -2837,6 +2863,7 @@ public class MainActivity extends AppCompatActivity {
             controllerHub.start();
         } catch (IOException error) {
             deviceState.setText(getString(R.string.controller_error, safeMessage(error)));
+            deviceState.setTextColor(getColor(R.color.fg_red));
             setOutletControlsEnabled(false);
         }
     }
@@ -2853,7 +2880,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOutletControlsEnabled(boolean enabled) {
-        for (MaterialSwitch outletSwitch : outletSwitches) outletSwitch.setEnabled(enabled);
+        for (int i = 0; i < outletSwitches.length; i++) {
+            outletSwitches[i].setEnabled(enabled);
+            updateOutletCardState(i, outletSwitches[i].isChecked());
+            if (outletCards != null && i < outletCards.length && outletCards[i] != null && !enabled) {
+                outletCards[i].setAlpha(0.66f);
+            }
+        }
     }
 
     private void configureHardwareIdentification() {
@@ -2908,17 +2941,20 @@ public class MainActivity extends AppCompatActivity {
     private void startScan() {
         setBusy(true);
         deviceState.setText(R.string.scanning);
+        deviceState.setTextColor(getColor(R.color.fg_blue_bright));
         discoveryDetail.setText(R.string.scan_explanation);
         DeviceScanner.scanLocal24((hosts, subnet) -> runOnUiThread(() -> {
             setBusy(false);
             if (hosts.isEmpty()) {
                 deviceState.setText(R.string.not_found);
+                deviceState.setTextColor(getColor(R.color.fg_red));
                 discoveryDetail.setText(getString(R.string.scan_none, subnet));
                 return;
             }
             String first = hosts.get(0);
             ipInput.setText(first);
             deviceState.setText(R.string.service_detected);
+            deviceState.setTextColor(getColor(R.color.fg_green));
             discoveryDetail.setText(getString(R.string.scan_found, hosts.size(), subnet, first));
             if (hosts.size() > 1) {
                 Snackbar.make(scanButton, getString(R.string.multiple_hosts, hosts.size()), Snackbar.LENGTH_LONG).show();
@@ -2934,13 +2970,16 @@ public class MainActivity extends AppCompatActivity {
         }
         setBusy(true);
         deviceState.setText(R.string.probing);
+        deviceState.setTextColor(getColor(R.color.fg_blue_bright));
         DeviceScanner.probe(host, (target, reachable, detail) -> runOnUiThread(() -> {
             setBusy(false);
             if (reachable) {
                 deviceState.setText(R.string.service_detected);
+                deviceState.setTextColor(getColor(R.color.fg_green));
                 discoveryDetail.setText(getString(R.string.probe_success, target));
             } else {
                 deviceState.setText(R.string.offline);
+                deviceState.setTextColor(getColor(R.color.fg_red));
                 discoveryDetail.setText(getString(R.string.probe_failed, target));
             }
         }));
