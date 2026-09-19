@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
     private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
     private static final String PREF_REMOTE_TOKEN = "remote_token";
+    private static final String PREF_FREE_REMOTE_MODE = "free_remote_mode";
+    private static final String PREF_FREE_REMOTE_HOST = "free_remote_host";
     private static final String FG_MACHINES_FACEBOOK_URL = "https://www.facebook.com/share/1Hx66RKhd2/";
     private static final String ALAA_MOHAMED_FACEBOOK_URL = "https://www.facebook.com/share/1DGDH6q8xV/";
 
@@ -177,6 +179,12 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton revokeShareButton;
     private MaterialButton voiceControlButton;
     private TextView voiceStatus;
+    private Spinner freeRemoteModeSpinner;
+    private TextInputEditText freeRemoteHostInput;
+    private MaterialButton applyFreeRemoteButton;
+    private TextView freeRemoteHelp;
+    private TextView freeRemoteStatus;
+    private TextView freeRemoteRouterWarning;
     private TextInputEditText remoteShareCodeInput;
     private MaterialButton importShareCodeButton;
     private TextInputEditText remoteEndpointInput;
@@ -295,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
         configureSharing();
         configureVoiceControl();
         configureCloudAccount();
+        configureFreeRemoteAccess();
         configureRemoteControl();
         configureAboutLinks();
         restoreSetupProfile();
@@ -410,6 +419,12 @@ public class MainActivity extends AppCompatActivity {
         revokeShareButton = findViewById(R.id.revokeShareButton);
         voiceControlButton = findViewById(R.id.voiceControlButton);
         voiceStatus = findViewById(R.id.voiceStatus);
+        freeRemoteModeSpinner = findViewById(R.id.freeRemoteModeSpinner);
+        freeRemoteHostInput = findViewById(R.id.freeRemoteHostInput);
+        applyFreeRemoteButton = findViewById(R.id.applyFreeRemoteButton);
+        freeRemoteHelp = findViewById(R.id.freeRemoteHelp);
+        freeRemoteStatus = findViewById(R.id.freeRemoteStatus);
+        freeRemoteRouterWarning = findViewById(R.id.freeRemoteRouterWarning);
         remoteShareCodeInput = findViewById(R.id.remoteShareCodeInput);
         importShareCodeButton = findViewById(R.id.importShareCodeButton);
         remoteEndpointInput = findViewById(R.id.remoteEndpointInput);
@@ -1941,12 +1956,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void showAccessToken(AccessControlStore.AccessEntry entry) {
         shareTokenText.setText(entry.token);
-        String ip = HotspotSupport.findControllerIpv4();
-        if (ip != null && !entry.token.isEmpty()) {
+        String endpoint = null;
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        String freeHost = prefs.getString(PREF_FREE_REMOTE_HOST, "");
+        if (freeHost != null && !freeHost.trim().isEmpty()) {
+            try {
+                endpoint = FreeRemoteAccess.endpointForHost(freeHost);
+            } catch (IOException ignored) { }
+        }
+        if (endpoint == null) {
+            String ip = HotspotSupport.findControllerIpv4();
+            if (ip != null) endpoint = "http://" + ip + ":" + LocalApiServer.PORT;
+        }
+
+        if (endpoint != null && !entry.token.isEmpty()) {
             try {
                 String code = ShareCode.encode(
-                        "http://" + ip + ":" + LocalApiServer.PORT,
-                        entry.token, entry.role, entry.scopeMac);
+                        endpoint, entry.token, entry.role, entry.scopeMac);
                 shareCodeText.setText(code);
             } catch (IllegalArgumentException error) {
                 shareCodeText.setText(R.string.share_code_unavailable);
@@ -2163,12 +2189,78 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void configureFreeRemoteAccess() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        ArrayAdapter<CharSequence> modeAdapter = ArrayAdapter.createFromResource(
+                this, R.array.free_remote_mode_labels, android.R.layout.simple_spinner_item);
+        modeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        freeRemoteModeSpinner.setAdapter(modeAdapter);
+
+        int savedMode = prefs.getInt(PREF_FREE_REMOTE_MODE, FreeRemoteAccess.MODE_PHONE_ZEROTIER);
+        if (savedMode < 0 || savedMode >= modeAdapter.getCount()) {
+            savedMode = FreeRemoteAccess.MODE_PHONE_ZEROTIER;
+        }
+        freeRemoteModeSpinner.setSelection(savedMode);
+        freeRemoteHostInput.setText(prefs.getString(PREF_FREE_REMOTE_HOST, ""));
+        updateFreeRemoteModeUi(savedMode);
+
+        freeRemoteModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateFreeRemoteModeUi(position);
+                getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                        .putInt(PREF_FREE_REMOTE_MODE, position)
+                        .apply();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        applyFreeRemoteButton.setOnClickListener(v -> applyFreeRemoteEndpoint());
+    }
+
+    private void updateFreeRemoteModeUi(int mode) {
+        boolean routerMode = mode == FreeRemoteAccess.MODE_ROUTER_GATEWAY;
+        freeRemoteHelp.setText(routerMode
+                ? R.string.free_remote_router_help
+                : R.string.free_remote_phone_help);
+        freeRemoteRouterWarning.setVisibility(routerMode ? View.VISIBLE : View.GONE);
+        if (textOf(freeRemoteHostInput).isEmpty()) {
+            freeRemoteStatus.setText(routerMode
+                    ? R.string.free_remote_router_help
+                    : R.string.free_remote_phone_help);
+        }
+    }
+
+    private void applyFreeRemoteEndpoint() {
+        int mode = freeRemoteModeSpinner.getSelectedItemPosition();
+        String host = textOf(freeRemoteHostInput);
+        try {
+            String endpoint = FreeRemoteAccess.endpointForHost(host);
+            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                    .putInt(PREF_FREE_REMOTE_MODE, mode)
+                    .putString(PREF_FREE_REMOTE_HOST, host)
+                    .putString(PREF_REMOTE_ENDPOINT, endpoint)
+                    .apply();
+            remoteEndpointInput.setText(endpoint);
+            freeRemoteStatus.setText(getString(
+                    R.string.free_remote_ready,
+                    FreeRemoteAccess.modeLabel(mode), endpoint));
+            if (!textOf(remoteTokenInput).isEmpty()) {
+                refreshRemoteDevices();
+            } else {
+                remoteStatus.setText(R.string.remote_not_connected);
+            }
+        } catch (IOException error) {
+            freeRemoteStatus.setText(getString(
+                    R.string.free_remote_invalid, safeMessage(error)));
+        }
+    }
+
     private void configureRemoteControl() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         remoteEndpointInput.setText(prefs.getString(PREF_REMOTE_ENDPOINT, ""));
         remoteTokenInput.setText(prefs.getString(PREF_REMOTE_TOKEN, ""));
-        remoteStatus.setText(textOf(remoteEndpointInput).isEmpty()
-                ? R.string.cloud_waiting_for_vps : R.string.remote_not_connected);
+        remoteStatus.setText(R.string.remote_not_connected);
 
         ArrayAdapter<CharSequence> outletAdapter = ArrayAdapter.createFromResource(
                 this, R.array.remote_outlet_labels, android.R.layout.simple_spinner_item);
@@ -2201,7 +2293,7 @@ public class MainActivity extends AppCompatActivity {
         String endpoint = textOf(remoteEndpointInput);
         String token = textOf(remoteTokenInput);
         if (endpoint.isEmpty()) {
-            remoteStatus.setText(R.string.cloud_waiting_for_vps);
+            remoteStatus.setText(R.string.remote_not_connected);
             remoteOnButton.setEnabled(false);
             remoteOffButton.setEnabled(false);
             return;
