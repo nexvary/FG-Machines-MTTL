@@ -164,7 +164,7 @@
     <string name="room_name_hint">Raum</string>
     <string name="save_names">Namen speichern</string>
     <string name="names_saved">Namen gespeichert</string>
-    <string name="device_location_detail">%1$s · %2$s · MTTL-Gegenstelle %3$s → FG-Controller TCP 10086</string>
+    <string name="device_location_detail">%1$s · %2$s · LOKAL %3$s · TCP 10086</string>
     <string name="controller_service_error">Fehler des Controller-Dienstes</string>
     <string name="controller_notification_channel">Lokaler Controller</string>
     <string name="controller_notification_channel_desc">Hält den lokalen MTTL-Controller im Hintergrund verfügbar.</string>
@@ -184,20 +184,20 @@
     <string name="safety_alerts">Sicherheits- und Offline-Benachrichtigungen</string>
     <string name="safety_alerts_note">Lokale Warnungen bei Trennung, Schutzereignissen und Lasten über 3.000 W.</string>
     <string name="automation_title">Lokale Automatisierung</string>
-    <string name="automation_note">Timer und Zeitpläne laufen lokal auf diesem Controller-Telefon. Hotspot und Controller-Dienst müssen aktiv bleiben.</string>
+    <string name="automation_note">Regel aktivieren und den Wert antippen, um ihn mit dem Auswahlrad zu wählen. Die Automation läuft lokal auf diesem Telefon ohne Internet.</string>
     <string name="automation_none">Keine Automatisierungsregel aktiv</string>
     <string name="automation_active_count">Aktive Automatisierungsregeln: %1$d</string>
     <string name="automation_outlet_1">Automatisierung Ausgang 1</string>
     <string name="automation_outlet_2">Automatisierung Ausgang 2</string>
     <string name="automation_outlet_3">Automatisierung Ausgang 3</string>
     <string name="automation_outlet_4">Automatisierung Ausgang 4</string>
-    <string name="auto_off_enable">Automatischer Abschalttimer</string>
-    <string name="auto_off_minutes_hint">Minuten bis zum automatischen Ausschalten</string>
+    <string name="auto_off_enable">Nach einer Dauer automatisch ausschalten</string>
+    <string name="auto_off_minutes_hint">Dauer (Minuten) · zum Wählen tippen</string>
     <string name="schedule_enable">Täglicher Zeitplan</string>
     <string name="schedule_on_hint">EIN HH:mm</string>
     <string name="schedule_off_hint">AUS HH:mm</string>
     <string name="save_automation">Automatisierung speichern</string>
-    <string name="automation_background_note">Zeitpläne werden im Hintergrunddienst alle 15 Sekunden geprüft. Der Abschalttimer startet, sobald die Live-Telemetrie den Ausgang als eingeschaltet meldet.</string>
+    <string name="automation_background_note">Das Auswahlrad verhindert ungültige Werte. Regeln laufen im Hintergrund; Controller-Dienst aktiv lassen.</string>
     <string name="automation_invalid_minutes">Eine positive Minutenanzahl eingeben.</string>
     <string name="automation_invalid_time">24-Stunden-Format HH:mm verwenden.</string>
     <string name="automation_fix_fields">Automatisierungswerte vor dem Speichern prüfen.</string>
@@ -236,8 +236,8 @@
     <string name="remote_on">EIN</string>
     <string name="remote_off">AUS</string>
     <string name="remote_not_connected">Remote-Controller nicht verbunden.</string>
-    <string name="power_limit_enable">Ausgang über Leistungsgrenze abschalten</string>
-    <string name="power_limit_w_hint">Leistungs-Abschaltschwelle (W)</string>
+    <string name="power_limit_enable">Bei Überschreiten des Verbrauchslimits ausschalten</string>
+    <string name="power_limit_w_hint">Abschaltgrenze (W) · zum Wählen tippen</string>
     <string name="select_device_first">Zuerst ein Flottengerät auswählen.</string>
     <string name="all_rooms">Alle Räume</string>
     <string name="fleet_no_devices">Keine Geräte in diesem Raum</string>
@@ -458,9 +458,9 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
 Überlast: %6$s · Überhitzung: %7$s · Ereignis: %8$s</string>
 
 
-    <string name="standby_cutoff_enable">Standby-Abschaltung</string>
-    <string name="standby_w_hint">Standby-Schwelle (W)</string>
-    <string name="standby_minutes_hint">Niedriglast-Minuten</string>
+    <string name="standby_cutoff_enable">Bei dauerhaft niedrigem Verbrauch ausschalten</string>
+    <string name="standby_w_hint">Niedrigverbrauchsschwelle (W) · tippen</string>
+    <string name="standby_minutes_hint">Niedrigverbrauchsdauer (Min.) · tippen</string>
     <string name="automation_invalid_standby_w">Eine positive Watt-Schwelle eingeben.</string>
     <string name="smart_extras_title">Smart-Steckdosen-Extras</string>
     <string name="smart_extras_note">Lokale Funktionen ohne Cloud. Der Abwesenheitsmodus schaltet nur ausdrücklich ausgewählte Ausgänge.</string>
@@ -543,4 +543,27 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="cloud_status_failed">Cloud-Fehler: %1$s</string>
     <string name="cloud_sync_requires_login">Zuerst anmelden, dann das Controller-Relay aktivieren.</string>
 
+
+    <string name="picker_apply">Übernehmen</string>
+    <string name="picker_cancel">Abbrechen</string>
+    <string name="picker_auto_off_title">Dauer bis Auto-Aus</string>
+    <string name="picker_auto_off_message">1–720 Minuten wählen.</string>
+    <string name="picker_standby_w_title">Niedrigverbrauchsschwelle</string>
+    <string name="picker_standby_w_message">1–100 W wählen.</string>
+    <string name="picker_standby_minutes_title">Niedrigverbrauchsdauer</string>
+    <string name="picker_standby_minutes_message">1–120 Minuten wählen.</string>
+    <string name="picker_power_limit_title">Maximal zulässige Leistung</string>
+    <string name="picker_power_limit_message">100–3500 W in 50-W-Schritten wählen.</string>
+    <string name="picker_schedule_on_title">Geplante Einschaltzeit</string>
+    <string name="picker_schedule_off_title">Geplante Ausschaltzeit</string>
+    <string name="picker_away_start_title">Away-Modus Start</string>
+    <string name="picker_away_end_title">Away-Modus Ende</string>
+    <string name="picker_away_min_title">Minimales Away-Intervall</string>
+    <string name="picker_away_max_title">Maximales Away-Intervall</string>
+    <string name="picker_away_interval_message">Intervall in Minuten wählen.</string>
+    <string name="automation_invalid_auto_off_range">1–720 Minuten wählen.</string>
+    <string name="automation_invalid_power_limit_range">100–3500 W wählen.</string>
+    <string name="automation_invalid_standby_w_range">1–100 W wählen.</string>
+    <string name="automation_invalid_standby_minutes_range">1–120 Minuten wählen.</string>
+    <string name="controller_watchdog_retry">Neustart des lokalen Controllers fehlgeschlagen: %1$s</string>
 </resources>
