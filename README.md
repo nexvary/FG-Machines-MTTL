@@ -1,8 +1,8 @@
-# FG Machines RCK
+# FG Machines Link
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.5.0
+## Current Android baseline — 1.6.0
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -25,6 +25,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - 1.3.9 Automation UX replaces manual numeric typing with wheel pickers for auto-off, low-consumption cutoff, power-limit cutoff and Away Mode intervals; schedule times use a native time picker.
 - 1.4.0 Professional UI Refresh introduces a calmer black/navy surface system, compact brand header, semantic connection colors, stateful per-outlet cards, clearer picker affordances, and a consistent selected-state bottom navigation.
 - 1.5.0 Free Remote Access adds two zero-subscription remote paths: ZeroTier directly on the controller phone, or a ZeroTier/OpenWrt router gateway that routes the site LAN. Both reuse the authenticated local API on TCP 18086 and keep MTTL control local on TCP 10086.
+- 1.6.0 adopts the customer-facing **FG Link** launcher name and **FG Machines Link** in-app identity, uses the supplied FG Machines company artwork in the launcher/About experience, and fixes the Home Assistant share-token button so localized labels are not clipped.
 - Free remote profiles deliberately accept only private/VPN HTTP endpoints. Public Internet HTTP is rejected; no port-forwarding is required.
 - Device Share Codes prefer the configured free remote endpoint, so a client can import one code and use the same authenticated device scope over ZeroTier.
 - Router gateway flashing is not automated by the Android app. LG GAPM-7100 / RTL8198C rev B remains an experimental hardware target and requires a board-verified OpenWrt image before any flash is attempted.
@@ -44,7 +45,7 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Per-outlet automation also supports automatic cutoff above a user-defined watt threshold.
 - Mandatory Setup Guard blocks provisioning until 2.4 GHz + WPA2-Personal is confirmed and the WPA2 passphrase is structurally valid.
 - Authenticated local HTTP API on port `18086` with View / Control / Admin sharing roles; only token hashes are stored on the controller. Device Sharing tokens can now be scoped to one selected MTTL-W01 instead of exposing the whole fleet.
-- Device Share Codes package the LAN/VPN endpoint, bearer token, role and selected-device scope so another FG Machines RCK phone can import access without a cloud account.
+- Device Share Codes package the LAN/VPN endpoint, bearer token, role and selected-device scope so another FG Machines Link phone can import access without a cloud account.
 - Local in-app Voice Control supports safe outlet commands in Arabic, English, Turkish, Spanish and German. The app requests offline Android speech recognition when available; turning all four outlets ON requires explicit confirmation.
 - Cloud / Remote Control is VPS-ready: a Device Share Code can be used now on LAN/VPN, while a future HTTPS VPS can use the same client contract. No cloud service is claimed until the VPS/backend exists.
 - Home Assistant custom integration under `home_assistant/custom_components/fg_machines_rck` exposes each outlet as an independent switch plus power, energy and temperature sensors.
@@ -78,17 +79,17 @@ Observed firmware families:
 - `1.0.106`
 - `1.0.110`
 
-Known setup SSID prefixes include `TONLY_TAP_` and `ONLY_TAP_`. FG Machines RCK also uses the runtime boot signature (`lgutap`) so future rebrands using the same protocol can be identified experimentally without falsely claiming an unverified sticker model is supported.
+Known setup SSID prefixes include `TONLY_TAP_` and `ONLY_TAP_`. FG Machines Link also uses the runtime boot signature (`lgutap`) so future rebrands using the same protocol can be identified experimentally without falsely claiming an unverified sticker model is supported.
 
 ## Network architecture
 
 There are two different local roles:
 
 1. **Setup / provisioning:** the strip exposes an AP and local endpoint at `192.168.1.1:30300`.
-2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines RCK now implements that controller endpoint on Android.
+2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines Link now implements that controller endpoint on Android.
 
 3. **Local API / Home Assistant:** the controller phone exposes an authenticated API on TCP `18086` for trusted LAN/VPN clients. Access tokens are created in the app and only their SHA-256 hashes are retained.
-4. **Device Sharing / Remote Control:** another FG Machines RCK installation can import a scoped Device Share Code and use the same API over a trusted LAN/private VPN. A future HTTPS VPS can preserve this client contract. Direct public exposure of the phone's plain HTTP port is not recommended.
+4. **Device Sharing / Remote Control:** another FG Machines Link installation can import a scoped Device Share Code and use the same API over a trusted LAN/private VPN. A future HTTPS VPS can preserve this client contract. Direct public exposure of the phone's plain HTTP port is not recommended.
 
 Normal controller commands include:
 
@@ -105,7 +106,7 @@ See `docs/PROTOCOL_NOTES.md` for the research evidence, firmware distinctions an
 
 ## Safety and validation
 
-This project controls mains-powered hardware. FG Machines RCK does not send outlet commands to an unidentified TCP peer. A compatible device must first supply a structurally valid boot identity with matching MAC/client ID and the expected MTTL boot model.
+This project controls mains-powered hardware. FG Machines Link does not send outlet commands to an unidentified TCP peer. A compatible device must first supply a structurally valid boot identity with matching MAC/client ID and the expected MTTL boot model.
 
 Protocol support is tracked at two levels:
 

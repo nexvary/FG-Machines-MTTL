@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FG Machines RCK</string>
+    <string name="app_name">FG Machines Link</string>
     <string name="app_subtitle">Control inteligente de la familia MTTL</string>
     <string name="brand_tagline">Comercio, tecnología y control inteligente</string>
     <string name="brand_badge">Familia MTTL-W01 · Wi‑Fi 2.4 GHz</string>
@@ -89,19 +89,19 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_note">El cambio de idioma se aplica inmediatamente. La configuración de red es local y no necesita el servicio de suscripción coreano.</string>
     <string name="about_title">Acerca de</string>
-    <string name="about_line">FG Machines RCK · Familia MTTL · Control local primero</string>
-    <string name="about_body">FG Machines RCK es un controlador local independiente para regletas inteligentes compatibles LG U+ / TONLY. No es una aplicación oficial de LG U+. El proyecto prioriza el funcionamiento local por Wi‑Fi, diagnósticos claros y control seguro de relés.</string>
+    <string name="about_line">FG Machines Link · Familia MTTL · Control local primero</string>
+    <string name="about_body">FG Machines Link es un controlador local independiente para regletas inteligentes compatibles LG U+ / TONLY. No es una aplicación oficial de LG U+. El proyecto prioriza el funcionamiento local por Wi‑Fi, diagnósticos claros y control seguro de relés.</string>
     <string name="supported_models_title">Compatibilidad</string>
     <string name="supported_models_body">Familia principal verificada: MTTL-W01. Revisiones de certificado conocidas HU04139-17002A/B/C/D/E. Se reconocen TONLY_TAP_* y ONLY_TAP_* y se verifica el protocolo antes de activar los controles de relé.</string>
     <string name="setup_method_title">Elige el método de configuración</string>
     <string name="setup_recommended">RECOMENDADO</string>
     <string name="setup_experimental">EXPERIMENTAL</string>
     <string name="setup_mode_router_desc">La mejor opción. Conecta este teléfono al router de 2.4 GHz y guarda su IPv4; después únete a TONLY_TAP y escribe las credenciales del router. Al terminar, vuelve a conectar el teléfono al mismo router.</string>
-    <string name="setup_mode_two_phone_desc">La mejor opción sin router. El teléfono A mantiene un hotspot de 2.4 GHz y FG Machines RCK activo. El teléfono B se conecta a TONLY_TAP y escribe las credenciales del hotspot del teléfono A y su IPv4 de controlador.</string>
+    <string name="setup_mode_two_phone_desc">La mejor opción sin router. El teléfono A mantiene un hotspot de 2.4 GHz y FG Machines Link activo. El teléfono B se conecta a TONLY_TAP y escribe las credenciales del hotspot del teléfono A y su IPv4 de controlador.</string>
     <string name="setup_mode_single_desc">Usa el mismo teléfono para configurar y crear el hotspot. Algunos Android desactivan Wi‑Fi al activar el hotspot; úsalo solo en dispositivos compatibles.</string>
-    <string name="router_success">Configuración escrita. Vuelve a conectar este teléfono al router de destino. FG Machines RCK esperará al dispositivo en TCP 10086.</string>
-    <string name="two_phone_success">Configuración escrita. Mantén activo el hotspot del teléfono A y vuelve al teléfono A. El dispositivo debería conectarse a FG Machines RCK.</string>
-    <string name="single_phone_success">Configuración escrita. Activa de nuevo el mismo hotspot de 2.4 GHz y espera a que el dispositivo se conecte a FG Machines RCK.</string>
+    <string name="router_success">Configuración escrita. Vuelve a conectar este teléfono al router de destino. FG Machines Link esperará al dispositivo en TCP 10086.</string>
+    <string name="two_phone_success">Configuración escrita. Mantén activo el hotspot del teléfono A y vuelve al teléfono A. El dispositivo debería conectarse a FG Machines Link.</string>
+    <string name="single_phone_success">Configuración escrita. Activa de nuevo el mismo hotspot de 2.4 GHz y espera a que el dispositivo se conecte a FG Machines Link.</string>
     <string-array name="setup_mode_labels">
         <item>Wi‑Fi de router (recomendado)</item>
         <item>Dos teléfonos (sin router)</item>
@@ -170,7 +170,7 @@
     <string name="controller_notification_channel_desc">Mantiene disponible el controlador local MTTL en segundo plano.</string>
     <string name="alert_notification_channel">Alertas de la regleta</string>
     <string name="alert_notification_channel_desc">Alertas de desconexión, protección y carga alta.</string>
-    <string name="controller_notification_title">Controlador FG Machines RCK activo</string>
+    <string name="controller_notification_title">Controlador FG Machines Link activo</string>
     <string name="controller_notification_waiting">Esperando conexión MTTL-W01</string>
     <string name="controller_notification_connected">Regletas conectadas localmente: %1$d</string>
     <string name="strip_offline_alert_title">Regleta sin conexión</string>
@@ -310,7 +310,7 @@
     <string name="diagnostics_home_action">Diagnóstico de electrodomésticos</string>
     <string name="diagnostics_back">Atrás</string>
     <string name="diagnostics_title">Diagnóstico de electrodomésticos</string>
-    <string name="diagnostics_subtitle">Códigos y síntomas verificados por fuente, sin conexión, con historial vinculado a RCK</string>
+    <string name="diagnostics_subtitle">Códigos y síntomas verificados por fuente, sin conexión, con historial vinculado a FG Link</string>
     <string name="diagnostics_device_binding">Vincular dispositivo y salida</string>
     <string name="diagnostics_no_devices">No hay dispositivos MTTL-W01 guardados</string>
     <string name="diagnostics_outlet_format">Salida %1$d</string>
@@ -336,7 +336,7 @@
     <string name="diagnostics_binding_requires_identity">Introduce al menos una marca, categoría o modelo antes de vincular el equipo.</string>
     <string name="diagnostics_bound">Equipo vinculado a la salida.</string>
     <string name="diagnostics_search_before_record">Ejecuta un diagnóstico verificado por fuente antes de guardar un incidente.</string>
-    <string name="diagnostics_recorded">Incidente guardado con la instantánea actual de telemetría RCK.</string>
+    <string name="diagnostics_recorded">Incidente guardado con la instantánea actual de telemetría de FG Link.</string>
     <string name="diagnostics_code_label">Código</string>
     <string name="diagnostics_meaning_label">Significado</string>
     <string name="diagnostics_causes_label">Posibles causas</string>
@@ -346,7 +346,7 @@
     <string name="diagnostics_service_label">Límite de servicio</string>
     <string name="diagnostics_scope_label">Alcance de la fuente</string>
     <string name="diagnostics_symptom_label">Síntoma</string>
-    <string name="diagnostics_rck_unavailable">No había una instantánea de telemetría RCK en vivo disponible.</string>
+    <string name="diagnostics_rck_unavailable">No había una instantánea de telemetría de FG Link en vivo disponible.</string>
 
 
     <string name="guided_title">Diagnóstico guiado por síntomas</string>
@@ -437,7 +437,7 @@ Dawon DNS MTD-01 / PM-M130-ZW · familia de gateway Z-Wave identificada; el cont
     <string name="hardware_identity_gateway_format">%1$s · %2$s
 Familia reconocida · se requiere gateway/controlador Z-Wave
 Puertos USB: %3$d · Clasificación: %4$d V / %5$d A · Máx.: %6$d W
-FG Machines RCK no enviará comandos MTTL TCP a este dispositivo.</string>
+FG Machines Link no enviará comandos MTTL TCP a este dispositivo.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 Hardware de control local reconocido. Usa la ruta de configuración/detección MTTL.</string>
 
@@ -572,7 +572,7 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="free_remote_mode_label">Modo de acceso gratuito</string>
     <string name="free_remote_host_hint">IP privada de ZeroTier / LAN del controlador</string>
     <string name="free_remote_apply">Usar acceso remoto gratuito</string>
-    <string name="free_remote_phone_help">Modo teléfono: instala ZeroTier en el teléfono que ejecuta FG Machines RCK. Introduce su IP privada de ZeroTier; RCK usará la API local en el puerto 18086.</string>
+    <string name="free_remote_phone_help">Modo teléfono: instala ZeroTier en el teléfono que ejecuta FG Machines Link. Introduce su IP privada de ZeroTier; FG Link usará la API local en el puerto 18086.</string>
     <string name="free_remote_router_help">Modo router: ZeroTier se ejecuta en el punto de acceso/router OpenWrt y enruta la LAN. Introduce la IP LAN del teléfono controlador. La app no flashea el router automáticamente.</string>
     <string name="free_remote_ready">Acceso remoto gratuito listo · %1$s · %2$s</string>
     <string name="free_remote_invalid">Error de acceso remoto gratuito: %1$s</string>

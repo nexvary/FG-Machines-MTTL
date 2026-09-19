@@ -18,9 +18,9 @@ android {
         applicationId 'com.fgmachines.rck'
         minSdk 26
         targetSdk 35
-        versionCode 27
-        versionName '1.5.0'
-        manifestPlaceholders = [appLabel: 'FG Machines RCK']
+        versionCode 28
+        versionName '1.6.0'
+        manifestPlaceholders = [appLabel: 'FG Link']
     }
 
     signingConfigs {
@@ -38,7 +38,7 @@ android {
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
-            manifestPlaceholders = [appLabel: 'FG Machines RCK Debug']
+            manifestPlaceholders = [appLabel: 'FG Link Debug']
         }
         sidecar {
             initWith debug
@@ -61,7 +61,7 @@ android {
             }
         }
         release {
-            manifestPlaceholders = [appLabel: 'FG Machines RCK']
+            manifestPlaceholders = [appLabel: 'FG Link']
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             if (stableSigningReady) {

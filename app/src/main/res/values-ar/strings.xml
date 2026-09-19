@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FG Machines RCK</string>
+    <string name="app_name">FG Machines Link</string>
     <string name="app_subtitle">ريموت ذكي لعائلة MTTL</string>
     <string name="brand_tagline">تجارة وتقنية وتحكم ذكي</string>
     <string name="brand_badge">عائلة MTTL-W01 · واي فاي 2.4 جيجاهرتز</string>
@@ -89,19 +89,19 @@
     <string name="settings_title">الإعدادات</string>
     <string name="settings_note">يتم تطبيق تغيير اللغة فورًا. إعداد المشترك والتحكم به محليان ولا يحتاجان إلى الاشتراك الكوري.</string>
     <string name="about_title">عنا</string>
-    <string name="about_line">FG Machines RCK · عائلة MTTL · تحكم محلي أولاً</string>
-    <string name="about_body">FG Machines RCK وحدة تحكم محلية مستقلة للمشتركات الذكية المتوافقة من LG U+ / TONLY. التطبيق ليس تطبيقًا رسميًا من LG U+. يركز المشروع على التشغيل المحلي عبر الواي فاي والتشخيص الواضح والتحكم الآمن في الريليهات.</string>
+    <string name="about_line">FG Machines Link · عائلة MTTL · تحكم ذكي محلي أولاً</string>
+    <string name="about_body">FG Machines Link وحدة تحكم ذكية مستقلة للمشتركات المتوافقة من LG U+ / TONLY. يركز التطبيق على التحكم المحلي عبر الواي فاي، التشغيل الآمن للمخارج، مشاركة الأجهزة، تكامل Home Assistant، وإمكانية التحكم المجاني عن بُعد عبر شبكة VPN خاصة مثل ZeroTier. التطبيق ليس تطبيقًا رسميًا من LG U+.</string>
     <string name="supported_models_title">التوافق</string>
     <string name="supported_models_body">العائلة الأساسية المتحقق منها: MTTL-W01. مراجعات الشهادة المعروفة HU04139-17002A/B/C/D/E. يتعرف التطبيق على TONLY_TAP_* و ONLY_TAP_* ويتحقق من البروتوكول قبل تفعيل مفاتيح المخارج.</string>
     <string name="setup_method_title">اختر طريقة الإعداد</string>
     <string name="setup_recommended">موصى به</string>
     <string name="setup_experimental">تجريبي</string>
     <string name="setup_mode_router_desc">الخيار الأفضل. وصّل هذا الهاتف براوتر 2.4 جيجاهرتز واحفظ عنوان IPv4، ثم اتصل بـ TONLY_TAP واكتب بيانات الراوتر. بعد الإعداد أعد توصيل الهاتف بنفس الراوتر.</string>
-    <string name="setup_mode_two_phone_desc">الخيار الأفضل بدون راوتر. الهاتف A يترك هوت سبوت 2.4 جيجاهرتز يعمل وFG Machines RCK يستمع، والهاتف B يتصل بـ TONLY_TAP ويكتب بيانات هوت سبوت الهاتف A وعنوان وحدة التحكم.</string>
+    <string name="setup_mode_two_phone_desc">الخيار الأفضل بدون راوتر. الهاتف A يترك هوت سبوت 2.4 جيجاهرتز يعمل وFG Machines Link يستمع، والهاتف B يتصل بـ TONLY_TAP ويكتب بيانات هوت سبوت الهاتف A وعنوان وحدة التحكم.</string>
     <string name="setup_mode_single_desc">يستخدم نفس الهاتف للإعداد والهوت سبوت. بعض هواتف Android تغلق الواي فاي عند تشغيل الهوت سبوت، لذلك استخدم هذا الوضع فقط على الأجهزة المتوافقة.</string>
-    <string name="router_success">تمت كتابة الإعدادات. أعد توصيل هذا الهاتف بشبكة الراوتر المستهدفة. سينتظر FG Machines RCK اتصال المشترك على TCP 10086.</string>
-    <string name="two_phone_success">تمت كتابة الإعدادات. اترك هوت سبوت الهاتف A يعمل وارجع إلى الهاتف A. يفترض أن يتصل المشترك به ثم بـ FG Machines RCK.</string>
-    <string name="single_phone_success">تمت كتابة الإعدادات. شغّل نفس هوت سبوت 2.4 جيجاهرتز الآن وانتظر اتصال المشترك بـ FG Machines RCK.</string>
+    <string name="router_success">تمت كتابة الإعدادات. أعد توصيل هذا الهاتف بشبكة الراوتر المستهدفة. سينتظر FG Machines Link اتصال المشترك على TCP 10086.</string>
+    <string name="two_phone_success">تمت كتابة الإعدادات. اترك هوت سبوت الهاتف A يعمل وارجع إلى الهاتف A. يفترض أن يتصل المشترك به ثم بـ FG Machines Link.</string>
+    <string name="single_phone_success">تمت كتابة الإعدادات. شغّل نفس هوت سبوت 2.4 جيجاهرتز الآن وانتظر اتصال المشترك بـ FG Machines Link.</string>
     <string-array name="setup_mode_labels">
         <item>راوتر واي فاي (موصى به)</item>
         <item>هاتفان (بدون راوتر)</item>
@@ -170,7 +170,7 @@
     <string name="controller_notification_channel_desc">تحافظ على وحدة تحكم MTTL المحلية فعالة في الخلفية.</string>
     <string name="alert_notification_channel">تنبيهات المشترك</string>
     <string name="alert_notification_channel_desc">تنبيهات الانقطاع وأحداث الحماية والحمل المرتفع للمشترك المتصل.</string>
-    <string name="controller_notification_title">وحدة تحكم FG Machines RCK تعمل</string>
+    <string name="controller_notification_title">وحدة تحكم FG Machines Link تعمل</string>
     <string name="controller_notification_waiting">في انتظار اتصال MTTL-W01</string>
     <string name="controller_notification_connected">عدد المشتركات المتصلة محليًا: %1$d</string>
     <string name="strip_offline_alert_title">المشترك غير متصل</string>
@@ -310,7 +310,7 @@
     <string name="diagnostics_home_action">تشخيص الأجهزة المنزلية</string>
     <string name="diagnostics_back">رجوع</string>
     <string name="diagnostics_title">تشخيص الأجهزة المنزلية</string>
-    <string name="diagnostics_subtitle">أكواد وأعراض موثقة بالمصدر تعمل دون إنترنت مع سجل مرتبط ببيانات RCK</string>
+    <string name="diagnostics_subtitle">أكواد وأعراض موثقة بالمصدر تعمل دون إنترنت مع سجل مرتبط ببيانات FG Link</string>
     <string name="diagnostics_device_binding">ربط الجهاز والمخرج</string>
     <string name="diagnostics_no_devices">لا توجد أجهزة MTTL-W01 محفوظة</string>
     <string name="diagnostics_outlet_format">المخرج %1$d</string>
@@ -336,7 +336,7 @@
     <string name="diagnostics_binding_requires_identity">أدخل الشركة أو النوع أو الموديل على الأقل قبل ربط الجهاز.</string>
     <string name="diagnostics_bound">تم ربط الجهاز بالمخرج.</string>
     <string name="diagnostics_search_before_record">نفّذ تشخيصًا موثقًا بالمصدر قبل حفظ العطل.</string>
-    <string name="diagnostics_recorded">تم حفظ العطل مع لقطة بيانات RCK الحالية.</string>
+    <string name="diagnostics_recorded">تم حفظ العطل مع لقطة بيانات FG Link الحالية.</string>
     <string name="diagnostics_code_label">الكود</string>
     <string name="diagnostics_meaning_label">المعنى</string>
     <string name="diagnostics_causes_label">الأسباب المحتملة</string>
@@ -346,7 +346,7 @@
     <string name="diagnostics_service_label">متى يحتاج فنيًا</string>
     <string name="diagnostics_scope_label">نطاق المصدر</string>
     <string name="diagnostics_symptom_label">العَرَض</string>
-    <string name="diagnostics_rck_unavailable">لا توجد لقطة Telemetry حية من RCK حاليًا.</string>
+    <string name="diagnostics_rck_unavailable">لا توجد لقطة Telemetry حية من FG Link حاليًا.</string>
 
 
     <string name="guided_title">تشخيص الأعراض الموجّه</string>
@@ -437,7 +437,7 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="hardware_identity_gateway_format">%1$s · %2$s
 تم التعرف على عائلة الجهاز · يلزم Controller/Hub يدعم Z-Wave
 منافذ USB: %3$d · التصنيف: %4$d فولت / %5$d أمبير · الحد الأقصى: %6$d واط
-لن يرسل FG Machines RCK أوامر MTTL TCP إلى هذا الجهاز.</string>
+لن يرسل FG Machines Link أوامر MTTL TCP إلى هذا الجهاز.</string>
     <string name="hardware_identity_local_format">%1$s · %2$s
 جهاز تحكم محلي معروف. استخدم مسار إعداد واكتشاف MTTL.</string>
 
@@ -572,7 +572,7 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="free_remote_mode_label">طريقة الوصول المجاني</string>
     <string name="free_remote_host_hint">عنوان ZeroTier الخاص / عنوان هاتف التحكم داخل LAN</string>
     <string name="free_remote_apply">استخدام المسار المجاني</string>
-    <string name="free_remote_phone_help">وضع الهاتف: ثبّت ZeroTier على هاتف FG Machines RCK الرئيسي، ثم أدخل عنوان ZeroTier الخاص بهذا الهاتف. سيستخدم التطبيق Local API على المنفذ 18086.</string>
+    <string name="free_remote_phone_help">وضع الهاتف: ثبّت ZeroTier على هاتف FG Machines Link الرئيسي، ثم أدخل عنوان ZeroTier الخاص بهذا الهاتف. سيستخدم FG Link واجهة Local API على المنفذ 18086.</string>
     <string name="free_remote_router_help">وضع الراوتر: يعمل ZeroTier على Access Point/راوتر OpenWrt ويوجّه شبكة الموقع. أدخل عنوان هاتف التحكم داخل LAN. التطبيق لا يقوم بعملية التفليش تلقائيًا.</string>
     <string name="free_remote_ready">المسار المجاني جاهز · %1$s · %2$s</string>
     <string name="free_remote_invalid">خطأ في المسار المجاني: %1$s</string>
