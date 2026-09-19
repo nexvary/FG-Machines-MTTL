@@ -1895,6 +1895,58 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/standbySwitch1"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/standby_cutoff_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_w_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyWatts1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_minutes_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyMinutes1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/powerLimitSwitch1"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -2014,6 +2066,58 @@
                                 android:textColor="@color/fg_text"
                                 android:textDirection="ltr" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/standbySwitch2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/standby_cutoff_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_w_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyWatts2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_minutes_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyMinutes2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/powerLimitSwitch2"
@@ -2137,6 +2241,58 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/standbySwitch3"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/standby_cutoff_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_w_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyWatts3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_minutes_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyMinutes3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/powerLimitSwitch3"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -2258,6 +2414,58 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/standbySwitch4"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/standby_cutoff_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_w_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyWatts4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/standby_minutes_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/standbyMinutes4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/powerLimitSwitch4"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -2362,6 +2570,221 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_silver_dark"
                             android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/smart_extras_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/smart_extras_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/awayModeSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/away_mode_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awayModeSwitch"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/away_mode_enable"
+                            android:textColor="@color/fg_text" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_start_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayStartInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_end_hint"
+                                app:boxStrokeColor="@color/fg_blue">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayEndInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="time"
+                                    android:maxLength="5"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_min_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayMinMinutesInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/away_max_hint"
+                                app:boxStrokeColor="@color/fg_green">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/awayMaxMinutesInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:singleLine="true"
+                                    android:textColor="@color/fg_text"
+                                    android:textDirection="ltr" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/away_outlets_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awayOutlet1"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="@string/outlet_1"
+                            android:textColor="@color/fg_text" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awayOutlet2"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="@string/outlet_2"
+                            android:textColor="@color/fg_text" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awayOutlet3"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="@string/outlet_3"
+                            android:textColor="@color/fg_text" />
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/awayOutlet4"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:text="@string/outlet_4"
+                            android:textColor="@color/fg_text" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveAwayModeButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/save_away_mode"
+                            android:textColor="@color/fg_black"
+                            app:backgroundTint="@color/fg_blue_bright"
+                            app:cornerRadius="15dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/runtime_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/runtime_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/runtimeSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/runtime_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
