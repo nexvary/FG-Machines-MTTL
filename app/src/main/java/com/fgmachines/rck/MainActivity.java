@@ -123,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText[] scheduleOnInputs;
     private TextInputEditText[] scheduleOffInputs;
     private Spinner[] scheduleDaySpinners;
+    private MaterialSwitch[] awaySwitches;
+    private TextInputEditText[] awayStartInputs;
+    private TextInputEditText[] awayEndInputs;
+    private Spinner[] followTargetSpinners;
+    private TextInputEditText[] followDelayInputs;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
     private Spinner fleetDeviceSpinner;
@@ -134,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton emergencyAllOffButton;
     private HistorySparklineView historySparkline;
     private TextView historySummary;
+    private TextView runtimeSummary;
     private TextView historyCostSummary;
     private TextView historyRecent;
     private TextInputEditText sceneNameInput;
@@ -341,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
         emergencyAllOffButton = findViewById(R.id.emergencyAllOffButton);
         historySparkline = findViewById(R.id.historySparkline);
         historySummary = findViewById(R.id.historySummary);
+        runtimeSummary = findViewById(R.id.runtimeSummary);
         historyCostSummary = findViewById(R.id.historyCostSummary);
         historyRecent = findViewById(R.id.historyRecent);
         sceneNameInput = findViewById(R.id.sceneNameInput);
@@ -423,6 +430,26 @@ public class MainActivity extends AppCompatActivity {
         scheduleDaySpinners = new Spinner[]{
                 findViewById(R.id.scheduleDayMode1), findViewById(R.id.scheduleDayMode2),
                 findViewById(R.id.scheduleDayMode3), findViewById(R.id.scheduleDayMode4)
+        };
+        awaySwitches = new MaterialSwitch[]{
+                findViewById(R.id.awaySwitch1), findViewById(R.id.awaySwitch2),
+                findViewById(R.id.awaySwitch3), findViewById(R.id.awaySwitch4)
+        };
+        awayStartInputs = new TextInputEditText[]{
+                findViewById(R.id.awayStart1), findViewById(R.id.awayStart2),
+                findViewById(R.id.awayStart3), findViewById(R.id.awayStart4)
+        };
+        awayEndInputs = new TextInputEditText[]{
+                findViewById(R.id.awayEnd1), findViewById(R.id.awayEnd2),
+                findViewById(R.id.awayEnd3), findViewById(R.id.awayEnd4)
+        };
+        followTargetSpinners = new Spinner[]{
+                findViewById(R.id.followTarget1), findViewById(R.id.followTarget2),
+                findViewById(R.id.followTarget3), findViewById(R.id.followTarget4)
+        };
+        followDelayInputs = new TextInputEditText[]{
+                findViewById(R.id.followDelay1), findViewById(R.id.followDelay2),
+                findViewById(R.id.followDelay3), findViewById(R.id.followDelay4)
         };
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
@@ -679,6 +706,11 @@ public class MainActivity extends AppCompatActivity {
                     this, R.array.automation_day_mode_labels, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             scheduleDaySpinners[i].setAdapter(adapter);
+
+            ArrayAdapter<CharSequence> followAdapter = ArrayAdapter.createFromResource(
+                    this, R.array.automation_follow_target_labels, android.R.layout.simple_spinner_item);
+            followAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            followTargetSpinners[i].setAdapter(followAdapter);
         }
         saveAutomationButton.setOnClickListener(v -> saveAutomationSettings());
         loadAutomationSettingsForActiveDevice();
@@ -728,6 +760,31 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            boolean awayEnabled = awaySwitches[i].isChecked();
+            String awayStart = textOf(awayStartInputs[i]);
+            String awayEnd = textOf(awayEndInputs[i]);
+            if (awayEnabled && (awayStart.isEmpty() || awayEnd.isEmpty()
+                    || !LocalAutomationEngine.isValidTime(awayStart)
+                    || !LocalAutomationEngine.isValidTime(awayEnd))) {
+                if (awayStart.isEmpty() || !LocalAutomationEngine.isValidTime(awayStart)) {
+                    awayStartInputs[i].setError(getString(R.string.automation_invalid_time));
+                }
+                if (awayEnd.isEmpty() || !LocalAutomationEngine.isValidTime(awayEnd)) {
+                    awayEndInputs[i].setError(getString(R.string.automation_invalid_time));
+                }
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            int followTarget = followTargetSpinners[i].getSelectedItemPosition();
+            if (followTarget == channel) {
+                Snackbar.make(saveAutomationButton,
+                        R.string.automation_invalid_follow_target, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            int followDelay = SmartAutomationEngine.clampFollowDelaySeconds(
+                    parsePositiveInt(textOf(followDelayInputs[i])));
+
             editor.putBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_AUTO_OFF_ENABLED, activeMac, channel), autoOffEnabled);
             editor.putInt(LocalAutomationEngine.deviceKey(
@@ -749,11 +806,26 @@ public class MainActivity extends AppCompatActivity {
             editor.putInt(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_DAY_MODE, activeMac, channel),
                     scheduleDaySpinners[i].getSelectedItemPosition());
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), awayEnabled);
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_START, activeMac, channel),
+                    LocalAutomationEngine.normalizeTime(awayStart));
+            editor.putString(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_END, activeMac, channel),
+                    LocalAutomationEngine.normalizeTime(awayEnd));
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_FOLLOW_TARGET, activeMac, channel), followTarget);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_FOLLOW_DELAY_SECONDS, activeMac, channel), followDelay);
 
             if (autoOffEnabled) enabledRules++;
             if (powerLimitEnabled) enabledRules++;
             if (scheduleEnabled) enabledRules++;
+            if (awayEnabled) enabledRules++;
+            if (SmartAutomationEngine.isValidFollowTarget(channel, followTarget)) enabledRules++;
             editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
+            editor.remove(SmartAutomationEngine.awayNextPreferenceKey(activeMac, channel));
         }
         editor.apply();
         updateAutomationSummary();
@@ -777,6 +849,11 @@ public class MainActivity extends AppCompatActivity {
                     LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false)) rules++;
             if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), false)) rules++;
+            int followTarget = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_FOLLOW_TARGET, activeMac, channel), 0);
+            if (SmartAutomationEngine.isValidFollowTarget(channel, followTarget)) rules++;
         }
         automationSummary.setText(rules == 0
                 ? getString(R.string.automation_none)
@@ -797,6 +874,11 @@ public class MainActivity extends AppCompatActivity {
                 scheduleOnInputs[i].setText("");
                 scheduleOffInputs[i].setText("");
                 scheduleDaySpinners[i].setSelection(LocalAutomationEngine.DAY_EVERY_DAY, false);
+                awaySwitches[i].setChecked(false);
+                awayStartInputs[i].setText("18:00");
+                awayEndInputs[i].setText("23:00");
+                followTargetSpinners[i].setSelection(0, false);
+                followDelayInputs[i].setText("0");
             }
             updateAutomationSummary();
             return;
@@ -831,6 +913,20 @@ public class MainActivity extends AppCompatActivity {
                 dayMode = LocalAutomationEngine.DAY_EVERY_DAY;
             }
             scheduleDaySpinners[i].setSelection(dayMode, false);
+
+            awaySwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_ENABLED, activeMac, channel), false));
+            awayStartInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_START, activeMac, channel), "18:00"));
+            awayEndInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_AWAY_END, activeMac, channel), "23:00"));
+
+            int followTarget = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_FOLLOW_TARGET, activeMac, channel), 0);
+            if (followTarget < 0 || followTarget > 4 || followTarget == channel) followTarget = 0;
+            followTargetSpinners[i].setSelection(followTarget, false);
+            followDelayInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    SmartAutomationEngine.KEY_FOLLOW_DELAY_SECONDS, activeMac, channel), 0)));
         }
         updateAutomationSummary();
     }
@@ -1261,6 +1357,7 @@ public class MainActivity extends AppCompatActivity {
         if (activeMac == null) {
             historySparkline.setPoints(new ArrayList<>());
             historySummary.setText(R.string.history_waiting);
+            if (runtimeSummary != null) runtimeSummary.setText(R.string.runtime_waiting);
             historyCostSummary.setText(R.string.history_cost_waiting);
             historyRecent.setText(R.string.history_no_events);
             return;
@@ -1286,6 +1383,19 @@ public class MainActivity extends AppCompatActivity {
         historySummary.setText(getString(R.string.history_summary_format,
                 daily.energyDeltaKWh, weekly.energyDeltaKWh, monthly.energyDeltaKWh,
                 daily.maxPowerW));
+        if (runtimeSummary != null) {
+            HistoryStore.RuntimeSummary r1 = historyStore.runtimeSummary(
+                    activeMac, 1, day.getTimeInMillis(), now);
+            HistoryStore.RuntimeSummary r2 = historyStore.runtimeSummary(
+                    activeMac, 2, day.getTimeInMillis(), now);
+            HistoryStore.RuntimeSummary r3 = historyStore.runtimeSummary(
+                    activeMac, 3, day.getTimeInMillis(), now);
+            HistoryStore.RuntimeSummary r4 = historyStore.runtimeSummary(
+                    activeMac, 4, day.getTimeInMillis(), now);
+            runtimeSummary.setText(getString(R.string.runtime_summary_format,
+                    formatRuntime(r1.runtimeMs), formatRuntime(r2.runtimeMs),
+                    formatRuntime(r3.runtimeMs), formatRuntime(r4.runtimeMs)));
+        }
         double tariff = Double.longBitsToDouble(getSharedPreferences(PREFS, MODE_PRIVATE)
                 .getLong(PREF_TARIFF, Double.doubleToRawLongBits(0.0)));
         if (tariff > 0.0) {
@@ -1298,7 +1408,7 @@ public class MainActivity extends AppCompatActivity {
         }
         historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
 
-        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 12);
         if (events.isEmpty()) {
             historyRecent.setText(R.string.history_no_events);
         } else {
@@ -1315,6 +1425,15 @@ public class MainActivity extends AppCompatActivity {
             }
             historyRecent.setText(text.toString());
         }
+    }
+
+    private String formatRuntime(long runtimeMs) {
+        long totalMinutes = Math.max(0L, runtimeMs) / 60_000L;
+        long hours = totalMinutes / 60L;
+        long minutes = totalMinutes % 60L;
+        return hours > 0L
+                ? getString(R.string.runtime_hours_minutes, hours, minutes)
+                : getString(R.string.runtime_minutes, minutes);
     }
 
     private void requestEmergencyOff(boolean roomOnly) {

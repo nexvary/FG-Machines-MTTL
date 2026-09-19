@@ -457,4 +457,23 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
 القدرة %3$.1f واط · الطاقة %4$.3f ك.و.س · الحرارة %5$d°م
 حمل زائد: %6$s · حرارة زائدة: %7$s · الحدث: %8$s</string>
 
+
+    <string name="away_mode_enable">وضع الغياب · تشغيل وإيقاف عشوائي داخل فترة زمنية</string>
+    <string name="away_start_hint">بداية الغياب HH:mm</string>
+    <string name="away_end_hint">نهاية الغياب HH:mm</string>
+    <string name="linked_outlet_rule">ربط المخرج · اجعل مخرجًا آخر يتبع حالة التشغيل والإيقاف لهذا المخرج</string>
+    <string name="follow_delay_hint">تأخير المخرج المرتبط بالثواني (0–3600)</string>
+    <string name="automation_invalid_follow_target">لا يمكن ربط المخرج بنفسه.</string>
+    <string name="runtime_waiting">زمن التشغيل اليوم · في انتظار بيانات القياس المحلية.</string>
+    <string name="runtime_summary_format">زمن التشغيل اليوم · 1: %1$s · 2: %2$s · 3: %3$s · 4: %4$s</string>
+    <string name="runtime_hours_minutes">%1$dس %2$dد</string>
+    <string name="runtime_minutes">%1$dد</string>
+    <string-array name="automation_follow_target_labels">
+        <item>بدون مخرج مرتبط</item>
+        <item>المخرج 1</item>
+        <item>المخرج 2</item>
+        <item>المخرج 3</item>
+        <item>المخرج 4</item>
+    </string-array>
+
 </resources>

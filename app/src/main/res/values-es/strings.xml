@@ -457,4 +457,19 @@ Hardware de control local reconocido. Usa la ruta de configuración/detección M
 Potencia %3$.1f W · Energía %4$.3f kWh · Temperatura %5$d°C
 Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
 
+
+    <string name="away_mode_enable">Modo Ausente · encendido/apagado aleatorio en una franja horaria</string>
+    <string name="away_start_hint">Inicio Ausente HH:mm</string>
+    <string name="away_end_hint">Fin Ausente HH:mm</string>
+    <string name="linked_outlet_rule">Toma vinculada · replica el estado ON/OFF en otra toma</string>
+    <string name="follow_delay_hint">Retardo de toma vinculada (segundos, 0–3600)</string>
+    <string name="automation_invalid_follow_target">Una toma no puede vincularse consigo misma.</string>
+    <string name="runtime_waiting">Tiempo de uso hoy · esperando telemetría local.</string>
+    <string name="runtime_summary_format">Uso hoy · T1 %1$s · T2 %2$s · T3 %3$s · T4 %4$s</string>
+    <string name="runtime_hours_minutes">%1$dh %2$dmin</string>
+    <string name="runtime_minutes">%1$dmin</string>
+    <string-array name="automation_follow_target_labels">
+        <item>Sin toma vinculada</item><item>Toma 1</item><item>Toma 2</item><item>Toma 3</item><item>Toma 4</item>
+    </string-array>
+
 </resources>

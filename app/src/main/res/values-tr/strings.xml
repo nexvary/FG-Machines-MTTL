@@ -457,4 +457,19 @@ Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
 Güç %3$.1f W · Enerji %4$.3f kWh · Sıcaklık %5$d°C
 Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
 
+
+    <string name="away_mode_enable">Uzakta Modu · zaman aralığında rastgele AÇ/KAPAT</string>
+    <string name="away_start_hint">Uzakta başlangıç HH:mm</string>
+    <string name="away_end_hint">Uzakta bitiş HH:mm</string>
+    <string name="linked_outlet_rule">Bağlı priz · bu prizin AÇ/KAPAT durumunu başka prize uygula</string>
+    <string name="follow_delay_hint">Bağlı priz gecikmesi (saniye, 0–3600)</string>
+    <string name="automation_invalid_follow_target">Bir priz kendisine bağlanamaz.</string>
+    <string name="runtime_waiting">Bugünkü çalışma süresi · yerel telemetri bekleniyor.</string>
+    <string name="runtime_summary_format">Bugün · P1 %1$s · P2 %2$s · P3 %3$s · P4 %4$s</string>
+    <string name="runtime_hours_minutes">%1$dsa %2$ddk</string>
+    <string name="runtime_minutes">%1$ddk</string>
+    <string-array name="automation_follow_target_labels">
+        <item>Bağlı priz yok</item><item>Priz 1</item><item>Priz 2</item><item>Priz 3</item><item>Priz 4</item>
+    </string-array>
+
 </resources>

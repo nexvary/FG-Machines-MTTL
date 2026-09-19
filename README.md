@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.3.4
+## Current Android baseline — 1.3.5
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -23,6 +23,10 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - A foreground controller service keeps TCP 10086 available after leaving the UI, preserving the local MTTL session while the phone remains the controller/hotspot.
 - Local Android notifications can alert on strip disconnects, non-zero protection/event codes, and live loads above 3,000 W.
 - Per-outlet local automation: auto-off timers and ON/OFF schedules stored on the controller phone and executed by the foreground controller service.
+- Away Mode can randomly alternate a selected outlet inside a user-defined local time window, with no cloud dependency.
+- Linked-outlet rules can mirror one outlet's ON/OFF transitions to another outlet with an optional local delay.
+- Per-outlet runtime statistics are derived from observed local telemetry samples; long offline gaps are deliberately excluded instead of being guessed as continuous runtime.
+- The local event view now surfaces a longer recent activity trail for relay, alert, scene and smart-automation events.
 - Schedule day modes are explicit: every day, Sun–Thu, or Fri–Sat. Time values use 24-hour HH:mm format.
 - Multi-device fleet registry with persistent device names, rooms, selected device, firmware, last-seen and connection uptime.
 - Room filtering turns room metadata into an actual fleet organization layer instead of a single free-text label.

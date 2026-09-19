@@ -465,4 +465,23 @@ Recognized local-control hardware. Use the MTTL setup/discovery path.</string>
 Power %3$.1f W · Energy %4$.3f kWh · Temperature %5$d°C
 Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
 
+
+    <string name="away_mode_enable">Away Mode · random ON/OFF inside a time window</string>
+    <string name="away_start_hint">Away start HH:mm</string>
+    <string name="away_end_hint">Away end HH:mm</string>
+    <string name="linked_outlet_rule">Linked outlet · mirror this outlet's ON/OFF state to another outlet</string>
+    <string name="follow_delay_hint">Linked outlet delay (seconds, 0–3600)</string>
+    <string name="automation_invalid_follow_target">A linked outlet cannot target itself.</string>
+    <string name="runtime_waiting">Runtime today · waiting for local telemetry samples.</string>
+    <string name="runtime_summary_format">Runtime today · O1 %1$s · O2 %2$s · O3 %3$s · O4 %4$s</string>
+    <string name="runtime_hours_minutes">%1$dh %2$dm</string>
+    <string name="runtime_minutes">%1$dm</string>
+    <string-array name="automation_follow_target_labels">
+        <item>No linked outlet</item>
+        <item>Outlet 1</item>
+        <item>Outlet 2</item>
+        <item>Outlet 3</item>
+        <item>Outlet 4</item>
+    </string-array>
+
 </resources>
