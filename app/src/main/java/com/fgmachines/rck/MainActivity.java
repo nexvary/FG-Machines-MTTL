@@ -1267,6 +1267,8 @@ public class MainActivity extends AppCompatActivity {
         activeFirmwareVersion = state == null ? null : state.firmwareVersion;
         applyDeviceNames();
         loadAutomationSettingsForActiveDevice();
+        loadAwayModeForActiveDevice();
+        refreshRuntimeSummary();
 
         if (state != null && state.connected) {
             setOutletControlsEnabled(true);
@@ -1300,6 +1302,7 @@ public class MainActivity extends AppCompatActivity {
         refreshUsbDiscoveryStatus();
         refreshScenes();
         refreshHistory();
+        refreshRuntimeSummary();
     }
 
     private void migrateLegacyLabelsIfNeeded(String mac) {
@@ -1511,7 +1514,7 @@ public class MainActivity extends AppCompatActivity {
         }
         historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
 
-        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 12);
         if (events.isEmpty()) {
             historyRecent.setText(R.string.history_no_events);
         } else {
@@ -1520,13 +1523,33 @@ public class MainActivity extends AppCompatActivity {
             for (HistoryStore.EventRecord event : events) {
                 if (text.length() > 0) text.append('\n');
                 text.append(format.format(new java.util.Date(event.ts)))
-                        .append(" · ").append(event.kind);
+                        .append(" · ").append(eventKindLabel(event.kind));
                 if (event.outlet > 0) text.append(" #").append(event.outlet);
                 if (event.detail != null && !event.detail.isEmpty()) {
                     text.append(" · ").append(event.detail);
                 }
             }
             historyRecent.setText(text.toString());
+        }
+    }
+
+    private String eventKindLabel(String kind) {
+        if (kind == null) return getString(R.string.event_other);
+        switch (kind) {
+            case "connected": return getString(R.string.event_connected);
+            case "disconnected": return getString(R.string.event_disconnected);
+            case "relay_state": return getString(R.string.event_relay_state);
+            case "scene_apply": return getString(R.string.event_scene_apply);
+            case "alert": return getString(R.string.event_alert);
+            case "automation_auto_off": return getString(R.string.event_auto_off);
+            case "automation_power_limit": return getString(R.string.event_power_limit);
+            case "automation_standby_cutoff": return getString(R.string.event_standby_cutoff);
+            case "automation_schedule": return getString(R.string.event_schedule);
+            case "automation_away_toggle": return getString(R.string.event_away_toggle);
+            case "away_mode_config": return getString(R.string.event_away_config);
+            case "usb_discovery_started": return getString(R.string.event_usb_discovery);
+            case "usb_discovery_frame": return getString(R.string.event_usb_frame);
+            default: return kind;
         }
     }
 
@@ -2386,7 +2409,9 @@ public class MainActivity extends AppCompatActivity {
                         deviceState.setText(R.string.controller_disconnected);
                         discoveryDetail.setText(R.string.locked);
                         refreshFleetOverviewAndList();
+                        loadAwayModeForActiveDevice();
                         refreshHistory();
+                        refreshRuntimeSummary();
                     } else if (selectedDisconnected) {
                         selectFleetDevice(activeMac);
                     } else {
@@ -2414,6 +2439,7 @@ public class MainActivity extends AppCompatActivity {
                         updateFleetStatus();
                         refreshFleetOverviewAndList();
                         refreshHistory();
+                        refreshRuntimeSummary();
                     } finally { applyingDeviceState = false; }
                 });
             }
@@ -2564,6 +2590,8 @@ public class MainActivity extends AppCompatActivity {
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
         updateAutomationSummary();
+        loadAwayModeForActiveDevice();
+        refreshRuntimeSummary();
         refreshFleetUi();
         refreshUsbDiscoveryStatus();
         refreshHistory();
