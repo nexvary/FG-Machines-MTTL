@@ -2,7 +2,7 @@ package com.fgmachines.rck;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
+import java.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -104,8 +104,8 @@ public final class AccessControlStore {
     }
 
     static String encode(String name, Role role, String tokenHash, String scopeMac) {
-        String safeName = Base64.encodeToString(
-                name.getBytes(java.nio.charset.StandardCharsets.UTF_8), Base64.NO_WRAP);
+        String safeName = Base64.getEncoder().encodeToString(
+                name.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         String safeScope = FleetStore.normalizeMac(scopeMac);
         return safeName + "|" + role.name() + "|" + tokenHash + "|" + safeScope;
     }
@@ -115,7 +115,7 @@ public final class AccessControlStore {
         String[] parts = raw.split("\\|", -1);
         if (parts.length != 3 && parts.length != 4) return null;
         try {
-            String name = new String(Base64.decode(parts[0], Base64.DEFAULT),
+            String name = new String(Base64.getDecoder().decode(parts[0]),
                     java.nio.charset.StandardCharsets.UTF_8);
             Role role = Role.valueOf(parts[1]);
             if (parts[2].length() < 20) return null;
@@ -130,7 +130,7 @@ public final class AccessControlStore {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] bytes = digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         } catch (NoSuchAlgorithmException error) {
             throw new IllegalStateException("SHA-256 unavailable", error);
         }
@@ -139,7 +139,7 @@ public final class AccessControlStore {
     private static String generateToken() {
         byte[] bytes = new byte[24];
         RANDOM.nextBytes(bytes);
-        return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     private static boolean constantTimeEquals(String a, String b) {
