@@ -220,16 +220,16 @@
     <string name="alert_temp_hint">حد تنبيه الحرارة (°م، اختياري)</string>
     <string name="alert_energy_hint">تنبيه الطاقة اليومية (ك.و.س، اختياري)</string>
     <string name="save_alert_limits">حفظ حدود التنبيه</string>
-    <string name="sharing_title">المستخدمون والمشاركة وHome Assistant</string>
+    <string name="sharing_title">مشاركة الأجهزة وHome Assistant</string>
     <string name="api_endpoint_waiting">لم يتم تحديد IP للواجهة المحلية بعد · المنفذ 18086</string>
     <string name="share_name_hint">اسم المستخدم أو التكامل</string>
-    <string name="create_access">إنشاء صلاحية</string>
+    <string name="create_access">إنشاء مشاركة للجهاز</string>
     <string name="create_ha_token">رمز Home Assistant</string>
     <string name="share_token_waiting">سيظهر رمز الوصول الجديد هنا. اضغط لنسخه.</string>
     <string name="revoke_access">إلغاء الصلاحية المحددة</string>
     <string name="sharing_security_note">صلاحية View للقراءة فقط، وControl للتحكم بالمخارج، وAdmin تتضمن التحكم. استخدم الواجهة داخل شبكة موثوقة/VPN أو خلف HTTPS.</string>
-    <string name="remote_control_title">التحكم عن بُعد</string>
-    <string name="remote_control_note">اتصل بوحدة FG Machines RCK أخرى عبر عنوان HTTPS أو VPN. يظل التحكم المحلي هو الوضع الافتراضي.</string>
+    <string name="remote_control_title">السحابة / التحكم عن بُعد</string>
+    <string name="remote_control_note">يمكنك الآن لصق Share Code للتحكم عبر LAN/VPN، أو إضافة عنوان VPS آمن عبر HTTPS لاحقًا. يظل التحكم المحلي هو الافتراضي.</string>
     <string name="remote_endpoint_hint">العنوان البعيد، مثال https://rck.example.com</string>
     <string name="remote_token_hint">رمز الوصول</string>
     <string name="remote_connect">اتصال / تحديث</string>
@@ -497,5 +497,34 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="event_away_config">إعداد وضع الغياب</string>
     <string name="event_usb_discovery">بدء اكتشاف USB</string>
     <string name="event_usb_frame">إطار اكتشاف USB</string>
+
+    <string name="share_code_waiting">سيظهر كود مشاركة الجهاز هنا بعد إنشاء الصلاحية. اضغط لنسخه.</string>
+    <string name="share_code_unavailable">كود المشاركة غير متاح حتى يتم اكتشاف عنوان IPv4 لوحدة التحكم.</string>
+    <string name="share_code_copied">تم نسخ كود مشاركة الجهاز</string>
+    <string name="share_code_secret_note">كود المشاركة يحتوي على رمز وصول فعال. عامله مثل كلمة مرور وألغِه عند عدم الحاجة.</string>
+    <string name="share_scope_all">كل الأجهزة</string>
+    <string name="share_select_device">اختر مشتركًا من قائمة الأجهزة قبل إنشاء مشاركة للجهاز.</string>
+    <string name="voice_control_title">التحكم الصوتي</string>
+    <string name="voice_control_note">يستخدم التعرف الصوتي في Android ويفضل العمل دون اتصال عند توفره. الأوامر تطبق فقط على المشترك المحدد والمتصل.</string>
+    <string name="voice_control_start">تحدث بالأمر</string>
+    <string name="voice_ready">جاهز لأمر آمن خاص بالمخارج.</string>
+    <string name="voice_prompt">قل: شغل المخرج 1، اقفل المخرج 2، أو اقفل كل المخارج</string>
+    <string name="voice_listening">جارٍ الاستماع…</string>
+    <string name="voice_unavailable">لا يوجد محرك تعرف صوتي متوافق على هذا الهاتف.</string>
+    <string name="voice_no_result">لم يتم إرجاع نتيجة صوتية.</string>
+    <string name="voice_cancelled">تم إلغاء الأمر الصوتي.</string>
+    <string name="voice_requires_connected_device">اختر MTTL-W01 متصلًا قبل استخدام التحكم الصوتي.</string>
+    <string name="voice_not_understood">لم أتمكن من تحويل «%1$s» إلى أمر آمن للمخارج.</string>
+    <string name="voice_heard">تم سماع: %1$s</string>
+    <string name="voice_confirm_all_on">تشغيل المخارج الأربعة في المشترك المحدد؟</string>
+    <string name="voice_command_result">تم إرسال الأمر الصوتي: %1$d · فشل: %2$d</string>
+    <string name="remote_share_code_hint">الصق كود مشاركة الجهاز</string>
+    <string name="import_share_code">استيراد كود المشاركة</string>
+    <string name="share_code_invalid">كود مشاركة الجهاز غير صالح أو غير مدعوم.</string>
+    <string name="share_code_imported_device">تم استيراد كود المشاركة · الجهاز %1$s</string>
+    <string name="share_code_imported_all">تم استيراد كود مشاركة لكل الأجهزة</string>
+    <string name="cloud_waiting_for_vps">لم يتم إعداد Cloud/VPS بعد. يظل التحكم المحلي ومشاركة الجهاز عبر LAN/VPN متاحين.</string>
+    <string name="event_device_share">إنشاء مشاركة جهاز</string>
+    <string name="event_voice_command">أمر صوتي</string>
 
 </resources>
