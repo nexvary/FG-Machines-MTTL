@@ -574,4 +574,19 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="automation_invalid_standby_w_range">Choose a low-consumption threshold from 1 to 100 W.</string>
     <string name="automation_invalid_standby_minutes_range">Choose a low-consumption duration from 1 to 120 minutes.</string>
     <string name="controller_watchdog_retry">Local controller restart retry failed: %1$s</string>
+
+    <string name="free_remote_title">Free Remote Access</string>
+    <string name="free_remote_note">No VPS or monthly subscription required. Choose ZeroTier on the controller phone or a ZeroTier/OpenWrt router gateway.</string>
+    <string name="free_remote_mode_label">Free access mode</string>
+    <string name="free_remote_host_hint">Private ZeroTier / controller LAN IP</string>
+    <string name="free_remote_apply">Use free remote path</string>
+    <string name="free_remote_phone_help">Phone mode: install ZeroTier on the FG Machines RCK controller phone. Enter that phone’s private ZeroTier IP; RCK will use local API port 18086.</string>
+    <string name="free_remote_router_help">Router gateway mode: ZeroTier runs on the OpenWrt access point/router and routes the site LAN. Enter the controller phone’s LAN IP. Flashing is never performed by the app.</string>
+    <string name="free_remote_ready">Free remote path ready · %1$s · %2$s</string>
+    <string name="free_remote_invalid">Free remote path error: %1$s</string>
+    <string name="free_remote_router_warning">Experimental router target: LG GAPM-7100 / RTL8198C rev B. Use only a firmware image verified for the exact board; never flash a generic RTL8198C image.</string>
+    <string-array name="free_remote_mode_labels">
+        <item>ZeroTier on controller phone</item>
+        <item>ZeroTier / OpenWrt router gateway</item>
+    </string-array>
 </resources>
