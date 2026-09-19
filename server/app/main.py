@@ -1,0 +1,853 @@
+from __future__ import annotations
+
+import hashlib
+import hmac
+import os
+import re
+import secrets
+import uuid
+from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
+from typing import Generator, Literal
+
+import jwt
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    and_,
+    create_engine,
+    or_,
+    select,
+)
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+
+
+APP_NAME = "FG Machines RCK Cloud"
+API_PREFIX = "/api/v1"
+ENVIRONMENT = os.getenv("FGRCK_ENV", "development").strip().lower()
+DATABASE_URL = os.getenv("FGRCK_DATABASE_URL", "sqlite+pysqlite:///./fg_rck_cloud.db")
+JWT_SECRET = os.getenv("FGRCK_JWT_SECRET", "development-only-change-me")
+TOKEN_PEPPER = os.getenv("FGRCK_TOKEN_PEPPER", "development-only-pepper")
+JWT_TTL_MINUTES = max(15, int(os.getenv("FGRCK_JWT_TTL_MINUTES", "720")))
+COMMAND_TTL_SECONDS = max(30, int(os.getenv("FGRCK_COMMAND_TTL_SECONDS", "180")))
+CONTROLLER_ONLINE_SECONDS = max(30, int(os.getenv("FGRCK_CONTROLLER_ONLINE_SECONDS", "90")))
+COMMAND_REDELIVER_SECONDS = max(10, int(os.getenv("FGRCK_COMMAND_REDELIVER_SECONDS", "30")))
+MAX_COMMAND_ATTEMPTS = max(1, int(os.getenv("FGRCK_MAX_COMMAND_ATTEMPTS", "5")))
+
+ROLE_RANK = {"view": 10, "control": 20, "admin": 30, "owner": 40}
+MAC_RE = re.compile(r"^[0-9A-F]{12}$")
+password_hasher = PasswordHasher(time_cost=2, memory_cost=65536, parallelism=2)
+
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def new_id() -> str:
+    return str(uuid.uuid4())
+
+
+def normalize_mac(value: str) -> str:
+    raw = re.sub(r"[^0-9A-Fa-f]", "", value or "").upper()
+    if not MAC_RE.fullmatch(raw):
+        raise HTTPException(status_code=422, detail="MAC must contain exactly 12 hexadecimal digits")
+    return raw
+
+
+def hash_secret(value: str) -> str:
+    return hmac.new(TOKEN_PEPPER.encode(), value.encode(), hashlib.sha256).hexdigest()
+
+
+def issue_secret(prefix: str) -> str:
+    return prefix + "_" + secrets.token_urlsafe(32)
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class User(Base):
+    __tablename__ = "users"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(320), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(512))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class Controller(Base):
+    __tablename__ = "controllers"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    owner_user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    name: Mapped[str] = mapped_column(String(120))
+    key_hash: Mapped[str] = mapped_column(String(64), unique=True)
+    last_seen: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class Device(Base):
+    __tablename__ = "devices"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    owner_user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    controller_id: Mapped[str] = mapped_column(ForeignKey("controllers.id"), index=True)
+    mac: Mapped[str] = mapped_column(String(12), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(120), default="")
+    room: Mapped[str] = mapped_column(String(120), default="")
+    firmware: Mapped[str] = mapped_column(String(80), default="")
+    online: Mapped[bool] = mapped_column(Boolean, default=False)
+    last_seen: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class DeviceAccess(Base):
+    __tablename__ = "device_access"
+    __table_args__ = (UniqueConstraint("device_id", "user_id", name="uq_device_access_user"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    device_id: Mapped[str] = mapped_column(ForeignKey("devices.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    role: Mapped[str] = mapped_column(String(16))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ShareInvite(Base):
+    __tablename__ = "share_invites"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    device_id: Mapped[str] = mapped_column(ForeignKey("devices.id"), index=True)
+    created_by_user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    code_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    role: Mapped[str] = mapped_column(String(16))
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    accepted_by_user_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    revoked: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class Command(Base):
+    __tablename__ = "commands"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    controller_id: Mapped[str] = mapped_column(ForeignKey("controllers.id"), index=True)
+    device_id: Mapped[str] = mapped_column(ForeignKey("devices.id"), index=True)
+    requested_by_user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    outlet: Mapped[int] = mapped_column(Integer)
+    state: Mapped[str] = mapped_column(String(8))
+    source: Mapped[str] = mapped_column(String(32), default="app")
+    status: Mapped[str] = mapped_column(String(16), default="queued", index=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    delivered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    acked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    ack_detail: Mapped[str] = mapped_column(String(512), default="")
+
+
+class TelemetrySnapshot(Base):
+    __tablename__ = "telemetry_snapshots"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    device_id: Mapped[str] = mapped_column(ForeignKey("devices.id"), index=True)
+    ts: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    power_w: Mapped[float] = mapped_column(Float, default=0.0)
+    energy_kwh: Mapped[float] = mapped_column(Float, default=0.0)
+    max_temp_c: Mapped[int] = mapped_column(Integer, default=0)
+    relay_mask: Mapped[int] = mapped_column(Integer, default=0)
+    event_code: Mapped[str] = mapped_column(String(64), default="")
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_log"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    device_id: Mapped[str | None] = mapped_column(ForeignKey("devices.id"), nullable=True, index=True)
+    action: Mapped[str] = mapped_column(String(80), index=True)
+    detail: Mapped[str] = mapped_column(String(512), default="")
+    ts: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+
+
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, connect_args=connect_args)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
+
+
+def get_db() -> Generator[Session, None, None]:
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+bearer = HTTPBearer(auto_error=False)
+
+
+def create_access_token(user: User) -> str:
+    now = utcnow()
+    payload = {
+        "sub": user.id,
+        "email": user.email,
+        "iat": int(now.timestamp()),
+        "exp": int((now + timedelta(minutes=JWT_TTL_MINUTES)).timestamp()),
+        "iss": "fg-machines-rck",
+        "aud": "fg-rck-cloud",
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+
+
+def current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
+    db: Session = Depends(get_db),
+) -> User:
+    if credentials is None or credentials.scheme.lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Bearer token required")
+    try:
+        claims = jwt.decode(
+            credentials.credentials,
+            JWT_SECRET,
+            algorithms=["HS256"],
+            audience="fg-rck-cloud",
+            issuer="fg-machines-rck",
+        )
+        user_id = str(claims.get("sub", ""))
+    except jwt.PyJWTError as error:
+        raise HTTPException(status_code=401, detail="Invalid or expired access token") from error
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="Account no longer exists")
+    return user
+
+
+def audit(db: Session, action: str, user_id: str | None = None,
+          device_id: str | None = None, detail: str = "") -> None:
+    db.add(AuditLog(user_id=user_id, device_id=device_id, action=action, detail=detail[:512]))
+
+
+def role_for(db: Session, user: User, device: Device) -> str | None:
+    if device.owner_user_id == user.id:
+        return "owner"
+    access = db.scalar(select(DeviceAccess).where(
+        DeviceAccess.device_id == device.id,
+        DeviceAccess.user_id == user.id,
+    ))
+    return access.role if access else None
+
+
+def require_device_role(db: Session, user: User, device: Device, minimum: str) -> str:
+    role = role_for(db, user, device)
+    if role is None or ROLE_RANK.get(role, 0) < ROLE_RANK[minimum]:
+        raise HTTPException(status_code=403, detail=f"{minimum} access required")
+    return role
+
+
+def device_by_mac(db: Session, mac: str) -> Device:
+    normalized = normalize_mac(mac)
+    device = db.scalar(select(Device).where(Device.mac == normalized))
+    if device is None:
+        raise HTTPException(status_code=404, detail="Device not found")
+    return device
+
+
+def controller_auth(db: Session, controller_id: str, controller_key: str | None) -> Controller:
+    if not controller_key:
+        raise HTTPException(status_code=401, detail="X-Controller-Key required")
+    controller = db.get(Controller, controller_id)
+    if controller is None or not hmac.compare_digest(controller.key_hash, hash_secret(controller_key)):
+        raise HTTPException(status_code=401, detail="Invalid controller credentials")
+    return controller
+
+
+def is_device_online(device: Device) -> bool:
+    if not device.online or device.last_seen is None:
+        return False
+    seen = device.last_seen
+    if seen.tzinfo is None:
+        seen = seen.replace(tzinfo=timezone.utc)
+    return seen >= utcnow() - timedelta(seconds=CONTROLLER_ONLINE_SECONDS)
+
+
+def device_payload(device: Device, role: str) -> dict:
+    return {
+        "mac": device.mac,
+        "name": device.name,
+        "room": device.room,
+        "firmware": device.firmware,
+        "connected": is_device_online(device),
+        "last_seen": int(device.last_seen.timestamp() * 1000) if device.last_seen else 0,
+        "role": role,
+    }
+
+
+def queue_command(
+    db: Session,
+    user: User,
+    device: Device,
+    outlet: int,
+    target_state: str,
+    source: str,
+) -> Command:
+    if outlet < 1 or outlet > 4:
+        raise HTTPException(status_code=422, detail="Outlet must be 1..4")
+    if target_state not in {"on", "off"}:
+        raise HTTPException(status_code=422, detail="State must be on or off")
+    require_device_role(db, user, device, "control")
+    command = Command(
+        controller_id=device.controller_id,
+        device_id=device.id,
+        requested_by_user_id=user.id,
+        outlet=outlet,
+        state=target_state,
+        source=source[:32],
+        expires_at=utcnow() + timedelta(seconds=COMMAND_TTL_SECONDS),
+    )
+    db.add(command)
+    audit(db, "command_queued", user.id, device.id, f"{source}:outlet={outlet},state={target_state}")
+    db.commit()
+    db.refresh(command)
+    return command
+
+
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=10, max_length=200)
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=1, max_length=200)
+
+
+class ControllerCreateRequest(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+
+
+class DeviceRegisterRequest(BaseModel):
+    controller_id: str
+    mac: str
+    name: str = Field(default="", max_length=120)
+    room: str = Field(default="", max_length=120)
+    firmware: str = Field(default="", max_length=80)
+
+
+class ShareInviteRequest(BaseModel):
+    role: Literal["view", "control", "admin"] = "view"
+    expires_hours: int = Field(default=72, ge=1, le=720)
+
+
+class ShareAcceptRequest(BaseModel):
+    code: str = Field(min_length=20, max_length=512)
+
+
+class AckRequest(BaseModel):
+    status: Literal["acked", "failed"]
+    detail: str = Field(default="", max_length=512)
+
+
+class HeartbeatDevice(BaseModel):
+    mac: str
+    connected: bool = True
+    firmware: str = Field(default="", max_length=80)
+
+
+class HeartbeatRequest(BaseModel):
+    devices: list[HeartbeatDevice] = Field(default_factory=list)
+
+
+class TelemetryItem(BaseModel):
+    mac: str
+    power_w: float = Field(default=0.0, ge=0)
+    energy_kwh: float = Field(default=0.0, ge=0)
+    max_temp_c: int = 0
+    relay_mask: int = Field(default=0, ge=0, le=15)
+    event_code: str = Field(default="", max_length=64)
+
+
+class TelemetryRequest(BaseModel):
+    items: list[TelemetryItem] = Field(min_length=1, max_length=50)
+
+
+class VoiceIntentRequest(BaseModel):
+    mac: str
+    action: Literal["on", "off"]
+    outlet: int | None = Field(default=None, ge=1, le=4)
+    all_outlets: bool = False
+    confirm_all_on: bool = False
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    if ENVIRONMENT == "production":
+        if JWT_SECRET == "development-only-change-me" or len(JWT_SECRET) < 32:
+            raise RuntimeError("FGRCK_JWT_SECRET must be a strong production secret")
+        if TOKEN_PEPPER == "development-only-pepper" or len(TOKEN_PEPPER) < 32:
+            raise RuntimeError("FGRCK_TOKEN_PEPPER must be a strong production secret")
+    Base.metadata.create_all(bind=engine)
+    yield
+
+
+app = FastAPI(
+    title=APP_NAME,
+    version="0.1.0",
+    description="Account, sharing and outbound-controller relay for FG Machines RCK.",
+    lifespan=lifespan,
+)
+
+
+@app.get("/healthz")
+@app.get(f"{API_PREFIX}/health")
+def health() -> dict:
+    return {"ok": True, "service": "fg-rck-cloud", "version": "0.1.0"}
+
+
+@app.post(f"{API_PREFIX}/auth/register", status_code=201)
+def register(body: RegisterRequest, db: Session = Depends(get_db)) -> dict:
+    email = str(body.email).strip().lower()
+    if db.scalar(select(User).where(User.email == email)):
+        raise HTTPException(status_code=409, detail="Email already registered")
+    user = User(email=email, password_hash=password_hasher.hash(body.password))
+    db.add(user)
+    db.flush()
+    audit(db, "account_registered", user.id, detail=email)
+    db.commit()
+    db.refresh(user)
+    return {"access_token": create_access_token(user), "token_type": "bearer", "user_id": user.id}
+
+
+@app.post(f"{API_PREFIX}/auth/login")
+def login(body: LoginRequest, db: Session = Depends(get_db)) -> dict:
+    email = str(body.email).strip().lower()
+    user = db.scalar(select(User).where(User.email == email))
+    if user is None:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    try:
+        password_hasher.verify(user.password_hash, body.password)
+    except VerifyMismatchError as error:
+        raise HTTPException(status_code=401, detail="Invalid email or password") from error
+    if password_hasher.check_needs_rehash(user.password_hash):
+        user.password_hash = password_hasher.hash(body.password)
+        db.commit()
+    return {"access_token": create_access_token(user), "token_type": "bearer", "user_id": user.id}
+
+
+@app.post(f"{API_PREFIX}/controllers", status_code=201)
+def create_controller(
+    body: ControllerCreateRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    raw_key = issue_secret("fgrck_ctl")
+    controller = Controller(
+        owner_user_id=user.id,
+        name=body.name.strip(),
+        key_hash=hash_secret(raw_key),
+    )
+    db.add(controller)
+    db.flush()
+    audit(db, "controller_created", user.id, detail=controller.id)
+    db.commit()
+    db.refresh(controller)
+    return {
+        "controller_id": controller.id,
+        "controller_key": raw_key,
+        "note": "The controller key is shown once. Store it in Android private app storage.",
+    }
+
+
+@app.post(f"{API_PREFIX}/devices", status_code=201)
+def register_device(
+    body: DeviceRegisterRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    controller = db.get(Controller, body.controller_id)
+    if controller is None or controller.owner_user_id != user.id:
+        raise HTTPException(status_code=403, detail="Controller owner access required")
+    mac = normalize_mac(body.mac)
+    existing = db.scalar(select(Device).where(Device.mac == mac))
+    if existing is not None:
+        if existing.owner_user_id != user.id:
+            raise HTTPException(status_code=409, detail="Device is already claimed")
+        existing.controller_id = controller.id
+        existing.name = body.name.strip()
+        existing.room = body.room.strip()
+        existing.firmware = body.firmware.strip()
+        device = existing
+    else:
+        device = Device(
+            owner_user_id=user.id,
+            controller_id=controller.id,
+            mac=mac,
+            name=body.name.strip(),
+            room=body.room.strip(),
+            firmware=body.firmware.strip(),
+        )
+        db.add(device)
+    db.flush()
+    audit(db, "device_registered", user.id, device.id, mac)
+    db.commit()
+    db.refresh(device)
+    return device_payload(device, "owner")
+
+
+@app.get(f"{API_PREFIX}/devices")
+def list_devices(
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    shared_ids = list(db.scalars(select(DeviceAccess.device_id).where(DeviceAccess.user_id == user.id)))
+    clause = Device.owner_user_id == user.id
+    if shared_ids:
+        clause = or_(clause, Device.id.in_(shared_ids))
+    devices = list(db.scalars(select(Device).where(clause).order_by(Device.created_at.asc())))
+    return {"devices": [device_payload(device, role_for(db, user, device) or "view") for device in devices]}
+
+
+@app.post(f"{API_PREFIX}/devices/{{mac}}/outlets/{{outlet}}")
+def compatible_set_outlet(
+    mac: str,
+    outlet: int,
+    state_value: str = Query(alias="state"),
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, mac)
+    command = queue_command(db, user, device, outlet, state_value.lower(), "app")
+    return {"ok": True, "command_id": command.id, "status": command.status}
+
+
+@app.get(f"{API_PREFIX}/history/{{mac}}")
+def history(
+    mac: str,
+    hours: int = Query(default=24, ge=1, le=2160),
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, mac)
+    require_device_role(db, user, device, "view")
+    since = utcnow() - timedelta(hours=hours)
+    samples = list(db.scalars(
+        select(TelemetrySnapshot)
+        .where(TelemetrySnapshot.device_id == device.id, TelemetrySnapshot.ts >= since)
+        .order_by(TelemetrySnapshot.ts.desc())
+        .limit(1000)
+    ))
+    return {
+        "mac": device.mac,
+        "hours": hours,
+        "samples": [
+            {
+                "ts": int(item.ts.replace(tzinfo=item.ts.tzinfo or timezone.utc).timestamp() * 1000),
+                "power_w": item.power_w,
+                "energy_kwh": item.energy_kwh,
+                "max_temp_c": item.max_temp_c,
+                "relay_mask": item.relay_mask,
+                "event_code": item.event_code,
+            }
+            for item in reversed(samples)
+        ],
+    }
+
+
+@app.post(f"{API_PREFIX}/devices/{{mac}}/shares/invites", status_code=201)
+def create_share_invite(
+    mac: str,
+    body: ShareInviteRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, mac)
+    actor_role = require_device_role(db, user, device, "admin")
+    if body.role == "admin" and actor_role != "owner":
+        raise HTTPException(status_code=403, detail="Only the owner can grant Admin")
+    raw_code = issue_secret("fgrck_share")
+    invite = ShareInvite(
+        device_id=device.id,
+        created_by_user_id=user.id,
+        code_hash=hash_secret(raw_code),
+        role=body.role,
+        expires_at=utcnow() + timedelta(hours=body.expires_hours),
+    )
+    db.add(invite)
+    audit(db, "share_invite_created", user.id, device.id, body.role)
+    db.commit()
+    return {
+        "code": raw_code,
+        "role": body.role,
+        "expires_at": invite.expires_at.isoformat(),
+        "note": "Treat this code like a password. It is shown only in this response.",
+    }
+
+
+@app.post(f"{API_PREFIX}/shares/accept")
+def accept_share(
+    body: ShareAcceptRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    invite = db.scalar(select(ShareInvite).where(ShareInvite.code_hash == hash_secret(body.code.strip())))
+    if invite is None or invite.revoked:
+        raise HTTPException(status_code=404, detail="Share code not found")
+    if invite.accepted_at is not None:
+        raise HTTPException(status_code=409, detail="Share code already used")
+    expires = invite.expires_at
+    if expires.tzinfo is None:
+        expires = expires.replace(tzinfo=timezone.utc)
+    if expires <= utcnow():
+        raise HTTPException(status_code=410, detail="Share code expired")
+    device = db.get(Device, invite.device_id)
+    if device is None:
+        raise HTTPException(status_code=404, detail="Device not found")
+    if device.owner_user_id != user.id:
+        access = db.scalar(select(DeviceAccess).where(
+            DeviceAccess.device_id == device.id,
+            DeviceAccess.user_id == user.id,
+        ))
+        if access:
+            access.role = invite.role
+        else:
+            db.add(DeviceAccess(device_id=device.id, user_id=user.id, role=invite.role))
+    invite.accepted_by_user_id = user.id
+    invite.accepted_at = utcnow()
+    audit(db, "share_accepted", user.id, device.id, invite.role)
+    db.commit()
+    return device_payload(device, "owner" if device.owner_user_id == user.id else invite.role)
+
+
+@app.get(f"{API_PREFIX}/devices/{{mac}}/shares")
+def list_shares(
+    mac: str,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, mac)
+    require_device_role(db, user, device, "admin")
+    owner = db.get(User, device.owner_user_id)
+    rows = [{"user_id": owner.id, "email": owner.email, "role": "owner"}] if owner else []
+    accesses = list(db.scalars(select(DeviceAccess).where(DeviceAccess.device_id == device.id)))
+    for access in accesses:
+        account = db.get(User, access.user_id)
+        if account:
+            rows.append({"user_id": account.id, "email": account.email, "role": access.role})
+    return {"shares": rows}
+
+
+@app.delete(f"{API_PREFIX}/devices/{{mac}}/shares/{{target_user_id}}")
+def revoke_share(
+    mac: str,
+    target_user_id: str,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, mac)
+    actor_role = require_device_role(db, user, device, "admin")
+    if target_user_id == device.owner_user_id:
+        raise HTTPException(status_code=422, detail="Owner access cannot be revoked")
+    access = db.scalar(select(DeviceAccess).where(
+        DeviceAccess.device_id == device.id,
+        DeviceAccess.user_id == target_user_id,
+    ))
+    if access is None:
+        raise HTTPException(status_code=404, detail="Share not found")
+    if access.role == "admin" and actor_role != "owner":
+        raise HTTPException(status_code=403, detail="Only the owner can revoke Admin")
+    db.delete(access)
+    audit(db, "share_revoked", user.id, device.id, target_user_id)
+    db.commit()
+    return {"ok": True}
+
+
+@app.post(f"{API_PREFIX}/voice/intent")
+def voice_intent(
+    body: VoiceIntentRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    device = device_by_mac(db, body.mac)
+    require_device_role(db, user, device, "control")
+    outlets: list[int]
+    if body.all_outlets:
+        if body.action == "on" and not body.confirm_all_on:
+            raise HTTPException(status_code=409, detail="Explicit confirmation is required for ALL ON")
+        outlets = [1, 2, 3, 4]
+    elif body.outlet is not None:
+        outlets = [body.outlet]
+    else:
+        raise HTTPException(status_code=422, detail="Specify outlet or all_outlets")
+    commands = [queue_command(db, user, device, outlet, body.action, "voice") for outlet in outlets]
+    return {"ok": True, "command_ids": [item.id for item in commands]}
+
+
+@app.post(f"{API_PREFIX}/controllers/{{controller_id}}/heartbeat")
+def controller_heartbeat(
+    controller_id: str,
+    body: HeartbeatRequest,
+    x_controller_key: str | None = Header(default=None, alias="X-Controller-Key"),
+    db: Session = Depends(get_db),
+) -> dict:
+    controller = controller_auth(db, controller_id, x_controller_key)
+    now = utcnow()
+    controller.last_seen = now
+    seen_macs: set[str] = set()
+    for item in body.devices:
+        mac = normalize_mac(item.mac)
+        device = db.scalar(select(Device).where(
+            Device.controller_id == controller.id,
+            Device.mac == mac,
+        ))
+        if device is None:
+            continue
+        device.online = bool(item.connected)
+        device.last_seen = now
+        if item.firmware:
+            device.firmware = item.firmware.strip()
+        seen_macs.add(mac)
+    db.commit()
+    return {"ok": True, "accepted_devices": len(seen_macs), "server_time": now.isoformat()}
+
+
+@app.post(f"{API_PREFIX}/controllers/{{controller_id}}/telemetry")
+def controller_telemetry(
+    controller_id: str,
+    body: TelemetryRequest,
+    x_controller_key: str | None = Header(default=None, alias="X-Controller-Key"),
+    db: Session = Depends(get_db),
+) -> dict:
+    controller = controller_auth(db, controller_id, x_controller_key)
+    now = utcnow()
+    accepted = 0
+    for item in body.items:
+        mac = normalize_mac(item.mac)
+        device = db.scalar(select(Device).where(
+            Device.controller_id == controller.id,
+            Device.mac == mac,
+        ))
+        if device is None:
+            continue
+        device.online = True
+        device.last_seen = now
+        db.add(TelemetrySnapshot(
+            device_id=device.id,
+            ts=now,
+            power_w=item.power_w,
+            energy_kwh=item.energy_kwh,
+            max_temp_c=item.max_temp_c,
+            relay_mask=item.relay_mask,
+            event_code=item.event_code.strip(),
+        ))
+        accepted += 1
+    controller.last_seen = now
+    db.commit()
+    return {"ok": True, "accepted": accepted}
+
+
+@app.get(f"{API_PREFIX}/controllers/{{controller_id}}/commands/poll")
+def poll_commands(
+    controller_id: str,
+    limit: int = Query(default=20, ge=1, le=100),
+    x_controller_key: str | None = Header(default=None, alias="X-Controller-Key"),
+    db: Session = Depends(get_db),
+) -> dict:
+    controller = controller_auth(db, controller_id, x_controller_key)
+    now = utcnow()
+    stale_before = now - timedelta(seconds=COMMAND_REDELIVER_SECONDS)
+
+    expired = list(db.scalars(select(Command).where(
+        Command.controller_id == controller.id,
+        Command.expires_at <= now,
+        Command.status.in_(["queued", "delivered"]),
+    )))
+    for item in expired:
+        item.status = "expired"
+
+    commands = list(db.scalars(
+        select(Command)
+        .where(
+            Command.controller_id == controller.id,
+            Command.expires_at > now,
+            Command.attempts < MAX_COMMAND_ATTEMPTS,
+            or_(
+                Command.status == "queued",
+                and_(Command.status == "delivered", Command.delivered_at <= stale_before),
+            ),
+        )
+        .order_by(Command.created_at.asc())
+        .limit(limit)
+    ))
+
+    payload = []
+    for command in commands:
+        device = db.get(Device, command.device_id)
+        if device is None:
+            command.status = "failed"
+            command.ack_detail = "device_missing"
+            continue
+        command.status = "delivered"
+        command.delivered_at = now
+        command.attempts += 1
+        payload.append({
+            "command_id": command.id,
+            "mac": device.mac,
+            "outlet": command.outlet,
+            "state": command.state,
+            "source": command.source,
+            "attempt": command.attempts,
+            "expires_at": command.expires_at.isoformat(),
+        })
+    controller.last_seen = now
+    db.commit()
+    return {"commands": payload, "server_time": now.isoformat()}
+
+
+@app.post(f"{API_PREFIX}/controllers/{{controller_id}}/commands/{{command_id}}/ack")
+def ack_command(
+    controller_id: str,
+    command_id: str,
+    body: AckRequest,
+    x_controller_key: str | None = Header(default=None, alias="X-Controller-Key"),
+    db: Session = Depends(get_db),
+) -> dict:
+    controller = controller_auth(db, controller_id, x_controller_key)
+    command = db.get(Command, command_id)
+    if command is None or command.controller_id != controller.id:
+        raise HTTPException(status_code=404, detail="Command not found")
+    if command.status in {"acked", "failed", "expired"}:
+        return {"ok": True, "status": command.status}
+    command.status = body.status
+    command.acked_at = utcnow()
+    command.ack_detail = body.detail.strip()
+    device = db.get(Device, command.device_id)
+    audit(db, "command_" + body.status, command.requested_by_user_id,
+          device.id if device else None, body.detail)
+    db.commit()
+    return {"ok": True, "status": command.status}
+
+
+@app.get(f"{API_PREFIX}/commands/{{command_id}}")
+def command_status(
+    command_id: str,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    command = db.get(Command, command_id)
+    if command is None:
+        raise HTTPException(status_code=404, detail="Command not found")
+    device = db.get(Device, command.device_id)
+    if device is None:
+        raise HTTPException(status_code=404, detail="Device not found")
+    require_device_role(db, user, device, "view")
+    return {
+        "command_id": command.id,
+        "mac": device.mac,
+        "outlet": command.outlet,
+        "state": command.state,
+        "source": command.source,
+        "status": command.status,
+        "attempts": command.attempts,
+        "detail": command.ack_detail,
+    }
