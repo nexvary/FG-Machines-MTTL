@@ -457,4 +457,45 @@ Bekannte Local-Control-Hardware. MTTL-Einrichtungs-/Erkennungspfad verwenden.</s
 Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
 Überlast: %6$s · Überhitzung: %7$s · Ereignis: %8$s</string>
 
+
+    <string name="standby_cutoff_enable">Standby-Abschaltung</string>
+    <string name="standby_w_hint">Standby-Schwelle (W)</string>
+    <string name="standby_minutes_hint">Niedriglast-Minuten</string>
+    <string name="automation_invalid_standby_w">Eine positive Watt-Schwelle eingeben.</string>
+    <string name="smart_extras_title">Smart-Steckdosen-Extras</string>
+    <string name="smart_extras_note">Lokale Funktionen ohne Cloud. Der Abwesenheitsmodus schaltet nur ausdrücklich ausgewählte Ausgänge.</string>
+    <string name="away_mode_waiting">Gerät auswählen, um den Abwesenheitsmodus einzurichten.</string>
+    <string name="away_mode_enable">Abwesenheitsmodus</string>
+    <string name="away_start_hint">Start HH:mm</string>
+    <string name="away_end_hint">Ende HH:mm</string>
+    <string name="away_min_hint">Min. Intervall (Min)</string>
+    <string name="away_max_hint">Max. Intervall (Min)</string>
+    <string name="away_outlets_title">Erlaubte Ausgänge</string>
+    <string name="save_away_mode">Abwesenheitsmodus speichern</string>
+    <string name="away_interval_invalid">Positive Minuten verwenden und Max ≥ Min setzen.</string>
+    <string name="away_select_outlet">Mindestens einen Ausgang auswählen.</string>
+    <string name="away_mode_saved">Abwesenheitsmodus gespeichert.</string>
+    <string name="away_mode_disabled">Abwesenheitsmodus deaktiviert.</string>
+    <string name="away_mode_active_format">Abwesenheitsmodus aktiv · %1$s–%2$s · %3$d Ausgang/Ausgänge</string>
+    <string name="away_mode_off">Abwesenheitsmodus ist aus.</string>
+    <string name="runtime_title">Laufzeitstatistik der Ausgänge</string>
+    <string name="runtime_note">Lokale Gesamtlaufzeit und Anzahl der Relaiswechsel.</string>
+    <string name="runtime_waiting">Gerät auswählen, um Laufzeiten anzuzeigen.</string>
+    <string name="runtime_unknown_line">Ausgang %1$d · warte auf ersten Zustand</string>
+    <string name="runtime_line_format">Ausgang %1$d · %2$s · Laufzeit %3$s · Schaltungen %4$d</string>
+    <string name="event_other">Anderes Ereignis</string>
+    <string name="event_connected">Verbunden</string>
+    <string name="event_disconnected">Getrennt</string>
+    <string name="event_relay_state">Relaiszustand</string>
+    <string name="event_scene_apply">Szene angewendet</string>
+    <string name="event_alert">Warnung</string>
+    <string name="event_auto_off">Automatische Abschaltung</string>
+    <string name="event_power_limit">Leistungsgrenzen-Abschaltung</string>
+    <string name="event_standby_cutoff">Standby-Abschaltung</string>
+    <string name="event_schedule">Zeitplan</string>
+    <string name="event_away_toggle">Abwesenheitsmodus-Schaltung</string>
+    <string name="event_away_config">Abwesenheitsmodus-Einstellung</string>
+    <string name="event_usb_discovery">USB-Erkennung gestartet</string>
+    <string name="event_usb_frame">USB-Erkennungsrahmen</string>
+
 </resources>
