@@ -457,4 +457,45 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
 القدرة %3$.1f واط · الطاقة %4$.3f ك.و.س · الحرارة %5$d°م
 حمل زائد: %6$s · حرارة زائدة: %7$s · الحدث: %8$s</string>
 
+
+    <string name="standby_cutoff_enable">إيقاف وضع الاستعداد</string>
+    <string name="standby_w_hint">حد الاستعداد (واط)</string>
+    <string name="standby_minutes_hint">دقائق القدرة المنخفضة</string>
+    <string name="automation_invalid_standby_w">أدخل حدًا موجبًا للقدرة بالواط.</string>
+    <string name="smart_extras_title">مزايا الفيشة الذكية</string>
+    <string name="smart_extras_note">مزايا محلية مستوحاة من الفيش الذكية ولا تحتاج إلى كلاود. وضع الغياب يغيّر فقط المخارج التي تختارها صراحة.</string>
+    <string name="away_mode_waiting">اختر جهازًا من الأسطول لضبط وضع الغياب.</string>
+    <string name="away_mode_enable">وضع الغياب</string>
+    <string name="away_start_hint">البدء HH:mm</string>
+    <string name="away_end_hint">الانتهاء HH:mm</string>
+    <string name="away_min_hint">أقل فاصل (دقيقة)</string>
+    <string name="away_max_hint">أكبر فاصل (دقيقة)</string>
+    <string name="away_outlets_title">المخارج المسموح بتبديلها</string>
+    <string name="save_away_mode">حفظ وضع الغياب</string>
+    <string name="away_interval_invalid">استخدم دقائق موجبة واجعل الحد الأقصى أكبر من أو يساوي الأدنى.</string>
+    <string name="away_select_outlet">اختر مخرجًا واحدًا على الأقل لوضع الغياب.</string>
+    <string name="away_mode_saved">تم حفظ وضع الغياب.</string>
+    <string name="away_mode_disabled">تم إيقاف وضع الغياب.</string>
+    <string name="away_mode_active_format">وضع الغياب فعال · %1$s–%2$s · %3$d مخرج</string>
+    <string name="away_mode_off">وضع الغياب متوقف.</string>
+    <string name="runtime_title">إحصاءات تشغيل المخارج</string>
+    <string name="runtime_note">زمن التشغيل المحلي وعدد تغييرات الريليه. يبدأ العد عندما يلاحظ هذا المتحكم حالة المخرج لأول مرة.</string>
+    <string name="runtime_waiting">اختر جهازًا لعرض زمن تشغيل المخارج.</string>
+    <string name="runtime_unknown_line">مخرج %1$d · انتظار أول حالة</string>
+    <string name="runtime_line_format">مخرج %1$d · %2$s · تشغيل %3$s · تبديلات %4$d</string>
+    <string name="event_other">حدث آخر</string>
+    <string name="event_connected">اتصال</string>
+    <string name="event_disconnected">انقطاع اتصال</string>
+    <string name="event_relay_state">حالة الريليه</string>
+    <string name="event_scene_apply">تطبيق مشهد</string>
+    <string name="event_alert">تنبيه</string>
+    <string name="event_auto_off">إيقاف تلقائي</string>
+    <string name="event_power_limit">فصل حد القدرة</string>
+    <string name="event_standby_cutoff">فصل وضع الاستعداد</string>
+    <string name="event_schedule">جدول</string>
+    <string name="event_away_toggle">تبديل وضع الغياب</string>
+    <string name="event_away_config">إعداد وضع الغياب</string>
+    <string name="event_usb_discovery">بدء اكتشاف USB</string>
+    <string name="event_usb_frame">إطار اكتشاف USB</string>
+
 </resources>
