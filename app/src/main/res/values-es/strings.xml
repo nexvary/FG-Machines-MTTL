@@ -527,4 +527,20 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="event_device_share">Acceso compartido creado</string>
     <string name="event_voice_command">Comando de voz</string>
 
+
+    <string name="cloud_account_title">FG Machines Cloud / VPS</string>
+    <string name="cloud_account_note">Opcional. El control local de MTTL-W01, temporizadores y automatización siguen funcionando sin VPS. Inicia sesión cuando tu servidor HTTPS esté listo.</string>
+    <string name="cloud_endpoint_hint">Dirección HTTPS del VPS</string>
+    <string name="cloud_email_hint">Correo de la cuenta cloud</string>
+    <string name="cloud_password_hint">Contraseña de la cuenta cloud</string>
+    <string name="cloud_register">Crear cuenta</string>
+    <string name="cloud_login">Iniciar sesión</string>
+    <string name="cloud_sync_enable">Usar este teléfono como relé controlador cloud</string>
+    <string name="cloud_status_signed_out">Sin sesión iniciada. El control local sigue activo.</string>
+    <string name="cloud_status_missing">Introduce la dirección HTTPS del VPS, correo y contraseña.</string>
+    <string name="cloud_status_authenticating">Conectando con la nube…</string>
+    <string name="cloud_status_ready">Cuenta cloud guardada. Activa el relé en el teléfono controlador cuando quieras.</string>
+    <string name="cloud_status_failed">Error de nube: %1$s</string>
+    <string name="cloud_sync_requires_login">Inicia sesión primero y luego activa el relé controlador.</string>
+
 </resources>
