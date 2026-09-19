@@ -61,11 +61,19 @@ public final class ShareCode {
     }
 
     private static String enc(String value) {
-        return URLEncoder.encode(value == null ? "" : value, StandardCharsets.UTF_8);
+        try {
+            return URLEncoder.encode(value == null ? "" : value, StandardCharsets.UTF_8.name());
+        } catch (Exception error) {
+            throw new IllegalStateException("UTF-8 unavailable", error);
+        }
     }
 
     private static String dec(String value) {
-        return URLDecoder.decode(value == null ? "" : value, StandardCharsets.UTF_8);
+        try {
+            return URLDecoder.decode(value == null ? "" : value, StandardCharsets.UTF_8.name());
+        } catch (Exception error) {
+            throw new IllegalArgumentException("Malformed share code", error);
+        }
     }
 
     public static final class Profile {
