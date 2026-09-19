@@ -61,6 +61,8 @@ public final class MttlControllerService extends Service implements MttlControll
         localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
         automationEngine = new LocalAutomationEngine(this, hub);
         automationEngine.start();
+        smartAutomationEngine = new SmartAutomationEngine(this, hub, historyStore);
+        smartAutomationEngine.start();
         hub.addListener(this, true);
     }
 
@@ -84,6 +86,7 @@ public final class MttlControllerService extends Service implements MttlControll
     @Override public void onDestroy() {
         if (hub != null) hub.removeListener(this);
         if (automationEngine != null) automationEngine.close();
+        if (smartAutomationEngine != null) smartAutomationEngine.close();
         if (localApiServer != null) localApiServer.close();
         if (historyStore != null) historyStore.close();
         super.onDestroy();
@@ -192,6 +195,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
         if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
+        if (smartAutomationEngine != null) smartAutomationEngine.onTelemetry(mac, telemetry);
         long now = System.currentTimeMillis();
         String key = FleetStore.normalizeMac(mac);
         if (fleetStore != null && !key.isEmpty()) fleetStore.register(key, "", now);
