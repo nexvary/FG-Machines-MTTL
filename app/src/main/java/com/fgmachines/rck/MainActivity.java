@@ -119,12 +119,24 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText[] autoOffMinutesInputs;
     private MaterialSwitch[] powerLimitSwitches;
     private TextInputEditText[] powerLimitInputs;
+    private MaterialSwitch[] standbySwitches;
+    private TextInputEditText[] standbyWattsInputs;
+    private TextInputEditText[] standbyMinutesInputs;
     private MaterialSwitch[] scheduleSwitches;
     private TextInputEditText[] scheduleOnInputs;
     private TextInputEditText[] scheduleOffInputs;
     private Spinner[] scheduleDaySpinners;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
+    private MaterialSwitch awayModeSwitch;
+    private TextInputEditText awayStartInput;
+    private TextInputEditText awayEndInput;
+    private TextInputEditText awayMinMinutesInput;
+    private TextInputEditText awayMaxMinutesInput;
+    private MaterialSwitch[] awayOutletSwitches;
+    private MaterialButton saveAwayModeButton;
+    private TextView awayModeSummary;
+    private TextView runtimeSummary;
     private Spinner fleetDeviceSpinner;
     private Spinner fleetRoomSpinner;
     private TextView fleetStatus;
@@ -191,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean provisioningSucceeded;
     private FleetStore fleetStore;
     private HistoryStore historyStore;
+    private OutletRuntimeStore runtimeStore;
     private UsbDiscoveryStore usbDiscoveryStore;
     private AccessControlStore accessStore;
     private SceneStore sceneStore;
@@ -236,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         provisioner = new MttlProvisioner(this);
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
+        runtimeStore = new OutletRuntimeStore(this);
         usbDiscoveryStore = new UsbDiscoveryStore(this);
         accessStore = new AccessControlStore(this);
         sceneStore = new SceneStore(this);
@@ -254,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
         configureDeviceNaming();
         configureAlerts();
         configureAutomationSettings();
+        configureAwayMode();
         configureFleet();
         configureScenes();
         configureHistory();
@@ -332,6 +347,14 @@ public class MainActivity extends AppCompatActivity {
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
+        awayModeSwitch = findViewById(R.id.awayModeSwitch);
+        awayStartInput = findViewById(R.id.awayStartInput);
+        awayEndInput = findViewById(R.id.awayEndInput);
+        awayMinMinutesInput = findViewById(R.id.awayMinMinutesInput);
+        awayMaxMinutesInput = findViewById(R.id.awayMaxMinutesInput);
+        saveAwayModeButton = findViewById(R.id.saveAwayModeButton);
+        awayModeSummary = findViewById(R.id.awayModeSummary);
+        runtimeSummary = findViewById(R.id.runtimeSummary);
         fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
         fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
         fleetStatus = findViewById(R.id.fleetStatus);
@@ -407,6 +430,22 @@ public class MainActivity extends AppCompatActivity {
         powerLimitInputs = new TextInputEditText[]{
                 findViewById(R.id.powerLimitW1), findViewById(R.id.powerLimitW2),
                 findViewById(R.id.powerLimitW3), findViewById(R.id.powerLimitW4)
+        };
+        standbySwitches = new MaterialSwitch[]{
+                findViewById(R.id.standbySwitch1), findViewById(R.id.standbySwitch2),
+                findViewById(R.id.standbySwitch3), findViewById(R.id.standbySwitch4)
+        };
+        standbyWattsInputs = new TextInputEditText[]{
+                findViewById(R.id.standbyWatts1), findViewById(R.id.standbyWatts2),
+                findViewById(R.id.standbyWatts3), findViewById(R.id.standbyWatts4)
+        };
+        standbyMinutesInputs = new TextInputEditText[]{
+                findViewById(R.id.standbyMinutes1), findViewById(R.id.standbyMinutes2),
+                findViewById(R.id.standbyMinutes3), findViewById(R.id.standbyMinutes4)
+        };
+        awayOutletSwitches = new MaterialSwitch[]{
+                findViewById(R.id.awayOutlet1), findViewById(R.id.awayOutlet2),
+                findViewById(R.id.awayOutlet3), findViewById(R.id.awayOutlet4)
         };
         scheduleSwitches = new MaterialSwitch[]{
                 findViewById(R.id.scheduleSwitch1), findViewById(R.id.scheduleSwitch2),
@@ -711,6 +750,18 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            boolean standbyEnabled = standbySwitches[i].isChecked();
+            int standbyW = parsePositiveInt(textOf(standbyWattsInputs[i]));
+            int standbyMinutes = parsePositiveInt(textOf(standbyMinutesInputs[i]));
+            if (standbyEnabled && (standbyW <= 0 || standbyMinutes <= 0)) {
+                if (standbyW <= 0) standbyWattsInputs[i].setError(
+                        getString(R.string.automation_invalid_standby_w));
+                if (standbyMinutes <= 0) standbyMinutesInputs[i].setError(
+                        getString(R.string.automation_invalid_minutes));
+                Snackbar.make(saveAutomationButton, R.string.automation_fix_fields, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
             boolean scheduleEnabled = scheduleSwitches[i].isChecked();
             String onTime = textOf(scheduleOnInputs[i]);
             String offTime = textOf(scheduleOffInputs[i]);
@@ -739,6 +790,14 @@ public class MainActivity extends AppCompatActivity {
                     LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel),
                     powerLimitW > 0 ? powerLimitW : 0);
             editor.putBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_ENABLED, activeMac, channel), standbyEnabled);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_W, activeMac, channel),
+                    standbyW > 0 ? standbyW : 0);
+            editor.putInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_MINUTES, activeMac, channel),
+                    standbyMinutes > 0 ? standbyMinutes : 5);
+            editor.putBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), scheduleEnabled);
             editor.putString(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_ON, activeMac, channel),
@@ -752,8 +811,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (autoOffEnabled) enabledRules++;
             if (powerLimitEnabled) enabledRules++;
+            if (standbyEnabled) enabledRules++;
             if (scheduleEnabled) enabledRules++;
             editor.remove(LocalAutomationEngine.deadlinePreferenceKey(activeMac, channel));
+            editor.remove(LocalAutomationEngine.standbyDeadlinePreferenceKey(activeMac, channel));
         }
         editor.apply();
         updateAutomationSummary();
@@ -776,8 +837,12 @@ public class MainActivity extends AppCompatActivity {
             if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_POWER_LIMIT_ENABLED, activeMac, channel), false)) rules++;
             if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_ENABLED, activeMac, channel), false)) rules++;
+            if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false)) rules++;
         }
+        if (prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac), false)) rules++;
         automationSummary.setText(rules == 0
                 ? getString(R.string.automation_none)
                 : getString(R.string.automation_active_count, rules));
@@ -793,6 +858,9 @@ public class MainActivity extends AppCompatActivity {
                 autoOffMinutesInputs[i].setText("30");
                 powerLimitSwitches[i].setChecked(false);
                 powerLimitInputs[i].setText("");
+                standbySwitches[i].setChecked(false);
+                standbyWattsInputs[i].setText("");
+                standbyMinutesInputs[i].setText("5");
                 scheduleSwitches[i].setChecked(false);
                 scheduleOnInputs[i].setText("");
                 scheduleOffInputs[i].setText("");
@@ -817,6 +885,14 @@ public class MainActivity extends AppCompatActivity {
                     LocalAutomationEngine.KEY_POWER_LIMIT_W, activeMac, channel), 0);
             powerLimitInputs[i].setText(power > 0 ? String.valueOf(power) : "");
 
+            standbySwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_ENABLED, activeMac, channel), false));
+            int standbyW = prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_W, activeMac, channel), 0);
+            standbyWattsInputs[i].setText(standbyW > 0 ? String.valueOf(standbyW) : "");
+            standbyMinutesInputs[i].setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                    LocalAutomationEngine.KEY_STANDBY_MINUTES, activeMac, channel), 5)));
+
             scheduleSwitches[i].setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
                     LocalAutomationEngine.KEY_SCHEDULE_ENABLED, activeMac, channel), false));
             scheduleOnInputs[i].setText(prefs.getString(LocalAutomationEngine.deviceKey(
@@ -833,6 +909,143 @@ public class MainActivity extends AppCompatActivity {
             scheduleDaySpinners[i].setSelection(dayMode, false);
         }
         updateAutomationSummary();
+    }
+
+    private void configureAwayMode() {
+        saveAwayModeButton.setOnClickListener(v -> saveAwayModeSettings());
+        loadAwayModeForActiveDevice();
+        refreshRuntimeSummary();
+    }
+
+    private void saveAwayModeSettings() {
+        if (activeMac == null) {
+            Snackbar.make(saveAwayModeButton, R.string.select_device_first, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        boolean enabled = awayModeSwitch.isChecked();
+        String start = textOf(awayStartInput);
+        String end = textOf(awayEndInput);
+        int minMinutes = parsePositiveInt(textOf(awayMinMinutesInput));
+        int maxMinutes = parsePositiveInt(textOf(awayMaxMinutesInput));
+        int mask = 0;
+        for (int i = 0; i < awayOutletSwitches.length; i++) {
+            if (awayOutletSwitches[i].isChecked()) mask |= (1 << i);
+        }
+
+        if (enabled) {
+            if (!LocalAutomationEngine.isValidTime(start) || start.isEmpty()) {
+                awayStartInput.setError(getString(R.string.automation_invalid_time));
+                return;
+            }
+            if (!LocalAutomationEngine.isValidTime(end) || end.isEmpty()) {
+                awayEndInput.setError(getString(R.string.automation_invalid_time));
+                return;
+            }
+            if (minMinutes <= 0 || maxMinutes < minMinutes) {
+                awayMinMinutesInput.setError(getString(R.string.away_interval_invalid));
+                awayMaxMinutesInput.setError(getString(R.string.away_interval_invalid));
+                return;
+            }
+            if (mask == 0) {
+                Snackbar.make(saveAwayModeButton,
+                        R.string.away_select_outlet, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+        }
+
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS, MODE_PRIVATE).edit();
+        editor.putBoolean(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac), enabled);
+        editor.putString(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_START, activeMac),
+                LocalAutomationEngine.normalizeTime(start));
+        editor.putString(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_END, activeMac),
+                LocalAutomationEngine.normalizeTime(end));
+        editor.putInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_MIN_MINUTES, activeMac),
+                minMinutes > 0 ? minMinutes : 15);
+        editor.putInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_MAX_MINUTES, activeMac),
+                maxMinutes > 0 ? maxMinutes : 45);
+        editor.putInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_OUTLET_MASK, activeMac), mask);
+        editor.remove(LocalAutomationEngine.awayNextPreferenceKey(activeMac));
+        editor.apply();
+
+        loadAwayModeForActiveDevice();
+        updateAutomationSummary();
+        if (historyStore != null) {
+            historyStore.recordEvent(activeMac, 0, "away_mode_config",
+                    enabled ? "enabled" : "disabled", System.currentTimeMillis());
+        }
+        Snackbar.make(saveAwayModeButton,
+                enabled ? R.string.away_mode_saved : R.string.away_mode_disabled,
+                Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void loadAwayModeForActiveDevice() {
+        boolean hasDevice = activeMac != null;
+        awayModeSwitch.setEnabled(hasDevice);
+        saveAwayModeButton.setEnabled(hasDevice);
+        for (MaterialSwitch outlet : awayOutletSwitches) outlet.setEnabled(hasDevice);
+
+        if (!hasDevice) {
+            awayModeSwitch.setChecked(false);
+            awayStartInput.setText("18:00");
+            awayEndInput.setText("23:00");
+            awayMinMinutesInput.setText("15");
+            awayMaxMinutesInput.setText("45");
+            for (MaterialSwitch outlet : awayOutletSwitches) outlet.setChecked(false);
+            awayModeSummary.setText(R.string.away_mode_waiting);
+            return;
+        }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        awayModeSwitch.setChecked(prefs.getBoolean(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_ENABLED, activeMac), false));
+        awayStartInput.setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_START, activeMac), "18:00"));
+        awayEndInput.setText(prefs.getString(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_END, activeMac), "23:00"));
+        awayMinMinutesInput.setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_MIN_MINUTES, activeMac), 15)));
+        awayMaxMinutesInput.setText(String.valueOf(prefs.getInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_MAX_MINUTES, activeMac), 45)));
+        int mask = prefs.getInt(LocalAutomationEngine.deviceKey(
+                LocalAutomationEngine.KEY_AWAY_OUTLET_MASK, activeMac), 0);
+        for (int i = 0; i < awayOutletSwitches.length; i++) {
+            awayOutletSwitches[i].setChecked((mask & (1 << i)) != 0);
+        }
+        awayModeSummary.setText(awayModeSwitch.isChecked()
+                ? getString(R.string.away_mode_active_format,
+                        textOf(awayStartInput), textOf(awayEndInput),
+                        Integer.bitCount(mask))
+                : getString(R.string.away_mode_off));
+    }
+
+    private void refreshRuntimeSummary() {
+        if (runtimeSummary == null || runtimeStore == null) return;
+        if (activeMac == null) {
+            runtimeSummary.setText(R.string.runtime_waiting);
+            return;
+        }
+        long now = System.currentTimeMillis();
+        StringBuilder text = new StringBuilder();
+        for (int outlet = 1; outlet <= 4; outlet++) {
+            OutletRuntimeStore.Snapshot snapshot = runtimeStore.snapshot(activeMac, outlet, now);
+            if (outlet > 1) text.append('\n');
+            if (!snapshot.known) {
+                text.append(getString(R.string.runtime_unknown_line, outlet));
+            } else {
+                text.append(getString(R.string.runtime_line_format,
+                        outlet,
+                        snapshot.on ? getString(R.string.remote_on) : getString(R.string.remote_off),
+                        OutletRuntimeStore.formatDuration(snapshot.runtimeMs),
+                        snapshot.switchCount));
+            }
+        }
+        runtimeSummary.setText(text.toString());
     }
 
     private void migrateLegacyAutomation(String mac) {
@@ -1054,6 +1267,8 @@ public class MainActivity extends AppCompatActivity {
         activeFirmwareVersion = state == null ? null : state.firmwareVersion;
         applyDeviceNames();
         loadAutomationSettingsForActiveDevice();
+        loadAwayModeForActiveDevice();
+        refreshRuntimeSummary();
 
         if (state != null && state.connected) {
             setOutletControlsEnabled(true);
@@ -1087,6 +1302,7 @@ public class MainActivity extends AppCompatActivity {
         refreshUsbDiscoveryStatus();
         refreshScenes();
         refreshHistory();
+        refreshRuntimeSummary();
     }
 
     private void migrateLegacyLabelsIfNeeded(String mac) {
@@ -1298,7 +1514,7 @@ public class MainActivity extends AppCompatActivity {
         }
         historySparkline.setPoints(historyStore.recentPower(activeMac, 120));
 
-        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 4);
+        List<HistoryStore.EventRecord> events = historyStore.recentEvents(activeMac, 12);
         if (events.isEmpty()) {
             historyRecent.setText(R.string.history_no_events);
         } else {
@@ -1307,13 +1523,33 @@ public class MainActivity extends AppCompatActivity {
             for (HistoryStore.EventRecord event : events) {
                 if (text.length() > 0) text.append('\n');
                 text.append(format.format(new java.util.Date(event.ts)))
-                        .append(" · ").append(event.kind);
+                        .append(" · ").append(eventKindLabel(event.kind));
                 if (event.outlet > 0) text.append(" #").append(event.outlet);
                 if (event.detail != null && !event.detail.isEmpty()) {
                     text.append(" · ").append(event.detail);
                 }
             }
             historyRecent.setText(text.toString());
+        }
+    }
+
+    private String eventKindLabel(String kind) {
+        if (kind == null) return getString(R.string.event_other);
+        switch (kind) {
+            case "connected": return getString(R.string.event_connected);
+            case "disconnected": return getString(R.string.event_disconnected);
+            case "relay_state": return getString(R.string.event_relay_state);
+            case "scene_apply": return getString(R.string.event_scene_apply);
+            case "alert": return getString(R.string.event_alert);
+            case "automation_auto_off": return getString(R.string.event_auto_off);
+            case "automation_power_limit": return getString(R.string.event_power_limit);
+            case "automation_standby_cutoff": return getString(R.string.event_standby_cutoff);
+            case "automation_schedule": return getString(R.string.event_schedule);
+            case "automation_away_toggle": return getString(R.string.event_away_toggle);
+            case "away_mode_config": return getString(R.string.event_away_config);
+            case "usb_discovery_started": return getString(R.string.event_usb_discovery);
+            case "usb_discovery_frame": return getString(R.string.event_usb_frame);
+            default: return kind;
         }
     }
 
@@ -2173,7 +2409,9 @@ public class MainActivity extends AppCompatActivity {
                         deviceState.setText(R.string.controller_disconnected);
                         discoveryDetail.setText(R.string.locked);
                         refreshFleetOverviewAndList();
+                        loadAwayModeForActiveDevice();
                         refreshHistory();
+                        refreshRuntimeSummary();
                     } else if (selectedDisconnected) {
                         selectFleetDevice(activeMac);
                     } else {
@@ -2201,6 +2439,7 @@ public class MainActivity extends AppCompatActivity {
                         updateFleetStatus();
                         refreshFleetOverviewAndList();
                         refreshHistory();
+                        refreshRuntimeSummary();
                     } finally { applyingDeviceState = false; }
                 });
             }
@@ -2351,6 +2590,8 @@ public class MainActivity extends AppCompatActivity {
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
         updateAutomationSummary();
+        loadAwayModeForActiveDevice();
+        refreshRuntimeSummary();
         refreshFleetUi();
         refreshUsbDiscoveryStatus();
         refreshHistory();

@@ -47,6 +47,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private AccessControlStore accessStore;
     private LocalApiServer localApiServer;
     private UsbDiscoveryStore usbDiscoveryStore;
+    private OutletRuntimeStore runtimeStore;
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
 
@@ -58,8 +59,9 @@ public final class MttlControllerService extends Service implements MttlControll
         historyStore = new HistoryStore(this);
         accessStore = new AccessControlStore(this);
         usbDiscoveryStore = new UsbDiscoveryStore(this);
+        runtimeStore = new OutletRuntimeStore(this);
         localApiServer = new LocalApiServer(hub, fleetStore, historyStore, accessStore);
-        automationEngine = new LocalAutomationEngine(this, hub);
+        automationEngine = new LocalAutomationEngine(this, hub, historyStore);
         automationEngine.start();
         hub.addListener(this, true);
     }
@@ -184,15 +186,23 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     @Override public void onOutletState(String mac, MttlProtocol.OutletState state) {
-        if (historyStore != null && state != null) {
+        if (state == null) return;
+        long now = System.currentTimeMillis();
+        if (runtimeStore != null) runtimeStore.recordState(mac, state.outlet, state.on, now);
+        if (historyStore != null) {
             historyStore.recordEvent(mac, state.outlet, "relay_state",
-                    state.on ? "on" : "off", System.currentTimeMillis());
+                    state.on ? "on" : "off", now);
         }
     }
 
     @Override public void onTelemetry(String mac, MttlProtocol.Telemetry telemetry) {
-        if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
         long now = System.currentTimeMillis();
+        if (runtimeStore != null && telemetry != null) {
+            for (MttlProtocol.OutletTelemetry outlet : telemetry.outlets) {
+                runtimeStore.recordState(mac, outlet.channel, outlet.relayOn, now);
+            }
+        }
+        if (automationEngine != null) automationEngine.onTelemetry(mac, telemetry);
         String key = FleetStore.normalizeMac(mac);
         if (fleetStore != null && !key.isEmpty()) fleetStore.register(key, "", now);
         if (historyStore != null) historyStore.recordTelemetry(key, telemetry, now);

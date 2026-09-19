@@ -457,4 +457,45 @@ Hardware de control local reconocido. Usa la ruta de configuración/detección M
 Potencia %3$.1f W · Energía %4$.3f kWh · Temperatura %5$d°C
 Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
 
+
+    <string name="standby_cutoff_enable">Corte en espera</string>
+    <string name="standby_w_hint">Umbral de espera (W)</string>
+    <string name="standby_minutes_hint">Minutos de bajo consumo</string>
+    <string name="automation_invalid_standby_w">Introduce un umbral positivo de vatios.</string>
+    <string name="smart_extras_title">Funciones extra de enchufe inteligente</string>
+    <string name="smart_extras_note">Funciones locales sin nube. El modo Ausencia solo conmuta las salidas seleccionadas.</string>
+    <string name="away_mode_waiting">Selecciona un dispositivo para configurar el modo Ausencia.</string>
+    <string name="away_mode_enable">Modo Ausencia</string>
+    <string name="away_start_hint">Inicio HH:mm</string>
+    <string name="away_end_hint">Fin HH:mm</string>
+    <string name="away_min_hint">Intervalo mín. (min)</string>
+    <string name="away_max_hint">Intervalo máx. (min)</string>
+    <string name="away_outlets_title">Salidas permitidas</string>
+    <string name="save_away_mode">Guardar modo Ausencia</string>
+    <string name="away_interval_invalid">Usa minutos positivos y máx ≥ mín.</string>
+    <string name="away_select_outlet">Selecciona al menos una salida.</string>
+    <string name="away_mode_saved">Modo Ausencia guardado.</string>
+    <string name="away_mode_disabled">Modo Ausencia desactivado.</string>
+    <string name="away_mode_active_format">Modo Ausencia activo · %1$s–%2$s · %3$d salida(s)</string>
+    <string name="away_mode_off">Modo Ausencia desactivado.</string>
+    <string name="runtime_title">Estadísticas de tiempo de uso</string>
+    <string name="runtime_note">Tiempo local acumulado y número de cambios del relé.</string>
+    <string name="runtime_waiting">Selecciona un dispositivo para ver el tiempo de uso.</string>
+    <string name="runtime_unknown_line">Salida %1$d · esperando el primer estado</string>
+    <string name="runtime_line_format">Salida %1$d · %2$s · tiempo %3$s · cambios %4$d</string>
+    <string name="event_other">Otro evento</string>
+    <string name="event_connected">Conectado</string>
+    <string name="event_disconnected">Desconectado</string>
+    <string name="event_relay_state">Estado del relé</string>
+    <string name="event_scene_apply">Escena aplicada</string>
+    <string name="event_alert">Alerta</string>
+    <string name="event_auto_off">Apagado automático</string>
+    <string name="event_power_limit">Corte por potencia</string>
+    <string name="event_standby_cutoff">Corte en espera</string>
+    <string name="event_schedule">Horario</string>
+    <string name="event_away_toggle">Cambio modo Ausencia</string>
+    <string name="event_away_config">Ajuste modo Ausencia</string>
+    <string name="event_usb_discovery">Inicio de detección USB</string>
+    <string name="event_usb_frame">Trama de detección USB</string>
+
 </resources>
