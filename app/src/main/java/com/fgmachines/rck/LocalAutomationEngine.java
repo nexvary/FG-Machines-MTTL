@@ -196,7 +196,7 @@ public final class LocalAutomationEngine implements Closeable {
                         if (minute.equals(offTime)) triggerOnce(mac, channel, false, date, minute);
                     }
                     // Fixed schedules take precedence over Away Mode on the same outlet.
-                    clearAwayRuntimeState(mac, channel, false);
+                    clearAwayRuntimeState(mac, channel);
                     continue;
                 }
                 runAwayMode(device, channel, minute);
@@ -211,7 +211,7 @@ public final class LocalAutomationEngine implements Closeable {
         String end = normalizeTime(prefs.getString(awayWindowKey(KEY_AWAY_END, mac), ""));
 
         if (!enabled || !isValidAwayWindow(start, end)) {
-            clearAwayRuntimeState(mac, channel, true);
+            clearAwayRuntimeState(mac, channel);
             return;
         }
         if (!isWithinWindow(minute, start, end)) {
@@ -248,7 +248,7 @@ public final class LocalAutomationEngine implements Closeable {
         String mac = device.mac;
         String managedKey = awayManagedPreferenceKey(mac, channel);
         if (!prefs.getBoolean(managedKey, false)) {
-            clearAwayRuntimeState(mac, channel, false);
+            clearAwayRuntimeState(mac, channel);
             return;
         }
 
@@ -261,15 +261,14 @@ public final class LocalAutomationEngine implements Closeable {
                 return;
             }
         }
-        clearAwayRuntimeState(mac, channel, false);
+        clearAwayRuntimeState(mac, channel);
     }
 
-    private void clearAwayRuntimeState(String mac, int channel, boolean keepManagedOff) {
-        SharedPreferences.Editor editor = prefs.edit().remove(awayNextPreferenceKey(mac, channel));
-        if (!keepManagedOff || !prefs.getBoolean(awayManagedPreferenceKey(mac, channel), false)) {
-            editor.remove(awayManagedPreferenceKey(mac, channel));
-        }
-        editor.apply();
+    private void clearAwayRuntimeState(String mac, int channel) {
+        prefs.edit()
+                .remove(awayNextPreferenceKey(mac, channel))
+                .remove(awayManagedPreferenceKey(mac, channel))
+                .apply();
     }
 
     private static Boolean relayState(ControllerHub.DeviceState device, int channel) {
