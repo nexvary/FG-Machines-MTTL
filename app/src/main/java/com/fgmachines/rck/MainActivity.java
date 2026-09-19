@@ -119,12 +119,24 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText[] autoOffMinutesInputs;
     private MaterialSwitch[] powerLimitSwitches;
     private TextInputEditText[] powerLimitInputs;
+    private MaterialSwitch[] standbySwitches;
+    private TextInputEditText[] standbyWattsInputs;
+    private TextInputEditText[] standbyMinutesInputs;
     private MaterialSwitch[] scheduleSwitches;
     private TextInputEditText[] scheduleOnInputs;
     private TextInputEditText[] scheduleOffInputs;
     private Spinner[] scheduleDaySpinners;
     private MaterialButton saveAutomationButton;
     private TextView automationSummary;
+    private MaterialSwitch awayModeSwitch;
+    private TextInputEditText awayStartInput;
+    private TextInputEditText awayEndInput;
+    private TextInputEditText awayMinMinutesInput;
+    private TextInputEditText awayMaxMinutesInput;
+    private MaterialSwitch[] awayOutletSwitches;
+    private MaterialButton saveAwayModeButton;
+    private TextView awayModeSummary;
+    private TextView runtimeSummary;
     private Spinner fleetDeviceSpinner;
     private Spinner fleetRoomSpinner;
     private TextView fleetStatus;
@@ -191,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean provisioningSucceeded;
     private FleetStore fleetStore;
     private HistoryStore historyStore;
+    private OutletRuntimeStore runtimeStore;
     private UsbDiscoveryStore usbDiscoveryStore;
     private AccessControlStore accessStore;
     private SceneStore sceneStore;
@@ -236,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         provisioner = new MttlProvisioner(this);
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
+        runtimeStore = new OutletRuntimeStore(this);
         usbDiscoveryStore = new UsbDiscoveryStore(this);
         accessStore = new AccessControlStore(this);
         sceneStore = new SceneStore(this);
@@ -254,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
         configureDeviceNaming();
         configureAlerts();
         configureAutomationSettings();
+        configureAwayMode();
         configureFleet();
         configureScenes();
         configureHistory();
@@ -332,6 +347,14 @@ public class MainActivity extends AppCompatActivity {
         alertsSwitch = findViewById(R.id.alertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
+        awayModeSwitch = findViewById(R.id.awayModeSwitch);
+        awayStartInput = findViewById(R.id.awayStartInput);
+        awayEndInput = findViewById(R.id.awayEndInput);
+        awayMinMinutesInput = findViewById(R.id.awayMinMinutesInput);
+        awayMaxMinutesInput = findViewById(R.id.awayMaxMinutesInput);
+        saveAwayModeButton = findViewById(R.id.saveAwayModeButton);
+        awayModeSummary = findViewById(R.id.awayModeSummary);
+        runtimeSummary = findViewById(R.id.runtimeSummary);
         fleetDeviceSpinner = findViewById(R.id.fleetDeviceSpinner);
         fleetRoomSpinner = findViewById(R.id.fleetRoomSpinner);
         fleetStatus = findViewById(R.id.fleetStatus);
@@ -407,6 +430,22 @@ public class MainActivity extends AppCompatActivity {
         powerLimitInputs = new TextInputEditText[]{
                 findViewById(R.id.powerLimitW1), findViewById(R.id.powerLimitW2),
                 findViewById(R.id.powerLimitW3), findViewById(R.id.powerLimitW4)
+        };
+        standbySwitches = new MaterialSwitch[]{
+                findViewById(R.id.standbySwitch1), findViewById(R.id.standbySwitch2),
+                findViewById(R.id.standbySwitch3), findViewById(R.id.standbySwitch4)
+        };
+        standbyWattsInputs = new TextInputEditText[]{
+                findViewById(R.id.standbyWatts1), findViewById(R.id.standbyWatts2),
+                findViewById(R.id.standbyWatts3), findViewById(R.id.standbyWatts4)
+        };
+        standbyMinutesInputs = new TextInputEditText[]{
+                findViewById(R.id.standbyMinutes1), findViewById(R.id.standbyMinutes2),
+                findViewById(R.id.standbyMinutes3), findViewById(R.id.standbyMinutes4)
+        };
+        awayOutletSwitches = new MaterialSwitch[]{
+                findViewById(R.id.awayOutlet1), findViewById(R.id.awayOutlet2),
+                findViewById(R.id.awayOutlet3), findViewById(R.id.awayOutlet4)
         };
         scheduleSwitches = new MaterialSwitch[]{
                 findViewById(R.id.scheduleSwitch1), findViewById(R.id.scheduleSwitch2),
