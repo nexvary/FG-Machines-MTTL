@@ -457,4 +457,45 @@ Bilinen yerel kontrol donanımı. MTTL kurulum/keşif yolunu kullanın.</string>
 Güç %3$.1f W · Enerji %4$.3f kWh · Sıcaklık %5$d°C
 Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
 
+
+    <string name="standby_cutoff_enable">Bekleme kesmesi</string>
+    <string name="standby_w_hint">Bekleme eşiği (W)</string>
+    <string name="standby_minutes_hint">Düşük güç süresi (dk)</string>
+    <string name="automation_invalid_standby_w">Pozitif bir bekleme gücü eşiği girin.</string>
+    <string name="smart_extras_title">Akıllı priz ekleri</string>
+    <string name="smart_extras_note">Bulut gerektirmeyen yerel akıllı priz özellikleri. Uzakta Modu yalnızca seçtiğiniz çıkışları değiştirir.</string>
+    <string name="away_mode_waiting">Uzakta Modu için bir cihaz seçin.</string>
+    <string name="away_mode_enable">Uzakta Modu</string>
+    <string name="away_start_hint">Başlangıç HH:mm</string>
+    <string name="away_end_hint">Bitiş HH:mm</string>
+    <string name="away_min_hint">Min aralık (dk)</string>
+    <string name="away_max_hint">Maks aralık (dk)</string>
+    <string name="away_outlets_title">Değiştirilebilecek çıkışlar</string>
+    <string name="save_away_mode">Uzakta Modunu Kaydet</string>
+    <string name="away_interval_invalid">Pozitif dakika kullanın ve maks ≥ min olsun.</string>
+    <string name="away_select_outlet">Uzakta Modu için en az bir çıkış seçin.</string>
+    <string name="away_mode_saved">Uzakta Modu kaydedildi.</string>
+    <string name="away_mode_disabled">Uzakta Modu kapatıldı.</string>
+    <string name="away_mode_active_format">Uzakta Modu aktif · %1$s–%2$s · %3$d çıkış</string>
+    <string name="away_mode_off">Uzakta Modu kapalı.</string>
+    <string name="runtime_title">Çıkış çalışma istatistikleri</string>
+    <string name="runtime_note">Yerel toplam çalışma süresi ve röle geçiş sayısı.</string>
+    <string name="runtime_waiting">Çalışma süresini görmek için cihaz seçin.</string>
+    <string name="runtime_unknown_line">Çıkış %1$d · ilk durum bekleniyor</string>
+    <string name="runtime_line_format">Çıkış %1$d · %2$s · süre %3$s · geçiş %4$d</string>
+    <string name="event_other">Diğer olay</string>
+    <string name="event_connected">Bağlandı</string>
+    <string name="event_disconnected">Bağlantı kesildi</string>
+    <string name="event_relay_state">Röle durumu</string>
+    <string name="event_scene_apply">Sahne uygulandı</string>
+    <string name="event_alert">Uyarı</string>
+    <string name="event_auto_off">Otomatik kapanma</string>
+    <string name="event_power_limit">Güç limiti kesmesi</string>
+    <string name="event_standby_cutoff">Bekleme kesmesi</string>
+    <string name="event_schedule">Program</string>
+    <string name="event_away_toggle">Uzakta Modu değişimi</string>
+    <string name="event_away_config">Uzakta Modu ayarı</string>
+    <string name="event_usb_discovery">USB keşfi başladı</string>
+    <string name="event_usb_frame">USB keşif çerçevesi</string>
+
 </resources>
