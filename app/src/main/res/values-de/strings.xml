@@ -527,4 +527,20 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="event_device_share">Gerätefreigabe erstellt</string>
     <string name="event_voice_command">Sprachbefehl</string>
 
+
+    <string name="cloud_account_title">FG Machines Cloud / VPS</string>
+    <string name="cloud_account_note">Optional. Lokale MTTL-W01-Steuerung, Timer und Automationen funktionieren weiterhin ohne VPS. Erst anmelden, wenn der HTTPS-Server bereit ist.</string>
+    <string name="cloud_endpoint_hint">HTTPS-VPS-Adresse</string>
+    <string name="cloud_email_hint">E-Mail des Cloud-Kontos</string>
+    <string name="cloud_password_hint">Passwort des Cloud-Kontos</string>
+    <string name="cloud_register">Konto erstellen</string>
+    <string name="cloud_login">Anmelden</string>
+    <string name="cloud_sync_enable">Dieses Telefon als Cloud-Controller-Relay aktivieren</string>
+    <string name="cloud_status_signed_out">Nicht angemeldet. Lokale Steuerung bleibt aktiv.</string>
+    <string name="cloud_status_missing">HTTPS-VPS-Adresse, E-Mail und Passwort eingeben.</string>
+    <string name="cloud_status_authenticating">Verbindung zur Cloud…</string>
+    <string name="cloud_status_ready">Cloud-Konto gespeichert. Relay auf dem Controller-Telefon bei Bedarf aktivieren.</string>
+    <string name="cloud_status_failed">Cloud-Fehler: %1$s</string>
+    <string name="cloud_sync_requires_login">Zuerst anmelden, dann das Controller-Relay aktivieren.</string>
+
 </resources>
