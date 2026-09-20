@@ -12,7 +12,7 @@
     <string name="nav_setup">Kurulum</string>
     <string name="nav_scan">Tarama</string>
     <string name="nav_settings">Ayarlar</string>
-    <string name="nav_about">Hakkında</string>
+    <string name="nav_about">Geliştirici</string>
     <string name="home_title">Akıllı ev paneli</string>
     <string name="home_subtitle">Odalar, cihazlar, otomasyon, enerji ve doğrudan yerel kontrol tek platformda.</string>
     <string name="quick_setup">Cihazı kur</string>
@@ -88,9 +88,9 @@
 
     <string name="settings_title">Ayarlar</string>
     <string name="settings_note">Dil değişikliği hemen uygulanır. Ağ kurulumu yereldir ve Kore abonelik hizmetine ihtiyaç duymaz.</string>
-    <string name="about_title">Hakkında</string>
-    <string name="about_line">FG Machines Link · MTTL ailesi · Önce yerel kontrol</string>
-    <string name="about_body">FG Machines Link, uyumlu LG U+ / TONLY akıllı priz şeritleri için bağımsız bir yerel denetleyicidir. Resmî LG U+ uygulaması değildir. Proje yerel Wi‑Fi çalışmasına, anlaşılır tanılamaya ve güvenli röle kontrolüne öncelik verir.</string>
+    <string name="about_title">Geliştirici hakkında</string>
+    <string name="about_line">Rahmân ve Rahîm olan Allah’ın adıyla</string>
+    <string name="about_body">Bu program Alaa El Din Mohamed ve oğlu tarafından geliştirilmiştir. Program Allah rızası için tamamen ücretsizdir.</string>
     <string name="supported_models_title">Uyumluluk</string>
     <string name="supported_models_body">Birincil doğrulanmış aile: MTTL-W01. Bilinen sertifika revizyonları HU04139-17002A/B/C/D/E. TONLY_TAP_* ve ONLY_TAP_* imzaları tanınır ve röle kontrolleri etkinleşmeden önce protokol doğrulanır.</string>
     <string name="setup_method_title">Kurulum yöntemini seçin</string>
@@ -107,10 +107,10 @@
         <item>İki telefon (yönlendiricisiz)</item>
         <item>Tek telefon (deneysel)</item>
     </string-array>
-    <string name="about_social_title">FG Machines bağlantıları</string>
-    <string name="about_social_note">Resmî işletme sayfası ve kişisel profil</string>
-    <string name="fg_machines_facebook">FG Machines · Facebook sayfası</string>
-    <string name="alaa_mohamed_facebook">Alaa Mohamed · Kişisel profil</string>
+    <string name="about_social_title">Geliştirici bağlantıları</string>
+    <string name="about_social_note">Kişisel hesap ve ticari sayfa</string>
+    <string name="fg_machines_facebook">Ticari sayfa</string>
+    <string name="alaa_mohamed_facebook">Kişisel hesap</string>
     <string name="open_link_failed">Bu cihazda bağlantı açılamadı.</string>
     <string name="wizard_assistant_title">Kurulum Asistanı</string>
     <string name="wizard_local_badge">YEREL</string>
@@ -566,9 +566,9 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="automation_invalid_standby_w_range">1–100 W arasında seçin.</string>
     <string name="automation_invalid_standby_minutes_range">1–120 dakika arasında seçin.</string>
     <string name="controller_watchdog_retry">Yerel denetleyici yeniden başlatılamadı: %1$s</string>
+    <string name="controller_port_in_use">Yerel denetleyici bağlantı noktası %1$d zaten kullanımda. Aynı anda yalnızca bir FG Link / FG Machines RCK denetleyici uygulaması çalıştırın.</string>
 
-        <string name="controller_port_in_use">Yerel denetleyici bağlantı noktası %1$d zaten kullanımda. Aynı anda yalnızca bir FG Link / FG Machines RCK denetleyici uygulaması çalıştırın.</string>
-<string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
+    <string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
     <string name="free_remote_note">VPS veya aylık abonelik gerekmez. Denetleyici telefonda ZeroTier ya da ZeroTier/OpenWrt yönlendirici ağ geçidi seçin.</string>
     <string name="free_remote_mode_label">Ücretsiz erişim modu</string>
     <string name="free_remote_host_hint">Özel ZeroTier / denetleyici LAN IP adresi</string>

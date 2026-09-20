@@ -47,6 +47,29 @@ jobs:
       - name: Test, lint and build debug + side-by-side + ARM64 fast APK
         run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar assembleSidecarArm64
 
+      - name: Verify FG branding and launcher resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s app/src/main/res/drawable-nodpi/fg_machines_brand.webp
+          test -s app/src/main/res/drawable/ic_fg_launcher_foreground.xml
+          test -s app/src/main/res/drawable/ic_fg_logo.xml
+          grep -q 'android:src="@drawable/fg_machines_brand"' app/src/main/res/layout/activity_main.xml
+          grep -q 'android:text="@string/about_line"' app/src/main/res/layout/activity_main.xml
+          grep -q 'android:text="@string/about_body"' app/src/main/res/layout/activity_main.xml
+          sed -n '/android:id="@+id\/pageAbout"/,/<\/ScrollView>/p' app/src/main/res/layout/activity_main.xml > /tmp/fg-link-about-layout.xml
+          grep -q 'android:id="@+id/alaaMohamedFacebookButton"' /tmp/fg-link-about-layout.xml
+          grep -q 'android:id="@+id/fgMachinesFacebookButton"' /tmp/fg-link-about-layout.xml
+          grep -q 'android:src="@drawable/fg_machines_brand"' /tmp/fg-link-about-layout.xml
+          grep -q '<string name="about_title">عن المطور</string>' app/src/main/res/values-ar/strings.xml
+          grep -q 'تم تطوير البرنامج بواسطة علاء الدين محمد وابنه' app/src/main/res/values-ar/strings.xml
+          grep -q 'android:icon="@mipmap/ic_launcher"' app/src/main/AndroidManifest.xml
+          grep -q 'android:roundIcon="@mipmap/ic_launcher_round"' app/src/main/AndroidManifest.xml
+          grep -q '@drawable/ic_fg_launcher_foreground' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          grep -q '@drawable/ic_fg_launcher_foreground' app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+
       - name: Verify side-by-side package identity
         shell: bash
         run: |
@@ -143,6 +166,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download isolated debug APK
         uses: actions/download-artifact@v4
         with:
@@ -155,32 +181,14 @@ jobs:
           name: FG-Link-1.6.1-side-by-side
           path: apk-sidecar
 
-      - name: Capture real app dashboard screenshot
+      - name: Capture and verify dashboard + About branding
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: |
-            adb install apk-debug/app-debug.apk
-            adb install apk-sidecar/app-sidecar.apk
-            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar161'
-            adb shell am force-stop com.fgmachines.rck.sidecar161
-            adb shell am start -n com.fgmachines.rck.sidecar161/com.fgmachines.rck.MainActivity
-            sleep 20
-            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
-            adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
-            adb shell cat /sdcard/fg-rck-ui.xml || true
-            adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
-            SIZE="$(adb shell wm size | awk -F': ' '/Physical size/{print $2}' | tr -d '\r')"
-            W="${SIZE%x*}"
-            H="${SIZE#*x}"
-            adb shell input tap $((W / 10)) $((H * 9 / 10))
-            sleep 3
-            adb shell uiautomator dump /sdcard/fg-link-about.xml || true
-            adb shell cat /sdcard/fg-link-about.xml || true
-            adb exec-out screencap -p > FG-Link-1.6.1-about.png
+          script: bash scripts/verify_fg_link_ui.sh
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
