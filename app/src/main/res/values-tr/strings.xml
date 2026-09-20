@@ -567,7 +567,8 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="automation_invalid_standby_minutes_range">1–120 dakika arasında seçin.</string>
     <string name="controller_watchdog_retry">Yerel denetleyici yeniden başlatılamadı: %1$s</string>
 
-    <string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
+        <string name="controller_port_in_use">Yerel denetleyici bağlantı noktası %1$d zaten kullanımda. Aynı anda yalnızca bir FG Link / FG Machines RCK denetleyici uygulaması çalıştırın.</string>
+<string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
     <string name="free_remote_note">VPS veya aylık abonelik gerekmez. Denetleyici telefonda ZeroTier ya da ZeroTier/OpenWrt yönlendirici ağ geçidi seçin.</string>
     <string name="free_remote_mode_label">Ücretsiz erişim modu</string>
     <string name="free_remote_host_hint">Özel ZeroTier / denetleyici LAN IP adresi</string>
