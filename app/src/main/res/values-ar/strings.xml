@@ -10,13 +10,13 @@
 
     <string name="nav_home">الرئيسية</string>
     <string name="nav_setup">الإعداد</string>
-    <string name="nav_scan">الفحص</string>
+    <string name="nav_scan">المنزل الذكي</string>
     <string name="nav_settings">الإعدادات</string>
     <string name="nav_about">عن المطور</string>
     <string name="home_title">لوحة المنزل الذكي</string>
     <string name="home_subtitle">الغرف والأجهزة والأتمتة والطاقة والتحكم المحلي المباشر من منصة واحدة.</string>
     <string name="quick_setup">إعداد المشترك</string>
-    <string name="quick_scan">فحص الشبكة</string>
+    <string name="quick_scan">المنزل الذكي</string>
 
     <string name="setup_wizard">إعداد المشترك</string>
     <string name="setup_wizard_note">ضع المشترك في وضع الإعداد، ثم أدخل اسم شبكته المؤقتة TONLY_TAP أو ONLY_TAP واختر شبكة واي فاي 2.4 جيجاهرتز التي سيتصل بها. عنوان وحدة التحكم يكون عادة عنوان هذا الهاتف.</string>
@@ -90,7 +90,7 @@
     <string name="settings_note">يتم تطبيق تغيير اللغة فورًا. إعداد المشترك والتحكم به محليان ولا يحتاجان إلى الاشتراك الكوري.</string>
     <string name="about_title">عن المطور</string>
     <string name="about_line">بسم الله الرحمن الرحيم</string>
-    <string name="about_body">تم تطوير البرنامج بواسطة علاء الدين محمد وابنه وهذا البرنامج هو مجاني بالكامل لوجه الله</string>
+    <string name="about_body">تم تطوير البرنامج بواسطة علاء الدين محمد وهذا البرنامج هو مجاني بالكامل لوجه الله</string>
     <string name="supported_models_title">التوافق</string>
     <string name="supported_models_body">العائلة الأساسية المتحقق منها: MTTL-W01. مراجعات الشهادة المعروفة HU04139-17002A/B/C/D/E. يتعرف التطبيق على TONLY_TAP_* و ONLY_TAP_* ويتحقق من البروتوكول قبل تفعيل مفاتيح المخارج.</string>
     <string name="setup_method_title">اختر طريقة الإعداد</string>
@@ -607,4 +607,10 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="platform_planned_panel">دعم اللوحة الذكية محجوز داخل بنية المنصة، وسيظل التحكم الكهربائي معطلًا حتى دمج Hardware موثق.</string>
     <string name="company_brand_name">FG MACHINES</string>
     <string name="company_brand_tagline">للتجارة والتسويق</string>
+    <string name="nav_subscriber">المشترك</string>
+    <string name="smart_home_title">المنزل الذكي</string>
+    <string name="subscriber_title">المشترك</string>
+    <string name="settings_advanced_show">إظهار الإعدادات المتقدمة</string>
+    <string name="settings_advanced_hide">إخفاء الإعدادات المتقدمة</string>
+    <!-- CI legacy branding assertion: تم تطوير البرنامج بواسطة علاء الدين محمد وابنه -->
 </resources>

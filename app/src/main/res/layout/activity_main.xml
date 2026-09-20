@@ -17,7 +17,7 @@
         app:cardBackgroundColor="@color/fg_black_soft"
         app:cardCornerRadius="20dp"
         app:cardElevation="3dp"
-        app:strokeColor="@color/fg_border"
+        app:strokeColor="@color/fg_metal_silver"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -105,7 +105,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/home_title"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text"
+                    android:textColor="@color/fg_neon_cyan"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -118,240 +118,7 @@
                     android:textColor="@color/fg_text_secondary"
                     android:textSize="13sp" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp"
-                    app:strokeColor="@color/fg_blue"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/platform_title"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/platform_note"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text_secondary"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/platformSummary"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_status_pill"
-                            android:padding="11dp"
-                            android:text="@string/platform_summary_waiting"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_green"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/platform_families"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_blue_bright"
-                            android:textSize="11sp" />
-
-                        <TextView
-                            android:id="@+id/platformHubStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/bg_status_pill"
-                            android:padding="10dp"
-                            android:text="@string/platform_hub_status"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text_secondary"
-                            android:textSize="10sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformDevicesButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_devices"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_devices"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_green"
-                                app:strokeColor="@color/fg_green" />
-
-                            <Space android:layout_width="8dp" android:layout_height="1dp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformRoomsButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_rooms"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_room"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_blue_bright"
-                                app:strokeColor="@color/fg_blue" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformAutomationButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_automation"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_automation"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_green"
-                                app:strokeColor="@color/fg_green" />
-
-                            <Space android:layout_width="8dp" android:layout_height="1dp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformEnergyButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_energy"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_energy"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_warning"
-                                app:strokeColor="@color/fg_warning" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformSensorsButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_sensors"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_sensor"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_blue_bright"
-                                app:strokeColor="@color/fg_blue" />
-
-                            <Space android:layout_width="8dp" android:layout_height="1dp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformIrButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_ir"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_ir"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_green"
-                                app:strokeColor="@color/fg_green" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformGatewayButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_gateway"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_gateway"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_blue_bright"
-                                app:strokeColor="@color/fg_blue" />
-
-                            <Space android:layout_width="8dp" android:layout_height="1dp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/platformPanelButton"
-                                style="@style/Widget.Material3.Button.OutlinedButton"
-                                android:layout_width="0dp"
-                                android:layout_height="72dp"
-                                android:layout_weight="1"
-                                android:text="@string/platform_panel"
-                                android:textAllCaps="false"
-                                android:textColor="@color/fg_text"
-                                app:cornerRadius="16dp"
-                                app:icon="@drawable/ic_platform_panel"
-                                app:iconGravity="textTop"
-                                app:iconPadding="4dp"
-                                app:iconTint="@color/fg_warning"
-                                app:strokeColor="@color/fg_warning" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/connectionCard"
@@ -1040,231 +807,17 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/outlets"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text"
-                            android:textSize="19sp"
-                            android:textStyle="bold" />
+                        
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="@string/outlets_subtitle"
-                            android:textAlignment="viewStart"
-                            android:textColor="@color/fg_text_secondary"
-                            android:textSize="12sp" />
+                        
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/outletCard1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            app:cardBackgroundColor="@color/fg_surface_2"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/fg_border"
-                            app:strokeWidth="1dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="10dp">
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/outlet1"
-                                    android:layout_width="132dp"
-                                    android:layout_height="66dp"
-                                    android:checkable="true"
-                                    android:elevation="7dp"
-                                    android:gravity="center"
-                                    android:maxLines="2"
-                                    android:text="@string/outlet_1"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/outlet_button_fg"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    app:backgroundTint="@color/outlet_button_bg"
-                                    app:cornerRadius="24dp"
-                                    app:icon="@drawable/ic_power"
-                                    app:iconGravity="textStart"
-                                    app:iconPadding="8dp"
-                                    app:iconSize="23dp"
-                                    app:iconTint="@color/outlet_button_fg"
-                                    app:rippleColor="@color/fg_blue_dim"
-                                    app:strokeColor="@color/outlet_button_stroke"
-                                    app:strokeWidth="2dp" />
-                                <TextView
-                                    android:id="@+id/outlet1Telemetry"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/outlet_telemetry_waiting"
-                                    android:textAlignment="viewStart"
-                                    android:textColor="@color/fg_text_secondary"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                        
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/outletCard2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:cardBackgroundColor="@color/fg_surface_2"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/fg_border"
-                            app:strokeWidth="1dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="10dp">
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/outlet2"
-                                    android:layout_width="132dp"
-                                    android:layout_height="66dp"
-                                    android:checkable="true"
-                                    android:elevation="7dp"
-                                    android:gravity="center"
-                                    android:maxLines="2"
-                                    android:text="@string/outlet_2"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/outlet_button_fg"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    app:backgroundTint="@color/outlet_button_bg"
-                                    app:cornerRadius="24dp"
-                                    app:icon="@drawable/ic_power"
-                                    app:iconGravity="textStart"
-                                    app:iconPadding="8dp"
-                                    app:iconSize="23dp"
-                                    app:iconTint="@color/outlet_button_fg"
-                                    app:rippleColor="@color/fg_blue_dim"
-                                    app:strokeColor="@color/outlet_button_stroke"
-                                    app:strokeWidth="2dp" />
-                                <TextView
-                                    android:id="@+id/outlet2Telemetry"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/outlet_telemetry_waiting"
-                                    android:textAlignment="viewStart"
-                                    android:textColor="@color/fg_text_secondary"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                        
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/outletCard3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:cardBackgroundColor="@color/fg_surface_2"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/fg_border"
-                            app:strokeWidth="1dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="10dp">
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/outlet3"
-                                    android:layout_width="132dp"
-                                    android:layout_height="66dp"
-                                    android:checkable="true"
-                                    android:elevation="7dp"
-                                    android:gravity="center"
-                                    android:maxLines="2"
-                                    android:text="@string/outlet_3"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/outlet_button_fg"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    app:backgroundTint="@color/outlet_button_bg"
-                                    app:cornerRadius="24dp"
-                                    app:icon="@drawable/ic_power"
-                                    app:iconGravity="textStart"
-                                    app:iconPadding="8dp"
-                                    app:iconSize="23dp"
-                                    app:iconTint="@color/outlet_button_fg"
-                                    app:rippleColor="@color/fg_blue_dim"
-                                    app:strokeColor="@color/outlet_button_stroke"
-                                    app:strokeWidth="2dp" />
-                                <TextView
-                                    android:id="@+id/outlet3Telemetry"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/outlet_telemetry_waiting"
-                                    android:textAlignment="viewStart"
-                                    android:textColor="@color/fg_text_secondary"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                        
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/outletCard4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:cardBackgroundColor="@color/fg_surface_2"
-                            app:cardCornerRadius="20dp"
-                            app:cardElevation="1dp"
-                            app:strokeColor="@color/fg_border"
-                            app:strokeWidth="1dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:padding="10dp">
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/outlet4"
-                                    android:layout_width="132dp"
-                                    android:layout_height="66dp"
-                                    android:checkable="true"
-                                    android:elevation="7dp"
-                                    android:gravity="center"
-                                    android:maxLines="2"
-                                    android:text="@string/outlet_4"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/outlet_button_fg"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    app:backgroundTint="@color/outlet_button_bg"
-                                    app:cornerRadius="24dp"
-                                    app:icon="@drawable/ic_power"
-                                    app:iconGravity="textStart"
-                                    app:iconPadding="8dp"
-                                    app:iconSize="23dp"
-                                    app:iconTint="@color/outlet_button_fg"
-                                    app:rippleColor="@color/fg_blue_dim"
-                                    app:strokeColor="@color/outlet_button_stroke"
-                                    app:strokeWidth="2dp" />
-                                <TextView
-                                    android:id="@+id/outlet4Telemetry"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/outlet_telemetry_waiting"
-                                    android:textAlignment="viewStart"
-                                    android:textColor="@color/fg_text_secondary"
-                                    android:textSize="11sp" />
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
+                        
 
                         <View
                             android:layout_width="match_parent"
@@ -1384,7 +937,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/setup_wizard"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text"
+                    android:textColor="@color/fg_neon_lime"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -1943,11 +1496,264 @@
             android:paddingEnd="14dp"
             android:paddingBottom="18dp"
             android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/smart_home_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_neon_violet"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/fg_blue"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/platform_title"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/platform_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/platformSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="11dp"
+                            android:text="@string/platform_summary_waiting"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_green"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/platform_families"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_blue_bright"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/platformHubStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/platform_hub_status"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="10sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformDevicesButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_devices"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_devices"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformRoomsButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_rooms"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_room"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformAutomationButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_automation"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_automation"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformEnergyButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_energy"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_energy"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_warning"
+                                app:strokeColor="@color/fg_warning" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformSensorsButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_sensors"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_sensor"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformIrButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_ir"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_ir"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformGatewayButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_gateway"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_gateway"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformPanelButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_panel"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_panel"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_warning"
+                                app:strokeColor="@color/fg_warning" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2131,13 +1937,202 @@
             </LinearLayout>
         </ScrollView>
 
+
+        <ScrollView
+            android:id="@+id/pageSubscriber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="12dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/subscriber_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_neon_lime"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="@color/fg_surface"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="3dp"
+                    app:strokeColor="@color/fg_metal_silver"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/outletCard1"
+                                android:layout_width="0dp"
+                                android:layout_height="92dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardBackgroundColor="@color/fg_surface_2"
+                                app:cardCornerRadius="18dp"
+                                app:strokeColor="@color/fg_metal_silver"
+                                app:strokeWidth="1dp">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/outlet1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:checkable="true"
+                                    android:text="@string/outlet_1"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/outlet_button_fg"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/outlet_button_bg"
+                                    app:cornerRadius="18dp"
+                                    app:icon="@drawable/ic_power"
+                                    app:iconGravity="textTop"
+                                    app:iconPadding="5dp"
+                                    app:iconSize="28dp"
+                                    app:iconTint="@color/outlet_button_fg"
+                                    app:strokeColor="@color/outlet_button_stroke"
+                                    app:strokeWidth="2dp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/outletCard2"
+                                android:layout_width="0dp"
+                                android:layout_height="92dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                app:cardBackgroundColor="@color/fg_surface_2"
+                                app:cardCornerRadius="18dp"
+                                app:strokeColor="@color/fg_metal_silver"
+                                app:strokeWidth="1dp">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/outlet2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:checkable="true"
+                                    android:text="@string/outlet_2"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/outlet_button_fg"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/outlet_button_bg"
+                                    app:cornerRadius="18dp"
+                                    app:icon="@drawable/ic_power"
+                                    app:iconGravity="textTop"
+                                    app:iconPadding="5dp"
+                                    app:iconSize="28dp"
+                                    app:iconTint="@color/outlet_button_fg"
+                                    app:strokeColor="@color/outlet_button_stroke"
+                                    app:strokeWidth="2dp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/outletCard3"
+                                android:layout_width="0dp"
+                                android:layout_height="92dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                app:cardBackgroundColor="@color/fg_surface_2"
+                                app:cardCornerRadius="18dp"
+                                app:strokeColor="@color/fg_metal_silver"
+                                app:strokeWidth="1dp">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/outlet3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:checkable="true"
+                                    android:text="@string/outlet_3"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/outlet_button_fg"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/outlet_button_bg"
+                                    app:cornerRadius="18dp"
+                                    app:icon="@drawable/ic_power"
+                                    app:iconGravity="textTop"
+                                    app:iconPadding="5dp"
+                                    app:iconSize="28dp"
+                                    app:iconTint="@color/outlet_button_fg"
+                                    app:strokeColor="@color/outlet_button_stroke"
+                                    app:strokeWidth="2dp" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/outletCard4"
+                                android:layout_width="0dp"
+                                android:layout_height="92dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                app:cardBackgroundColor="@color/fg_surface_2"
+                                app:cardCornerRadius="18dp"
+                                app:strokeColor="@color/fg_metal_silver"
+                                app:strokeWidth="1dp">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/outlet4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:checkable="true"
+                                    android:text="@string/outlet_4"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/outlet_button_fg"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/outlet_button_bg"
+                                    app:cornerRadius="18dp"
+                                    app:icon="@drawable/ic_power"
+                                    app:iconGravity="textTop"
+                                    app:iconPadding="5dp"
+                                    app:iconSize="28dp"
+                                    app:iconTint="@color/outlet_button_fg"
+                                    app:strokeColor="@color/outlet_button_stroke"
+                                    app:strokeWidth="2dp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="1dp"
+                            android:visibility="gone">
+                            <TextView android:id="@+id/outlet1Telemetry" android:layout_width="1dp" android:layout_height="1dp" />
+                            <TextView android:id="@+id/outlet2Telemetry" android:layout_width="1dp" android:layout_height="1dp" />
+                            <TextView android:id="@+id/outlet3Telemetry" android:layout_width="1dp" android:layout_height="1dp" />
+                            <TextView android:id="@+id/outlet4Telemetry" android:layout_width="1dp" android:layout_height="1dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </ScrollView>
+
         <ScrollView
             android:id="@+id/pageSettings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:paddingBottom="18dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="12dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -2151,7 +2146,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/settings_title"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text"
+                    android:textColor="@color/fg_neon_cyan"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -2197,13 +2192,34 @@
                             android:textSize="13sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settingsAdvancedToggle"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/settings_advanced_show"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_cyan"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_nav_controls"
+                    app:iconTint="@color/fg_neon_cyan"
+                    app:strokeColor="@color/fg_metal_silver" />
+
+                <LinearLayout
+                    android:id="@+id/advancedSettingsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="15dp"
                     app:strokeColor="@color/fg_warning"
                     app:strokeWidth="1dp">
 
@@ -2211,7 +2227,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2234,7 +2250,7 @@
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/alertsSwitch"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
+                            android:layout_height="48dp"
                             android:layout_marginTop="8dp"
                             android:text="@string/safety_alerts"
                             android:textColor="@color/fg_text" />
@@ -2254,7 +2270,7 @@
                     android:id="@+id/automationCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="2dp"
@@ -2265,7 +2281,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2303,7 +2319,7 @@
                             style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:gravity="center_vertical"
                             android:text="@string/automation_outlet_1"
                             android:textAllCaps="false"
@@ -3290,7 +3306,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_blue"
@@ -3300,7 +3316,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -3537,9 +3553,9 @@
 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="15dp"
                     app:strokeColor="@color/fg_blue"
                     app:strokeWidth="1dp">
 
@@ -3547,7 +3563,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -3685,9 +3701,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="15dp"
                     app:strokeColor="@color/fg_green"
                     app:strokeWidth="1dp">
 
@@ -3695,7 +3711,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -3752,7 +3768,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_warning"
@@ -3761,7 +3777,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -3832,7 +3848,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_blue"
@@ -3841,7 +3857,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -3975,7 +3991,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_blue"
@@ -3984,7 +4000,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -4028,7 +4044,7 @@
                     android:id="@+id/gatewayCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="2dp"
@@ -4039,7 +4055,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -4133,7 +4149,7 @@
 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_blue"
@@ -4142,7 +4158,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -4260,7 +4276,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="20dp"
                     app:strokeColor="@color/fg_green"
@@ -4269,7 +4285,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -4411,7 +4427,9 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
+            
+                </LinearLayout>
+</LinearLayout>
         </ScrollView>
 
         <ScrollView
@@ -4437,7 +4455,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/about_title"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/fg_text"
+                    android:textColor="@color/fg_neon_violet"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -4576,7 +4594,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="78dp"
+        android:layout_height="72dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"
@@ -4584,7 +4602,7 @@
         app:cardBackgroundColor="@color/fg_nav"
         app:cardCornerRadius="24dp"
         app:cardElevation="7dp"
-        app:strokeColor="@color/fg_border"
+        app:strokeColor="@color/fg_metal_silver"
         app:strokeWidth="1dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -4597,95 +4615,120 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_home"
                 android:textAllCaps="false"
+                android:maxLines="2"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 app:cornerRadius="18dp"
                 app:icon="@drawable/ic_nav_home"
                 app:iconGravity="textTop"
                 app:iconPadding="3dp"
-                app:iconSize="27dp"
+                app:iconSize="24dp"
                 app:iconTint="@color/fg_silver" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navSetup"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_setup"
                 android:textAllCaps="false"
+                android:maxLines="2"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 app:cornerRadius="18dp"
                 app:icon="@drawable/ic_nav_plug"
                 app:iconGravity="textTop"
                 app:iconPadding="3dp"
-                app:iconSize="27dp"
+                app:iconSize="24dp"
                 app:iconTint="@color/fg_silver" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navScan"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_scan"
                 android:textAllCaps="false"
+                android:maxLines="2"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 app:cornerRadius="18dp"
-                app:icon="@drawable/ic_nav_radar"
+                app:icon="@drawable/ic_nav_smart_home"
                 app:iconGravity="textTop"
                 app:iconPadding="3dp"
-                app:iconSize="27dp"
+                app:iconSize="24dp"
                 app:iconTint="@color/fg_silver" />
-            <com.google.android.material.button.MaterialButton
+                        <com.google.android.material.button.MaterialButton
+                android:id="@+id/navSubscriber"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_subscriber"
+                android:textAllCaps="false"
+                android:maxLines="2"
+                android:textColor="@color/fg_silver"
+                android:textSize="8sp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_nav_strip"
+                app:iconGravity="textTop"
+                app:iconPadding="2dp"
+                app:iconSize="24dp"
+                app:iconTint="@color/fg_silver" />
+<com.google.android.material.button.MaterialButton
                 android:id="@+id/navSettings"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_settings"
                 android:textAllCaps="false"
+                android:maxLines="2"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 app:cornerRadius="18dp"
                 app:icon="@drawable/ic_nav_controls"
                 app:iconGravity="textTop"
                 app:iconPadding="3dp"
-                app:iconSize="27dp"
+                app:iconSize="24dp"
                 app:iconTint="@color/fg_silver" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/navAbout"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/nav_about"
                 android:textAllCaps="false"
+                android:maxLines="2"
                 android:textColor="@color/fg_silver"
-                android:textSize="9sp"
+                android:textSize="8sp"
                 app:cornerRadius="18dp"
                 app:icon="@drawable/ic_nav_company"
                 app:iconGravity="textTop"
                 app:iconPadding="3dp"
-                app:iconSize="27dp"
+                app:iconSize="24dp"
                 app:iconTint="@color/fg_silver" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

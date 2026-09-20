@@ -10,13 +10,13 @@
 
     <string name="nav_home">Ana sayfa</string>
     <string name="nav_setup">Kurulum</string>
-    <string name="nav_scan">Tarama</string>
+    <string name="nav_scan">Akıllı Ev</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_about">Geliştirici</string>
     <string name="home_title">Akıllı ev paneli</string>
     <string name="home_subtitle">Odalar, cihazlar, otomasyon, enerji ve doğrudan yerel kontrol tek platformda.</string>
     <string name="quick_setup">Cihazı kur</string>
-    <string name="quick_scan">Ağı tara</string>
+    <string name="quick_scan">Akıllı Ev</string>
 
     <string name="setup_wizard">Cihaz kurulumu</string>
     <string name="setup_wizard_note">Şeridi kurulum moduna alın, geçici TONLY_TAP/ONLY_TAP SSID’sini girin ve bağlanacağı 2.4 GHz Wi‑Fi ağını seçin. Denetleyici adresi normalde bu telefona aittir.</string>
@@ -90,7 +90,7 @@
     <string name="settings_note">Dil değişikliği hemen uygulanır. Ağ kurulumu yereldir ve Kore abonelik hizmetine ihtiyaç duymaz.</string>
     <string name="about_title">Geliştirici hakkında</string>
     <string name="about_line">Rahmân ve Rahîm olan Allah’ın adıyla</string>
-    <string name="about_body">Bu program Alaa El Din Mohamed ve oğlu tarafından geliştirilmiştir. Program Allah rızası için tamamen ücretsizdir.</string>
+    <string name="about_body">Bu program Alaa El Din Mohamed tarafından geliştirilmiştir. Program Allah rızası için tamamen ücretsizdir.</string>
     <string name="supported_models_title">Uyumluluk</string>
     <string name="supported_models_body">Birincil doğrulanmış aile: MTTL-W01. Bilinen sertifika revizyonları HU04139-17002A/B/C/D/E. TONLY_TAP_* ve ONLY_TAP_* imzaları tanınır ve röle kontrolleri etkinleşmeden önce protokol doğrulanır.</string>
     <string name="setup_method_title">Kurulum yöntemini seçin</string>
@@ -607,4 +607,9 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="platform_planned_panel">Akıllı Panel desteği mimaride ayrılmıştır; doğrulanmış donanım entegre edilene kadar elektrik kontrolü devre dışı kalır.</string>
     <string name="company_brand_name">FG MACHINES</string>
     <string name="company_brand_tagline">Ticaret ve Pazarlama</string>
+    <string name="nav_subscriber">Priz</string>
+    <string name="smart_home_title">Akıllı Ev</string>
+    <string name="subscriber_title">Akıllı Priz</string>
+    <string name="settings_advanced_show">Gelişmiş ayarları göster</string>
+    <string name="settings_advanced_hide">Gelişmiş ayarları gizle</string>
 </resources>

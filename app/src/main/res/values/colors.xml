@@ -8,7 +8,7 @@
     <color name="fg_card_off">#0C1A24</color>
     <color name="fg_card_on">#102A25</color>
     <color name="fg_nav">#07141E</color>
-    <color name="fg_border">#294758</color>
+    <color name="fg_border">#687985</color>
     <color name="fg_blue">#168BFF</color>
     <color name="fg_blue_bright">#43C6FF</color>
     <color name="fg_blue_dim">#15364B</color>
@@ -23,4 +23,12 @@
     <color name="fg_divider">#223745</color>
     <color name="fg_icon_bg">#0F2A3D</color>
     <color name="fg_launcher_bg">#02070C</color>
+    <color name="fg_neon_cyan">#27F3FF</color>
+    <color name="fg_neon_lime">#7CFF6B</color>
+    <color name="fg_neon_violet">#A56BFF</color>
+    <color name="fg_neon_magenta">#FF4FD8</color>
+    <color name="fg_neon_orange">#FFB347</color>
+    <color name="fg_metal_silver">#AEBBC5</color>
+    <color name="fg_metal_highlight">#EEF3F6</color>
+    <color name="fg_metal_shadow">#56636D</color>
 </resources>
