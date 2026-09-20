@@ -90,7 +90,7 @@
     <string name="settings_note">يتم تطبيق تغيير اللغة فورًا. إعداد المشترك والتحكم به محليان ولا يحتاجان إلى الاشتراك الكوري.</string>
     <string name="about_title">عن المطور</string>
     <string name="about_line">بسم الله الرحمن الرحيم</string>
-    <string name="about_body">تم تطوير البرنامج بواسطة علاء الدين محمد وابنه، وهذا البرنامج مجاني بالكامل لوجه الله.</string>
+    <string name="about_body">تم تطوير البرنامج بواسطة علاء الدين محمد وابنه وهذا البرنامج هو مجاني بالكامل لوجه الله</string>
     <string name="supported_models_title">التوافق</string>
     <string name="supported_models_body">العائلة الأساسية المتحقق منها: MTTL-W01. مراجعات الشهادة المعروفة HU04139-17002A/B/C/D/E. يتعرف التطبيق على TONLY_TAP_* و ONLY_TAP_* ويتحقق من البروتوكول قبل تفعيل مفاتيح المخارج.</string>
     <string name="setup_method_title">اختر طريقة الإعداد</string>
