@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FG Machines Link</string>
-    <string name="app_subtitle">Intelligente Steuerung der MTTL-Familie</string>
+    <string name="app_subtitle">Lokale Smart-Home-Plattform</string>
     <string name="brand_tagline">Handel, Technik und intelligente Steuerung</string>
     <string name="brand_badge">MTTL-W01-Familie · Wi‑Fi 2.4 GHz</string>
     <string name="language">Sprache</string>
@@ -13,8 +13,8 @@
     <string name="nav_scan">Scan</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_about">Info</string>
-    <string name="home_title">Hauptübersicht</string>
-    <string name="home_subtitle">Verbindungsstatus und direkte Steuerung der vier MTTL-Steckdosen.</string>
+    <string name="home_title">Smart-Home-Dashboard</string>
+    <string name="home_subtitle">Räume, Geräte, Automationen, Energie und direkte lokale Steuerung in einer Plattform.</string>
     <string name="quick_setup">Gerät einrichten</string>
     <string name="quick_scan">Netzwerk scannen</string>
 
@@ -581,4 +581,9 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
         <item>ZeroTier auf dem Controller-Telefon</item>
         <item>ZeroTier / OpenWrt Router-Gateway</item>
     </string-array>
+    <string name="platform_title">FG Link Smart Home</string>
+    <string name="platform_note">Treiberbasierter Kern für Steckdosenleisten, Relais, Sensoren, IR/Klima, Energie, Raumcontroller und Gateways. MTTL-W01 ist der erste verifizierte Treiber.</string>
+    <string name="platform_summary_waiting">Plattformbestand wird geladen…</string>
+    <string name="platform_summary_format">Geräte %1$d · Online %2$d · Räume %3$d · Treiber %4$d</string>
+    <string name="platform_families">Strom · Relais · Sensoren · IR / Klima · Energie · Räume · Gateways · Panels</string>
 </resources>

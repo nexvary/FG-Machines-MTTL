@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FG Machines Link</string>
-    <string name="app_subtitle">Akıllı MTTL Ailesi Denetleyicisi</string>
+    <string name="app_subtitle">Yerel Akıllı Ev Platformu</string>
     <string name="brand_tagline">Ticaret, teknoloji ve akıllı kontrol</string>
     <string name="brand_badge">MTTL-W01 ailesi · Wi‑Fi 2.4 GHz</string>
     <string name="language">Dil</string>
@@ -13,8 +13,8 @@
     <string name="nav_scan">Tarama</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_about">Hakkında</string>
-    <string name="home_title">Ana kontrol paneli</string>
-    <string name="home_subtitle">Bağlantı durumu ve dört MTTL prizinin doğrudan kontrolü.</string>
+    <string name="home_title">Akıllı ev paneli</string>
+    <string name="home_subtitle">Odalar, cihazlar, otomasyon, enerji ve doğrudan yerel kontrol tek platformda.</string>
     <string name="quick_setup">Cihazı kur</string>
     <string name="quick_scan">Ağı tara</string>
 
@@ -581,4 +581,9 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
         <item>Denetleyici telefonda ZeroTier</item>
         <item>ZeroTier / OpenWrt yönlendirici ağ geçidi</item>
     </string-array>
+    <string name="platform_title">FG Link Smart Home</string>
+    <string name="platform_note">Akıllı prizler, röleler, sensörler, IR/klima, enerji, oda denetleyicileri ve ağ geçitleri için sürücü tabanlı çekirdek. MTTL-W01 ilk doğrulanmış sürücüdür.</string>
+    <string name="platform_summary_waiting">Platform envanteri yükleniyor…</string>
+    <string name="platform_summary_format">Cihazlar %1$d · Çevrimiçi %2$d · Odalar %3$d · Sürücüler %4$d</string>
+    <string name="platform_families">Güç · Röleler · Sensörler · IR / Klima · Enerji · Odalar · Ağ geçitleri · Panolar</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FG Machines Link</string>
-    <string name="app_subtitle">Control inteligente de la familia MTTL</string>
+    <string name="app_subtitle">Plataforma local de hogar inteligente</string>
     <string name="brand_tagline">Comercio, tecnología y control inteligente</string>
     <string name="brand_badge">Familia MTTL-W01 · Wi‑Fi 2.4 GHz</string>
     <string name="language">Idioma</string>
@@ -13,8 +13,8 @@
     <string name="nav_scan">Escanear</string>
     <string name="nav_settings">Ajustes</string>
     <string name="nav_about">Acerca de</string>
-    <string name="home_title">Panel principal</string>
-    <string name="home_subtitle">Estado de conexión y control directo de las cuatro tomas MTTL.</string>
+    <string name="home_title">Panel del hogar inteligente</string>
+    <string name="home_subtitle">Habitaciones, dispositivos, automatización, energía y control local directo desde una sola plataforma.</string>
     <string name="quick_setup">Configurar dispositivo</string>
     <string name="quick_scan">Escanear red</string>
 
@@ -581,4 +581,9 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
         <item>ZeroTier en el teléfono controlador</item>
         <item>ZeroTier / OpenWrt en el router</item>
     </string-array>
+    <string name="platform_title">FG Link Smart Home</string>
+    <string name="platform_note">Núcleo basado en drivers para regletas, relés, sensores, IR/aire acondicionado, energía, controladores de habitación y gateways. MTTL-W01 es el primer driver verificado.</string>
+    <string name="platform_summary_waiting">Cargando inventario de la plataforma…</string>
+    <string name="platform_summary_format">Dispositivos %1$d · En línea %2$d · Habitaciones %3$d · Drivers %4$d</string>
+    <string name="platform_families">Energía · Relés · Sensores · IR / AC · Consumo · Habitaciones · Gateways · Paneles</string>
 </resources>
