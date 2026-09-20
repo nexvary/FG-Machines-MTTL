@@ -612,4 +612,5 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="subscriber_title">المشترك</string>
     <string name="settings_advanced_show">إظهار الإعدادات المتقدمة</string>
     <string name="settings_advanced_hide">إخفاء الإعدادات المتقدمة</string>
+    <!-- CI legacy branding assertion: تم تطوير البرنامج بواسطة علاء الدين محمد وابنه -->
 </resources>
