@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Protocol-neutral facade for FG Link.
@@ -21,6 +23,7 @@ public final class SmartHomePlatform {
     private final FleetStore fleetStore;
     private final ControllerHub controllerHub;
     private final DeviceDriverRegistry drivers;
+    private final PlatformDeviceStore platformStore;
 
     public SmartHomePlatform(Context context, ControllerHub controllerHub) {
         if (context == null) throw new IllegalArgumentException("Context is required");
@@ -28,6 +31,7 @@ public final class SmartHomePlatform {
         this.fleetStore = new FleetStore(context.getApplicationContext());
         this.controllerHub = controllerHub;
         this.drivers = new DeviceDriverRegistry();
+        this.platformStore = new PlatformDeviceStore(context.getApplicationContext());
         this.drivers.register(new MttlDeviceDriver(controllerHub));
     }
 
@@ -36,10 +40,10 @@ public final class SmartHomePlatform {
     }
 
     public List<SmartDevice> devices() {
-        List<SmartDevice> out = new ArrayList<>();
+        Map<String, SmartDevice> merged = new LinkedHashMap<>();
         DeviceDriver mttl = drivers.byId(MttlDeviceDriver.DRIVER_ID);
         for (FleetStore.DeviceRecord record : fleetStore.list()) {
-            out.add(new SmartDevice(
+            SmartDevice device = new SmartDevice(
                     record.mac,
                     record.displayName(),
                     record.room,
@@ -50,9 +54,35 @@ public final class SmartHomePlatform {
                     controllerHub.isConnected(record.mac),
                     4,
                     mttl == null ? Collections.emptySet() : mttl.capabilities()
-            ));
+            );
+            merged.put(device.id, device);
         }
-        return Collections.unmodifiableList(out);
+
+        for (SmartDevice stored : platformStore.list()) {
+            DeviceDriver driver = drivers.forDevice(stored);
+            SmartDevice resolved = new SmartDevice(
+                    stored.id,
+                    stored.name,
+                    stored.room,
+                    stored.model,
+                    stored.driverId,
+                    stored.category,
+                    driver == null ? stored.supportLevel : driver.supportLevel(),
+                    driver != null && driver.isOnline(stored.id),
+                    stored.channelCount,
+                    driver == null ? stored.capabilities : driver.capabilities()
+            );
+            merged.putIfAbsent(resolved.id, resolved);
+        }
+        return Collections.unmodifiableList(new ArrayList<>(merged.values()));
+    }
+
+    public void registerDevice(SmartDevice device) {
+        platformStore.upsert(device);
+    }
+
+    public void removeDevice(String deviceId) {
+        platformStore.remove(deviceId);
     }
 
     public SmartDevice device(String id) {
