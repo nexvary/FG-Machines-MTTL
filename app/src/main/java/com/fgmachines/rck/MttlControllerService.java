@@ -57,6 +57,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
     private final ScheduledExecutorService watchdog = Executors.newSingleThreadScheduledExecutor();
     private volatile long lastWatchdogAlertAt;
+    private volatile boolean controllerPortConflictNotified;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -90,10 +91,11 @@ public final class MttlControllerService extends Service implements MttlControll
         startForeground(CONTROLLER_NOTIFICATION_ID, buildControllerNotification());
         try {
             hub.start();
+            controllerPortConflictNotified = false;
             localApiServer.start();
             cloudRelayManager.start();
         } catch (IOException error) {
-            postAlert(getString(R.string.controller_service_error), safeMessage(error), ALERT_BASE_ID + 99);
+            postControllerStartFailure(error, false);
         }
         return START_STICKY;
     }
@@ -102,14 +104,9 @@ public final class MttlControllerService extends Service implements MttlControll
         if (hub == null || hub.isRunning()) return;
         try {
             hub.start();
+            controllerPortConflictNotified = false;
         } catch (IOException error) {
-            long now = System.currentTimeMillis();
-            if (now - lastWatchdogAlertAt >= TimeUnit.MINUTES.toMillis(5)) {
-                lastWatchdogAlertAt = now;
-                postAlert(getString(R.string.controller_service_error),
-                        getString(R.string.controller_watchdog_retry, safeMessage(error)),
-                        ALERT_BASE_ID + 98);
-            }
+            postControllerStartFailure(error, true);
         }
     }
 
@@ -314,6 +311,44 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     @Override public void onError(String message, Throwable error) { }
+
+    private void postControllerStartFailure(IOException error, boolean watchdogRetry) {
+        if (isAddressInUse(error)) {
+            if (controllerPortConflictNotified) return;
+            controllerPortConflictNotified = true;
+            postAlert(
+                    getString(R.string.controller_service_error),
+                    getString(R.string.controller_port_in_use, ModelCatalog.CONTROLLER_PORT),
+                    ALERT_BASE_ID + 98);
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if (watchdogRetry && now - lastWatchdogAlertAt < TimeUnit.MINUTES.toMillis(5)) return;
+        lastWatchdogAlertAt = now;
+        postAlert(
+                getString(R.string.controller_service_error),
+                watchdogRetry
+                        ? getString(R.string.controller_watchdog_retry, safeMessage(error))
+                        : safeMessage(error),
+                watchdogRetry ? ALERT_BASE_ID + 98 : ALERT_BASE_ID + 99);
+    }
+
+    private static boolean isAddressInUse(Throwable error) {
+        Throwable current = error;
+        while (current != null) {
+            String message = current.getMessage();
+            if (message != null) {
+                String normalized = message.toLowerCase(java.util.Locale.ROOT);
+                if (normalized.contains("eaddrinuse")
+                        || normalized.contains("address already in use")) {
+                    return true;
+                }
+            }
+            current = current.getCause();
+        }
+        return false;
+    }
 
     private static String safeMessage(Throwable error) {
         if (error == null) return "unknown";
