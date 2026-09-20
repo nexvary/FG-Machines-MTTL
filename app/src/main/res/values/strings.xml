@@ -574,6 +574,7 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="automation_invalid_standby_w_range">Choose a low-consumption threshold from 1 to 100 W.</string>
     <string name="automation_invalid_standby_minutes_range">Choose a low-consumption duration from 1 to 120 minutes.</string>
     <string name="controller_watchdog_retry">Local controller restart retry failed: %1$s</string>
+    <string name="controller_port_in_use">Local controller port %1$d is already in use. Keep only one FG Link / FG Machines RCK controller app running.</string>
 
     <string name="free_remote_title">Free Remote Access</string>
     <string name="free_remote_note">No VPS or monthly subscription required. Choose ZeroTier on the controller phone or a ZeroTier/OpenWrt router gateway.</string>
