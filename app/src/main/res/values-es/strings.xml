@@ -604,4 +604,6 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="platform_planned_sensor">La ranura del driver de sensores está preparada. El emparejamiento se activará solo con un driver verificado.</string>
     <string name="platform_planned_ir">La ranura IR/AC está preparada. No se enviará ningún protocolo IR no verificado.</string>
     <string name="platform_planned_panel">El soporte de Smart Panel está reservado en la arquitectura; el control eléctrico seguirá deshabilitado hasta integrar hardware verificado.</string>
+    <string name="company_brand_name">FG MACHINES</string>
+    <string name="company_brand_tagline">Comercio y marketing</string>
 </resources>
