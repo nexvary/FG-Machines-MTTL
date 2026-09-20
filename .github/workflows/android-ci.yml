@@ -47,6 +47,21 @@ jobs:
       - name: Test, lint and build debug + side-by-side + ARM64 fast APK
         run: gradle --no-daemon clean testDebugUnitTest lintDebug assembleDebug assembleSidecar assembleSidecarArm64
 
+      - name: Verify FG branding and launcher resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s app/src/main/res/drawable-nodpi/fg_machines_brand.webp
+          test -s app/src/main/res/drawable/ic_fg_launcher_foreground.xml
+          test -s app/src/main/res/drawable/ic_fg_logo.xml
+          grep -q 'android:src="@drawable/fg_machines_brand"' app/src/main/res/layout/activity_main.xml
+          grep -q 'android:icon="@mipmap/ic_launcher"' app/src/main/AndroidManifest.xml
+          grep -q 'android:roundIcon="@mipmap/ic_launcher_round"' app/src/main/AndroidManifest.xml
+          grep -q '@drawable/ic_fg_launcher_foreground' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          grep -q '@drawable/ic_fg_launcher_foreground' app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+
       - name: Verify side-by-side package identity
         shell: bash
         run: |
@@ -155,7 +170,7 @@ jobs:
           name: FG-Link-1.6.1-side-by-side
           path: apk-sidecar
 
-      - name: Capture real app dashboard screenshot
+      - name: Capture and verify dashboard + About branding
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
@@ -163,24 +178,81 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: |
+            set -eu
+            APP_PACKAGE="com.fgmachines.rck.sidecar161"
+            APP_ACTIVITY="$APP_PACKAGE/com.fgmachines.rck.MainActivity"
+
+            dump_ui() {
+              name="$1"
+              attempt=1
+              while [ "$attempt" -le 4 ]; do
+                if adb shell uiautomator dump "/sdcard/$name.xml"; then
+                  adb shell cat "/sdcard/$name.xml" > "/tmp/$name.xml"
+                  if grep -q '<hierarchy' "/tmp/$name.xml"; then
+                    return 0
+                  fi
+                fi
+                attempt=$((attempt + 1))
+                sleep 2
+              done
+              echo "UI gate failed: could not obtain $name hierarchy"
+              return 1
+            }
+
+            assert_main_activity() {
+              adb shell dumpsys activity activities > /tmp/fg-link-activities.txt
+              grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt | grep -q "$APP_ACTIVITY" || {
+                echo "UI gate failed: FG Link MainActivity is not foreground"
+                grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
+                return 1
+              }
+            }
+
             adb install apk-debug/app-debug.apk
             adb install apk-sidecar/app-sidecar.apk
             adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar161'
-            adb shell am force-stop com.fgmachines.rck.sidecar161
-            adb shell am start -n com.fgmachines.rck.sidecar161/com.fgmachines.rck.MainActivity
+            adb shell am force-stop "$APP_PACKAGE"
+            adb shell am start -n "$APP_ACTIVITY"
             sleep 20
-            adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
-            adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
-            adb shell cat /sdcard/fg-rck-ui.xml || true
+
+            assert_main_activity
+            dump_ui fg-link-dashboard
+            grep -q "resource-id=\"$APP_PACKAGE:id/navAbout\"" /tmp/fg-link-dashboard.xml
             adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
-            SIZE="$(adb shell wm size | awk -F': ' '/Physical size/{print $2}' | tr -d '\r')"
-            W="${SIZE%x*}"
-            H="${SIZE#*x}"
-            adb shell input tap $((W * 9 / 10)) $((H * 87 / 100))
+            test -s FG-Link-1.6.1-dashboard.png
+
+            XY="$(python3 - <<'PY'
+import re
+import xml.etree.ElementTree as ET
+
+root = ET.parse("/tmp/fg-link-dashboard.xml").getroot()
+for node in root.iter("node"):
+    rid = node.attrib.get("resource-id", "")
+    if rid.endswith(":id/navAbout"):
+        m = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", node.attrib.get("bounds", ""))
+        if not m:
+            raise SystemExit("navAbout has no parseable bounds")
+        x1, y1, x2, y2 = map(int, m.groups())
+        print((x1 + x2) // 2, (y1 + y2) // 2)
+        break
+else:
+    raise SystemExit("navAbout was not found in the visible UI")
+PY
+)"
+            X="${XY% *}"
+            Y="${XY#* }"
+            test -n "$X"
+            test -n "$Y"
+            adb shell input tap "$X" "$Y"
             sleep 3
-            adb shell uiautomator dump /sdcard/fg-link-about.xml || true
-            adb shell cat /sdcard/fg-link-about.xml || true
+
+            assert_main_activity
+            dump_ui fg-link-about
+            grep -q "resource-id=\"$APP_PACKAGE:id/fgMachinesFacebookButton\"" /tmp/fg-link-about.xml
+            grep -q 'content-desc="FG MACHINES"' /tmp/fg-link-about.xml
+            grep -q 'text="FG MACHINES"' /tmp/fg-link-about.xml
             adb exec-out screencap -p > FG-Link-1.6.1-about.png
+            test -s FG-Link-1.6.1-about.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
