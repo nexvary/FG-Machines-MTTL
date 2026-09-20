@@ -55,7 +55,7 @@ jobs:
           test -n "$AAPT"
           APK="app/build/outputs/apk/sidecar/app-sidecar.apk"
           "$AAPT" dump badging "$APK" | tee /tmp/sidecar-badging.txt
-          grep -q "package: name='com.fgmachines.rck.sidecar150'" /tmp/sidecar-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar161'" /tmp/sidecar-badging.txt
           grep -q "application-label:'FG Machines RCK 1.5.0 Test'" /tmp/sidecar-badging.txt
 
       - name: Verify ARM64 fast-install package
@@ -67,7 +67,7 @@ jobs:
           test -n "$AAPT"
           test -n "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/arm64-badging.txt
-          grep -q "package: name='com.fgmachines.rck.sidecar150arm64'" /tmp/arm64-badging.txt
+          grep -q "package: name='com.fgmachines.rck.sidecar161arm64'" /tmp/arm64-badging.txt
           grep -q "application-label:'FG Machines RCK 1.5.0 Fast'" /tmp/arm64-badging.txt
           if unzip -l "$APK" | grep -E 'lib/(x86|x86_64|armeabi-v7a)/'; then
             echo "Unexpected non-ARM64 native library found."
@@ -119,21 +119,21 @@ jobs:
       - name: Upload isolated debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-debug-separate-package
+          name: FG-Link-1.6.1-debug
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
       - name: Upload side-by-side 1.5.0 APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.5.0-side-by-side
+          name: FG-Link-1.6.1-side-by-side
           path: app/build/outputs/apk/sidecar/app-sidecar.apk
           if-no-files-found: error
 
       - name: Upload ARM64 fast-install APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.5.0-ARM64-Fast
+          name: FG-Link-1.6.1-ARM64-Fast
           path: app/build/outputs/apk/sidecarArm64/*.apk
           if-no-files-found: error
 
@@ -146,13 +146,13 @@ jobs:
       - name: Download isolated debug APK
         uses: actions/download-artifact@v4
         with:
-          name: FG-Machines-RCK-debug-separate-package
+          name: FG-Link-1.6.1-debug
           path: apk-debug
 
       - name: Download side-by-side APK
         uses: actions/download-artifact@v4
         with:
-          name: FG-Machines-RCK-1.5.0-side-by-side
+          name: FG-Link-1.6.1-side-by-side
           path: apk-sidecar
 
       - name: Capture real app dashboard screenshot
@@ -165,20 +165,30 @@ jobs:
           script: |
             adb install apk-debug/app-debug.apk
             adb install apk-sidecar/app-sidecar.apk
-            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar150'
-            adb shell am force-stop com.fgmachines.rck.sidecar150
-            adb shell am start -n com.fgmachines.rck.sidecar150/com.fgmachines.rck.MainActivity
+            adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar161'
+            adb shell am force-stop com.fgmachines.rck.sidecar161
+            adb shell am start -n com.fgmachines.rck.sidecar161/com.fgmachines.rck.MainActivity
             sleep 20
             adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
             adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
             adb shell cat /sdcard/fg-rck-ui.xml || true
-            adb exec-out screencap -p > FG-Machines-RCK-1.5.0-sidecar-dashboard.png
+            adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
+            SIZE="$(adb shell wm size | awk -F': ' '/Physical size/{print $2}' | tr -d '\r')"
+            W="${SIZE%x*}"
+            H="${SIZE#*x}"
+            adb shell input tap $((W / 10)) $((H * 9 / 10))
+            sleep 3
+            adb shell uiautomator dump /sdcard/fg-link-about.xml || true
+            adb shell cat /sdcard/fg-link-about.xml || true
+            adb exec-out screencap -p > FG-Link-1.6.1-about.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Machines-RCK-1.5.0-sidecar-screenshot
-          path: FG-Machines-RCK-1.5.0-sidecar-dashboard.png
+          name: FG-Link-1.6.1-ui-screenshots
+          path: |
+            FG-Link-1.6.1-dashboard.png
+            FG-Link-1.6.1-about.png
           if-no-files-found: error
 
 
