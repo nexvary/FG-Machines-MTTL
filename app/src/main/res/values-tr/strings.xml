@@ -604,4 +604,6 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="platform_planned_sensor">Sensör sürücü yuvası hazır. Eşleştirme yalnızca doğrulanmış sürücü eklendiğinde etkinleşir.</string>
     <string name="platform_planned_ir">IR/Klima sürücü yuvası hazır. Doğrulanmamış IR protokolü gönderilmez.</string>
     <string name="platform_planned_panel">Akıllı Panel desteği mimaride ayrılmıştır; doğrulanmış donanım entegre edilene kadar elektrik kontrolü devre dışı kalır.</string>
+    <string name="company_brand_name">FG MACHINES</string>
+    <string name="company_brand_tagline">Ticaret ve Pazarlama</string>
 </resources>
