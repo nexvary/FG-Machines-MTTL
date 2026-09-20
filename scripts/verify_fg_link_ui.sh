@@ -56,7 +56,8 @@ test -s FG-Link-1.6.1-dashboard.png
 
 # Developer-page gate: use the sidecar-only test hook to select the actual About/developer page.
 # The hook executes showPage(4) inside MainActivity and emits FGLinkUiGate only after doing so.
-adb logcat -c
+# Fresh CI emulator: no prior FGLinkUiGate marker exists before this launch.
+# Avoid logcat -c because some emulator images reject clearing the main buffer.
 adb shell am force-stop "$APP_PACKAGE"
 adb shell am start -n "$APP_ACTIVITY" --es fg_ui_test_page about
 wait_for_main_activity
