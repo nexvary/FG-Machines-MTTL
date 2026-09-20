@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         controllerIntent.setAction(MttlControllerService.ACTION_START);
         ContextCompat.startForegroundService(this, controllerIntent);
         configureNavigation();
+        configurePlatformHub();
         configureLanguageSelector();
         configureSetupModeSelector();
         configureOutletControls();
@@ -546,6 +547,59 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         showPage(0);
+    }
+
+    private void configurePlatformHub() {
+        TextView hubStatus = findViewById(R.id.platformHubStatus);
+
+        findViewById(R.id.platformDevicesButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_devices_status);
+            showPage(0);
+            scrollToSection(R.id.pageHome, R.id.fleetCard);
+        });
+        findViewById(R.id.platformRoomsButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_rooms_status);
+            showPage(0);
+            scrollToSection(R.id.pageHome, R.id.fleetCard);
+            if (fleetRoomSpinner != null) fleetRoomSpinner.requestFocus();
+        });
+        findViewById(R.id.platformAutomationButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_automation_status);
+            showPage(3);
+            scrollToSection(R.id.pageSettings, R.id.automationCard);
+        });
+        findViewById(R.id.platformEnergyButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_energy_status);
+            showPage(0);
+            scrollToSection(R.id.pageHome, R.id.energyCard);
+        });
+        findViewById(R.id.platformSensorsButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_planned_sensor);
+            Snackbar.make(hubStatus, R.string.platform_planned_sensor, Snackbar.LENGTH_LONG).show();
+            showPage(1);
+        });
+        findViewById(R.id.platformIrButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_planned_ir);
+            Snackbar.make(hubStatus, R.string.platform_planned_ir, Snackbar.LENGTH_LONG).show();
+            showPage(1);
+        });
+        findViewById(R.id.platformGatewayButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_gateway_status);
+            showPage(3);
+            scrollToSection(R.id.pageSettings, R.id.gatewayCard);
+        });
+        findViewById(R.id.platformPanelButton).setOnClickListener(v -> {
+            hubStatus.setText(R.string.platform_planned_panel);
+            Snackbar.make(hubStatus, R.string.platform_planned_panel, Snackbar.LENGTH_LONG).show();
+            showPage(1);
+        });
+    }
+
+    private void scrollToSection(int scrollViewId, int sectionId) {
+        View scroll = findViewById(scrollViewId);
+        View section = findViewById(sectionId);
+        if (!(scroll instanceof android.widget.ScrollView) || section == null) return;
+        scroll.post(() -> ((android.widget.ScrollView) scroll).smoothScrollTo(0, section.getTop()));
     }
 
     private void showPage(int page) {
