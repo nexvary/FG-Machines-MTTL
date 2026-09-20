@@ -284,9 +284,6 @@ public class MainActivity extends AppCompatActivity {
         sceneStore = new SceneStore(this);
         controllerHub = ControllerHub.get(this);
         smartHomePlatform = new SmartHomePlatform(this, controllerHub);
-        Intent controllerIntent = new Intent(this, MttlControllerService.class);
-        controllerIntent.setAction(MttlControllerService.ACTION_START);
-        ContextCompat.startForegroundService(this, controllerIntent);
         configureNavigation();
         boolean uiGateBuild = getPackageName().endsWith(".debug")
                 || getPackageName().endsWith(".sidecar161")
@@ -302,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
             }
             android.util.Log.i("FGLinkUiGate", "about-page-visible");
         }
+        Intent controllerIntent = new Intent(this, MttlControllerService.class);
+        controllerIntent.setAction(MttlControllerService.ACTION_START);
+        ContextCompat.startForegroundService(this, controllerIntent);
         configurePlatformHub();
         configureLanguageSelector();
         configureSetupModeSelector();
