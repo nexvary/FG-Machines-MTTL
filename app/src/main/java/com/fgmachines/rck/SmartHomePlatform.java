@@ -86,9 +86,13 @@ public final class SmartHomePlatform {
     }
 
     public SmartDevice device(String id) {
-        String key = FleetStore.normalizeMac(id);
+        String raw = id == null ? "" : id.trim();
+        if (raw.isEmpty()) return null;
+        String macKey = FleetStore.normalizeMac(raw);
         for (SmartDevice device : devices()) {
-            if (device.id.equalsIgnoreCase(key)) return device;
+            if (device.id.equals(raw) || device.id.equalsIgnoreCase(raw)) return device;
+            if (MttlDeviceDriver.DRIVER_ID.equals(device.driverId)
+                    && device.id.equalsIgnoreCase(macKey)) return device;
         }
         return null;
     }
