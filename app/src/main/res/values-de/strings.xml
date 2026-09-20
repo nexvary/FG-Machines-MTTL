@@ -604,4 +604,6 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="platform_planned_sensor">Der Sensor-Treiberplatz ist vorbereitet. Kopplung wird erst mit einem verifizierten Treiber aktiviert.</string>
     <string name="platform_planned_ir">Der IR/Klima-Treiberplatz ist vorbereitet. Ungeprüfte IR-Protokolle werden nicht gesendet.</string>
     <string name="platform_planned_panel">Smart-Panel-Unterstützung ist architektonisch vorgesehen; elektrische Steuerung bleibt bis zur verifizierten Hardware-Integration deaktiviert.</string>
+    <string name="company_brand_name">FG MACHINES</string>
+    <string name="company_brand_tagline">Handel &amp; Marketing</string>
 </resources>
