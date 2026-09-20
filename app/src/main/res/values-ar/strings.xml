@@ -586,4 +586,22 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="platform_summary_waiting">جارٍ تحميل أجهزة المنصة…</string>
     <string name="platform_summary_format">الأجهزة %1$d · متصل %2$d · الغرف %3$d · Drivers %4$d</string>
     <string name="platform_families">طاقة · ريليه · حساسات · IR / تكييف · استهلاك · غرف · بوابات · لوحات ذكية</string>
+
+    <string name="platform_hub_status">اختر قسم المنزل الذكي. يظل تحكم MTTL الموثق فعالًا أثناء إضافة Drivers جديدة.</string>
+    <string name="platform_devices">الأجهزة</string>
+    <string name="platform_rooms">الغرف</string>
+    <string name="platform_automation">الأتمتة</string>
+    <string name="platform_energy">الطاقة</string>
+    <string name="platform_sensors">الحساسات</string>
+    <string name="platform_ir">IR / التكييف</string>
+    <string name="platform_gateway">البوابة</string>
+    <string name="platform_panel">اللوحة الذكية</string>
+    <string name="platform_devices_status">عرض الأجهزة المسجلة وحالة الاتصال.</string>
+    <string name="platform_rooms_status">عرض تنظيم الأجهزة حسب الغرف.</string>
+    <string name="platform_automation_status">فتح أدوات الأتمتة المحلية.</string>
+    <string name="platform_energy_status">فتح مراقبة القدرة والطاقة المباشرة.</string>
+    <string name="platform_gateway_status">فتح إعدادات البوابة المحلية وZeroTier.</string>
+    <string name="platform_planned_sensor">مكان Driver الحساسات جاهز. لن يتم الاقتران قبل إضافة Driver موثق.</string>
+    <string name="platform_planned_ir">مكان Driver الخاص بـ IR والتكييف جاهز. لن يتم إرسال بروتوكول IR غير موثق.</string>
+    <string name="platform_planned_panel">دعم اللوحة الذكية محجوز داخل بنية المنصة، وسيظل التحكم الكهربائي معطلًا حتى دمج Hardware موثق.</string>
 </resources>

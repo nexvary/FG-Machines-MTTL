@@ -586,4 +586,22 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="platform_summary_waiting">Cargando inventario de la plataforma…</string>
     <string name="platform_summary_format">Dispositivos %1$d · En línea %2$d · Habitaciones %3$d · Drivers %4$d</string>
     <string name="platform_families">Energía · Relés · Sensores · IR / AC · Consumo · Habitaciones · Gateways · Paneles</string>
+
+    <string name="platform_hub_status">Elige un área del hogar inteligente. El control MTTL verificado sigue activo mientras se añaden nuevos drivers.</string>
+    <string name="platform_devices">Dispositivos</string>
+    <string name="platform_rooms">Habitaciones</string>
+    <string name="platform_automation">Automatización</string>
+    <string name="platform_energy">Energía</string>
+    <string name="platform_sensors">Sensores</string>
+    <string name="platform_ir">IR / AC</string>
+    <string name="platform_gateway">Gateway</string>
+    <string name="platform_panel">Panel inteligente</string>
+    <string name="platform_devices_status">Mostrando dispositivos registrados y su estado.</string>
+    <string name="platform_rooms_status">Mostrando organización de dispositivos por habitación.</string>
+    <string name="platform_automation_status">Abriendo automatización local.</string>
+    <string name="platform_energy_status">Abriendo monitorización de potencia y energía.</string>
+    <string name="platform_gateway_status">Abriendo controles de gateway local y ZeroTier.</string>
+    <string name="platform_planned_sensor">La ranura del driver de sensores está preparada. El emparejamiento se activará solo con un driver verificado.</string>
+    <string name="platform_planned_ir">La ranura IR/AC está preparada. No se enviará ningún protocolo IR no verificado.</string>
+    <string name="platform_planned_panel">El soporte de Smart Panel está reservado en la arquitectura; el control eléctrico seguirá deshabilitado hasta integrar hardware verificado.</string>
 </resources>

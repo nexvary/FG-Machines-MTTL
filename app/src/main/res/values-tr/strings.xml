@@ -586,4 +586,22 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="platform_summary_waiting">Platform envanteri yükleniyor…</string>
     <string name="platform_summary_format">Cihazlar %1$d · Çevrimiçi %2$d · Odalar %3$d · Sürücüler %4$d</string>
     <string name="platform_families">Güç · Röleler · Sensörler · IR / Klima · Enerji · Odalar · Ağ geçitleri · Panolar</string>
+
+    <string name="platform_hub_status">Akıllı ev alanını seçin. Yeni sürücüler eklenirken doğrulanmış MTTL kontrolü çalışmaya devam eder.</string>
+    <string name="platform_devices">Cihazlar</string>
+    <string name="platform_rooms">Odalar</string>
+    <string name="platform_automation">Otomasyon</string>
+    <string name="platform_energy">Enerji</string>
+    <string name="platform_sensors">Sensörler</string>
+    <string name="platform_ir">IR / Klima</string>
+    <string name="platform_gateway">Ağ Geçidi</string>
+    <string name="platform_panel">Akıllı Panel</string>
+    <string name="platform_devices_status">Kayıtlı cihazlar ve çevrimiçi durumları gösteriliyor.</string>
+    <string name="platform_rooms_status">Cihazların oda bazlı düzeni gösteriliyor.</string>
+    <string name="platform_automation_status">Yerel otomasyon kontrolleri açılıyor.</string>
+    <string name="platform_energy_status">Canlı güç ve enerji izleme açılıyor.</string>
+    <string name="platform_gateway_status">Yerel ve ZeroTier ağ geçidi kontrolleri açılıyor.</string>
+    <string name="platform_planned_sensor">Sensör sürücü yuvası hazır. Eşleştirme yalnızca doğrulanmış sürücü eklendiğinde etkinleşir.</string>
+    <string name="platform_planned_ir">IR/Klima sürücü yuvası hazır. Doğrulanmamış IR protokolü gönderilmez.</string>
+    <string name="platform_planned_panel">Akıllı Panel desteği mimaride ayrılmıştır; doğrulanmış donanım entegre edilene kadar elektrik kontrolü devre dışı kalır.</string>
 </resources>

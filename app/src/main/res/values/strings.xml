@@ -594,4 +594,22 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="platform_summary_waiting">Platform inventory is loading…</string>
     <string name="platform_summary_format">Devices %1$d · Online %2$d · Rooms %3$d · Drivers %4$d</string>
     <string name="platform_families">Power · Relays · Sensors · IR / AC · Energy · Rooms · Gateways · Panels</string>
+
+    <string name="platform_hub_status">Choose a smart-home area. Verified MTTL control remains active while additional drivers are added.</string>
+    <string name="platform_devices">Devices</string>
+    <string name="platform_rooms">Rooms</string>
+    <string name="platform_automation">Automation</string>
+    <string name="platform_energy">Energy</string>
+    <string name="platform_sensors">Sensors</string>
+    <string name="platform_ir">IR / AC</string>
+    <string name="platform_gateway">Gateway</string>
+    <string name="platform_panel">Smart Panel</string>
+    <string name="platform_devices_status">Showing registered devices and their online state.</string>
+    <string name="platform_rooms_status">Showing device organization by room.</string>
+    <string name="platform_automation_status">Opening local automation controls.</string>
+    <string name="platform_energy_status">Opening live power and energy monitoring.</string>
+    <string name="platform_gateway_status">Opening local/ZeroTier gateway controls.</string>
+    <string name="platform_planned_sensor">Sensor driver slot is ready. Pairing will activate only after a verified sensor driver is added.</string>
+    <string name="platform_planned_ir">IR / AC driver slot is ready. No unverified IR protocol will be sent.</string>
+    <string name="platform_planned_panel">Smart Panel support is reserved in the platform architecture; electrical control stays disabled until verified hardware is integrated.</string>
 </resources>
