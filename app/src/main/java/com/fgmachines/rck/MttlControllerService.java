@@ -62,6 +62,10 @@ public final class MttlControllerService extends Service implements MttlControll
     @Override public void onCreate() {
         super.onCreate();
         createChannels();
+        // A service launched with startForegroundService() must promote itself
+        // immediately, before database/controller initialization can block the
+        // main thread on slower devices or emulators.
+        startForeground(CONTROLLER_NOTIFICATION_ID, buildControllerNotification());
         hub = ControllerHub.get(this);
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
