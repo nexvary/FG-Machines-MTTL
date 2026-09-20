@@ -12,7 +12,7 @@
     <string name="nav_setup">Setup</string>
     <string name="nav_scan">Scan</string>
     <string name="nav_settings">Settings</string>
-    <string name="nav_about">About</string>
+    <string name="nav_about">Developer</string>
     <string name="home_title">Smart home dashboard</string>
     <string name="home_subtitle">Rooms, devices, automation, energy and direct local control from one platform.</string>
     <string name="quick_setup">Setup device</string>
@@ -88,9 +88,9 @@
 
     <string name="settings_title">Settings</string>
     <string name="settings_note">Language changes are applied immediately. Network provisioning stays local and does not require the Korean subscription service.</string>
-    <string name="about_title">About</string>
-    <string name="about_line">FG Machines Link · MTTL family · Local-first smart control</string>
-    <string name="about_body">FG Machines Link is an independent smart controller for compatible LG U+ / TONLY power strips. It prioritizes local Wi‑Fi control, safe relay operation, device sharing, Home Assistant integration and optional free remote access through a private VPN such as ZeroTier. It is not an official LG U+ application.</string>
+    <string name="about_title">About the developer</string>
+    <string name="about_line">In the name of Allah, the Most Gracious, the Most Merciful</string>
+    <string name="about_body">This program was developed by Alaa El Din Mohamed and his son. This program is completely free for the sake of Allah.</string>
     <string name="supported_models_title">Compatibility</string>
     <string name="supported_models_body">Primary verified family: MTTL-W01. Known certificate revisions include HU04139-17002A/B/C/D/E. Setup signatures TONLY_TAP_* and ONLY_TAP_* are recognized, with protocol verification before relay controls are enabled.</string>
 
@@ -115,10 +115,10 @@
         <item>Español</item>
         <item>Deutsch</item>
     </string-array>
-    <string name="about_social_title">FG Machines on Facebook</string>
-    <string name="about_social_note">Official business page and personal profile</string>
-    <string name="fg_machines_facebook">FG Machines · Facebook page</string>
-    <string name="alaa_mohamed_facebook">Alaa Mohamed · Personal profile</string>
+    <string name="about_social_title">Developer links</string>
+    <string name="about_social_note">Personal account and business page</string>
+    <string name="fg_machines_facebook">Business page</string>
+    <string name="alaa_mohamed_facebook">Personal account</string>
     <string name="open_link_failed">Could not open the link on this device.</string>
     <string name="wizard_assistant_title">Setup Assistant</string>
     <string name="wizard_local_badge">LOCAL</string>
