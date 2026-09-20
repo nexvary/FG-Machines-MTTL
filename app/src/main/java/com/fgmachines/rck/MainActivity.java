@@ -234,6 +234,8 @@ public class MainActivity extends AppCompatActivity {
     private UsbDiscoveryStore usbDiscoveryStore;
     private AccessControlStore accessStore;
     private SceneStore sceneStore;
+    private SmartHomePlatform smartHomePlatform;
+    private TextView platformSummary;
     private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
     private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
     private final List<RemoteApiClient.RemoteDevice> remoteDevices = new ArrayList<>();
@@ -281,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
         accessStore = new AccessControlStore(this);
         sceneStore = new SceneStore(this);
         controllerHub = ControllerHub.get(this);
+        smartHomePlatform = new SmartHomePlatform(this, controllerHub);
         Intent controllerIntent = new Intent(this, MttlControllerService.class);
         controllerIntent.setAction(MttlControllerService.ACTION_START);
         ContextCompat.startForegroundService(this, controllerIntent);
@@ -338,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
         targetWifiPasswordInput = findViewById(R.id.targetWifiPasswordInput);
         controllerIpInput = findViewById(R.id.controllerIpInput);
         deviceState = findViewById(R.id.deviceState);
+        platformSummary = findViewById(R.id.platformSummary);
         discoveryDetail = findViewById(R.id.discoveryDetail);
         hotspotStatus = findViewById(R.id.hotspotStatus);
         provisionStatus = findViewById(R.id.provisionStatus);
@@ -677,7 +681,7 @@ public class MainActivity extends AppCompatActivity {
             }
             commandWorker.execute(() -> {
                 try {
-                    controllerHub.refresh(mac);
+                    smartHomePlatform.refresh(mac);
                 } catch (IOException error) {
                     runOnUiThread(() -> Snackbar.make(refreshTelemetryButton,
                             getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
@@ -1323,7 +1327,17 @@ public class MainActivity extends AppCompatActivity {
         }
         fleetRoomSpinner.setSelection(roomIndex, false);
         refreshFleetDeviceSpinner();
+        refreshPlatformSummary();
         updateApiEndpoint();
+    }
+
+    private void refreshPlatformSummary() {
+        if (platformSummary == null || smartHomePlatform == null) return;
+        SmartHomePlatform.Summary summary = smartHomePlatform.summary();
+        platformSummary.setText(getString(R.string.platform_summary_format,
+                summary.devices, summary.online, summary.rooms, summary.drivers));
+        platformSummary.setTextColor(getColor(summary.online > 0
+                ? R.color.fg_green : R.color.fg_silver));
     }
 
     private void refreshFleetDeviceSpinner() {
@@ -1636,7 +1650,7 @@ public class MainActivity extends AppCompatActivity {
             int failures = 0;
             for (int outlet = 1; outlet <= 4; outlet++) {
                 try {
-                    controllerHub.setOutlet(mac, outlet, scene.outletOn(outlet));
+                    smartHomePlatform.setSwitch(mac, outlet, scene.outletOn(outlet));
                     sent++;
                 } catch (IOException error) {
                     failures++;
@@ -1815,7 +1829,7 @@ public class MainActivity extends AppCompatActivity {
             for (ControllerHub.DeviceState state : targets) {
                 for (int outlet = 1; outlet <= 4; outlet++) {
                     try {
-                        controllerHub.setOutlet(state.mac, outlet, false);
+                        smartHomePlatform.setSwitch(state.mac, outlet, false);
                         commands++;
                     } catch (IOException error) {
                         failures++;
@@ -2108,7 +2122,7 @@ public class MainActivity extends AppCompatActivity {
             }
             for (int outlet = firstOutlet; outlet <= lastOutlet; outlet++) {
                 try {
-                    controllerHub.setOutlet(mac, outlet, on);
+                    smartHomePlatform.setSwitch(mac, outlet, on);
                     sent++;
                 } catch (IOException error) {
                     failures++;
@@ -2123,7 +2137,7 @@ public class MainActivity extends AppCompatActivity {
                         command.type.name() + " · " + safePhrase,
                         System.currentTimeMillis());
             }
-            try { controllerHub.refresh(mac); } catch (IOException ignored) { }
+            try { smartHomePlatform.refresh(mac); } catch (IOException ignored) { }
             final int sentCount = sent;
             final int failureCount = failures;
             runOnUiThread(() -> {
@@ -2860,7 +2874,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mac == null || controllerHub == null) return;
                 commandWorker.execute(() -> {
                     try {
-                        controllerHub.setOutlet(mac, outlet, checked);
+                        smartHomePlatform.setSwitch(mac, outlet, checked);
                     } catch (IOException error) {
                         runOnUiThread(() -> Snackbar.make(scanButton,
                                 getString(R.string.command_failed, safeMessage(error)), Snackbar.LENGTH_LONG).show());
