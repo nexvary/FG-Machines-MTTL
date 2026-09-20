@@ -613,5 +613,5 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="platform_planned_ir">IR / AC driver slot is ready. No unverified IR protocol will be sent.</string>
     <string name="platform_planned_panel">Smart Panel support is reserved in the platform architecture; electrical control stays disabled until verified hardware is integrated.</string>
     <string name="company_brand_name">FG MACHINES</string>
-    <string name="company_brand_tagline">Trading & Marketing</string>
+    <string name="company_brand_tagline">Trading &amp; Marketing</string>
 </resources>
