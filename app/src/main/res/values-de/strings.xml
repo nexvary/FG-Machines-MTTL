@@ -10,13 +10,13 @@
 
     <string name="nav_home">Start</string>
     <string name="nav_setup">Einrichten</string>
-    <string name="nav_scan">Scan</string>
+    <string name="nav_scan">Smart Home</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_about">Entwickler</string>
     <string name="home_title">Smart-Home-Dashboard</string>
     <string name="home_subtitle">Räume, Geräte, Automationen, Energie und direkte lokale Steuerung in einer Plattform.</string>
     <string name="quick_setup">Gerät einrichten</string>
-    <string name="quick_scan">Netzwerk scannen</string>
+    <string name="quick_scan">Smart Home</string>
 
     <string name="setup_wizard">Geräteeinrichtung</string>
     <string name="setup_wizard_note">Versetzen Sie die Leiste in den Einrichtungsmodus, geben Sie die temporäre TONLY_TAP/ONLY_TAP-SSID ein und wählen Sie das 2,4-GHz-WLAN, dem sie beitreten soll. Die Controller-Adresse gehört normalerweise zu diesem Telefon.</string>
@@ -90,7 +90,7 @@
     <string name="settings_note">Sprachänderungen werden sofort übernommen. Die Netzwerk-Provisionierung bleibt lokal und benötigt keinen koreanischen Abonnementdienst.</string>
     <string name="about_title">Über den Entwickler</string>
     <string name="about_line">Im Namen Allahs, des Allerbarmers, des Barmherzigen</string>
-    <string name="about_body">Dieses Programm wurde von Alaa El Din Mohamed und seinem Sohn entwickelt. Es ist um Allahs willen vollständig kostenlos.</string>
+    <string name="about_body">Dieses Programm wurde von Alaa El Din Mohamed entwickelt. Es ist um Allahs willen vollständig kostenlos.</string>
     <string name="supported_models_title">Kompatibilität</string>
     <string name="supported_models_body">Primär verifizierte Familie: MTTL-W01. Bekannte Zertifikatsrevisionen HU04139-17002A/B/C/D/E. TONLY_TAP_* und ONLY_TAP_* werden erkannt; vor Aktivierung der Relaissteuerung wird das Protokoll geprüft.</string>
     <string name="setup_method_title">Einrichtungsmethode wählen</string>
@@ -607,4 +607,9 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="platform_planned_panel">Smart-Panel-Unterstützung ist architektonisch vorgesehen; elektrische Steuerung bleibt bis zur verifizierten Hardware-Integration deaktiviert.</string>
     <string name="company_brand_name">FG MACHINES</string>
     <string name="company_brand_tagline">Handel &amp; Marketing</string>
+    <string name="nav_subscriber">Leiste</string>
+    <string name="smart_home_title">Smart Home</string>
+    <string name="subscriber_title">Steckdosenleiste</string>
+    <string name="settings_advanced_show">Erweiterte Einstellungen anzeigen</string>
+    <string name="settings_advanced_hide">Erweiterte Einstellungen ausblenden</string>
 </resources>
