@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FG Machines Link</string>
-    <string name="app_subtitle">ريموت ذكي لعائلة MTTL</string>
+    <string name="app_subtitle">منصة المنزل الذكي المحلية</string>
     <string name="brand_tagline">تجارة وتقنية وتحكم ذكي</string>
     <string name="brand_badge">عائلة MTTL-W01 · واي فاي 2.4 جيجاهرتز</string>
     <string name="language">اللغة</string>
@@ -13,8 +13,8 @@
     <string name="nav_scan">الفحص</string>
     <string name="nav_settings">الإعدادات</string>
     <string name="nav_about">عنا</string>
-    <string name="home_title">لوحة التحكم الرئيسية</string>
-    <string name="home_subtitle">حالة الاتصال والتحكم المباشر في مخارج المشترك الأربعة.</string>
+    <string name="home_title">لوحة المنزل الذكي</string>
+    <string name="home_subtitle">الغرف والأجهزة والأتمتة والطاقة والتحكم المحلي المباشر من منصة واحدة.</string>
     <string name="quick_setup">إعداد المشترك</string>
     <string name="quick_scan">فحص الشبكة</string>
 
@@ -581,4 +581,9 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
         <item>ZeroTier على هاتف التحكم</item>
         <item>ZeroTier / OpenWrt على الراوتر</item>
     </string-array>
+    <string name="platform_title">FG Link للمنزل الذكي</string>
+    <string name="platform_note">نواة تعتمد على Drivers للمشتركات والريليه والحساسات وIR/التكييف والطاقة ووحدات الغرف والبوابات. MTTL-W01 هو أول Driver تم التحقق منه.</string>
+    <string name="platform_summary_waiting">جارٍ تحميل أجهزة المنصة…</string>
+    <string name="platform_summary_format">الأجهزة %1$d · متصل %2$d · الغرف %3$d · Drivers %4$d</string>
+    <string name="platform_families">طاقة · ريليه · حساسات · IR / تكييف · استهلاك · غرف · بوابات · لوحات ذكية</string>
 </resources>
