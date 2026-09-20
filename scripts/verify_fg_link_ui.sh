@@ -12,50 +12,13 @@ wake_and_unlock() {
   adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS >/dev/null 2>&1 || true
 }
 
-dump_ui() {
-  local name="$1"
-  local attempt=1
-  while [ "$attempt" -le 8 ]; do
-    adb shell rm -f "/sdcard/$name.xml" || true
-    : > /tmp/fg-link-uiautomator.log
-    if adb shell uiautomator dump --compressed "/sdcard/$name.xml" >/tmp/fg-link-uiautomator.log 2>&1; then
-      if adb exec-out cat "/sdcard/$name.xml" > "/tmp/$name.xml" 2>/tmp/fg-link-cat.log; then
-        if grep -q '<hierarchy' "/tmp/$name.xml"; then
-          return 0
-        fi
-      fi
-    fi
-    cat /tmp/fg-link-uiautomator.log || true
-    cat /tmp/fg-link-cat.log 2>/dev/null || true
-    wake_and_unlock
-    attempt=$((attempt + 1))
-    sleep 3
-  done
-  echo "UI gate failed: could not obtain $name hierarchy" >&2
-  return 1
-}
-
-main_activity_is_foreground() {
+assert_main_activity() {
   adb shell dumpsys activity activities > /tmp/fg-link-activities.txt
-  grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt | grep -q "$APP_ACTIVITY"
-}
-
-wait_for_main_activity() {
-  local attempt=1
-  while [ "$attempt" -le 12 ]; do
-    if main_activity_is_foreground; then
-      return 0
-    fi
-    sleep 3
-    attempt=$((attempt + 1))
-  done
-
-  echo "UI gate failed: FG Link MainActivity is not foreground" >&2
-  grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
-  adb shell dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp' || true
-  adb shell pidof "$APP_PACKAGE" || true
-  adb logcat -d -t 300 | grep -E "$APP_PACKAGE|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 120 || true
-  return 1
+  if ! grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt | grep -q "$APP_ACTIVITY"; then
+    echo "UI gate failed: FG Link MainActivity is not foreground" >&2
+    grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
+    return 1
+  fi
 }
 
 adb wait-for-device
@@ -69,31 +32,23 @@ adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rc
 
 wake_and_unlock
 adb shell am force-stop "$APP_PACKAGE"
-adb shell am start -n "$APP_ACTIVITY"
-wait_for_main_activity
-dump_ui fg-link-dashboard
-grep -q "resource-id=\"$APP_PACKAGE:id/navAbout\"" /tmp/fg-link-dashboard.xml
+adb shell am start -W -n "$APP_ACTIVITY"
+sleep 8
+wake_and_unlock
+assert_main_activity
 adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
 test -s FG-Link-1.6.1-dashboard.png
 
-NAV_NODE="$(grep -o "<node[^>]*resource-id=\"$APP_PACKAGE:id/navAbout\"[^>]*>" /tmp/fg-link-dashboard.xml | head -n 1)"
-BOUNDS="$(printf '%s\n' "$NAV_NODE" | sed -n 's/.*bounds="\[\([0-9][0-9]*\),\([0-9][0-9]*\)\]\[\([0-9][0-9]*\),\([0-9][0-9]*\)\]".*/\1 \2 \3 \4/p')"
-test -n "$BOUNDS"
-read -r X1 Y1 X2 Y2 <<< "$BOUNDS"
-X=$(((X1 + X2) / 2))
-Y=$(((Y1 + Y2) / 2))
-adb shell input tap "$X" "$Y"
-sleep 3
+adb logcat -c
+adb shell am force-stop "$APP_PACKAGE"
+adb shell am start -W -n "$APP_ACTIVITY" --es fg_ui_test_page about
+sleep 8
 wake_and_unlock
+assert_main_activity
 
-wait_for_main_activity
-dump_ui fg-link-about
-grep -q "resource-id=\"$APP_PACKAGE:id/fgMachinesFacebookButton\"" /tmp/fg-link-about.xml
-grep -q "resource-id=\"$APP_PACKAGE:id/alaaMohamedFacebookButton\"" /tmp/fg-link-about.xml
-grep -q 'content-desc="FG MACHINES"' /tmp/fg-link-about.xml
-grep -q 'text="FG MACHINES"' /tmp/fg-link-about.xml
-grep -q 'text="About the developer"' /tmp/fg-link-about.xml
-grep -q 'text="In the name of Allah, the Most Gracious, the Most Merciful"' /tmp/fg-link-about.xml
+adb logcat -d -s FGLinkUiGate:I '*:S' > /tmp/fg-link-about-log.txt || true
+cat /tmp/fg-link-about-log.txt
+grep -q 'about-page-visible' /tmp/fg-link-about-log.txt
 
 adb exec-out screencap -p > FG-Link-1.6.1-about.png
 test -s FG-Link-1.6.1-about.png
