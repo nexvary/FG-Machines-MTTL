@@ -55,6 +55,10 @@ jobs:
           test -s app/src/main/res/drawable/ic_fg_launcher_foreground.xml
           test -s app/src/main/res/drawable/ic_fg_logo.xml
           grep -q 'android:src="@drawable/fg_machines_brand"' app/src/main/res/layout/activity_main.xml
+          grep -q 'android:text="@string/about_line"' app/src/main/res/layout/activity_main.xml
+          grep -q 'android:text="@string/about_body"' app/src/main/res/layout/activity_main.xml
+          grep -q '<string name="about_title">عن المطور</string>' app/src/main/res/values-ar/strings.xml
+          grep -q 'تم تطوير البرنامج بواسطة علاء الدين محمد وابنه' app/src/main/res/values-ar/strings.xml
           grep -q 'android:icon="@mipmap/ic_launcher"' app/src/main/AndroidManifest.xml
           grep -q 'android:roundIcon="@mipmap/ic_launcher_round"' app/src/main/AndroidManifest.xml
           grep -q '@drawable/ic_fg_launcher_foreground' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
