@@ -288,7 +288,10 @@ public class MainActivity extends AppCompatActivity {
         controllerIntent.setAction(MttlControllerService.ACTION_START);
         ContextCompat.startForegroundService(this, controllerIntent);
         configureNavigation();
-        if (BuildConfig.DEBUG && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
+        boolean uiGateBuild = getPackageName().endsWith(".debug")
+                || getPackageName().endsWith(".sidecar161")
+                || getPackageName().endsWith(".sidecar161arm64");
+        if (uiGateBuild && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
             showPage(4);
             android.util.Log.i("FGLinkUiGate", "about-page-visible");
         }
