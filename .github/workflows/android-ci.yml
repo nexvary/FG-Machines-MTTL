@@ -57,6 +57,10 @@ jobs:
           grep -q 'android:src="@drawable/fg_machines_brand"' app/src/main/res/layout/activity_main.xml
           grep -q 'android:text="@string/about_line"' app/src/main/res/layout/activity_main.xml
           grep -q 'android:text="@string/about_body"' app/src/main/res/layout/activity_main.xml
+          sed -n '/android:id="@+id\/pageAbout"/,/<\/ScrollView>/p' app/src/main/res/layout/activity_main.xml > /tmp/fg-link-about-layout.xml
+          grep -q 'android:id="@+id/alaaMohamedFacebookButton"' /tmp/fg-link-about-layout.xml
+          grep -q 'android:id="@+id/fgMachinesFacebookButton"' /tmp/fg-link-about-layout.xml
+          grep -q 'android:src="@drawable/fg_machines_brand"' /tmp/fg-link-about-layout.xml
           grep -q '<string name="about_title">عن المطور</string>' app/src/main/res/values-ar/strings.xml
           grep -q 'تم تطوير البرنامج بواسطة علاء الدين محمد وابنه' app/src/main/res/values-ar/strings.xml
           grep -q 'android:icon="@mipmap/ic_launcher"' app/src/main/AndroidManifest.xml
