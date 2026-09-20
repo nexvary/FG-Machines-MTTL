@@ -8,11 +8,15 @@ dump_ui() {
   local name="$1"
   local attempt=1
   while [ "$attempt" -le 4 ]; do
-    if adb shell uiautomator dump "/sdcard/$name.xml"; then
+    adb shell rm -f "/sdcard/$name.xml" || true
+    if adb shell uiautomator dump "/sdcard/$name.xml" >/tmp/fg-link-uiautomator.log 2>&1 \
+        && adb shell test -s "/sdcard/$name.xml"; then
       adb shell cat "/sdcard/$name.xml" > "/tmp/$name.xml"
       if grep -q '<hierarchy' "/tmp/$name.xml"; then
         return 0
       fi
+    else
+      cat /tmp/fg-link-uiautomator.log || true
     fi
     attempt=$((attempt + 1))
     sleep 2
