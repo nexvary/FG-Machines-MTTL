@@ -567,7 +567,8 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="automation_invalid_standby_minutes_range">1–120 Minuten wählen.</string>
     <string name="controller_watchdog_retry">Neustart des lokalen Controllers fehlgeschlagen: %1$s</string>
 
-    <string name="free_remote_title">Kostenloser Fernzugriff</string>
+        <string name="controller_port_in_use">Der lokale Controller-Port %1$d wird bereits verwendet. Es darf nur eine FG Link / FG Machines RCK Controller-App gleichzeitig ausgeführt werden.</string>
+<string name="free_remote_title">Kostenloser Fernzugriff</string>
     <string name="free_remote_note">Kein VPS und kein Monatsabo erforderlich. Wählen Sie ZeroTier auf dem Controller-Telefon oder ein ZeroTier/OpenWrt-Router-Gateway.</string>
     <string name="free_remote_mode_label">Kostenloser Zugriffsmodus</string>
     <string name="free_remote_host_hint">Private ZeroTier-/Controller-LAN-IP</string>
