@@ -173,6 +173,182 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_blue_bright"
                             android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/platformHubStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_status_pill"
+                            android:padding="10dp"
+                            android:text="@string/platform_hub_status"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_text_secondary"
+                            android:textSize="10sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformDevicesButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_devices"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_devices"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformRoomsButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_rooms"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_room"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformAutomationButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_automation"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_automation"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformEnergyButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_energy"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_energy"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_warning"
+                                app:strokeColor="@color/fg_warning" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformSensorsButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_sensors"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_sensor"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformIrButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_ir"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_ir"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_green"
+                                app:strokeColor="@color/fg_green" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformGatewayButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_gateway"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_gateway"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_blue_bright"
+                                app:strokeColor="@color/fg_blue" />
+
+                            <Space android:layout_width="8dp" android:layout_height="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/platformPanelButton"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="72dp"
+                                android:layout_weight="1"
+                                android:text="@string/platform_panel"
+                                android:textAllCaps="false"
+                                android:textColor="@color/fg_text"
+                                app:cornerRadius="16dp"
+                                app:icon="@drawable/ic_platform_panel"
+                                app:iconGravity="textTop"
+                                app:iconPadding="4dp"
+                                app:iconTint="@color/fg_warning"
+                                app:strokeColor="@color/fg_warning" />
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -242,6 +418,7 @@
 
                 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/fleetCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -482,6 +659,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/energyCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -2072,6 +2250,7 @@
 
                 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/automationCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -3845,6 +4024,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/gatewayCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
