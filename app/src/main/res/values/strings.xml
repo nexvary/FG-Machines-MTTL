@@ -10,13 +10,13 @@
 
     <string name="nav_home">Home</string>
     <string name="nav_setup">Setup</string>
-    <string name="nav_scan">Scan</string>
+    <string name="nav_scan">Smart Home</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_about">Developer</string>
     <string name="home_title">Smart home dashboard</string>
     <string name="home_subtitle">Rooms, devices, automation, energy and direct local control from one platform.</string>
     <string name="quick_setup">Setup device</string>
-    <string name="quick_scan">Scan network</string>
+    <string name="quick_scan">Smart Home</string>
 
     <string name="setup_wizard">Device setup</string>
     <string name="setup_wizard_note">Put the strip in setup mode, enter its temporary TONLY_TAP/ONLY_TAP SSID, then choose the 2.4 GHz Wi‑Fi network the strip should join. The controller address normally belongs to this phone.</string>
@@ -90,7 +90,7 @@
     <string name="settings_note">Language changes are applied immediately. Network provisioning stays local and does not require the Korean subscription service.</string>
     <string name="about_title">About the developer</string>
     <string name="about_line">In the name of Allah, the Most Gracious, the Most Merciful</string>
-    <string name="about_body">This program was developed by Alaa El Din Mohamed and his son. This program is completely free for the sake of Allah.</string>
+    <string name="about_body">This program was developed by Alaa El Din Mohamed. This program is completely free for the sake of Allah.</string>
     <string name="supported_models_title">Compatibility</string>
     <string name="supported_models_body">Primary verified family: MTTL-W01. Known certificate revisions include HU04139-17002A/B/C/D/E. Setup signatures TONLY_TAP_* and ONLY_TAP_* are recognized, with protocol verification before relay controls are enabled.</string>
 
@@ -615,4 +615,9 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="platform_planned_panel">Smart Panel support is reserved in the platform architecture; electrical control stays disabled until verified hardware is integrated.</string>
     <string name="company_brand_name">FG MACHINES</string>
     <string name="company_brand_tagline">Trading &amp; Marketing</string>
+    <string name="nav_subscriber">Strip</string>
+    <string name="smart_home_title">Smart Home</string>
+    <string name="subscriber_title">Power Strip</string>
+    <string name="settings_advanced_show">Show advanced settings</string>
+    <string name="settings_advanced_hide">Hide advanced settings</string>
 </resources>
