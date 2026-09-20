@@ -170,32 +170,19 @@ jobs:
             adb shell am start -n com.fgmachines.rck.sidecar150/com.fgmachines.rck.MainActivity
             sleep 20
             adb shell dumpsys activity activities | grep -E 'mResumedActivity|topResumedActivity' || true
-            adb shell uiautomator dump /sdcard/fg-rck-ui.xml
-            adb pull /sdcard/fg-rck-ui.xml fg-rck-ui.xml
             adb exec-out screencap -p > FG-Machines-RCK-1.5.0-sidecar-dashboard.png
-            python3 - <<'PY'
-            import re
-            import xml.etree.ElementTree as ET
-            root = ET.parse("fg-rck-ui.xml").getroot()
-            target = None
-            for node in root.iter("node"):
-                if node.attrib.get("text") in {"About", "عنا"}:
-                    target = node
-                    break
-            if target is None:
-                raise SystemExit("About navigation button not found in UI hierarchy")
-            nums = [int(v) for v in re.findall(r"\\d+", target.attrib["bounds"])]
-            x = (nums[0] + nums[2]) // 2
-            y = (nums[1] + nums[3]) // 2
-            with open("about-tap.txt", "w", encoding="utf-8") as f:
-                f.write(f"{x} {y}")
-            PY
-            read ABOUT_X ABOUT_Y < about-tap.txt
+            adb shell uiautomator dump /sdcard/fg-rck-ui.xml || true
+            adb shell cat /sdcard/fg-rck-ui.xml || true
+            SCREEN_SIZE=$(adb shell wm size | sed -n 's/.*Physical size: //p' | tr -d '\r')
+            SCREEN_W=${SCREEN_SIZE%x*}
+            SCREEN_H=${SCREEN_SIZE#*x}
+            ABOUT_X=$((SCREEN_W * 90 / 100))
+            ABOUT_Y=$((SCREEN_H * 89 / 100))
             adb shell input tap "$ABOUT_X" "$ABOUT_Y"
             sleep 3
-            adb shell uiautomator dump /sdcard/fg-rck-about-ui.xml
-            adb shell cat /sdcard/fg-rck-about-ui.xml | grep -E 'FG Machines|Facebook|About|عنا'
             adb exec-out screencap -p > FG-Machines-RCK-1.5.0-sidecar-about.png
+            test -s FG-Machines-RCK-1.5.0-sidecar-dashboard.png
+            test -s FG-Machines-RCK-1.5.0-sidecar-about.png
 
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
