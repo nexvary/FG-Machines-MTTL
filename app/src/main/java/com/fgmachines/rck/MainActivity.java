@@ -274,17 +274,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         applySystemBarInsets();
         bindViews();
-
-        provisioner = new MttlProvisioner(this);
-        fleetStore = new FleetStore(this);
-        historyStore = new HistoryStore(this);
-        runtimeStore = new OutletRuntimeStore(this);
-        usbDiscoveryStore = new UsbDiscoveryStore(this);
-        accessStore = new AccessControlStore(this);
-        sceneStore = new SceneStore(this);
-        controllerHub = ControllerHub.get(this);
-        smartHomePlatform = new SmartHomePlatform(this, controllerHub);
         configureNavigation();
+
+        // The sidecar UI gate must be able to select and prove the requested
+        // page before controller/database initialization, which can be slow on
+        // cold emulators and low-end phones.
         boolean uiGateBuild = getPackageName().endsWith(".debug")
                 || getPackageName().endsWith(".sidecar161")
                 || getPackageName().endsWith(".sidecar161arm64");
@@ -299,6 +293,17 @@ public class MainActivity extends AppCompatActivity {
             }
             android.util.Log.i("FGLinkUiGate", "about-page-visible");
         }
+
+        provisioner = new MttlProvisioner(this);
+        fleetStore = new FleetStore(this);
+        historyStore = new HistoryStore(this);
+        runtimeStore = new OutletRuntimeStore(this);
+        usbDiscoveryStore = new UsbDiscoveryStore(this);
+        accessStore = new AccessControlStore(this);
+        sceneStore = new SceneStore(this);
+        controllerHub = ControllerHub.get(this);
+        smartHomePlatform = new SmartHomePlatform(this, controllerHub);
+
         Intent controllerIntent = new Intent(this, MttlControllerService.class);
         controllerIntent.setAction(MttlControllerService.ACTION_START);
         ContextCompat.startForegroundService(this, controllerIntent);
