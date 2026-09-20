@@ -10,13 +10,13 @@
 
     <string name="nav_home">Inicio</string>
     <string name="nav_setup">Configurar</string>
-    <string name="nav_scan">Escanear</string>
+    <string name="nav_scan">Hogar</string>
     <string name="nav_settings">Ajustes</string>
     <string name="nav_about">Desarrollador</string>
     <string name="home_title">Panel del hogar inteligente</string>
     <string name="home_subtitle">Habitaciones, dispositivos, automatización, energía y control local directo desde una sola plataforma.</string>
     <string name="quick_setup">Configurar dispositivo</string>
-    <string name="quick_scan">Escanear red</string>
+    <string name="quick_scan">Hogar inteligente</string>
 
     <string name="setup_wizard">Configuración del dispositivo</string>
     <string name="setup_wizard_note">Ponga la regleta en modo de configuración, introduzca su SSID temporal TONLY_TAP/ONLY_TAP y elija la red Wi‑Fi de 2.4 GHz a la que se conectará. La dirección del controlador normalmente pertenece a este teléfono.</string>
@@ -90,7 +90,7 @@
     <string name="settings_note">El cambio de idioma se aplica inmediatamente. La configuración de red es local y no necesita el servicio de suscripción coreano.</string>
     <string name="about_title">Sobre el desarrollador</string>
     <string name="about_line">En el nombre de Alá, el Clemente, el Misericordioso</string>
-    <string name="about_body">Este programa fue desarrollado por Alaa El Din Mohamed y su hijo. Es completamente gratuito por la causa de Alá.</string>
+    <string name="about_body">Este programa fue desarrollado por Alaa El Din Mohamed. Es completamente gratuito por la causa de Alá.</string>
     <string name="supported_models_title">Compatibilidad</string>
     <string name="supported_models_body">Familia principal verificada: MTTL-W01. Revisiones de certificado conocidas HU04139-17002A/B/C/D/E. Se reconocen TONLY_TAP_* y ONLY_TAP_* y se verifica el protocolo antes de activar los controles de relé.</string>
     <string name="setup_method_title">Elige el método de configuración</string>
@@ -607,4 +607,9 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="platform_planned_panel">El soporte de Smart Panel está reservado en la arquitectura; el control eléctrico seguirá deshabilitado hasta integrar hardware verificado.</string>
     <string name="company_brand_name">FG MACHINES</string>
     <string name="company_brand_tagline">Comercio y marketing</string>
+    <string name="nav_subscriber">Regleta</string>
+    <string name="smart_home_title">Hogar inteligente</string>
+    <string name="subscriber_title">Regleta</string>
+    <string name="settings_advanced_show">Mostrar ajustes avanzados</string>
+    <string name="settings_advanced_hide">Ocultar ajustes avanzados</string>
 </resources>
