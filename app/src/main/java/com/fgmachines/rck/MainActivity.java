@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
         applySystemBarInsets();
         bindViews();
         configureNavigation();
+        configureCompactSettings();
 
         // The sidecar UI gate must be able to select and prove the requested
         // page before controller/database initialization, which can be slow on
@@ -539,16 +540,35 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.outletCard1), findViewById(R.id.outletCard2),
                 findViewById(R.id.outletCard3), findViewById(R.id.outletCard4)
         };
+        // Keep the historical indices 0..4 stable so existing deep links and
+        // UI-gate tests continue to target the same pages. Subscriber is appended
+        // as page 5 even though its navigation button is visually placed earlier.
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
                 findViewById(R.id.pageScan), findViewById(R.id.pageSettings),
-                findViewById(R.id.pageAbout)
+                findViewById(R.id.pageAbout), findViewById(R.id.pageSubscriber)
         };
         navButtons = new MaterialButton[]{
                 findViewById(R.id.navHome), findViewById(R.id.navSetup),
                 findViewById(R.id.navScan), findViewById(R.id.navSettings),
-                findViewById(R.id.navAbout)
+                findViewById(R.id.navAbout), findViewById(R.id.navSubscriber)
         };
+    }
+
+    private void configureCompactSettings() {
+        MaterialButton toggle = findViewById(R.id.settingsAdvancedToggle);
+        View advanced = findViewById(R.id.advancedSettingsContainer);
+        if (toggle == null || advanced == null) return;
+
+        advanced.setVisibility(View.GONE);
+        toggle.setText(R.string.settings_advanced_show);
+        toggle.setOnClickListener(v -> {
+            boolean show = advanced.getVisibility() != View.VISIBLE;
+            advanced.setVisibility(show ? View.VISIBLE : View.GONE);
+            toggle.setText(show
+                    ? R.string.settings_advanced_hide
+                    : R.string.settings_advanced_show);
+        });
     }
 
     private void configureNavigation() {
