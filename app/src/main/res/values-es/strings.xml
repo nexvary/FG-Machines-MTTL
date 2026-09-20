@@ -567,7 +567,8 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="automation_invalid_standby_minutes_range">Elige entre 1 y 120 minutos.</string>
     <string name="controller_watchdog_retry">Falló el reintento del controlador local: %1$s</string>
 
-    <string name="free_remote_title">Acceso remoto gratuito</string>
+        <string name="controller_port_in_use">El puerto %1$d del controlador local ya está en uso. Mantén en ejecución solo una aplicación controladora FG Link / FG Machines RCK.</string>
+<string name="free_remote_title">Acceso remoto gratuito</string>
     <string name="free_remote_note">No requiere VPS ni suscripción mensual. Elige ZeroTier en el teléfono controlador o una puerta de enlace ZeroTier/OpenWrt en el router.</string>
     <string name="free_remote_mode_label">Modo de acceso gratuito</string>
     <string name="free_remote_host_hint">IP privada de ZeroTier / LAN del controlador</string>
