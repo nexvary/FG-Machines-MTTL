@@ -586,4 +586,22 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="platform_summary_waiting">Plattformbestand wird geladen…</string>
     <string name="platform_summary_format">Geräte %1$d · Online %2$d · Räume %3$d · Treiber %4$d</string>
     <string name="platform_families">Strom · Relais · Sensoren · IR / Klima · Energie · Räume · Gateways · Panels</string>
+
+    <string name="platform_hub_status">Wählen Sie einen Smart-Home-Bereich. Verifizierte MTTL-Steuerung bleibt aktiv, während weitere Treiber hinzukommen.</string>
+    <string name="platform_devices">Geräte</string>
+    <string name="platform_rooms">Räume</string>
+    <string name="platform_automation">Automation</string>
+    <string name="platform_energy">Energie</string>
+    <string name="platform_sensors">Sensoren</string>
+    <string name="platform_ir">IR / Klima</string>
+    <string name="platform_gateway">Gateway</string>
+    <string name="platform_panel">Smart Panel</string>
+    <string name="platform_devices_status">Registrierte Geräte und Online-Status werden angezeigt.</string>
+    <string name="platform_rooms_status">Geräteorganisation nach Raum wird angezeigt.</string>
+    <string name="platform_automation_status">Lokale Automatisierung wird geöffnet.</string>
+    <string name="platform_energy_status">Live-Leistung und Energie werden geöffnet.</string>
+    <string name="platform_gateway_status">Lokale und ZeroTier-Gateway-Steuerung wird geöffnet.</string>
+    <string name="platform_planned_sensor">Der Sensor-Treiberplatz ist vorbereitet. Kopplung wird erst mit einem verifizierten Treiber aktiviert.</string>
+    <string name="platform_planned_ir">Der IR/Klima-Treiberplatz ist vorbereitet. Ungeprüfte IR-Protokolle werden nicht gesendet.</string>
+    <string name="platform_planned_panel">Smart-Panel-Unterstützung ist architektonisch vorgesehen; elektrische Steuerung bleibt bis zur verifizierten Hardware-Integration deaktiviert.</string>
 </resources>
