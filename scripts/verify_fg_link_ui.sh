@@ -65,12 +65,12 @@ wait_for_main_activity
 
 ABOUT_MARKER=""
 attempt=1
-while [ "$attempt" -le 10 ]; do
+while [ "$attempt" -le 20 ]; do
   ABOUT_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\\r\\n' || true)"
   if [ "$ABOUT_MARKER" = "about-page-visible" ]; then
     break
   fi
-  sleep 1
+  sleep 2
   attempt=$((attempt + 1))
 done
 if [ "$ABOUT_MARKER" != "about-page-visible" ]; then
