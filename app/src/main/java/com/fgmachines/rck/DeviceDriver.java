@@ -17,6 +17,10 @@ public interface DeviceDriver {
 
     boolean supports(SmartDevice device);
 
+    default boolean isOnline(String deviceId) {
+        return false;
+    }
+
     default boolean canSwitch(SmartDevice device) {
         return supports(device) && capabilities().contains(SmartDevice.Capability.SWITCH);
     }
