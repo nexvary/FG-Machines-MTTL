@@ -349,6 +349,43 @@
                                 app:iconTint="@color/fg_warning"
                                 app:strokeColor="@color/fg_warning" />
                         </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/alaaMohamedFacebookButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/alaa_mohamed_facebook"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fg_text"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/fg_blue"
+                            app:cornerRadius="16dp"
+                            app:icon="@drawable/ic_person"
+                            app:iconGravity="textStart"
+                            app:iconPadding="12dp"
+                            app:iconSize="24dp"
+                            app:iconTint="@color/fg_text" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fgMachinesFacebookButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/fg_machines_facebook"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fg_black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/fg_green"
+                            app:cornerRadius="16dp"
+                            app:icon="@drawable/ic_nav_company"
+                            app:iconGravity="textStart"
+                            app:iconPadding="12dp"
+                            app:iconSize="24dp"
+                            app:iconTint="@color/fg_black" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -4485,43 +4522,29 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/fgMachinesFacebookButton"
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="58dp"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center_vertical"
-                            android:text="@string/fg_machines_facebook"
-                            android:textAllCaps="false"
-                            android:textColor="@color/fg_black"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:backgroundTint="@color/fg_green"
-                            app:cornerRadius="16dp"
-                            app:icon="@drawable/ic_nav_company"
-                            app:iconGravity="textStart"
-                            app:iconPadding="12dp"
-                            app:iconSize="24dp"
-                            app:iconTint="@color/fg_black" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:gravity="center"
+                            android:text="@string/about_line"
+                            android:textAlignment="center"
+                            android:textColor="@color/fg_green"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/alaaMohamedFacebookButton"
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="58dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:text="@string/alaa_mohamed_facebook"
-                            android:textAllCaps="false"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:lineSpacingExtra="5dp"
+                            android:text="@string/about_body"
+                            android:textAlignment="center"
                             android:textColor="@color/fg_text"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            app:backgroundTint="@color/fg_blue"
-                            app:cornerRadius="16dp"
-                            app:icon="@drawable/ic_person"
-                            app:iconGravity="textStart"
-                            app:iconPadding="12dp"
-                            app:iconSize="24dp"
-                            app:iconTint="@color/fg_text" />
+                            android:textSize="16sp" />
+
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
