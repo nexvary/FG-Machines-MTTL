@@ -293,6 +293,13 @@ public class MainActivity extends AppCompatActivity {
                 || getPackageName().endsWith(".sidecar161arm64");
         if (uiGateBuild && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
             showPage(4);
+            try (java.io.FileOutputStream marker =
+                         openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
+                marker.write("about-page-visible".getBytes(
+                        java.nio.charset.StandardCharsets.UTF_8));
+            } catch (java.io.IOException error) {
+                android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
+            }
             android.util.Log.i("FGLinkUiGate", "about-page-visible");
         }
         configurePlatformHub();
