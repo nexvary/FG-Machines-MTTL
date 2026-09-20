@@ -604,4 +604,6 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="platform_planned_sensor">مكان Driver الحساسات جاهز. لن يتم الاقتران قبل إضافة Driver موثق.</string>
     <string name="platform_planned_ir">مكان Driver الخاص بـ IR والتكييف جاهز. لن يتم إرسال بروتوكول IR غير موثق.</string>
     <string name="platform_planned_panel">دعم اللوحة الذكية محجوز داخل بنية المنصة، وسيظل التحكم الكهربائي معطلًا حتى دمج Hardware موثق.</string>
+    <string name="company_brand_name">FG MACHINES</string>
+    <string name="company_brand_tagline">للتجارة والتسويق</string>
 </resources>
