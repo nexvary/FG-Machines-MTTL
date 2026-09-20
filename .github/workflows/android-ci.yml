@@ -176,7 +176,7 @@ jobs:
             SIZE="$(adb shell wm size | awk -F': ' '/Physical size/{print $2}' | tr -d '\r')"
             W="${SIZE%x*}"
             H="${SIZE#*x}"
-            adb shell input tap $((W / 10)) $((H * 9 / 10))
+            adb shell input tap $((W * 9 / 10)) $((H * 87 / 100))
             sleep 3
             adb shell uiautomator dump /sdcard/fg-link-about.xml || true
             adb shell cat /sdcard/fg-link-about.xml || true
