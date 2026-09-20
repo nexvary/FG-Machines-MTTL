@@ -58,14 +58,29 @@ test -s FG-Link-1.6.1-dashboard.png
 # The hook executes showPage(4) inside MainActivity and emits FGLinkUiGate only after doing so.
 # Fresh CI emulator: no prior FGLinkUiGate marker exists before this launch.
 # Avoid logcat -c because some emulator images reject clearing the main buffer.
+adb shell run-as "$APP_PACKAGE" rm -f files/fg_ui_gate_state >/dev/null 2>&1 || true
 adb shell am force-stop "$APP_PACKAGE"
 adb shell am start -n "$APP_ACTIVITY" --es fg_ui_test_page about
 wait_for_main_activity
-sleep 3
 
-adb logcat -d -s FGLinkUiGate:I '*:S' > /tmp/fg-link-about-log.txt || true
-cat /tmp/fg-link-about-log.txt
-grep -q 'about-page-visible' /tmp/fg-link-about-log.txt
+ABOUT_MARKER=""
+attempt=1
+while [ "$attempt" -le 10 ]; do
+  ABOUT_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\\r\\n' || true)"
+  if [ "$ABOUT_MARKER" = "about-page-visible" ]; then
+    break
+  fi
+  sleep 1
+  attempt=$((attempt + 1))
+done
+if [ "$ABOUT_MARKER" != "about-page-visible" ]; then
+  echo "UI gate failed: developer-page marker was not written" >&2
+  adb shell run-as "$APP_PACKAGE" ls -la files 2>/dev/null || true
+  return_code=1
+  adb logcat -d -t 300 | grep -E "$APP_PACKAGE|FGLinkUiGate|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 120 || true
+  exit "$return_code"
+fi
+sleep 2
 
 adb exec-out screencap -p > FG-Link-1.6.1-about.png
 test -s FG-Link-1.6.1-about.png
