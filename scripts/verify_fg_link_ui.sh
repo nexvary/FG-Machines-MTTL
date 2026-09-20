@@ -35,13 +35,27 @@ dump_ui() {
   return 1
 }
 
-assert_main_activity() {
+main_activity_is_foreground() {
   adb shell dumpsys activity activities > /tmp/fg-link-activities.txt
-  if ! grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt | grep -q "$APP_ACTIVITY"; then
-    echo "UI gate failed: FG Link MainActivity is not foreground" >&2
-    grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
-    return 1
-  fi
+  grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt | grep -q "$APP_ACTIVITY"
+}
+
+wait_for_main_activity() {
+  local attempt=1
+  while [ "$attempt" -le 12 ]; do
+    if main_activity_is_foreground; then
+      return 0
+    fi
+    sleep 3
+    attempt=$((attempt + 1))
+  done
+
+  echo "UI gate failed: FG Link MainActivity is not foreground" >&2
+  grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
+  adb shell dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp' || true
+  adb shell pidof "$APP_PACKAGE" || true
+  adb logcat -d -t 300 | grep -E "$APP_PACKAGE|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 120 || true
+  return 1
 }
 
 adb wait-for-device
@@ -55,11 +69,8 @@ adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rc
 
 wake_and_unlock
 adb shell am force-stop "$APP_PACKAGE"
-adb shell am start -W -n "$APP_ACTIVITY"
-sleep 10
-wake_and_unlock
-
-assert_main_activity
+adb shell am start -n "$APP_ACTIVITY"
+wait_for_main_activity
 dump_ui fg-link-dashboard
 grep -q "resource-id=\"$APP_PACKAGE:id/navAbout\"" /tmp/fg-link-dashboard.xml
 adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
@@ -75,7 +86,7 @@ adb shell input tap "$X" "$Y"
 sleep 3
 wake_and_unlock
 
-assert_main_activity
+wait_for_main_activity
 dump_ui fg-link-about
 grep -q "resource-id=\"$APP_PACKAGE:id/fgMachinesFacebookButton\"" /tmp/fg-link-about.xml
 grep -q "resource-id=\"$APP_PACKAGE:id/alaaMohamedFacebookButton\"" /tmp/fg-link-about.xml
