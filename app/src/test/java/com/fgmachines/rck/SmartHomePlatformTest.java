@@ -67,6 +67,18 @@ public class SmartHomePlatformTest {
         assertTrue(ir.capabilities.contains(SmartDevice.Capability.IR_TRANSMIT));
     }
 
+    @Test
+    public void capabilityCodecRoundTripsFutureDeviceMetadata() {
+        Set<SmartDevice.Capability> original = EnumSet.of(
+                SmartDevice.Capability.SWITCH,
+                SmartDevice.Capability.MOTION,
+                SmartDevice.Capability.ENERGY_METERING);
+        String encoded = PlatformDeviceStore.encodeCapabilities(original);
+        Set<SmartDevice.Capability> decoded = PlatformDeviceStore.decodeCapabilities(encoded);
+        assertEquals(original, decoded);
+    }
+
+
     private static final class FakeSwitchDriver implements DeviceDriver {
         @Override public String id() { return "fake"; }
         @Override public String displayName() { return "Fake"; }
