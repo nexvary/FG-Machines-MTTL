@@ -12,7 +12,7 @@
     <string name="nav_setup">Configurar</string>
     <string name="nav_scan">Escanear</string>
     <string name="nav_settings">Ajustes</string>
-    <string name="nav_about">Acerca de</string>
+    <string name="nav_about">Desarrollador</string>
     <string name="home_title">Panel del hogar inteligente</string>
     <string name="home_subtitle">Habitaciones, dispositivos, automatización, energía y control local directo desde una sola plataforma.</string>
     <string name="quick_setup">Configurar dispositivo</string>
@@ -88,9 +88,9 @@
 
     <string name="settings_title">Ajustes</string>
     <string name="settings_note">El cambio de idioma se aplica inmediatamente. La configuración de red es local y no necesita el servicio de suscripción coreano.</string>
-    <string name="about_title">Acerca de</string>
-    <string name="about_line">FG Machines Link · Familia MTTL · Control local primero</string>
-    <string name="about_body">FG Machines Link es un controlador local independiente para regletas inteligentes compatibles LG U+ / TONLY. No es una aplicación oficial de LG U+. El proyecto prioriza el funcionamiento local por Wi‑Fi, diagnósticos claros y control seguro de relés.</string>
+    <string name="about_title">Sobre el desarrollador</string>
+    <string name="about_line">En el nombre de Alá, el Clemente, el Misericordioso</string>
+    <string name="about_body">Este programa fue desarrollado por Alaa El Din Mohamed y su hijo. Es completamente gratuito por la causa de Alá.</string>
     <string name="supported_models_title">Compatibilidad</string>
     <string name="supported_models_body">Familia principal verificada: MTTL-W01. Revisiones de certificado conocidas HU04139-17002A/B/C/D/E. Se reconocen TONLY_TAP_* y ONLY_TAP_* y se verifica el protocolo antes de activar los controles de relé.</string>
     <string name="setup_method_title">Elige el método de configuración</string>
@@ -107,10 +107,10 @@
         <item>Dos teléfonos (sin router)</item>
         <item>Un teléfono (experimental)</item>
     </string-array>
-    <string name="about_social_title">Enlaces de FG Machines</string>
-    <string name="about_social_note">Página oficial del negocio y perfil personal</string>
-    <string name="fg_machines_facebook">FG Machines · Página de Facebook</string>
-    <string name="alaa_mohamed_facebook">Alaa Mohamed · Perfil personal</string>
+    <string name="about_social_title">Enlaces del desarrollador</string>
+    <string name="about_social_note">Cuenta personal y página comercial</string>
+    <string name="fg_machines_facebook">Página comercial</string>
+    <string name="alaa_mohamed_facebook">Cuenta personal</string>
     <string name="open_link_failed">No se pudo abrir el enlace en este dispositivo.</string>
     <string name="wizard_assistant_title">Asistente de configuración</string>
     <string name="wizard_local_badge">LOCAL</string>
