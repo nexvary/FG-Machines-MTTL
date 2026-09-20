@@ -40,6 +40,10 @@ public final class MttlDeviceDriver implements DeviceDriver {
         return device != null && DRIVER_ID.equals(device.driverId);
     }
 
+    @Override public boolean isOnline(String deviceId) {
+        return hub.isConnected(deviceId);
+    }
+
     @Override public void setSwitch(String deviceId, int channel, boolean on) throws IOException {
         if (channel < 1 || channel > 4) throw new IOException("MTTL channel must be 1..4");
         hub.setOutlet(deviceId, channel, on);
