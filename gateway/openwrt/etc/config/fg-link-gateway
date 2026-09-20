@@ -1,0 +1,5 @@
+config gateway 'gateway'
+	option enabled '0'
+	option api_bind '127.0.0.1:18086'
+	option controller_bind '0.0.0.0:10086'
+	option token 'CHANGE_ME_TO_A_RANDOM_32_PLUS_CHARACTER_TOKEN'
