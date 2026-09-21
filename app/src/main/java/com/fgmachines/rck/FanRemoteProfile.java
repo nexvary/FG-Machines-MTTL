@@ -44,7 +44,8 @@ public final class FanRemoteProfile {
     public static List<String> targets(){
         return Arrays.asList(
                 "Fresh Smart Remote 16 · 500004491",
-                "Fresh Shabah Remote 18 · 500005315",
+                "Fresh Shabah Stand Remote 18 · 500004558",
+                "Fresh Shabah Wall Remote 18 · 500005315",
                 "Fresh Classic Remote 2026 · 500021270",
                 "Fresh Top Remote 16 · 500009092",
                 "Fresh · Other remote fan",
