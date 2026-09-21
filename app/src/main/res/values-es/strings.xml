@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · %2$d/4 ENCENDIDAS</string>
     <string name="scene_ready">Escena lista. Aplicarla cambia el estado de las cuatro salidas.</string>
 
-    <string name="diagnostics_home_action">Diagnóstico de electrodomésticos</string>
+    <string name="diagnostics_home_action">Diagnóstico de Fallas</string>
     <string name="diagnostics_back">Atrás</string>
     <string name="diagnostics_title">Diagnóstico de electrodomésticos</string>
     <string name="diagnostics_subtitle">Códigos y síntomas verificados por fuente, sin conexión, con historial vinculado a FG Link</string>
