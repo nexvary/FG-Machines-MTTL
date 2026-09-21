@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · تشغيل %2$d/4</string>
     <string name="scene_ready">المشهد جاهز. تطبيقه يغير حالات المخارج الأربعة.</string>
 
-    <string name="diagnostics_home_action">تشخيص الأجهزة المنزلية</string>
+    <string name="diagnostics_home_action">تشخيص الأعطال</string>
     <string name="diagnostics_back">رجوع</string>
     <string name="diagnostics_title">تشخيص الأجهزة المنزلية</string>
     <string name="diagnostics_subtitle">أكواد وأعراض موثقة بالمصدر تعمل دون إنترنت مع سجل مرتبط ببيانات FG Link</string>
