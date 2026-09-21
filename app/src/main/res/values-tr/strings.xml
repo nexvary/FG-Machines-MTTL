@@ -571,16 +571,19 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="free_remote_title">Ücretsiz Uzaktan Erişim</string>
     <string name="free_remote_note">VPS veya aylık abonelik gerekmez. Denetleyici telefonda ZeroTier ya da ZeroTier/OpenWrt yönlendirici ağ geçidi seçin.</string>
     <string name="free_remote_mode_label">Ücretsiz erişim modu</string>
-    <string name="free_remote_host_hint">Özel ZeroTier / denetleyici LAN IP adresi</string>
+    <string name="free_remote_host_hint">Denetleyici telefonun / yönlendirici ağ geçidinin özel ZeroTier IP'si</string>
     <string name="free_remote_apply">Ücretsiz uzaktan erişimi kullan</string>
     <string name="free_remote_phone_help">Telefon modu: FG Machines Link denetleyici telefonuna ZeroTier kurun. Telefonun özel ZeroTier IP adresini girin; FG Link yerel API için 18086 portunu kullanır.</string>
-    <string name="free_remote_router_help">Yönlendirici modu: ZeroTier OpenWrt erişim noktası/yönlendirici üzerinde çalışır ve yerel ağı yönlendirir. Denetleyici telefonun LAN IP adresini girin. Uygulama yönlendiriciyi otomatik olarak flashlamaz.</string>
+    <string name="free_remote_router_help">Yönlendirici ağ geçidi modu: ZeroTier yönlendiricide çalışır. Yönlendiricinin ZeroTier IP adresini girin. TCP 18086'yı yalnızca ZeroTier arayüzünden denetleyici telefonun LAN IP adresine iletin; ZeroTier Managed Route gerekmez. Uygulama yönlendiriciyi flashlamaz.</string>
     <string name="free_remote_ready">Ücretsiz uzaktan erişim hazır · %1$s · %2$s</string>
+    <string name="free_remote_checking">Uzak erişim yolu kontrol ediliyor…</string>
+    <string name="free_remote_reachable">Uzak erişim yolu erişilebilir · %1$s · %2$s</string>
+    <string name="free_remote_unreachable">Uç nokta kaydedildi ancak henüz erişilemiyor · %1$s · %2$s</string>
     <string name="free_remote_invalid">Ücretsiz uzaktan erişim hatası: %1$s</string>
-    <string name="free_remote_router_warning">Deneysel yönlendirici hedefi: LG GAPM-7100 / RTL8198C rev B. Yalnızca tam kart modeli için doğrulanmış firmware kullanın; genel RTL8198C imajı flashlamayın.</string>
+    <string name="free_remote_router_warning">Ağ geçidi iletimini ZeroTier arayüzü ve TCP 18086 ile sınırlandırın. Denetleyici API'sini güvenilir LAN/VPN içinde tutun ve düz HTTP'yi genel internete açmayın.</string>
     <string-array name="free_remote_mode_labels">
         <item>Denetleyici telefonda ZeroTier</item>
-        <item>ZeroTier / OpenWrt yönlendirici ağ geçidi</item>
+        <item>ZeroTier yönlendirici ağ geçidi (TCP 18086 iletimi)</item>
     </string-array>
     <string name="platform_title">FG Link Smart Home</string>
     <string name="platform_note">Akıllı prizler, röleler, sensörler, IR/klima, enerji, oda denetleyicileri ve ağ geçitleri için sürücü tabanlı çekirdek. MTTL-W01 ilk doğrulanmış sürücüdür.</string>
