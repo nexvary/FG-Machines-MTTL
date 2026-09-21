@@ -637,4 +637,26 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="remote_profile_status">Verified IR profiles are being added. FG Link will not transmit unverified codes.</string>
     <string name="remote_category_selected">Selected: %1$s</string>
 
+
+    <string name="remote_ac_selected">Air-conditioner remotes · choose Sharp or UnionAir, then run Smart IR Scan once.</string>
+    <string name="remote_fan_pending">Fan remotes are a separate library. Fresh fan profiles are the first target; unverified codes stay disabled.</string>
+    <string name="remote_ac_brands_title">Air-conditioner brands</string>
+    <string name="remote_brand_selected">Selected: %1$s</string>
+    <string name="remote_scan_required">No verified profile saved for this brand. Run Smart IR Scan and confirm only when the A/C actually beeps or responds.</string>
+    <string name="remote_profile_ready">%1$s · verified profile: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan %1$d/%2$d</string>
+    <string name="remote_scan_question">Sent test profile: %1$s\n\nDid the air conditioner beep or respond?</string>
+    <string name="remote_scan_yes">Yes — save</string>
+    <string name="remote_scan_no">No — next</string>
+    <string name="remote_scan_cancel">Cancel</string>
+    <string name="remote_scan_no_match">Scan finished without a confirmed profile. No protocol was saved.</string>
+    <string name="remote_power_on">Power ON</string>
+    <string name="remote_power_off">Power OFF</string>
+    <string name="remote_swing">Swing</string>
+    <string name="remote_temp_default">24°C</string>
+    <string name="remote_temp_value">%1$d°C</string>
+    <string name="remote_command_sent">IR command sent · %1$s</string>
+    <string name="remote_send_failed">IR command failed: %1$s</string>
+
 </resources>
