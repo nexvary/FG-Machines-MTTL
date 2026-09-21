@@ -161,6 +161,7 @@ capture_child_page() {
 }
 
 # Complete real-page gallery from the same 1.6.2 sidecar APK.
+# Keep every capture in the release artifact so user-visible screenshots match the tested APK.
 capture_main_page setup       FG-Link-1.6.2-setup.png
 capture_main_page scan        FG-Link-1.6.2-scan.png
 capture_main_page settings    FG-Link-1.6.2-settings.png
