@@ -612,4 +612,21 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="subscriber_title">Regleta</string>
     <string name="settings_advanced_show">Mostrar ajustes avanzados</string>
     <string name="settings_advanced_hide">Ocultar ajustes avanzados</string>
+
+    <string name="remote_home_action">Mando</string>
+    <string name="remote_title">Mando</string>
+    <string name="remote_subtitle">Mandos IR de reemplazo solo para aires acondicionados y ventiladores.</string>
+    <string name="remote_back">Atrás</string>
+    <string name="remote_ir_badge">HARDWARE IR</string>
+    <string name="remote_ir_available">Transmisor IR detectado: este teléfono admite control infrarrojo directo.</string>
+    <string name="remote_ir_unavailable">No se detectó transmisor IR integrado. El control directo requiere un teléfono con IR blaster.</string>
+    <string name="remote_scope_title">Alcance compatible</string>
+    <string name="remote_scope_note">Solo aires acondicionados y ventiladores. Se excluyen deliberadamente televisores, pantallas, proyectores, cine en casa, receptores y TV Box.</string>
+    <string name="remote_ac_category">Aires acondicionados</string>
+    <string name="remote_ac_note">Encendido, temperatura, modo, velocidad, oscilación y temporizador se habilitarán solo con perfiles verificados del modelo seleccionado.</string>
+    <string name="remote_fan_category">Ventiladores</string>
+    <string name="remote_fan_note">Enfocado en mandos de reemplazo difíciles de conseguir, empezando por familias de ventiladores Fresh.</string>
+    <string name="remote_profile_status">Se están añadiendo perfiles IR verificados. FG Link no transmitirá códigos sin verificar.</string>
+    <string name="remote_category_selected">Seleccionado: %1$s</string>
+
 </resources>

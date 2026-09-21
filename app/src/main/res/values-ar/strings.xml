@@ -613,4 +613,21 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="settings_advanced_show">إظهار الإعدادات المتقدمة</string>
     <string name="settings_advanced_hide">إخفاء الإعدادات المتقدمة</string>
     <!-- CI legacy branding assertion: تم تطوير البرنامج بواسطة علاء الدين محمد وابنه -->
+
+    <string name="remote_home_action">الريموت</string>
+    <string name="remote_title">الريموت</string>
+    <string name="remote_subtitle">بدائل ريموت بالأشعة تحت الحمراء للتكييفات والمراوح فقط.</string>
+    <string name="remote_back">رجوع</string>
+    <string name="remote_ir_badge">عتاد IR</string>
+    <string name="remote_ir_available">تم اكتشاف مرسل IR — الهاتف يدعم التحكم المباشر بالأشعة تحت الحمراء.</string>
+    <string name="remote_ir_unavailable">لا يوجد مرسل IR مدمج في الهاتف. التحكم المباشر يحتاج هاتفًا مزودًا بـ IR Blaster.</string>
+    <string name="remote_scope_title">نطاق الريموت</string>
+    <string name="remote_scope_note">يشمل التكييفات والمراوح فقط. تم استبعاد التلفزيونات والشاشات والبروجيكتور والمسرح المنزلي والرسيفرات وTV Box عمدًا.</string>
+    <string name="remote_ac_category">التكييفات</string>
+    <string name="remote_ac_note">ستظهر وظائف التشغيل والحرارة والوضع والسرعة وSwing والتايمر فقط بعد توثيق أكواد الموديل المحدد.</string>
+    <string name="remote_fan_category">المراوح</string>
+    <string name="remote_fan_note">مخصص للريموتات البديلة صعبة التوفر، ونبدأ بعائلات مراوح Fresh.</string>
+    <string name="remote_profile_status">تتم إضافة ملفات IR الموثقة. لن يرسل FG Link أي أكواد غير موثقة.</string>
+    <string name="remote_category_selected">المحدد: %1$s</string>
+
 </resources>

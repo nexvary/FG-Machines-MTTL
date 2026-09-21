@@ -779,6 +779,27 @@
                         app:iconTint="@color/fg_text" />
                 </LinearLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/homeToRemote"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/remote_home_action"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_cyan"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/fg_surface_2"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_remote"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconSize="25dp"
+                    app:iconTint="@color/fg_neon_cyan"
+                    app:rippleColor="@color/fg_blue_dim"
+                    app:strokeColor="@color/fg_metal_silver"
+                    app:strokeWidth="2dp" />
+
                 
 
                 <com.google.android.material.card.MaterialCardView

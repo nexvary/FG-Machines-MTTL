@@ -612,4 +612,21 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="subscriber_title">Steckdosenleiste</string>
     <string name="settings_advanced_show">Erweiterte Einstellungen anzeigen</string>
     <string name="settings_advanced_hide">Erweiterte Einstellungen ausblenden</string>
+
+    <string name="remote_home_action">Fernbedienung</string>
+    <string name="remote_title">Fernbedienung</string>
+    <string name="remote_subtitle">IR-Ersatzfernbedienungen nur für Klimaanlagen und Ventilatoren.</string>
+    <string name="remote_back">Zurück</string>
+    <string name="remote_ir_badge">IR-HARDWARE</string>
+    <string name="remote_ir_available">IR-Sender erkannt — dieses Telefon unterstützt direkte Infrarotsteuerung.</string>
+    <string name="remote_ir_unavailable">Kein integrierter IR-Sender erkannt. Direkte Steuerung benötigt ein Telefon mit IR-Blaster.</string>
+    <string name="remote_scope_title">Unterstützter Bereich</string>
+    <string name="remote_scope_note">Nur Klimaanlagen und Ventilatoren. Fernseher, Displays, Projektoren, Heimkinoanlagen, Receiver und TV-Boxen sind bewusst ausgeschlossen.</string>
+    <string name="remote_ac_category">Klimaanlagen</string>
+    <string name="remote_ac_note">Ein/Aus, Temperatur, Modus, Lüfterstufe, Swing und Timer werden nur für verifizierte Modellprofile aktiviert.</string>
+    <string name="remote_fan_category">Ventilatoren</string>
+    <string name="remote_fan_note">Fokus auf schwer erhältliche Ersatzfernbedienungen, beginnend mit Fresh-Ventilatorfamilien.</string>
+    <string name="remote_profile_status">Verifizierte IR-Profile werden ergänzt. FG Link sendet keine ungeprüften Codes.</string>
+    <string name="remote_category_selected">Ausgewählt: %1$s</string>
+
 </resources>

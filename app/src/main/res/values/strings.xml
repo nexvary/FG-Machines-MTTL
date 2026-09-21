@@ -620,4 +620,21 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="subscriber_title">Power Strip</string>
     <string name="settings_advanced_show">Show advanced settings</string>
     <string name="settings_advanced_hide">Hide advanced settings</string>
+
+    <string name="remote_home_action">Remote</string>
+    <string name="remote_title">Remote</string>
+    <string name="remote_subtitle">IR replacement remotes for air conditioners and fans only.</string>
+    <string name="remote_back">Back</string>
+    <string name="remote_ir_badge">IR HARDWARE</string>
+    <string name="remote_ir_available">IR transmitter detected — direct infrared control is supported on this phone.</string>
+    <string name="remote_ir_unavailable">No built-in IR transmitter detected. Direct control requires a phone with an IR blaster.</string>
+    <string name="remote_scope_title">Supported scope</string>
+    <string name="remote_scope_note">Only air conditioners and fans. TVs, displays, projectors, home-theater systems, receivers and TV boxes are intentionally excluded.</string>
+    <string name="remote_ac_category">Air conditioners</string>
+    <string name="remote_ac_note">Profiles will expose power, temperature, mode, fan speed, swing and timer only when verified for the selected model.</string>
+    <string name="remote_fan_category">Fans</string>
+    <string name="remote_fan_note">Focused on hard-to-find replacement remotes, beginning with Fresh fan families.</string>
+    <string name="remote_profile_status">Verified IR profiles are being added. FG Link will not transmit unverified codes.</string>
+    <string name="remote_category_selected">Selected: %1$s</string>
+
 </resources>

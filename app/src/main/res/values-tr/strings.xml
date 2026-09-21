@@ -612,4 +612,21 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="subscriber_title">Akıllı Priz</string>
     <string name="settings_advanced_show">Gelişmiş ayarları göster</string>
     <string name="settings_advanced_hide">Gelişmiş ayarları gizle</string>
+
+    <string name="remote_home_action">Kumanda</string>
+    <string name="remote_title">Kumanda</string>
+    <string name="remote_subtitle">Yalnızca klimalar ve vantilatörler için IR yedek kumandalar.</string>
+    <string name="remote_back">Geri</string>
+    <string name="remote_ir_badge">IR DONANIMI</string>
+    <string name="remote_ir_available">IR vericisi algılandı — bu telefon doğrudan kızılötesi kontrolü destekliyor.</string>
+    <string name="remote_ir_unavailable">Dahili IR vericisi bulunamadı. Doğrudan kontrol için IR blaster bulunan bir telefon gerekir.</string>
+    <string name="remote_scope_title">Desteklenen kapsam</string>
+    <string name="remote_scope_note">Yalnızca klimalar ve vantilatörler. TV, ekran, projektör, ev sinema sistemi, alıcı ve TV kutuları özellikle kapsam dışıdır.</string>
+    <string name="remote_ac_category">Klimalar</string>
+    <string name="remote_ac_note">Güç, sıcaklık, mod, fan hızı, salınım ve zamanlayıcı yalnızca seçilen model doğrulandıktan sonra açılır.</string>
+    <string name="remote_fan_category">Vantilatörler</string>
+    <string name="remote_fan_note">Bulunması zor yedek kumandalara odaklanır; Fresh vantilatör aileleriyle başlanır.</string>
+    <string name="remote_profile_status">Doğrulanmış IR profilleri ekleniyor. FG Link doğrulanmamış kod göndermez.</string>
+    <string name="remote_category_selected">Seçili: %1$s</string>
+
 </resources>
