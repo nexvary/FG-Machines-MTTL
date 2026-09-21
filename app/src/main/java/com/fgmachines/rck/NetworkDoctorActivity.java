@@ -158,7 +158,12 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
 
             StringBuilder out = new StringBuilder();
             out.append("FG LINK NETWORK DOCTOR\n");
-            out.append("App: ").append(BuildConfig.VERSION_NAME)
+            String versionName = "unknown";
+            try {
+                android.content.pm.PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+                if (info.versionName != null) versionName = info.versionName;
+            } catch (Exception ignored) { }
+            out.append("App: ").append(versionName)
                     .append(" | Android ").append(Build.VERSION.RELEASE)
                     .append(" | ").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append("\n\n");
             out.append("TRANSPORT\n").append(snapshot.transportSummary).append("\n");
