@@ -779,18 +779,7 @@
                         app:iconTint="@color/fg_text" />
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/homeToDiagnostics"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/diagnostics_home_action"
-                    android:textColor="@color/fg_blue_bright"
-                    app:cornerRadius="14dp"
-                    app:icon="@drawable/ic_diagnostics"
-                    app:iconTint="@color/fg_blue_bright"
-                    app:strokeColor="@color/fg_blue" />
+                
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -1746,7 +1735,29 @@
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+            
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/homeToDiagnostics"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/diagnostics_home_action"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_magenta"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/fg_surface_2"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_diagnostics"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconSize="25dp"
+                    app:iconTint="@color/fg_neon_magenta"
+                    app:rippleColor="@color/fg_blue_dim"
+                    app:strokeColor="@color/fg_metal_silver"
+                    app:strokeWidth="2dp" />
+
+</LinearLayout>
 
 
             <LinearLayout
