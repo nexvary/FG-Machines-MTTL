@@ -669,4 +669,24 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="remote_fan_sleep">نوم</string>
     <string name="ac_remote_command_sent">تم إرسال أمر IR · %1$s</string>
     <string name="ac_remote_send_failed">فشل إرسال أمر IR: %1$s</string>
+
+    <string name="network_doctor_open">طبيب الشبكة</string>
+    <string name="network_doctor_title">طبيب الشبكة</string>
+    <string name="network_doctor_subtitle">تشخيص بضغطة واحدة للـ 4G والواي فاي وZeroTier وKT708 وواجهة FG Link ووحدة تحكم MTTL المحلية. شغّله قبل تغيير إعدادات الراوتر.</string>
+    <string name="network_doctor_back">رجوع</string>
+    <string name="network_doctor_targets">عناوين التشخيص</string>
+    <string name="network_doctor_gateway_hint">عنوان ZeroTier للـ KT708</string>
+    <string name="network_doctor_controller_zt_hint">عنوان ZeroTier لهاتف التحكم</string>
+    <string name="network_doctor_controller_lan_hint">عنوان LAN لهاتف التحكم</string>
+    <string name="network_doctor_run">تشغيل التشخيص الكامل</string>
+    <string name="network_doctor_ready">جاهز. زر واحد سيفحص المسار بالكامل.</string>
+    <string name="network_doctor_running">جارٍ تشخيص الشبكة…</string>
+    <string name="network_doctor_report_empty">لا يوجد تقرير بعد.</string>
+    <string name="network_doctor_apply_best">استخدام المسار العامل تلقائيًا</string>
+    <string name="network_doctor_copy">نسخ تقرير التشخيص</string>
+    <string name="network_doctor_note">لن يغيّر طبيب الشبكة إعدادات RouterOS أو ZeroTier Central أو الإنترنت العام. سيختبر المسارات المحلية والخاصة فقط ويمكنه حفظ مسار FG Link الذي ثبت أنه يعمل.</string>
+    <string name="network_doctor_copied">تم نسخ تقرير التشخيص.</string>
+    <string name="network_doctor_no_working_path">لم يتم العثور على مسار يعمل. لم يتم تغيير أي إعداد.</string>
+    <string name="network_doctor_applied">تم حفظ المسار العامل: %1$s</string>
+
 </resources>
