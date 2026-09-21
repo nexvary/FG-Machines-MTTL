@@ -638,7 +638,7 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="remote_category_selected">Selected: %1$s</string>
 
 
-    <string name="remote_ac_selected">Air-conditioner remotes · choose Sharp or UnionAir, then run Smart IR Scan once.</string>
+    <string name="remote_ac_selected">Air-conditioner remotes · choose a brand, then run Smart IR Scan when needed.</string>
     <string name="remote_fan_pending">Fan remotes are a separate library. Fresh fan profiles are the first target; unverified codes stay disabled.</string>
     <string name="remote_ac_brands_title">Air-conditioner brands</string>
     <string name="remote_brand_selected">Selected: %1$s</string>
@@ -656,7 +656,21 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="remote_swing">Swing</string>
     <string name="remote_temp_default">24°C</string>
     <string name="remote_temp_value">%1$d°C</string>
-    <string name="remote_command_sent">IR command sent · %1$s</string>
-    <string name="remote_send_failed">IR command failed: %1$s</string>
-
+        <string name="remote_fan_selected">Fan remotes · choose the fan model, then run Smart IR Scan if there is no saved verified profile.</string>
+    <string name="remote_choose_ac_brand">Choose A/C brand</string>
+    <string name="remote_choose_fan_model">Choose fan model</string>
+    <string name="remote_fan_scan_required">No verified fan profile is saved for this model. Run Smart IR Scan and save only if the fan really responds.</string>
+    <string name="remote_fan_profile_ready">%1$s · verified IR profile: %2$s</string>
+    <string name="remote_fan_scan_no_match">Fan scan finished without a confirmed profile. No code was saved.</string>
+    <string name="remote_fan_scan_question">Sent verified test profile: %1$s\n\nDid the fan respond?</string>
+    <string name="remote_fan_power">Power</string>
+    <string name="remote_fan_command">Fan command</string>
+    <string name="remote_fan_command_sent">%1$s sent · %2$s</string>
+    <string name="remote_fan_command_unavailable">This verified profile does not expose that button.</string>
+    <string name="remote_fan_speed">Speed</string>
+    <string name="remote_fan_swing">Swing</string>
+    <string name="remote_fan_timer">Timer</string>
+    <string name="remote_fan_sleep">Sleep</string>
+    <string name="ac_remote_command_sent">IR command sent · %1$s</string>
+    <string name="ac_remote_send_failed">IR command failed: %1$s</string>
 </resources>

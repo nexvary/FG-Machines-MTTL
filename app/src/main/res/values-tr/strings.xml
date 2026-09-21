@@ -629,4 +629,31 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="remote_profile_status">Doğrulanmış IR profilleri ekleniyor. FG Link doğrulanmamış kod göndermez.</string>
     <string name="remote_category_selected">Seçili: %1$s</string>
 
+    <string name="remote_ac_selected">Klima kumandaları · markayı seçin ve gerektiğinde Smart IR Scan çalıştırın.</string>
+    <string name="remote_fan_selected">Vantilatör kumandaları · modeli seçin; doğrulanmış profil yoksa Smart IR Scan çalıştırın.</string>
+    <string name="remote_choose_ac_brand">Klima markası seç</string>
+    <string name="remote_choose_fan_model">Vantilatör modeli seç</string>
+    <string name="remote_scan_required">Bu marka için kayıtlı doğrulanmış profil yok. Smart IR Scan çalıştırın ve yalnız cihaz gerçekten tepki verirse kaydedin.</string>
+    <string name="remote_profile_ready">%1$s · doğrulanmış profil: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan %1$d/%2$d</string>
+    <string name="remote_scan_question">Test profili gönderildi: %1$s\n\nKlima bipledi veya tepki verdi mi?</string>
+    <string name="remote_scan_yes">Evet — kaydet</string>
+    <string name="remote_scan_no">Hayır — sonraki</string>
+    <string name="remote_scan_cancel">İptal</string>
+    <string name="remote_scan_no_match">Tarama doğrulanmış profil olmadan bitti. Protokol kaydedilmedi.</string>
+    <string name="remote_fan_scan_required">Bu model için kayıtlı doğrulanmış fan profili yok. Yalnız fan gerçekten tepki verirse kaydedin.</string>
+    <string name="remote_fan_profile_ready">%1$s · doğrulanmış IR profili: %2$s</string>
+    <string name="remote_fan_scan_no_match">Fan taraması doğrulanmış profil olmadan bitti. Kod kaydedilmedi.</string>
+    <string name="remote_fan_scan_question">Doğrulanmış test profili gönderildi: %1$s\n\nFan tepki verdi mi?</string>
+    <string name="remote_fan_power">Güç</string>
+    <string name="remote_fan_command">Fan komutu</string>
+    <string name="remote_fan_command_sent">%1$s gönderildi · %2$s</string>
+    <string name="remote_fan_command_unavailable">Bu düğme doğrulanmış profilde yok.</string>
+    <string name="remote_fan_speed">Hız</string>
+    <string name="remote_fan_swing">Salınım</string>
+    <string name="remote_fan_timer">Zamanlayıcı</string>
+    <string name="remote_fan_sleep">Uyku</string>
+    <string name="ac_remote_command_sent">IR komutu gönderildi · %1$s</string>
+    <string name="ac_remote_send_failed">IR komutu başarısız: %1$s</string>
 </resources>

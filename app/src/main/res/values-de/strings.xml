@@ -629,4 +629,31 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="remote_profile_status">Verifizierte IR-Profile werden ergänzt. FG Link sendet keine ungeprüften Codes.</string>
     <string name="remote_category_selected">Ausgewählt: %1$s</string>
 
+    <string name="remote_ac_selected">Klimaanlagen-Fernbedienungen · Marke wählen und bei Bedarf Smart IR Scan starten.</string>
+    <string name="remote_fan_selected">Ventilator-Fernbedienungen · Modell wählen; ohne verifiziertes Profil Smart IR Scan starten.</string>
+    <string name="remote_choose_ac_brand">Klimamarke wählen</string>
+    <string name="remote_choose_fan_model">Ventilatormodell wählen</string>
+    <string name="remote_scan_required">Kein verifiziertes Profil für diese Marke gespeichert. Smart IR Scan starten und nur bei echter Geräteantwort speichern.</string>
+    <string name="remote_profile_ready">%1$s · verifiziertes Profil: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan %1$d/%2$d</string>
+    <string name="remote_scan_question">Testprofil gesendet: %1$s\n\nHat die Klimaanlage gepiept oder reagiert?</string>
+    <string name="remote_scan_yes">Ja — speichern</string>
+    <string name="remote_scan_no">Nein — weiter</string>
+    <string name="remote_scan_cancel">Abbrechen</string>
+    <string name="remote_scan_no_match">Scan ohne bestätigtes Profil beendet. Kein Protokoll gespeichert.</string>
+    <string name="remote_fan_scan_required">Kein verifiziertes Ventilatorprofil für dieses Modell gespeichert. Nur bei echter Reaktion speichern.</string>
+    <string name="remote_fan_profile_ready">%1$s · verifiziertes IR-Profil: %2$s</string>
+    <string name="remote_fan_scan_no_match">Ventilator-Scan ohne bestätigtes Profil beendet. Kein Code gespeichert.</string>
+    <string name="remote_fan_scan_question">Verifiziertes Testprofil gesendet: %1$s\n\nHat der Ventilator reagiert?</string>
+    <string name="remote_fan_power">Ein/Aus</string>
+    <string name="remote_fan_command">Ventilatorbefehl</string>
+    <string name="remote_fan_command_sent">%1$s gesendet · %2$s</string>
+    <string name="remote_fan_command_unavailable">Diese Taste ist im verifizierten Profil nicht verfügbar.</string>
+    <string name="remote_fan_speed">Geschwindigkeit</string>
+    <string name="remote_fan_swing">Schwenken</string>
+    <string name="remote_fan_timer">Timer</string>
+    <string name="remote_fan_sleep">Schlaf</string>
+    <string name="ac_remote_command_sent">IR-Befehl gesendet · %1$s</string>
+    <string name="ac_remote_send_failed">IR-Befehl fehlgeschlagen: %1$s</string>
 </resources>

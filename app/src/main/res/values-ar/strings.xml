@@ -631,7 +631,7 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="remote_category_selected">المحدد: %1$s</string>
 
 
-    <string name="remote_ac_selected">ريموت التكييفات · اختر Sharp أو UnionAir ثم نفّذ Smart IR Scan مرة واحدة.</string>
+    <string name="remote_ac_selected">ريموت التكييفات · اختر الماركة ثم شغّل Smart IR Scan عند الحاجة.</string>
     <string name="remote_fan_pending">ريموت المراوح مكتبة مستقلة. سنبدأ بعائلات Fresh، وتظل الأكواد غير الموثقة معطلة.</string>
     <string name="remote_ac_brands_title">ماركات التكييف</string>
     <string name="remote_brand_selected">المحدد: %1$s</string>
@@ -649,7 +649,21 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="remote_swing">Swing</string>
     <string name="remote_temp_default">24°م</string>
     <string name="remote_temp_value">%1$d°م</string>
-    <string name="remote_command_sent">تم إرسال أمر IR · %1$s</string>
-    <string name="remote_send_failed">فشل إرسال أمر IR: %1$s</string>
-
+        <string name="remote_fan_selected">ريموت المراوح · اختر موديل المروحة، وإذا لم يوجد ملف محفوظ شغّل Smart IR Scan.</string>
+    <string name="remote_choose_ac_brand">اختر ماركة التكييف</string>
+    <string name="remote_choose_fan_model">اختر موديل المروحة</string>
+    <string name="remote_fan_scan_required">لا يوجد ملف IR موثق محفوظ لهذا الموديل. شغّل Smart IR Scan ولا تعتمد الملف إلا إذا استجابت المروحة فعليًا.</string>
+    <string name="remote_fan_profile_ready">%1$s · ملف IR المعتمد: %2$s</string>
+    <string name="remote_fan_scan_no_match">انتهى فحص المروحة دون تأكيد ملف. لم يتم حفظ أي كود.</string>
+    <string name="remote_fan_scan_question">تم إرسال ملف اختبار موثق: %1$s\n\nهل استجابت المروحة؟</string>
+    <string name="remote_fan_power">تشغيل / إيقاف</string>
+    <string name="remote_fan_command">أمر المروحة</string>
+    <string name="remote_fan_command_sent">تم إرسال %1$s · %2$s</string>
+    <string name="remote_fan_command_unavailable">هذا الزر غير متوفر في ملف IR الموثق الحالي.</string>
+    <string name="remote_fan_speed">السرعة</string>
+    <string name="remote_fan_swing">تحريك</string>
+    <string name="remote_fan_timer">مؤقت</string>
+    <string name="remote_fan_sleep">نوم</string>
+    <string name="ac_remote_command_sent">تم إرسال أمر IR · %1$s</string>
+    <string name="ac_remote_send_failed">فشل إرسال أمر IR: %1$s</string>
 </resources>
