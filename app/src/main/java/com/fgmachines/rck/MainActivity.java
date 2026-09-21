@@ -282,8 +282,7 @@ public class MainActivity extends AppCompatActivity {
         // page before controller/database initialization, which can be slow on
         // cold emulators and low-end phones.
         boolean uiGateBuild = getPackageName().endsWith(".debug")
-                || getPackageName().endsWith(".sidecar161")
-                || getPackageName().endsWith(".sidecar161arm64");
+                || getPackageName().contains(".sidecar");
         if (uiGateBuild && "dashboard".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
             uiGateActive = true;
             showPage(0);
@@ -600,6 +599,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.homeToScan).setOnClickListener(v -> showPage(2));
         findViewById(R.id.homeToRemote).setOnClickListener(v ->
                 startActivity(new Intent(this, RemoteActivity.class)));
+        findViewById(R.id.networkDoctorButton).setOnClickListener(v ->
+                startActivity(new Intent(this, NetworkDoctorActivity.class)));
         findViewById(R.id.homeToDiagnostics).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnosticsActivity.class);
             if (activeMac != null && !activeMac.trim().isEmpty()) {
