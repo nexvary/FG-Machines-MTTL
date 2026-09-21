@@ -4184,6 +4184,24 @@
                             android:textColor="@color/fg_warning"
                             android:textSize="10sp"
                             android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/networkDoctorButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/network_doctor_open"
+                            android:textAllCaps="false"
+                            android:textColor="@color/fg_neon_cyan"
+                            android:textStyle="bold"
+                            app:cornerRadius="15dp"
+                            app:icon="@drawable/ic_network_scan"
+                            app:iconGravity="textStart"
+                            app:iconPadding="10dp"
+                            app:iconTint="@color/fg_neon_cyan"
+                            app:strokeColor="@color/fg_blue_bright"
+                            app:strokeWidth="1dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
