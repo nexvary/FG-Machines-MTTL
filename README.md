@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.6.0
+## Current Android baseline — 1.6.1
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -24,8 +24,9 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - Physical FG validation on an MTTL-W01 running firmware `1.0.66-0.1.54` confirmed that all four AC outlets remain controllable over the local Wi-Fi LAN with the router WAN/Internet link disconnected. The UI now hides the strip's ephemeral TCP source port and shows the stable local path to controller TCP `10086`.
 - 1.3.9 Automation UX replaces manual numeric typing with wheel pickers for auto-off, low-consumption cutoff, power-limit cutoff and Away Mode intervals; schedule times use a native time picker.
 - 1.4.0 Professional UI Refresh introduces a calmer black/navy surface system, compact brand header, semantic connection colors, stateful per-outlet cards, clearer picker affordances, and a consistent selected-state bottom navigation.
-- 1.5.0 Free Remote Access adds two zero-subscription remote paths: ZeroTier directly on the controller phone, or a ZeroTier/OpenWrt router gateway that routes the site LAN. Both reuse the authenticated local API on TCP 18086 and keep MTTL control local on TCP 10086.
+- 1.5.0 Free Remote Access adds two zero-subscription remote paths: ZeroTier directly on the controller phone, or a ZeroTier router gateway. Router Gateway can expose only TCP 18086 on the router's ZeroTier address and destination-NAT it to the controller phone, avoiding a paid/custom ZeroTier Managed Route. Both paths keep MTTL control local on TCP 10086.
 - 1.6.0 adopts the customer-facing **FG Link** launcher name and **FG Machines Link** in-app identity, uses the supplied FG Machines company artwork in the launcher/About experience, and fixes the Home Assistant share-token button so localized labels are not clipped.
+- 1.6.1 expands the IR replacement-remote library for verified AC protocol families and fan profiles, keeps unverified Fresh fan models on confirmation-based Smart Scan, stabilizes the real-device UI screenshot release gate, and hardens Router Gateway setup with an active TCP 18086 health probe.
 - Driver-based smart-home platform foundation separates device protocols from the UI: MTTL-W01 is the first verified driver, while relays, sensors, IR/AC, energy monitors, room controllers, gateways and smart panels now have protocol-neutral model/registry slots without falsely claiming hardware support.
 - Free remote profiles deliberately accept only private/VPN HTTP endpoints. Public Internet HTTP is rejected; no port-forwarding is required.
 - Device Share Codes prefer the configured free remote endpoint, so a client can import one code and use the same authenticated device scope over ZeroTier.
@@ -90,7 +91,16 @@ There are two different local roles:
 2. **Normal operation:** after provisioning, compatible firmware connects outward to the configured controller on TCP `10086`. FG Machines Link now implements that controller endpoint on Android.
 
 3. **Local API / Home Assistant:** the controller phone exposes an authenticated API on TCP `18086` for trusted LAN/VPN clients. Access tokens are created in the app and only their SHA-256 hashes are retained.
-4. **Device Sharing / Remote Control:** another FG Machines Link installation can import a scoped Device Share Code and use the same API over a trusted LAN/private VPN. A future HTTPS VPS can preserve this client contract. Direct public exposure of the phone's plain HTTP port is not recommended.
+4. **Device Sharing / Remote Control:** another FG Machines Link installation can import a scoped Device Share Code and use the same API over a trusted LAN/private VPN. In Router Gateway mode, the remote phone targets the router's ZeroTier IP on TCP 18086; the router forwards only that port to the controller phone's LAN IP. This avoids requiring a custom ZeroTier Managed Route on the remote Android phone. A future HTTPS VPS can preserve this client contract. Direct public exposure of the phone's plain HTTP port is not recommended.
+
+RouterOS example (replace the placeholders with the verified interface/IP values):
+
+```text
+/ip firewall nat add chain=dstnat in-interface=FG-ZeroTier protocol=tcp dst-port=18086 action=dst-nat to-addresses=<CONTROLLER_LAN_IP> to-ports=18086 comment="FG-Link-ZT-API"
+/ip firewall nat add chain=srcnat src-address=<ZEROTIER_SUBNET> dst-address=<CONTROLLER_LAN_IP> protocol=tcp dst-port=18086 out-interface=<HOME_LAN_INTERFACE> action=masquerade comment="FG-Link-ZT-API-return"
+```
+
+This forwarding rule is intentionally limited to the private ZeroTier interface and the FG Link API port. It does not expose TCP 18086 to the public WAN.
 
 Normal controller commands include:
 
