@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
     private View[] pages;
     private MaterialButton[] navButtons;
     private int currentPage;
+    private boolean uiGateActive;
 
     private final ExecutorService commandWorker = Executors.newSingleThreadExecutor();
     private volatile String activeMac;
@@ -284,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
                 || getPackageName().endsWith(".sidecar161")
                 || getPackageName().endsWith(".sidecar161arm64");
         if (uiGateBuild && "dashboard".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
+            uiGateActive = true;
             showPage(0);
             try (java.io.FileOutputStream marker =
                          openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
@@ -297,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (uiGateBuild && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
+            uiGateActive = true;
             showPage(4);
             try (java.io.FileOutputStream marker =
                          openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
@@ -3261,6 +3264,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (uiGateActive) return;
         if (hotspotStatus != null) updateHotspotStatus(false);
         updateSetupReadiness();
         updateAutomationSummary();
