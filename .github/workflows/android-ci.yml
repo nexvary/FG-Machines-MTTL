@@ -194,9 +194,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FG-Link-1.6.2-ui-screenshots
-          path: |
-            FG-Link-1.6.2-dashboard.png
-            FG-Link-1.6.2-about.png
+          path: FG-Link-1.6.2-*.png
           if-no-files-found: error
 
 
