@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_PACKAGE="com.fgmachines.rck.sidecar161"
+APP_PACKAGE="com.fgmachines.rck.sidecar162"
 APP_ACTIVITY="$APP_PACKAGE/com.fgmachines.rck.MainActivity"
 
 wake_and_unlock() {
@@ -46,7 +46,7 @@ done
 
 adb install -r apk-debug/app-debug.apk
 adb install -r apk-sidecar/app-sidecar.apk
-adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar161'
+adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar162'
 
 # Dashboard gate: launch the real sidecar app and require its MainActivity in foreground.
 wake_and_unlock
@@ -76,8 +76,8 @@ if [ "$DASHBOARD_MARKER" != "dashboard-page-visible" ]; then
   exit 1
 fi
 sleep 2
-adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
-test -s FG-Link-1.6.1-dashboard.png
+adb exec-out screencap -p > FG-Link-1.6.2-dashboard.png
+test -s FG-Link-1.6.2-dashboard.png
 
 # Developer-page gate: use the sidecar-only test hook to select the actual About/developer page.
 # The hook executes showPage(4) inside MainActivity and emits FGLinkUiGate only after doing so.
@@ -110,7 +110,7 @@ if [ "$ABOUT_MARKER" != "about-page-visible" ]; then
 fi
 sleep 2
 
-adb exec-out screencap -p > FG-Link-1.6.1-about.png
-test -s FG-Link-1.6.1-about.png
+adb exec-out screencap -p > FG-Link-1.6.2-about.png
+test -s FG-Link-1.6.2-about.png
 
 echo "FG Link UI branding and developer-page gate passed."
