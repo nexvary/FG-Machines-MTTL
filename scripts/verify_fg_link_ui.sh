@@ -47,10 +47,16 @@ adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rc
 
 # Dashboard gate: launch the real sidecar app and require its MainActivity in foreground.
 wake_and_unlock
+adb shell run-as "$APP_PACKAGE" rm -f files/fg_ui_gate_state >/dev/null 2>&1 || true
 adb shell am force-stop "$APP_PACKAGE"
-adb shell am start -n "$APP_ACTIVITY"
+adb shell am start -n "$APP_ACTIVITY" --es fg_ui_test_page dashboard
 wait_for_main_activity
-sleep 3
+DASHBOARD_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\\r\\n' || true)"
+if [ "$DASHBOARD_MARKER" != "dashboard-page-visible" ]; then
+  echo "UI gate failed: dashboard-page marker was not written" >&2
+  exit 1
+fi
+sleep 2
 adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
 test -s FG-Link-1.6.1-dashboard.png
 
