@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_app_gradient"
     android:fillViewport="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/remoteBackButton"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -29,6 +31,7 @@
                 android:textColor="@color/fg_text"
                 app:cornerRadius="14dp"
                 app:strokeColor="@color/fg_metal_silver" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -39,6 +42,7 @@
                 android:textColor="@color/fg_neon_cyan"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -64,11 +68,13 @@
             app:cardCornerRadius="18dp"
             app:strokeColor="@color/fg_metal_silver"
             app:strokeWidth="1dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="14dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,6 +87,7 @@
                     android:textColor="@color/fg_neon_lime"
                     android:textSize="10sp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/remoteIrStatus"
                     android:layout_width="match_parent"
@@ -102,6 +109,7 @@
             android:textColor="@color/fg_neon_violet"
             android:textSize="18sp"
             android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -111,76 +119,237 @@
             android:textColor="@color/fg_text_secondary"
             android:textSize="12sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/remoteAcButton"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/remote_ac_category"
-            android:textAllCaps="false"
-            android:textColor="@color/fg_neon_cyan"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/fg_surface_2"
-            app:cornerRadius="18dp"
-            app:icon="@drawable/ic_remote"
-            app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="28dp"
-            app:iconTint="@color/fg_neon_cyan"
-            app:strokeColor="@color/fg_metal_silver"
-            app:strokeWidth="2dp" />
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/remote_ac_note"
-            android:textAlignment="viewStart"
-            android:textColor="@color/fg_text_secondary"
-            android:textSize="11sp" />
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/remoteFanButton"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/remote_fan_category"
-            android:textAllCaps="false"
-            android:textColor="@color/fg_neon_magenta"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/fg_surface_2"
-            app:cornerRadius="18dp"
-            app:icon="@drawable/ic_remote"
-            app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="28dp"
-            app:iconTint="@color/fg_neon_magenta"
-            app:strokeColor="@color/fg_metal_silver"
-            app:strokeWidth="2dp" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/remote_fan_note"
-            android:textAlignment="viewStart"
-            android:textColor="@color/fg_text_secondary"
-            android:textSize="11sp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/remoteAcButton"
+                android:layout_width="0dp"
+                android:layout_height="62dp"
+                android:layout_weight="1"
+                android:text="@string/remote_ac_category"
+                android:textAllCaps="false"
+                android:textColor="@color/fg_neon_cyan"
+                app:backgroundTint="@color/fg_surface_2"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_remote"
+                app:iconTint="@color/fg_neon_cyan"
+                app:strokeColor="@color/fg_metal_silver"
+                app:strokeWidth="1dp" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/remoteFanButton"
+                android:layout_width="0dp"
+                android:layout_height="62dp"
+                android:layout_weight="1"
+                android:text="@string/remote_fan_category"
+                android:textAllCaps="false"
+                android:textColor="@color/fg_neon_magenta"
+                app:backgroundTint="@color/fg_surface_2"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_remote"
+                app:iconTint="@color/fg_neon_magenta"
+                app:strokeColor="@color/fg_metal_silver"
+                app:strokeWidth="1dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/remoteCategoryStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/bg_status_pill"
-            android:padding="12dp"
-            android:text="@string/remote_profile_status"
+            android:padding="11dp"
+            android:text="@string/remote_ac_selected"
             android:textAlignment="viewStart"
             android:textColor="@color/fg_text"
             android:textSize="12sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/fg_surface"
+            app:cardCornerRadius="18dp"
+            app:strokeColor="@color/fg_metal_silver"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remote_ac_brands_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_neon_lime"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remoteSharpButton"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:text="Sharp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/fg_neon_cyan"
+                        app:backgroundTint="@color/fg_surface_2"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_neon_cyan"
+                        app:strokeWidth="1dp" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remoteUnionAirButton"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1"
+                        android:text="UnionAir"
+                        android:textAllCaps="false"
+                        android:textColor="@color/fg_neon_magenta"
+                        app:backgroundTint="@color/fg_surface_2"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_neon_magenta"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/remoteProfileStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:padding="10dp"
+                    android:text="@string/remote_scan_required"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/remoteScanButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/remote_scan_button"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_black"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/fg_neon_lime"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_remote"
+                    app:iconTint="@color/fg_black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remotePowerOffButton"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="@string/remote_power_off"
+                        android:textAllCaps="false"
+                        android:textColor="@color/fg_text"
+                        app:backgroundTint="@color/fg_surface_2"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_metal_silver" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remotePowerOnButton"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="@string/remote_power_on"
+                        android:textAllCaps="false"
+                        android:textColor="@color/fg_black"
+                        app:backgroundTint="@color/fg_neon_cyan"
+                        app:cornerRadius="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remoteTempDownButton"
+                        android:layout_width="64dp"
+                        android:layout_height="52dp"
+                        android:text="−"
+                        android:textColor="@color/fg_text"
+                        android:textSize="24sp"
+                        app:backgroundTint="@color/fg_surface_2"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_metal_silver" />
+
+                    <TextView
+                        android:id="@+id/remoteTempValue"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_status_pill"
+                        android:gravity="center"
+                        android:text="@string/remote_temp_default"
+                        android:textColor="@color/fg_neon_lime"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/remoteTempUpButton"
+                        android:layout_width="64dp"
+                        android:layout_height="52dp"
+                        android:text="+"
+                        android:textColor="@color/fg_text"
+                        android:textSize="22sp"
+                        app:backgroundTint="@color/fg_surface_2"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/fg_metal_silver" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/remoteSwingButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/remote_swing"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_violet"
+                    app:cornerRadius="14dp"
+                    app:strokeColor="@color/fg_neon_violet" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>
