@@ -15,6 +15,11 @@ public class FreeRemoteAccessTest {
                 FreeRemoteAccess.endpointForHost("192.168.10.120"));
     }
 
+    @Test public void buildsRouterGatewayZeroTierEndpointWithoutManagedRoute() throws Exception {
+        assertEquals("http://10.158.229.58:18086",
+                FreeRemoteAccess.endpointForHost("10.158.229.58"));
+    }
+
     @Test public void acceptsExistingPrivateEndpoint() throws Exception {
         assertEquals("http://100.90.8.7:18086",
                 FreeRemoteAccess.endpointForHost("http://100.90.8.7:18086"));

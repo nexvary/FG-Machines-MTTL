@@ -571,16 +571,19 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="free_remote_title">التحكم المجاني عن بُعد</string>
     <string name="free_remote_note">لا يحتاج VPS ولا اشتراكًا شهريًا. اختر ZeroTier على هاتف التحكم أو بوابة ZeroTier/OpenWrt على الراوتر.</string>
     <string name="free_remote_mode_label">طريقة الوصول المجاني</string>
-    <string name="free_remote_host_hint">عنوان ZeroTier الخاص / عنوان هاتف التحكم داخل LAN</string>
+    <string name="free_remote_host_hint">عنوان ZeroTier الخاص بهاتف التحكم / بوابة الراوتر</string>
     <string name="free_remote_apply">استخدام المسار المجاني</string>
     <string name="free_remote_phone_help">وضع الهاتف: ثبّت ZeroTier على هاتف FG Machines Link الرئيسي، ثم أدخل عنوان ZeroTier الخاص بهذا الهاتف. سيستخدم FG Link واجهة Local API على المنفذ 18086.</string>
-    <string name="free_remote_router_help">وضع الراوتر: يعمل ZeroTier على Access Point/راوتر OpenWrt ويوجّه شبكة الموقع. أدخل عنوان هاتف التحكم داخل LAN. التطبيق لا يقوم بعملية التفليش تلقائيًا.</string>
+    <string name="free_remote_router_help">وضع بوابة الراوتر: يعمل ZeroTier على الراوتر. أدخل عنوان ZeroTier الخاص بالراوتر، ثم وجّه TCP 18086 من واجهة ZeroTier فقط إلى عنوان هاتف التحكم داخل LAN. لا تحتاج Managed Route في ZeroTier. التطبيق لا يقوم بتفليش الراوتر.</string>
     <string name="free_remote_ready">المسار المجاني جاهز · %1$s · %2$s</string>
+    <string name="free_remote_checking">جارٍ فحص مسار التحكم البعيد…</string>
+    <string name="free_remote_reachable">مسار التحكم البعيد متاح · %1$s · %2$s</string>
+    <string name="free_remote_unreachable">تم حفظ العنوان لكنه غير متاح حاليًا · %1$s · %2$s</string>
     <string name="free_remote_invalid">خطأ في المسار المجاني: %1$s</string>
-    <string name="free_remote_router_warning">هدف الراوتر التجريبي: LG GAPM-7100 / RTL8198C rev B. استخدم فقط Firmware تم التحقق منه لنفس اللوحة، ولا تستخدم صورة عامة لمعالج RTL8198C.</string>
+    <string name="free_remote_router_warning">اقصر تحويل المنفذ على واجهة ZeroTier والمنفذ TCP 18086 فقط. أبقِ واجهة التحكم داخل LAN/VPN موثوقة ولا تعرض HTTP غير المشفر مباشرة للإنترنت العام.</string>
     <string-array name="free_remote_mode_labels">
         <item>ZeroTier على هاتف التحكم</item>
-        <item>ZeroTier / OpenWrt على الراوتر</item>
+        <item>بوابة راوتر ZeroTier (تحويل TCP 18086)</item>
     </string-array>
     <string name="platform_title">FG Link للمنزل الذكي</string>
     <string name="platform_note">نواة تعتمد على Drivers للمشتركات والريليه والحساسات وIR/التكييف والطاقة ووحدات الغرف والبوابات. MTTL-W01 هو أول Driver تم التحقق منه.</string>

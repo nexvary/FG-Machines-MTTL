@@ -571,16 +571,19 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="free_remote_title">Kostenloser Fernzugriff</string>
     <string name="free_remote_note">Kein VPS und kein Monatsabo erforderlich. Wählen Sie ZeroTier auf dem Controller-Telefon oder ein ZeroTier/OpenWrt-Router-Gateway.</string>
     <string name="free_remote_mode_label">Kostenloser Zugriffsmodus</string>
-    <string name="free_remote_host_hint">Private ZeroTier-/Controller-LAN-IP</string>
+    <string name="free_remote_host_hint">Private ZeroTier-IP des Controller-Telefons / Router-Gateways</string>
     <string name="free_remote_apply">Kostenlosen Fernzugriff verwenden</string>
     <string name="free_remote_phone_help">Telefonmodus: Installieren Sie ZeroTier auf dem FG Machines Link Controller-Telefon. Geben Sie dessen private ZeroTier-IP ein; FG Link verwendet den lokalen API-Port 18086.</string>
-    <string name="free_remote_router_help">Router-Gateway-Modus: ZeroTier läuft auf dem OpenWrt-Access-Point/Router und routet das lokale Netz. Geben Sie die LAN-IP des Controller-Telefons ein. Die App flasht den Router nicht automatisch.</string>
+    <string name="free_remote_router_help">Router-Gateway-Modus: ZeroTier läuft auf dem Router. Geben Sie die ZeroTier-IP des Routers ein. Leiten Sie TCP 18086 nur von der ZeroTier-Schnittstelle an die LAN-IP des Controller-Telefons weiter; eine ZeroTier Managed Route ist nicht erforderlich. Die App flasht den Router niemals.</string>
     <string name="free_remote_ready">Kostenloser Fernzugriff bereit · %1$s · %2$s</string>
+    <string name="free_remote_checking">Fernzugriffspfad wird geprüft…</string>
+    <string name="free_remote_reachable">Fernzugriffspfad erreichbar · %1$s · %2$s</string>
+    <string name="free_remote_unreachable">Endpunkt gespeichert, aber noch nicht erreichbar · %1$s · %2$s</string>
     <string name="free_remote_invalid">Fehler beim kostenlosen Fernzugriff: %1$s</string>
-    <string name="free_remote_router_warning">Experimentelles Router-Ziel: LG GAPM-7100 / RTL8198C rev B. Nur ein für die exakte Platine geprüftes Firmware-Image verwenden; niemals ein generisches RTL8198C-Image flashen.</string>
+    <string name="free_remote_router_warning">Beschränken Sie die Weiterleitung auf die ZeroTier-Schnittstelle und TCP 18086. Halten Sie die Controller-API in einem vertrauenswürdigen LAN/VPN und veröffentlichen Sie unverschlüsseltes HTTP niemals direkt im Internet.</string>
     <string-array name="free_remote_mode_labels">
         <item>ZeroTier auf dem Controller-Telefon</item>
-        <item>ZeroTier / OpenWrt Router-Gateway</item>
+        <item>ZeroTier Router-Gateway (TCP-18086-Weiterleitung)</item>
     </string-array>
     <string name="platform_title">FG Link Smart Home</string>
     <string name="platform_note">Treiberbasierter Kern für Steckdosenleisten, Relais, Sensoren, IR/Klima, Energie, Raumcontroller und Gateways. MTTL-W01 ist der erste verifizierte Treiber.</string>
