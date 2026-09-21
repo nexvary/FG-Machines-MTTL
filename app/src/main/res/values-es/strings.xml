@@ -571,16 +571,19 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="free_remote_title">Acceso remoto gratuito</string>
     <string name="free_remote_note">No requiere VPS ni suscripción mensual. Elige ZeroTier en el teléfono controlador o una puerta de enlace ZeroTier/OpenWrt en el router.</string>
     <string name="free_remote_mode_label">Modo de acceso gratuito</string>
-    <string name="free_remote_host_hint">IP privada de ZeroTier / LAN del controlador</string>
+    <string name="free_remote_host_hint">IP privada de ZeroTier del teléfono controlador / gateway</string>
     <string name="free_remote_apply">Usar acceso remoto gratuito</string>
     <string name="free_remote_phone_help">Modo teléfono: instala ZeroTier en el teléfono que ejecuta FG Machines Link. Introduce su IP privada de ZeroTier; FG Link usará la API local en el puerto 18086.</string>
-    <string name="free_remote_router_help">Modo router: ZeroTier se ejecuta en el punto de acceso/router OpenWrt y enruta la LAN. Introduce la IP LAN del teléfono controlador. La app no flashea el router automáticamente.</string>
+    <string name="free_remote_router_help">Modo gateway: ZeroTier se ejecuta en el router. Introduce la IP ZeroTier del router. Reenvía TCP 18086 solo desde la interfaz ZeroTier a la IP LAN del teléfono controlador; no se requiere una Managed Route de ZeroTier. La app nunca flashea el router.</string>
     <string name="free_remote_ready">Acceso remoto gratuito listo · %1$s · %2$s</string>
+    <string name="free_remote_checking">Comprobando la ruta remota…</string>
+    <string name="free_remote_reachable">Ruta remota accesible · %1$s · %2$s</string>
+    <string name="free_remote_unreachable">Endpoint guardado, pero aún no es accesible · %1$s · %2$s</string>
     <string name="free_remote_invalid">Error de acceso remoto gratuito: %1$s</string>
-    <string name="free_remote_router_warning">Objetivo experimental: LG GAPM-7100 / RTL8198C rev B. Usa solo firmware verificado para la placa exacta; no flashees una imagen RTL8198C genérica.</string>
+    <string name="free_remote_router_warning">Limita el reenvío a la interfaz ZeroTier y TCP 18086. Mantén la API del controlador dentro de una LAN/VPN de confianza y no expongas HTTP sin cifrar a Internet público.</string>
     <string-array name="free_remote_mode_labels">
         <item>ZeroTier en el teléfono controlador</item>
-        <item>ZeroTier / OpenWrt en el router</item>
+        <item>Gateway ZeroTier del router (reenvío TCP 18086)</item>
     </string-array>
     <string name="platform_title">FG Link Smart Home</string>
     <string name="platform_note">Núcleo basado en drivers para regletas, relés, sensores, IR/aire acondicionado, energía, controladores de habitación y gateways. MTTL-W01 es el primer driver verificado.</string>
