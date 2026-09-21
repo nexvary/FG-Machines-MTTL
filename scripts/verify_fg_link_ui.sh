@@ -75,7 +75,7 @@ if [ "$DASHBOARD_MARKER" != "dashboard-page-visible" ]; then
   adb logcat -d -t 2000 | grep -E "$APP_PACKAGE|FGLinkUiGate|ActivityTaskManager|ActivityManager|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 400 || true
   exit 1
 fi
-sleep 2
+sleep 8
 adb exec-out screencap -p > FG-Link-1.6.2-dashboard.png
 test -s FG-Link-1.6.2-dashboard.png
 
@@ -108,7 +108,7 @@ if [ "$ABOUT_MARKER" != "about-page-visible" ]; then
   adb logcat -d -t 300 | grep -E "$APP_PACKAGE|FGLinkUiGate|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 120 || true
   exit "$return_code"
 fi
-sleep 2
+sleep 8
 
 adb exec-out screencap -p > FG-Link-1.6.2-about.png
 test -s FG-Link-1.6.2-about.png
@@ -124,9 +124,16 @@ capture_main_page() {
   adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
     -n "$APP_ACTIVITY" --es fg_ui_test_page "$page" >/dev/null
   wait_for_main_activity
-  sleep 2
+  # The software-emulated hosted runner can report RESUMED several seconds
+  # before the first fully rendered frame is available.
+  sleep 8
   adb exec-out screencap -p > "$file"
   test -s "$file"
+  size="$(stat -c%s "$file")"
+  if [ "$size" -lt 35000 ]; then
+    echo "UI screenshot gate failed: $file looks like an unrendered/blank frame ($size bytes)" >&2
+    exit 1
+  fi
 }
 
 wait_for_component() {
@@ -155,9 +162,15 @@ capture_child_page() {
   adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
     -n "$APP_ACTIVITY" --es fg_ui_test_page "$page" >/dev/null
   wait_for_component "$component"
-  sleep 3
+  # Child activities also need a settled frame on the no-KVM emulator.
+  sleep 8
   adb exec-out screencap -p > "$file"
   test -s "$file"
+  size="$(stat -c%s "$file")"
+  if [ "$size" -lt 35000 ]; then
+    echo "UI screenshot gate failed: $file looks like an unrendered/blank frame ($size bytes)" >&2
+    exit 1
+  fi
 }
 
 # Complete real-page gallery from the same 1.6.2 sidecar APK.
