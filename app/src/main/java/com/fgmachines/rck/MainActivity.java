@@ -2399,14 +2399,36 @@ public class MainActivity extends AppCompatActivity {
                     .putString(PREF_REMOTE_ENDPOINT, endpoint)
                     .apply();
             remoteEndpointInput.setText(endpoint);
-            freeRemoteStatus.setText(getString(
-                    R.string.free_remote_ready,
-                    FreeRemoteAccess.modeLabel(mode), endpoint));
-            if (!textOf(remoteTokenInput).isEmpty()) {
-                refreshRemoteDevices();
-            } else {
-                remoteStatus.setText(R.string.remote_not_connected);
-            }
+            freeRemoteStatus.setText(R.string.free_remote_checking);
+            applyFreeRemoteButton.setEnabled(false);
+
+            // /api/v1/health is intentionally unauthenticated and exposes no
+            // device data. Probe it here so Router Gateway mode proves that
+            // ZeroTier + TCP 18086 forwarding actually reaches the controller.
+            commandWorker.execute(() -> {
+                try {
+                    new RemoteApiClient(endpoint, "").health();
+                    runOnUiThread(() -> {
+                        freeRemoteStatus.setText(getString(
+                                R.string.free_remote_reachable,
+                                FreeRemoteAccess.modeLabel(mode), endpoint));
+                        applyFreeRemoteButton.setEnabled(true);
+                        if (!textOf(remoteTokenInput).isEmpty()) {
+                            refreshRemoteDevices();
+                        } else {
+                            remoteStatus.setText(R.string.remote_not_connected);
+                        }
+                    });
+                } catch (IOException error) {
+                    runOnUiThread(() -> {
+                        freeRemoteStatus.setText(getString(
+                                R.string.free_remote_unreachable,
+                                endpoint, safeMessage(error)));
+                        applyFreeRemoteButton.setEnabled(true);
+                        remoteStatus.setText(R.string.remote_not_connected);
+                    });
+                }
+            });
         } catch (IOException error) {
             freeRemoteStatus.setText(getString(
                     R.string.free_remote_invalid, safeMessage(error)));
