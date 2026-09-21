@@ -278,80 +278,69 @@ public class MainActivity extends AppCompatActivity {
         configureNavigation();
         configureCompactSettings();
 
-        // The sidecar UI gate must be able to select and prove the requested
-        // page before controller/database initialization, which can be slow on
-        // cold emulators and low-end phones.
-        boolean uiGateBuild = getPackageName().endsWith(".debug")
-                || getPackageName().contains(".sidecar");
-        if (uiGateBuild && "dashboard".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
-            uiGateActive = true;
-            showPage(0);
-            try (java.io.FileOutputStream marker =
-                         openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
-                marker.write("dashboard-page-visible".getBytes(
-                        java.nio.charset.StandardCharsets.UTF_8));
-            } catch (java.io.IOException error) {
-                android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
-            }
-            android.util.Log.i("FGLinkUiGate", "dashboard-page-visible");
-            return;
-        }
-
-        if (uiGateBuild && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
-            uiGateActive = true;
-            showPage(4);
-            try (java.io.FileOutputStream marker =
-                         openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
-                marker.write("about-page-visible".getBytes(
-                        java.nio.charset.StandardCharsets.UTF_8));
-            } catch (java.io.IOException error) {
-                android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
-            }
-            android.util.Log.i("FGLinkUiGate", "about-page-visible");
-            // UI screenshot gate only needs the rendered About page. Avoid
-            // starting controller/database/network initialization here so the
-            // emulator cannot ANR or lose foreground before capture.
-            return;
-        }
-
-        if (uiGateBuild) {
-            String testPage = getIntent().getStringExtra("fg_ui_test_page");
-            int pageIndex = -1;
-            String markerValue = null;
-            if ("setup".equals(testPage)) { pageIndex = 1; markerValue = "setup-page-visible"; }
-            else if ("scan".equals(testPage)) { pageIndex = 2; markerValue = "scan-page-visible"; }
-            else if ("settings".equals(testPage)) { pageIndex = 3; markerValue = "settings-page-visible"; }
-            else if ("subscriber".equals(testPage)) { pageIndex = 5; markerValue = "subscriber-page-visible"; }
-
-            if (pageIndex >= 0) {
+        // CI-only page capture. The actual Android view hierarchy is rendered
+        // into a PNG by UiGateCapture so hosted-emulator black framebuffer
+        // frames cannot be mistaken for valid screenshots.
+        boolean uiGateBuild = UiGateCapture.isEnabled(this);
+        String uiTestPage = getIntent().getStringExtra("fg_ui_test_page");
+        if (uiGateBuild && uiTestPage != null) {
+            if ("dashboard".equals(uiTestPage)) {
                 uiGateActive = true;
-                showPage(pageIndex);
-                try (java.io.FileOutputStream marker =
-                             openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
-                    marker.write(markerValue.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                } catch (java.io.IOException error) {
-                    android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
-                }
-                android.util.Log.i("FGLinkUiGate", markerValue);
+                showPage(0);
+                UiGateCapture.capture(this, "dashboard");
                 return;
             }
-
-            if ("remote_ac".equals(testPage) || "remote_fan".equals(testPage)) {
+            if ("setup".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(1);
+                UiGateCapture.capture(this, "setup");
+                return;
+            }
+            if ("scan".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(2);
+                UiGateCapture.capture(this, "scan");
+                return;
+            }
+            if ("settings".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(3);
+                UiGateCapture.capture(this, "settings");
+                return;
+            }
+            if ("about".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(4);
+                UiGateCapture.capture(this, "about");
+                return;
+            }
+            if ("subscriber".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(5);
+                UiGateCapture.capture(this, "subscriber");
+                return;
+            }
+            if ("remote_ac".equals(uiTestPage) || "remote_fan".equals(uiTestPage)) {
                 uiGateActive = true;
                 Intent intent = new Intent(this, RemoteActivity.class);
-                intent.putExtra("fg_ui_remote_category",
-                        "remote_fan".equals(testPage) ? "fan" : "ac");
+                boolean fan = "remote_fan".equals(uiTestPage);
+                intent.putExtra("fg_ui_remote_category", fan ? "fan" : "ac");
+                intent.putExtra("fg_ui_capture_key", fan ? "remote-fan" : "remote-ac");
                 startActivity(intent);
                 return;
             }
-            if ("diagnostics".equals(testPage)) {
+            if ("diagnostics".equals(uiTestPage)) {
                 uiGateActive = true;
-                startActivity(new Intent(this, DiagnosticsActivity.class));
+                Intent intent = new Intent(this, DiagnosticsActivity.class);
+                intent.putExtra("fg_ui_capture_key", "diagnostics");
+                startActivity(intent);
                 return;
             }
-            if ("network_doctor".equals(testPage)) {
+            if ("network_doctor".equals(uiTestPage)) {
                 uiGateActive = true;
-                startActivity(new Intent(this, NetworkDoctorActivity.class));
+                Intent intent = new Intent(this, NetworkDoctorActivity.class);
+                intent.putExtra("fg_ui_capture_key", "network-doctor");
+                startActivity(intent);
                 return;
             }
         }
