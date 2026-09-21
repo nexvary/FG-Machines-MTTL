@@ -667,4 +667,24 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="remote_swing">Schwenken</string>
     <string name="remote_temp_default">24°C</string>
     <string name="remote_temp_value">%1$d°C</string>
+
+    <string name="network_doctor_open">Netzwerk-Doktor</string>
+    <string name="network_doctor_title">Netzwerk-Doktor</string>
+    <string name="network_doctor_subtitle">Ein-Klick-Diagnose für 4G/WLAN, ZeroTier, KT708, FG Link API und den lokalen MTTL-Controller. Vor Änderungen am Router ausführen.</string>
+    <string name="network_doctor_back">Zurück</string>
+    <string name="network_doctor_targets">Diagnoseziele</string>
+    <string name="network_doctor_gateway_hint">KT708 ZeroTier-IP</string>
+    <string name="network_doctor_controller_zt_hint">Controller ZeroTier-IP</string>
+    <string name="network_doctor_controller_lan_hint">Controller LAN-IP</string>
+    <string name="network_doctor_run">Vollständige Diagnose starten</string>
+    <string name="network_doctor_ready">Bereit. Eine Schaltfläche testet den gesamten Pfad.</string>
+    <string name="network_doctor_running">Netzwerkdiagnose läuft…</string>
+    <string name="network_doctor_report_empty">Noch kein Bericht.</string>
+    <string name="network_doctor_apply_best">Funktionierenden Pfad automatisch verwenden</string>
+    <string name="network_doctor_copy">Diagnosebericht kopieren</string>
+    <string name="network_doctor_note">Der Netzwerk-Doktor ändert weder RouterOS noch ZeroTier Central oder öffentliche Interneteinstellungen. Er testet nur lokale/private Pfade und kann einen bestätigten FG Link-Endpunkt speichern.</string>
+    <string name="network_doctor_copied">Diagnosebericht kopiert.</string>
+    <string name="network_doctor_no_working_path">Kein funktionierender Endpunkt erkannt. Keine Einstellungen wurden geändert.</string>
+    <string name="network_doctor_applied">Funktionierender Endpunkt gespeichert: %1$s</string>
+
 </resources>
