@@ -656,4 +656,12 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="remote_fan_sleep">Sueño</string>
     <string name="ac_remote_command_sent">Comando IR enviado · %1$s</string>
     <string name="ac_remote_send_failed">Falló el comando IR: %1$s</string>
+    <string name="remote_fan_pending">Los mandos de ventilador usan una biblioteca separada. Fresh es el primer objetivo; los códigos no verificados permanecen desactivados.</string>
+    <string name="remote_ac_brands_title">Marcas de aire acondicionado</string>
+    <string name="remote_brand_selected">Seleccionado: %1$s</string>
+    <string name="remote_power_on">Encender</string>
+    <string name="remote_power_off">Apagar</string>
+    <string name="remote_swing">Oscilación</string>
+    <string name="remote_temp_default">24°C</string>
+    <string name="remote_temp_value">%1$d°C</string>
 </resources>

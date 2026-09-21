@@ -190,9 +190,9 @@ public final class RemoteActivity extends AppCompatActivity {
     private DeviceProfile.Protocol loadAcProtocol(DeviceProfile.Brand brand) {
         String value = getSharedPreferences(PREFS, MODE_PRIVATE)
                 .getString(PREF_AC_PROTOCOL_PREFIX + brand.name(), "");
-        if (value == null || value.isEmpty()) return defaultProtocol(brand);
+        if (value == null || value.isEmpty()) return null;
         try { return DeviceProfile.Protocol.valueOf(value); }
-        catch (RuntimeException error) { return defaultProtocol(brand); }
+        catch (RuntimeException error) { return null; }
     }
 
     private DeviceProfile.Protocol defaultProtocol(DeviceProfile.Brand brand) {

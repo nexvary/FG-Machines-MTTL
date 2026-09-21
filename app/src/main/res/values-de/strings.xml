@@ -656,4 +656,12 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="remote_fan_sleep">Schlaf</string>
     <string name="ac_remote_command_sent">IR-Befehl gesendet · %1$s</string>
     <string name="ac_remote_send_failed">IR-Befehl fehlgeschlagen: %1$s</string>
+    <string name="remote_fan_pending">Ventilator-Fernbedienungen nutzen eine separate Bibliothek. Fresh ist das erste Ziel; ungeprüfte Codes bleiben deaktiviert.</string>
+    <string name="remote_ac_brands_title">Klimaanlagenmarken</string>
+    <string name="remote_brand_selected">Ausgewählt: %1$s</string>
+    <string name="remote_power_on">Ein</string>
+    <string name="remote_power_off">Aus</string>
+    <string name="remote_swing">Schwenken</string>
+    <string name="remote_temp_default">24°C</string>
+    <string name="remote_temp_value">%1$d°C</string>
 </resources>

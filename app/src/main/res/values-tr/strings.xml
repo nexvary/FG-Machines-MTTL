@@ -656,4 +656,12 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="remote_fan_sleep">Uyku</string>
     <string name="ac_remote_command_sent">IR komutu gönderildi · %1$s</string>
     <string name="ac_remote_send_failed">IR komutu başarısız: %1$s</string>
+    <string name="remote_fan_pending">Vantilatör kumandaları ayrı bir kütüphanedir. Fresh aileleri ilk hedef; doğrulanmamış kodlar kapalı kalır.</string>
+    <string name="remote_ac_brands_title">Klima markaları</string>
+    <string name="remote_brand_selected">Seçili: %1$s</string>
+    <string name="remote_power_on">Aç</string>
+    <string name="remote_power_off">Kapat</string>
+    <string name="remote_swing">Salınım</string>
+    <string name="remote_temp_default">24°C</string>
+    <string name="remote_temp_value">%1$d°C</string>
 </resources>
