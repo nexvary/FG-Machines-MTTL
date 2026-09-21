@@ -293,6 +293,10 @@ public class MainActivity extends AppCompatActivity {
                 android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
             }
             android.util.Log.i("FGLinkUiGate", "about-page-visible");
+            // UI screenshot gate only needs the rendered About page. Avoid
+            // starting controller/database/network initialization here so the
+            // emulator cannot ANR or lose foreground before capture.
+            return;
         }
 
         provisioner = new MttlProvisioner(this);
