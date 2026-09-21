@@ -667,4 +667,24 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="remote_swing">Salınım</string>
     <string name="remote_temp_default">24°C</string>
     <string name="remote_temp_value">%1$d°C</string>
+
+    <string name="network_doctor_open">Ağ Doktoru</string>
+    <string name="network_doctor_title">Ağ Doktoru</string>
+    <string name="network_doctor_subtitle">4G/Wi-Fi, ZeroTier, KT708, FG Link API ve yerel MTTL denetleyicisi için tek dokunuşla tanılama. Yönlendirici ayarlarını değiştirmeden önce çalıştırın.</string>
+    <string name="network_doctor_back">Geri</string>
+    <string name="network_doctor_targets">Tanılama hedefleri</string>
+    <string name="network_doctor_gateway_hint">KT708 ZeroTier IP</string>
+    <string name="network_doctor_controller_zt_hint">Denetleyici ZeroTier IP</string>
+    <string name="network_doctor_controller_lan_hint">Denetleyici LAN IP</string>
+    <string name="network_doctor_run">Tam tanılamayı çalıştır</string>
+    <string name="network_doctor_ready">Hazır. Tek düğme tüm yolu test eder.</string>
+    <string name="network_doctor_running">Ağ tanılaması çalışıyor…</string>
+    <string name="network_doctor_report_empty">Henüz rapor yok.</string>
+    <string name="network_doctor_apply_best">Çalışan yolu otomatik kullan</string>
+    <string name="network_doctor_copy">Tanılama raporunu kopyala</string>
+    <string name="network_doctor_note">Ağ Doktoru RouterOS, ZeroTier Central veya genel internet ayarlarını değiştirmez. Yalnızca yerel/özel yolları test eder ve doğrulanan FG Link uç noktasını kaydedebilir.</string>
+    <string name="network_doctor_copied">Tanılama raporu kopyalandı.</string>
+    <string name="network_doctor_no_working_path">Çalışan uç nokta bulunamadı. Hiçbir ayar değiştirilmedi.</string>
+    <string name="network_doctor_applied">Çalışan uç nokta kaydedildi: %1$s</string>
+
 </resources>
