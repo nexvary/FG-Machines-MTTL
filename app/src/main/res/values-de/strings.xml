@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · %2$d/4 EIN</string>
     <string name="scene_ready">Szene bereit. Anwenden ändert den Zustand aller vier Ausgänge.</string>
 
-    <string name="diagnostics_home_action">Gerätediagnose</string>
+    <string name="diagnostics_home_action">Fehlerdiagnose</string>
     <string name="diagnostics_back">Zurück</string>
     <string name="diagnostics_title">Gerätediagnose</string>
     <string name="diagnostics_subtitle">Offline-Fehlercodes, Symptome und FG-Link-verknüpfter Verlauf mit Quellenangabe</string>
