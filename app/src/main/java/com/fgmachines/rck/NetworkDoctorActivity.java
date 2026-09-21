@@ -96,6 +96,9 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
 
         copyButton.setEnabled(false);
         applyBestButton.setEnabled(false);
+
+        String captureKey = getIntent().getStringExtra("fg_ui_capture_key");
+        if (captureKey != null) UiGateCapture.capture(this, captureKey);
     }
 
     private void applyInsets() {
