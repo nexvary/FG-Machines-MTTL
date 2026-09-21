@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · تشغيل %2$d/4</string>
     <string name="scene_ready">المشهد جاهز. تطبيقه يغير حالات المخارج الأربعة.</string>
 
-    <string name="diagnostics_home_action">تشخيص الأجهزة المنزلية</string>
+    <string name="diagnostics_home_action">تشخيص الأعطال</string>
     <string name="diagnostics_back">رجوع</string>
     <string name="diagnostics_title">تشخيص الأجهزة المنزلية</string>
     <string name="diagnostics_subtitle">أكواد وأعراض موثقة بالمصدر تعمل دون إنترنت مع سجل مرتبط ببيانات FG Link</string>
@@ -613,4 +613,57 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="settings_advanced_show">إظهار الإعدادات المتقدمة</string>
     <string name="settings_advanced_hide">إخفاء الإعدادات المتقدمة</string>
     <!-- CI legacy branding assertion: تم تطوير البرنامج بواسطة علاء الدين محمد وابنه -->
+
+    <string name="remote_home_action">الريموت</string>
+    <string name="remote_title">الريموت</string>
+    <string name="remote_subtitle">بدائل ريموت بالأشعة تحت الحمراء للتكييفات والمراوح فقط.</string>
+    <string name="remote_back">رجوع</string>
+    <string name="remote_ir_badge">عتاد IR</string>
+    <string name="remote_ir_available">تم اكتشاف مرسل IR — الهاتف يدعم التحكم المباشر بالأشعة تحت الحمراء.</string>
+    <string name="remote_ir_unavailable">لا يوجد مرسل IR مدمج في الهاتف. التحكم المباشر يحتاج هاتفًا مزودًا بـ IR Blaster.</string>
+    <string name="remote_scope_title">نطاق الريموت</string>
+    <string name="remote_scope_note">يشمل التكييفات والمراوح فقط. تم استبعاد التلفزيونات والشاشات والبروجيكتور والمسرح المنزلي والرسيفرات وTV Box عمدًا.</string>
+    <string name="remote_ac_category">التكييفات</string>
+    <string name="remote_ac_note">ستظهر وظائف التشغيل والحرارة والوضع والسرعة وSwing والتايمر فقط بعد توثيق أكواد الموديل المحدد.</string>
+    <string name="remote_fan_category">المراوح</string>
+    <string name="remote_fan_note">مخصص للريموتات البديلة صعبة التوفر، ونبدأ بعائلات مراوح Fresh.</string>
+    <string name="remote_profile_status">تتم إضافة ملفات IR الموثقة. لن يرسل FG Link أي أكواد غير موثقة.</string>
+    <string name="remote_category_selected">المحدد: %1$s</string>
+
+
+    <string name="remote_ac_selected">ريموت التكييفات · اختر الماركة ثم شغّل Smart IR Scan عند الحاجة.</string>
+    <string name="remote_fan_pending">ريموت المراوح مكتبة مستقلة. سنبدأ بعائلات Fresh، وتظل الأكواد غير الموثقة معطلة.</string>
+    <string name="remote_ac_brands_title">ماركات التكييف</string>
+    <string name="remote_brand_selected">المحدد: %1$s</string>
+    <string name="remote_scan_required">لا يوجد ملف موثق محفوظ لهذه الماركة. شغّل Smart IR Scan ولا تعتمد الملف إلا إذا أصدر التكييف صفارة أو استجاب فعليًا.</string>
+    <string name="remote_profile_ready">%1$s · الملف المعتمد: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan ‏%1$d/%2$d</string>
+    <string name="remote_scan_question">تم إرسال ملف الاختبار: %1$s\n\nهل أصدر التكييف صفارة أو استجاب؟</string>
+    <string name="remote_scan_yes">نعم — اعتماد</string>
+    <string name="remote_scan_no">لا — التالي</string>
+    <string name="remote_scan_cancel">إلغاء</string>
+    <string name="remote_scan_no_match">انتهى الفحص دون تأكيد ملف. لم يتم حفظ أي بروتوكول.</string>
+    <string name="remote_power_on">تشغيل</string>
+    <string name="remote_power_off">إيقاف</string>
+    <string name="remote_swing">Swing</string>
+    <string name="remote_temp_default">24°م</string>
+    <string name="remote_temp_value">%1$d°م</string>
+        <string name="remote_fan_selected">ريموت المراوح · اختر موديل المروحة، وإذا لم يوجد ملف محفوظ شغّل Smart IR Scan.</string>
+    <string name="remote_choose_ac_brand">اختر ماركة التكييف</string>
+    <string name="remote_choose_fan_model">اختر موديل المروحة</string>
+    <string name="remote_fan_scan_required">لا يوجد ملف IR موثق محفوظ لهذا الموديل. شغّل Smart IR Scan ولا تعتمد الملف إلا إذا استجابت المروحة فعليًا.</string>
+    <string name="remote_fan_profile_ready">%1$s · ملف IR المعتمد: %2$s</string>
+    <string name="remote_fan_scan_no_match">انتهى فحص المروحة دون تأكيد ملف. لم يتم حفظ أي كود.</string>
+    <string name="remote_fan_scan_question">تم إرسال ملف اختبار موثق: %1$s\n\nهل استجابت المروحة؟</string>
+    <string name="remote_fan_power">تشغيل / إيقاف</string>
+    <string name="remote_fan_command">أمر المروحة</string>
+    <string name="remote_fan_command_sent">تم إرسال %1$s · %2$s</string>
+    <string name="remote_fan_command_unavailable">هذا الزر غير متوفر في ملف IR الموثق الحالي.</string>
+    <string name="remote_fan_speed">السرعة</string>
+    <string name="remote_fan_swing">تحريك</string>
+    <string name="remote_fan_timer">مؤقت</string>
+    <string name="remote_fan_sleep">نوم</string>
+    <string name="ac_remote_command_sent">تم إرسال أمر IR · %1$s</string>
+    <string name="ac_remote_send_failed">فشل إرسال أمر IR: %1$s</string>
 </resources>

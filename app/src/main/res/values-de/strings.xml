@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · %2$d/4 EIN</string>
     <string name="scene_ready">Szene bereit. Anwenden ändert den Zustand aller vier Ausgänge.</string>
 
-    <string name="diagnostics_home_action">Gerätediagnose</string>
+    <string name="diagnostics_home_action">Fehlerdiagnose</string>
     <string name="diagnostics_back">Zurück</string>
     <string name="diagnostics_title">Gerätediagnose</string>
     <string name="diagnostics_subtitle">Offline-Fehlercodes, Symptome und FG-Link-verknüpfter Verlauf mit Quellenangabe</string>
@@ -612,4 +612,56 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="subscriber_title">Steckdosenleiste</string>
     <string name="settings_advanced_show">Erweiterte Einstellungen anzeigen</string>
     <string name="settings_advanced_hide">Erweiterte Einstellungen ausblenden</string>
+
+    <string name="remote_home_action">Fernbedienung</string>
+    <string name="remote_title">Fernbedienung</string>
+    <string name="remote_subtitle">IR-Ersatzfernbedienungen nur für Klimaanlagen und Ventilatoren.</string>
+    <string name="remote_back">Zurück</string>
+    <string name="remote_ir_badge">IR-HARDWARE</string>
+    <string name="remote_ir_available">IR-Sender erkannt — dieses Telefon unterstützt direkte Infrarotsteuerung.</string>
+    <string name="remote_ir_unavailable">Kein integrierter IR-Sender erkannt. Direkte Steuerung benötigt ein Telefon mit IR-Blaster.</string>
+    <string name="remote_scope_title">Unterstützter Bereich</string>
+    <string name="remote_scope_note">Nur Klimaanlagen und Ventilatoren. Fernseher, Displays, Projektoren, Heimkinoanlagen, Receiver und TV-Boxen sind bewusst ausgeschlossen.</string>
+    <string name="remote_ac_category">Klimaanlagen</string>
+    <string name="remote_ac_note">Ein/Aus, Temperatur, Modus, Lüfterstufe, Swing und Timer werden nur für verifizierte Modellprofile aktiviert.</string>
+    <string name="remote_fan_category">Ventilatoren</string>
+    <string name="remote_fan_note">Fokus auf schwer erhältliche Ersatzfernbedienungen, beginnend mit Fresh-Ventilatorfamilien.</string>
+    <string name="remote_profile_status">Verifizierte IR-Profile werden ergänzt. FG Link sendet keine ungeprüften Codes.</string>
+    <string name="remote_category_selected">Ausgewählt: %1$s</string>
+
+    <string name="remote_ac_selected">Klimaanlagen-Fernbedienungen · Marke wählen und bei Bedarf Smart IR Scan starten.</string>
+    <string name="remote_fan_selected">Ventilator-Fernbedienungen · Modell wählen; ohne verifiziertes Profil Smart IR Scan starten.</string>
+    <string name="remote_choose_ac_brand">Klimamarke wählen</string>
+    <string name="remote_choose_fan_model">Ventilatormodell wählen</string>
+    <string name="remote_scan_required">Kein verifiziertes Profil für diese Marke gespeichert. Smart IR Scan starten und nur bei echter Geräteantwort speichern.</string>
+    <string name="remote_profile_ready">%1$s · verifiziertes Profil: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan %1$d/%2$d</string>
+    <string name="remote_scan_question">Testprofil gesendet: %1$s\n\nHat die Klimaanlage gepiept oder reagiert?</string>
+    <string name="remote_scan_yes">Ja — speichern</string>
+    <string name="remote_scan_no">Nein — weiter</string>
+    <string name="remote_scan_cancel">Abbrechen</string>
+    <string name="remote_scan_no_match">Scan ohne bestätigtes Profil beendet. Kein Protokoll gespeichert.</string>
+    <string name="remote_fan_scan_required">Kein verifiziertes Ventilatorprofil für dieses Modell gespeichert. Nur bei echter Reaktion speichern.</string>
+    <string name="remote_fan_profile_ready">%1$s · verifiziertes IR-Profil: %2$s</string>
+    <string name="remote_fan_scan_no_match">Ventilator-Scan ohne bestätigtes Profil beendet. Kein Code gespeichert.</string>
+    <string name="remote_fan_scan_question">Verifiziertes Testprofil gesendet: %1$s\n\nHat der Ventilator reagiert?</string>
+    <string name="remote_fan_power">Ein/Aus</string>
+    <string name="remote_fan_command">Ventilatorbefehl</string>
+    <string name="remote_fan_command_sent">%1$s gesendet · %2$s</string>
+    <string name="remote_fan_command_unavailable">Diese Taste ist im verifizierten Profil nicht verfügbar.</string>
+    <string name="remote_fan_speed">Geschwindigkeit</string>
+    <string name="remote_fan_swing">Schwenken</string>
+    <string name="remote_fan_timer">Timer</string>
+    <string name="remote_fan_sleep">Schlaf</string>
+    <string name="ac_remote_command_sent">IR-Befehl gesendet · %1$s</string>
+    <string name="ac_remote_send_failed">IR-Befehl fehlgeschlagen: %1$s</string>
+    <string name="remote_fan_pending">Ventilator-Fernbedienungen nutzen eine separate Bibliothek. Fresh ist das erste Ziel; ungeprüfte Codes bleiben deaktiviert.</string>
+    <string name="remote_ac_brands_title">Klimaanlagenmarken</string>
+    <string name="remote_brand_selected">Ausgewählt: %1$s</string>
+    <string name="remote_power_on">Ein</string>
+    <string name="remote_power_off">Aus</string>
+    <string name="remote_swing">Schwenken</string>
+    <string name="remote_temp_default">24°C</string>
+    <string name="remote_temp_value">%1$d°C</string>
 </resources>

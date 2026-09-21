@@ -19,12 +19,15 @@ main_activity_is_foreground() {
 
 wait_for_main_activity() {
   local attempt=1
-  while [ "$attempt" -le 20 ]; do
+
+  # The hosted Linux runner has no KVM. Repeated wake/input/settings commands
+  # during activity launch can starve the software-emulated guest and prevent
+  # MainActivity from becoming resumed. Wake once before launch, then poll only.
+  while [ "$attempt" -le 30 ]; do
     if main_activity_is_foreground; then
       return 0
     fi
-    wake_and_unlock
-    sleep 2
+    sleep 3
     attempt=$((attempt + 1))
   done
 
@@ -32,7 +35,7 @@ wait_for_main_activity() {
   grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-activities.txt || true
   adb shell dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp' || true
   adb shell pidof "$APP_PACKAGE" || true
-  adb logcat -d -t 300 | grep -E "$APP_PACKAGE|FGLinkUiGate|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 120 || true
+  adb logcat -d -t 2000 | grep -E "$APP_PACKAGE|FGLinkUiGate|ActivityTaskManager|ActivityManager|AndroidRuntime|FATAL EXCEPTION|Force finishing|ANR|am_crash|am_anr" | tail -n 400 || true
   return 1
 }
 
@@ -47,10 +50,32 @@ adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rc
 
 # Dashboard gate: launch the real sidecar app and require its MainActivity in foreground.
 wake_and_unlock
+adb shell run-as "$APP_PACKAGE" rm -f files/fg_ui_gate_state >/dev/null 2>&1 || true
 adb shell am force-stop "$APP_PACKAGE"
-adb shell am start -n "$APP_ACTIVITY"
+sleep 1
+wake_and_unlock
+adb logcat -c >/dev/null 2>&1 || true
+adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n "$APP_ACTIVITY" --es fg_ui_test_page dashboard
 wait_for_main_activity
-sleep 3
+
+# MainActivity may become resumed a moment before onCreate() finishes writing
+# the gate marker, especially on the software-emulated hosted runner.
+DASHBOARD_MARKER=""
+attempt=1
+while [ "$attempt" -le 30 ]; do
+  DASHBOARD_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\r\n' || true)"
+  if [ "$DASHBOARD_MARKER" = "dashboard-page-visible" ]; then
+    break
+  fi
+  sleep 1
+  attempt=$((attempt + 1))
+done
+if [ "$DASHBOARD_MARKER" != "dashboard-page-visible" ]; then
+  echo "UI gate failed: dashboard-page marker was not written" >&2
+  adb logcat -d -t 2000 | grep -E "$APP_PACKAGE|FGLinkUiGate|ActivityTaskManager|ActivityManager|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 400 || true
+  exit 1
+fi
+sleep 2
 adb exec-out screencap -p > FG-Link-1.6.1-dashboard.png
 test -s FG-Link-1.6.1-dashboard.png
 
@@ -60,13 +85,16 @@ test -s FG-Link-1.6.1-dashboard.png
 # Avoid logcat -c because some emulator images reject clearing the main buffer.
 adb shell run-as "$APP_PACKAGE" rm -f files/fg_ui_gate_state >/dev/null 2>&1 || true
 adb shell am force-stop "$APP_PACKAGE"
-adb shell am start -n "$APP_ACTIVITY" --es fg_ui_test_page about
+sleep 1
+wake_and_unlock
+adb logcat -c >/dev/null 2>&1 || true
+adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n "$APP_ACTIVITY" --es fg_ui_test_page about
 wait_for_main_activity
 
 ABOUT_MARKER=""
 attempt=1
 while [ "$attempt" -le 20 ]; do
-  ABOUT_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\\r\\n' || true)"
+  ABOUT_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\r\n' || true)"
   if [ "$ABOUT_MARKER" = "about-page-visible" ]; then
     break
   fi

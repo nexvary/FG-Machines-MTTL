@@ -780,17 +780,27 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/homeToDiagnostics"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:id="@+id/homeToRemote"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/diagnostics_home_action"
-                    android:textColor="@color/fg_blue_bright"
-                    app:cornerRadius="14dp"
-                    app:icon="@drawable/ic_diagnostics"
-                    app:iconTint="@color/fg_blue_bright"
-                    app:strokeColor="@color/fg_blue" />
+                    android:text="@string/remote_home_action"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_cyan"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/fg_surface_2"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_remote"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconSize="25dp"
+                    app:iconTint="@color/fg_neon_cyan"
+                    app:rippleColor="@color/fg_blue_dim"
+                    app:strokeColor="@color/fg_metal_silver"
+                    app:strokeWidth="2dp" />
+
+                
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -1496,6 +1506,14 @@
             android:paddingEnd="14dp"
             android:paddingBottom="18dp"
             android:visibility="gone">
+
+            <!-- ScrollView must have exactly one direct child. The visible
+                 smart-home scan UI and the hidden legacy discovery controls
+                 both live inside this wrapper so runtime inflation is valid. -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1746,7 +1764,29 @@
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+            
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/homeToDiagnostics"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/diagnostics_home_action"
+                    android:textAllCaps="false"
+                    android:textColor="@color/fg_neon_magenta"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/fg_surface_2"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_diagnostics"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    app:iconSize="25dp"
+                    app:iconTint="@color/fg_neon_magenta"
+                    app:rippleColor="@color/fg_blue_dim"
+                    app:strokeColor="@color/fg_metal_silver"
+                    app:strokeWidth="2dp" />
+
+</LinearLayout>
 
 
             <LinearLayout
@@ -1935,6 +1975,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
+            </FrameLayout>
         </ScrollView>
 
 
