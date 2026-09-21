@@ -630,4 +630,26 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="remote_profile_status">تتم إضافة ملفات IR الموثقة. لن يرسل FG Link أي أكواد غير موثقة.</string>
     <string name="remote_category_selected">المحدد: %1$s</string>
 
+
+    <string name="remote_ac_selected">ريموت التكييفات · اختر Sharp أو UnionAir ثم نفّذ Smart IR Scan مرة واحدة.</string>
+    <string name="remote_fan_pending">ريموت المراوح مكتبة مستقلة. سنبدأ بعائلات Fresh، وتظل الأكواد غير الموثقة معطلة.</string>
+    <string name="remote_ac_brands_title">ماركات التكييف</string>
+    <string name="remote_brand_selected">المحدد: %1$s</string>
+    <string name="remote_scan_required">لا يوجد ملف موثق محفوظ لهذه الماركة. شغّل Smart IR Scan ولا تعتمد الملف إلا إذا أصدر التكييف صفارة أو استجاب فعليًا.</string>
+    <string name="remote_profile_ready">%1$s · الملف المعتمد: %2$s</string>
+    <string name="remote_scan_button">Smart IR Scan</string>
+    <string name="remote_scan_title">Smart IR Scan ‏%1$d/%2$d</string>
+    <string name="remote_scan_question">تم إرسال ملف الاختبار: %1$s\n\nهل أصدر التكييف صفارة أو استجاب؟</string>
+    <string name="remote_scan_yes">نعم — اعتماد</string>
+    <string name="remote_scan_no">لا — التالي</string>
+    <string name="remote_scan_cancel">إلغاء</string>
+    <string name="remote_scan_no_match">انتهى الفحص دون تأكيد ملف. لم يتم حفظ أي بروتوكول.</string>
+    <string name="remote_power_on">تشغيل</string>
+    <string name="remote_power_off">إيقاف</string>
+    <string name="remote_swing">Swing</string>
+    <string name="remote_temp_default">24°م</string>
+    <string name="remote_temp_value">%1$d°م</string>
+    <string name="remote_command_sent">تم إرسال أمر IR · %1$s</string>
+    <string name="remote_send_failed">فشل إرسال أمر IR: %1$s</string>
+
 </resources>
