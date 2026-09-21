@@ -126,6 +126,9 @@ public final class RemoteActivity extends AppCompatActivity {
         String uiCategory = getIntent().getStringExtra("fg_ui_remote_category");
         setCategory("fan".equals(uiCategory) ? Category.FAN : Category.AC);
         updateTemp();
+
+        String captureKey = getIntent().getStringExtra("fg_ui_capture_key");
+        if (captureKey != null) UiGateCapture.capture(this, captureKey);
     }
 
     private void applySystemBarInsets() {
