@@ -114,3 +114,72 @@ adb exec-out screencap -p > FG-Link-1.6.2-about.png
 test -s FG-Link-1.6.2-about.png
 
 echo "FG Link UI branding and developer-page gate passed."
+
+capture_main_page() {
+  local page="$1"
+  local file="$2"
+  adb shell am force-stop "$APP_PACKAGE"
+  sleep 1
+  wake_and_unlock
+  adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
+    -n "$APP_ACTIVITY" --es fg_ui_test_page "$page" >/dev/null
+  wait_for_main_activity
+  sleep 2
+  adb exec-out screencap -p > "$file"
+  test -s "$file"
+}
+
+wait_for_component() {
+  local component="$1"
+  local attempt=1
+  while [ "$attempt" -le 40 ]; do
+    adb shell dumpsys activity activities > /tmp/fg-link-components.txt
+    if grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-components.txt | grep -q "$component"; then
+      return 0
+    fi
+    sleep 2
+    attempt=$((attempt + 1))
+  done
+  echo "UI screenshot gate failed: $component is not foreground" >&2
+  grep -E 'mResumedActivity|topResumedActivity' /tmp/fg-link-components.txt || true
+  return 1
+}
+
+capture_child_page() {
+  local page="$1"
+  local component="$2"
+  local file="$3"
+  adb shell am force-stop "$APP_PACKAGE"
+  sleep 1
+  wake_and_unlock
+  adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
+    -n "$APP_ACTIVITY" --es fg_ui_test_page "$page" >/dev/null
+  wait_for_component "$component"
+  sleep 3
+  adb exec-out screencap -p > "$file"
+  test -s "$file"
+}
+
+# Complete real-page gallery from the same 1.6.2 sidecar APK.
+capture_main_page setup       FG-Link-1.6.2-setup.png
+capture_main_page scan        FG-Link-1.6.2-scan.png
+capture_main_page settings    FG-Link-1.6.2-settings.png
+capture_main_page subscriber  FG-Link-1.6.2-subscriber.png
+
+capture_child_page remote_ac \
+  "$APP_PACKAGE/com.fgmachines.rck.RemoteActivity" \
+  FG-Link-1.6.2-remote-ac.png
+
+capture_child_page remote_fan \
+  "$APP_PACKAGE/com.fgmachines.rck.RemoteActivity" \
+  FG-Link-1.6.2-remote-fan.png
+
+capture_child_page diagnostics \
+  "$APP_PACKAGE/com.fgmachines.rck.DiagnosticsActivity" \
+  FG-Link-1.6.2-diagnostics.png
+
+capture_child_page network_doctor \
+  "$APP_PACKAGE/com.fgmachines.rck.NetworkDoctorActivity" \
+  FG-Link-1.6.2-network-doctor.png
+
+echo "FG Link complete real-page screenshot gallery passed."
