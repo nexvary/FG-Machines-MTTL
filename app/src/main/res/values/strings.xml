@@ -315,7 +315,7 @@
     <string name="scene_label_format">%1$s · %2$d/4 ON</string>
     <string name="scene_ready">Scene ready. Applying it changes all four outlet states.</string>
 
-    <string name="diagnostics_home_action">Appliance Diagnostics</string>
+    <string name="diagnostics_home_action">Fault Diagnostics</string>
     <string name="diagnostics_back">Back</string>
     <string name="diagnostics_title">Appliance Diagnostics</string>
     <string name="diagnostics_subtitle">Offline, source-aware fault codes, symptoms, and FG Link-linked history</string>
