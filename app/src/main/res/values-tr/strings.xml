@@ -307,7 +307,7 @@
     <string name="scene_label_format">%1$s · %2$d/4 AÇIK</string>
     <string name="scene_ready">Sahne hazır. Uygulamak dört çıkışın durumunu değiştirir.</string>
 
-    <string name="diagnostics_home_action">Cihaz Arıza Teşhisi</string>
+    <string name="diagnostics_home_action">Arıza Teşhisi</string>
     <string name="diagnostics_back">Geri</string>
     <string name="diagnostics_title">Cihaz Arıza Teşhisi</string>
     <string name="diagnostics_subtitle">Kaynak doğrulamalı hata kodları, belirtiler ve FG Link bağlantılı geçmiş; çevrimdışı çalışır</string>
