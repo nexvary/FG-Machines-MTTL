@@ -314,6 +314,48 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (uiGateBuild) {
+            String testPage = getIntent().getStringExtra("fg_ui_test_page");
+            int pageIndex = -1;
+            String markerValue = null;
+            if ("setup".equals(testPage)) { pageIndex = 1; markerValue = "setup-page-visible"; }
+            else if ("scan".equals(testPage)) { pageIndex = 2; markerValue = "scan-page-visible"; }
+            else if ("settings".equals(testPage)) { pageIndex = 3; markerValue = "settings-page-visible"; }
+            else if ("subscriber".equals(testPage)) { pageIndex = 5; markerValue = "subscriber-page-visible"; }
+
+            if (pageIndex >= 0) {
+                uiGateActive = true;
+                showPage(pageIndex);
+                try (java.io.FileOutputStream marker =
+                             openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
+                    marker.write(markerValue.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                } catch (java.io.IOException error) {
+                    android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
+                }
+                android.util.Log.i("FGLinkUiGate", markerValue);
+                return;
+            }
+
+            if ("remote_ac".equals(testPage) || "remote_fan".equals(testPage)) {
+                uiGateActive = true;
+                Intent intent = new Intent(this, RemoteActivity.class);
+                intent.putExtra("fg_ui_remote_category",
+                        "remote_fan".equals(testPage) ? "fan" : "ac");
+                startActivity(intent);
+                return;
+            }
+            if ("diagnostics".equals(testPage)) {
+                uiGateActive = true;
+                startActivity(new Intent(this, DiagnosticsActivity.class));
+                return;
+            }
+            if ("network_doctor".equals(testPage)) {
+                uiGateActive = true;
+                startActivity(new Intent(this, NetworkDoctorActivity.class));
+                return;
+            }
+        }
+
         provisioner = new MttlProvisioner(this);
         fleetStore = new FleetStore(this);
         historyStore = new HistoryStore(this);
