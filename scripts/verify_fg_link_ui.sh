@@ -57,9 +57,22 @@ wake_and_unlock
 adb logcat -c >/dev/null 2>&1 || true
 adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n "$APP_ACTIVITY" --es fg_ui_test_page dashboard
 wait_for_main_activity
-DASHBOARD_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\r\n' || true)"
+
+# MainActivity may become resumed a moment before onCreate() finishes writing
+# the gate marker, especially on the software-emulated hosted runner.
+DASHBOARD_MARKER=""
+attempt=1
+while [ "$attempt" -le 30 ]; do
+  DASHBOARD_MARKER="$(adb shell run-as "$APP_PACKAGE" cat files/fg_ui_gate_state 2>/dev/null | tr -d '\r\n' || true)"
+  if [ "$DASHBOARD_MARKER" = "dashboard-page-visible" ]; then
+    break
+  fi
+  sleep 1
+  attempt=$((attempt + 1))
+done
 if [ "$DASHBOARD_MARKER" != "dashboard-page-visible" ]; then
   echo "UI gate failed: dashboard-page marker was not written" >&2
+  adb logcat -d -t 2000 | grep -E "$APP_PACKAGE|FGLinkUiGate|ActivityTaskManager|ActivityManager|AndroidRuntime|FATAL EXCEPTION|ANR" | tail -n 400 || true
   exit 1
 fi
 sleep 2
