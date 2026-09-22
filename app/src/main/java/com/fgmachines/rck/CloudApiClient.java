@@ -80,6 +80,13 @@ public final class CloudApiClient {
         return commands == null ? new JSONArray() : commands;
     }
 
+    public void sendAlertEmail(String bearer, String subject, String message) throws IOException {
+        JSONObject body = json(
+                "subject", subject == null ? "" : subject.trim(),
+                "body", message == null ? "" : message.trim());
+        request("POST", "/api/v1/alerts/email", bearer, "", body);
+    }
+
     public void ack(String controllerId, String controllerKey, String commandId,
                     String status, String detail) throws IOException {
         JSONObject body = json(
