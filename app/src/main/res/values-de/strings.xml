@@ -687,4 +687,9 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="network_doctor_no_working_path">Kein funktionierender Endpunkt erkannt. Keine Einstellungen wurden geändert.</string>
     <string name="network_doctor_applied">Funktionierender Endpunkt gespeichert: %1$s</string>
 
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">Diese MTTL-W01-Firmware stellt noch keine verifizierte unabhängige USB-Schaltung bereit.</string>
+
 </resources>
