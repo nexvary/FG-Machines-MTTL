@@ -112,12 +112,12 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
 
     private void runDiagnostics() {
         final String gateway = textOf(gatewayInput);
-        final String controllerZt = textOf(controllerZtInput);
+        final String configuredControllerZt = textOf(controllerZtInput);
         final String controllerLan = textOf(controllerLanInput);
 
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                 .putString(PREF_DOCTOR_GATEWAY, gateway)
-                .putString(PREF_DOCTOR_CONTROLLER_ZT, controllerZt)
+                .putString(PREF_DOCTOR_CONTROLLER_ZT, configuredControllerZt)
                 .putString(PREF_DOCTOR_CONTROLLER_LAN, controllerLan)
                 .apply();
 
@@ -130,19 +130,46 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
 
         worker.execute(() -> {
             DiagnosticSnapshot snapshot = collectSnapshot();
-            Probe localApi = probeHealth("Local API", "127.0.0.1");
-            Probe controllerPort = probeTcp("MTTL controller", "127.0.0.1", ModelCatalog.CONTROLLER_PORT);
-            Probe gatewayProbe = probeHealth("KT708 gateway", gateway);
-            Probe controllerZtProbe = probeHealth("Controller ZeroTier", controllerZt);
-            Probe controllerLanProbe = probeHealth("Controller LAN", controllerLan);
 
             ControllerHub hub = ControllerHub.get(getApplicationContext());
             int connectedDevices = hub.connectedStates().size();
             boolean controllerRunning = hub.isRunning();
 
+            String controllerZt = configuredControllerZt;
+            boolean controllerIsThisPhone = controllerRunning && !snapshot.fgmIpv4.isEmpty();
+            if (controllerIsThisPhone) {
+                controllerZt = snapshot.fgmIpv4;
+                getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                        .putString(PREF_DOCTOR_CONTROLLER_ZT, controllerZt)
+                        .apply();
+                final String detectedControllerZt = controllerZt;
+                runOnUiThread(() -> controllerZtInput.setText(detectedControllerZt));
+            }
+
+            Probe localApi = probeHealth("Local API", "127.0.0.1");
+            Probe controllerPort = probeTcp("MTTL controller", "127.0.0.1", ModelCatalog.CONTROLLER_PORT);
+            Probe gatewayProbe = probeHealth("KT708 gateway", gateway);
+            Probe controllerZtProbe = controllerIsThisPhone
+                    ? Probe.skip("Controller ZeroTier",
+                    "this controller owns " + controllerZt
+                            + "; remote-peer reachability must be tested from another FGM ZeroTier device")
+                    : probeHealth("Controller ZeroTier", controllerZt);
+            Probe controllerLanProbe = probeHealth("Controller LAN", controllerLan);
+
             String recommendation;
             String chosen = "";
-            if (controllerZtProbe.ok) {
+            if (controllerIsThisPhone && localApi.ok) {
+                if (!snapshot.hasVpn || !snapshot.hasFgmAddress) {
+                    recommendation = "CONTROLLER_LOCAL: controller/API are healthy, but no active FGM ZeroTier address is available.";
+                } else if (gatewayProbe.ok) {
+                    chosen = endpoint(gateway);
+                    recommendation = "ROUTER_GATEWAY: controller/API are healthy and KT708 answers from this controller. Use " + chosen;
+                } else {
+                    recommendation = "CONTROLLER_READY: local controller/API are healthy. ZeroTier address auto-detected as "
+                            + controllerZt
+                            + ". A failed KT708 self-loop from the controller is not treated as proof that remote ZeroTier is broken; run Network Doctor on the remote FGM phone to validate the peer path.";
+                }
+            } else if (controllerZtProbe.ok) {
                 chosen = endpoint(controllerZt);
                 recommendation = "DIRECT_ZEROTIER: controller is reachable directly. Prefer " + chosen;
             } else if (gatewayProbe.ok) {
@@ -150,7 +177,7 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
                 recommendation = "ROUTER_GATEWAY: KT708 path is reachable. Use " + chosen;
             } else if (controllerLanProbe.ok) {
                 chosen = endpoint(controllerLan);
-                recommendation = "LAN_ONLY: controller API works on LAN, but the ZeroTier path is failing.";
+                recommendation = "LAN_ONLY: controller API works on LAN, but the tested remote ZeroTier paths did not answer.";
             } else if (!snapshot.hasVpn || !snapshot.hasFgmAddress) {
                 recommendation = "ZEROTIER_ROUTE: no active FGM ZeroTier address was detected on this phone.";
             } else if (localApi.ok) {
@@ -172,6 +199,9 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
             out.append("TRANSPORT\n").append(snapshot.transportSummary).append("\n");
             out.append("VPN detected: ").append(snapshot.hasVpn ? "YES" : "NO").append("\n");
             out.append("FGM ZeroTier IP detected: ").append(snapshot.hasFgmAddress ? "YES" : "NO").append("\n");
+            if (!snapshot.fgmIpv4.isEmpty()) {
+                out.append("Detected FGM ZeroTier IPv4: ").append(snapshot.fgmIpv4).append("\n");
+            }
             out.append("Addresses:\n").append(snapshot.addresses).append("\n");
             out.append("Networks:\n").append(snapshot.networks).append("\n");
 
@@ -209,6 +239,7 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
     private DiagnosticSnapshot collectSnapshot() {
         boolean hasVpn = false;
         boolean hasFgm = false;
+        String fgmIpv4 = "";
         StringBuilder networks = new StringBuilder();
         StringBuilder addresses = new StringBuilder();
         String transportSummary = "No active network";
@@ -230,7 +261,10 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
                     networks.append(" | ").append(props.getInterfaceName());
                     for (LinkAddress address : props.getLinkAddresses()) {
                         String ip = address.getAddress().getHostAddress();
-                        if (ip != null && ip.startsWith("10.158.229.")) hasFgm = true;
+                        if (ip != null && ip.startsWith("10.158.229.")) {
+                            hasFgm = true;
+                            if (fgmIpv4.isEmpty()) fgmIpv4 = ip;
+                        }
                         networks.append(" ").append(ip);
                     }
                 }
@@ -251,7 +285,10 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
                         String ip = address.getHostAddress();
                         if (ip == null) continue;
                         if (address instanceof Inet4Address || ip.contains(":")) ips.add(ip);
-                        if (ip.startsWith("10.158.229.")) hasFgm = true;
+                        if (ip.startsWith("10.158.229.")) {
+                            hasFgm = true;
+                            if (fgmIpv4.isEmpty()) fgmIpv4 = ip;
+                        }
                     }
                     if (!ips.isEmpty()) {
                         addresses.append("- ").append(ni.getName()).append(": ")
@@ -265,7 +302,7 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
 
         if (addresses.length() == 0) addresses.append("- none detected\n");
         if (networks.length() == 0) networks.append("- none detected\n");
-        return new DiagnosticSnapshot(hasVpn, hasFgm, transportSummary,
+        return new DiagnosticSnapshot(hasVpn, hasFgm, fgmIpv4, transportSummary,
                 addresses.toString(), networks.toString());
     }
 
@@ -369,14 +406,16 @@ public final class NetworkDoctorActivity extends AppCompatActivity {
     private static final class DiagnosticSnapshot {
         final boolean hasVpn;
         final boolean hasFgmAddress;
+        final String fgmIpv4;
         final String transportSummary;
         final String addresses;
         final String networks;
 
-        DiagnosticSnapshot(boolean hasVpn, boolean hasFgmAddress, String transportSummary,
-                           String addresses, String networks) {
+        DiagnosticSnapshot(boolean hasVpn, boolean hasFgmAddress, String fgmIpv4,
+                           String transportSummary, String addresses, String networks) {
             this.hasVpn = hasVpn;
             this.hasFgmAddress = hasFgmAddress;
+            this.fgmIpv4 = fgmIpv4 == null ? "" : fgmIpv4;
             this.transportSummary = transportSummary;
             this.addresses = addresses;
             this.networks = networks;
