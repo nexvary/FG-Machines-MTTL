@@ -57,6 +57,7 @@ public final class MttlControllerService extends Service implements MttlControll
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
     private final ScheduledExecutorService watchdog = Executors.newSingleThreadScheduledExecutor();
     private volatile long lastWatchdogAlertAt;
+    private volatile long lastApiWatchdogAlertAt;
     private volatile boolean controllerPortConflictNotified;
 
     @Override public void onCreate() {
@@ -77,8 +78,8 @@ public final class MttlControllerService extends Service implements MttlControll
         automationEngine = new LocalAutomationEngine(this, hub, historyStore);
         automationEngine.start();
         hub.addListener(this, true);
-        watchdog.scheduleWithFixedDelay(this::ensureControllerRunning,
-                15, 30, TimeUnit.SECONDS);
+        watchdog.scheduleWithFixedDelay(this::ensureCoreServicesRunning,
+                5, 15, TimeUnit.SECONDS);
     }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
@@ -93,25 +94,40 @@ public final class MttlControllerService extends Service implements MttlControll
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                 .putBoolean(PREF_CONTROLLER_WANTED, true).apply();
         startForeground(CONTROLLER_NOTIFICATION_ID, buildControllerNotification());
-        try {
-            hub.start();
-            controllerPortConflictNotified = false;
-            localApiServer.start();
-            cloudRelayManager.start();
-        } catch (IOException error) {
-            postControllerStartFailure(error, false);
-        }
+        startController(false);
+        startLocalApi(false);
+        startCloudRelay();
         return START_STICKY;
     }
 
-    private void ensureControllerRunning() {
+    private void ensureCoreServicesRunning() {
+        startController(true);
+        startLocalApi(true);
+        startCloudRelay();
+    }
+
+    private void startController(boolean watchdogRetry) {
         if (hub == null || hub.isRunning()) return;
         try {
             hub.start();
             controllerPortConflictNotified = false;
         } catch (IOException error) {
-            postControllerStartFailure(error, true);
+            postControllerStartFailure(error, watchdogRetry);
         }
+    }
+
+    private void startLocalApi(boolean watchdogRetry) {
+        if (localApiServer == null || localApiServer.isRunning()) return;
+        try {
+            localApiServer.start();
+            lastApiWatchdogAlertAt = 0L;
+        } catch (IOException error) {
+            postLocalApiStartFailure(error, watchdogRetry);
+        }
+    }
+
+    private void startCloudRelay() {
+        if (cloudRelayManager != null) cloudRelayManager.start();
     }
 
     @Override public void onDestroy() {
@@ -315,6 +331,16 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     @Override public void onError(String message, Throwable error) { }
+
+    private void postLocalApiStartFailure(IOException error, boolean watchdogRetry) {
+        long now = System.currentTimeMillis();
+        if (watchdogRetry && now - lastApiWatchdogAlertAt < TimeUnit.MINUTES.toMillis(5)) return;
+        lastApiWatchdogAlertAt = now;
+        postAlert(
+                getString(R.string.controller_service_error),
+                "Local API TCP " + LocalApiServer.PORT + ": " + safeMessage(error),
+                ALERT_BASE_ID + 97);
+    }
 
     private void postControllerStartFailure(IOException error, boolean watchdogRetry) {
         if (isAddressInUse(error)) {
