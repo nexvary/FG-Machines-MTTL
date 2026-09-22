@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_PACKAGE="com.fgmachines.rck.sidecar162"
+APP_PACKAGE="com.fgmachines.rck.sidecar163"
 APP_ACTIVITY="$APP_PACKAGE/com.fgmachines.rck.MainActivity"
 
 wake_and_unlock() {
@@ -19,7 +19,7 @@ done
 
 adb install -r apk-debug/app-debug.apk
 adb install -r apk-sidecar/app-sidecar.apk
-adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar162'
+adb shell pm list packages | grep -E 'com.fgmachines.rck.debug|com.fgmachines.rck.sidecar163'
 
 capture_page() {
   local request="$1"
@@ -60,17 +60,17 @@ capture_page() {
   echo "Captured $output ($size bytes)"
 }
 
-# Every image below is rendered by the actual 1.6.2 sidecar APK's Android
+# Every image below is rendered by the actual 1.6.3 sidecar APK's Android
 # view hierarchy, not a mockup and not the hosted emulator framebuffer.
-capture_page dashboard       dashboard       FG-Link-1.6.2-dashboard.png
-capture_page setup           setup           FG-Link-1.6.2-setup.png
-capture_page scan            scan            FG-Link-1.6.2-scan.png
-capture_page settings        settings        FG-Link-1.6.2-settings.png
-capture_page subscriber      subscriber      FG-Link-1.6.2-subscriber.png
-capture_page about           about           FG-Link-1.6.2-about.png
-capture_page remote_ac       remote-ac       FG-Link-1.6.2-remote-ac.png
-capture_page remote_fan      remote-fan      FG-Link-1.6.2-remote-fan.png
-capture_page diagnostics     diagnostics     FG-Link-1.6.2-diagnostics.png
-capture_page network_doctor  network-doctor  FG-Link-1.6.2-network-doctor.png
+capture_page dashboard       dashboard       FG-Link-1.6.3-dashboard.png
+capture_page setup           setup           FG-Link-1.6.3-setup.png
+capture_page scan            scan            FG-Link-1.6.3-scan.png
+capture_page settings        settings        FG-Link-1.6.3-settings.png
+capture_page subscriber      subscriber      FG-Link-1.6.3-subscriber.png
+capture_page about           about           FG-Link-1.6.3-about.png
+capture_page remote_ac       remote-ac       FG-Link-1.6.3-remote-ac.png
+capture_page remote_fan      remote-fan      FG-Link-1.6.3-remote-fan.png
+capture_page diagnostics     diagnostics     FG-Link-1.6.3-diagnostics.png
+capture_page network_doctor  network-doctor  FG-Link-1.6.3-network-doctor.png
 
 echo "FG Link complete real-page screenshot gallery passed."
