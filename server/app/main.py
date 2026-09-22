@@ -5,7 +5,10 @@ import hmac
 import os
 import re
 import secrets
+import smtplib
+import ssl
 import uuid
+from email.message import EmailMessage
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from typing import Generator, Literal
@@ -43,6 +46,13 @@ COMMAND_TTL_SECONDS = max(30, int(os.getenv("FGRCK_COMMAND_TTL_SECONDS", "180"))
 CONTROLLER_ONLINE_SECONDS = max(30, int(os.getenv("FGRCK_CONTROLLER_ONLINE_SECONDS", "90")))
 COMMAND_REDELIVER_SECONDS = max(10, int(os.getenv("FGRCK_COMMAND_REDELIVER_SECONDS", "30")))
 MAX_COMMAND_ATTEMPTS = max(1, int(os.getenv("FGRCK_MAX_COMMAND_ATTEMPTS", "5")))
+SMTP_HOST = os.getenv("FGRCK_SMTP_HOST", "").strip()
+SMTP_PORT = max(1, int(os.getenv("FGRCK_SMTP_PORT", "587")))
+SMTP_USER = os.getenv("FGRCK_SMTP_USER", "").strip()
+SMTP_PASSWORD = os.getenv("FGRCK_SMTP_PASSWORD", "")
+SMTP_FROM = os.getenv("FGRCK_SMTP_FROM", SMTP_USER).strip()
+SMTP_SECURITY = os.getenv("FGRCK_SMTP_SECURITY", "starttls").strip().lower()
+SMTP_TIMEOUT_SECONDS = max(3, int(os.getenv("FGRCK_SMTP_TIMEOUT_SECONDS", "10")))
 
 ROLE_RANK = {"view": 10, "control": 20, "admin": 30, "owner": 40}
 MAC_RE = re.compile(r"^[0-9A-F]{12}$")
@@ -272,6 +282,43 @@ def is_device_online(device: Device) -> bool:
     return seen >= utcnow() - timedelta(seconds=CONTROLLER_ONLINE_SECONDS)
 
 
+def deliver_alert_email(recipient: str, subject: str, body: str) -> None:
+    if not SMTP_HOST or not SMTP_FROM:
+        raise HTTPException(status_code=503, detail="SMTP email delivery is not configured")
+
+    message = EmailMessage()
+    message["From"] = SMTP_FROM
+    message["To"] = recipient
+    message["Subject"] = subject
+    message.set_content(body)
+
+    try:
+        if SMTP_SECURITY == "ssl":
+            with smtplib.SMTP_SSL(
+                SMTP_HOST,
+                SMTP_PORT,
+                timeout=SMTP_TIMEOUT_SECONDS,
+                context=ssl.create_default_context(),
+            ) as smtp:
+                if SMTP_USER:
+                    smtp.login(SMTP_USER, SMTP_PASSWORD)
+                smtp.send_message(message)
+            return
+
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT_SECONDS) as smtp:
+            if SMTP_SECURITY == "starttls":
+                smtp.starttls(context=ssl.create_default_context())
+            elif SMTP_SECURITY not in {"none", ""}:
+                raise RuntimeError("Unsupported FGRCK_SMTP_SECURITY")
+            if SMTP_USER:
+                smtp.login(SMTP_USER, SMTP_PASSWORD)
+            smtp.send_message(message)
+    except HTTPException:
+        raise
+    except Exception as error:
+        raise HTTPException(status_code=502, detail="SMTP delivery failed") from error
+
+
 def device_payload(device: Device, role: str) -> dict:
     return {
         "mac": device.mac,
@@ -380,6 +427,11 @@ class VoiceIntentRequest(BaseModel):
     confirm_all_on: bool = False
 
 
+class EmailAlertRequest(BaseModel):
+    subject: str = Field(min_length=1, max_length=160)
+    body: str = Field(min_length=1, max_length=2000)
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     if ENVIRONMENT == "production":
@@ -433,6 +485,20 @@ def login(body: LoginRequest, db: Session = Depends(get_db)) -> dict:
         user.password_hash = password_hasher.hash(body.password)
         db.commit()
     return {"access_token": create_access_token(user), "token_type": "bearer", "user_id": user.id}
+
+
+@app.post(f"{API_PREFIX}/alerts/email")
+def send_email_alert(
+    body: EmailAlertRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+) -> dict:
+    # The recipient is intentionally fixed to the authenticated account email
+    # so this endpoint cannot be used as an arbitrary mail relay.
+    deliver_alert_email(user.email, body.subject.strip(), body.body.strip())
+    audit(db, "email_alert_sent", user.id, detail=body.subject.strip())
+    db.commit()
+    return {"ok": True, "recipient": user.email}
 
 
 @app.post(f"{API_PREFIX}/controllers", status_code=201)
