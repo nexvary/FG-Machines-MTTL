@@ -687,4 +687,9 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="network_doctor_no_working_path">Çalışan uç nokta bulunamadı. Hiçbir ayar değiştirilmedi.</string>
     <string name="network_doctor_applied">Çalışan uç nokta kaydedildi: %1$s</string>
 
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">Bu MTTL-W01 firmware sürümünde bağımsız USB anahtarlama henüz doğrulanmış değildir.</string>
+
 </resources>
