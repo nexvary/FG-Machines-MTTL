@@ -204,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView cloudStatus;
     private TextView usbPort1Status;
     private TextView usbPort2Status;
+    private MaterialButton usb1Button;
+    private MaterialButton usb2Button;
     private TextView usbDiscoveryStatus;
     private MaterialButton startUsbDiscoveryButton;
     private MaterialButton refreshUsbDiscoveryButton;
@@ -519,6 +521,8 @@ public class MainActivity extends AppCompatActivity {
         cloudStatus = findViewById(R.id.cloudStatus);
         usbPort1Status = findViewById(R.id.usbPort1Status);
         usbPort2Status = findViewById(R.id.usbPort2Status);
+        usb1Button = findViewById(R.id.usb1Button);
+        usb2Button = findViewById(R.id.usb2Button);
         usbDiscoveryStatus = findViewById(R.id.usbDiscoveryStatus);
         startUsbDiscoveryButton = findViewById(R.id.startUsbDiscoveryButton);
         refreshUsbDiscoveryButton = findViewById(R.id.refreshUsbDiscoveryButton);
@@ -701,17 +705,29 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < pages.length; i++) {
             boolean selected = i == page;
             pages[i].setVisibility(selected ? View.VISIBLE : View.GONE);
-            int tint = getColor(selected ? R.color.fg_blue_bright : R.color.fg_silver);
+            int tint = navAccentColor(i);
             navButtons[i].setTextColor(tint);
             navButtons[i].setIconTint(ColorStateList.valueOf(tint));
             navButtons[i].setBackgroundTintList(ColorStateList.valueOf(
                     getColor(selected ? R.color.fg_blue_dim : android.R.color.transparent)));
-            navButtons[i].setAlpha(selected ? 1f : 0.78f);
+            navButtons[i].setAlpha(selected ? 1f : 0.72f);
             navButtons[i].animate()
                     .scaleX(selected ? 1.02f : 0.98f)
                     .scaleY(selected ? 1.02f : 0.98f)
                     .setDuration(140)
                     .start();
+        }
+    }
+
+    private int navAccentColor(int index) {
+        switch (index) {
+            case 0: return getColor(R.color.fg_neon_cyan);
+            case 1: return getColor(R.color.fg_neon_orange);
+            case 2: return getColor(R.color.fg_neon_violet);
+            case 3: return getColor(R.color.fg_neon_magenta);
+            case 4: return getColor(R.color.fg_green);
+            case 5: return getColor(R.color.fg_neon_lime);
+            default: return getColor(R.color.fg_silver);
         }
     }
 
@@ -3051,6 +3067,14 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
         }
+
+        // MTTL-W01 exposes four verified relay channels. The two physical USB
+        // ports are surfaced in the strip UI, but FG Link deliberately does not
+        // fabricate channel 5/6 commands until a verified USB command exists.
+        View.OnClickListener usbInfo = v -> Snackbar.make(
+                v, R.string.usb_control_not_exposed, Snackbar.LENGTH_LONG).show();
+        if (usb1Button != null) usb1Button.setOnClickListener(usbInfo);
+        if (usb2Button != null) usb2Button.setOnClickListener(usbInfo);
     }
 
     private void updateOutletCardState(int index, boolean on) {
