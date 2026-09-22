@@ -689,4 +689,9 @@ Dawon DNS MTD-01 / PM-M130-ZW · عائلة Z-Wave معروفة وتحتاج و�
     <string name="network_doctor_no_working_path">لم يتم العثور على مسار يعمل. لم يتم تغيير أي إعداد.</string>
     <string name="network_doctor_applied">تم حفظ المسار العامل: %1$s</string>
 
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">التحكم المستقل في USB غير موثق في بروتوكول MTTL-W01 الحالي، لذلك لن يرسل FG Link أوامر غير مؤكدة.</string>
+
 </resources>
