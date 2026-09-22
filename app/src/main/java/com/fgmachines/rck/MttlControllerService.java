@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -40,6 +41,10 @@ public final class MttlControllerService extends Service implements MttlControll
     public static final String PREFS = "fg_rck_settings";
     public static final String PREF_CONTROLLER_WANTED = "controller_wanted";
     private static final String PREF_ALERTS_ENABLED = "alerts_enabled";
+    private static final String PREF_ALERTS_QUIET_MIGRATION = "alerts_quiet_migration_v163_2";
+    public static final String PREF_EMAIL_ALERTS_ENABLED = "email_alerts_enabled";
+    private static final String PREF_REMOTE_ENDPOINT = "remote_endpoint";
+    private static final String PREF_REMOTE_TOKEN = "remote_token";
     public static final String PREF_ALERT_POWER_W = "alert_power_w";
     public static final String PREF_ALERT_TEMP_C = "alert_temp_c";
     public static final String PREF_ALERT_DAILY_ENERGY_KWH = "alert_daily_energy_kwh";
@@ -56,12 +61,15 @@ public final class MttlControllerService extends Service implements MttlControll
     private final Map<String, String> lastAlertKeyByMac = new HashMap<>();
     private final Set<String> connectedMacs = ConcurrentHashMap.newKeySet();
     private final ScheduledExecutorService watchdog = Executors.newSingleThreadScheduledExecutor();
+    private final java.util.concurrent.ExecutorService alertDeliveryWorker =
+            Executors.newSingleThreadExecutor();
     private volatile long lastWatchdogAlertAt;
     private volatile long lastApiWatchdogAlertAt;
     private volatile boolean controllerPortConflictNotified;
 
     @Override public void onCreate() {
         super.onCreate();
+        enforceQuietAlertDefault();
         createChannels();
         // A service launched with startForegroundService() must promote itself
         // immediately, before database/controller initialization can block the
@@ -132,6 +140,7 @@ public final class MttlControllerService extends Service implements MttlControll
 
     @Override public void onDestroy() {
         watchdog.shutdownNow();
+        alertDeliveryWorker.shutdownNow();
         if (hub != null) hub.removeListener(this);
         if (automationEngine != null) automationEngine.close();
         if (localApiServer != null) localApiServer.close();
@@ -186,10 +195,36 @@ public final class MttlControllerService extends Service implements MttlControll
     }
 
     private boolean alertsEnabled() {
-        return getSharedPreferences(PREFS, MODE_PRIVATE).getBoolean(PREF_ALERTS_ENABLED, true);
+        return getSharedPreferences(PREFS, MODE_PRIVATE).getBoolean(PREF_ALERTS_ENABLED, false);
+    }
+
+    private boolean emailAlertsEnabled() {
+        return getSharedPreferences(PREFS, MODE_PRIVATE)
+                .getBoolean(PREF_EMAIL_ALERTS_ENABLED, false);
+    }
+
+    private void enforceQuietAlertDefault() {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (prefs.getBoolean(PREF_ALERTS_QUIET_MIGRATION, false)) return;
+        prefs.edit()
+                .putBoolean(PREF_ALERTS_ENABLED, false)
+                .putBoolean(PREF_ALERTS_QUIET_MIGRATION, true)
+                .apply();
+        clearAlertNotifications(this);
+    }
+
+    public static void clearAlertNotifications(android.content.Context context) {
+        if (context == null) return;
+        NotificationManager manager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager == null) return;
+        for (int id = ALERT_BASE_ID; id <= ALERT_BASE_ID + 600; id++) {
+            manager.cancel(id);
+        }
     }
 
     private void postAlert(String title, String body, int id) {
+        sendEmailAlertIfEnabled(title, body);
         if (!alertsEnabled()) return;
         if (Build.VERSION.SDK_INT >= 33
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
@@ -340,6 +375,29 @@ public final class MttlControllerService extends Service implements MttlControll
                 getString(R.string.controller_service_error),
                 "Local API TCP " + LocalApiServer.PORT + ": " + safeMessage(error),
                 ALERT_BASE_ID + 97);
+    }
+
+    private void sendEmailAlertIfEnabled(String title, String body) {
+        if (!emailAlertsEnabled()) return;
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        String endpoint = prefs.getString(PREF_REMOTE_ENDPOINT, "");
+        String token = prefs.getString(PREF_REMOTE_TOKEN, "");
+        if (endpoint == null || endpoint.trim().isEmpty()
+                || token == null || token.trim().isEmpty()) {
+            return;
+        }
+        final String targetEndpoint = endpoint.trim();
+        final String bearer = token.trim();
+        final String subject = title == null ? "FG Machines Link alert" : title.trim();
+        final String message = body == null ? "" : body.trim();
+        alertDeliveryWorker.execute(() -> {
+            try {
+                new CloudApiClient(targetEndpoint)
+                        .sendAlertEmail(bearer, subject, message);
+            } catch (IOException ignored) {
+                // Email is optional and must never interrupt local controller operation.
+            }
+        });
     }
 
     private void postControllerStartFailure(IOException error, boolean watchdogRetry) {

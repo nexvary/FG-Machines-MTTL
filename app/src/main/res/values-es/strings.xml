@@ -692,4 +692,9 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="usb_2">USB 2</string>
     <string name="usb_control_not_exposed">Este firmware MTTL-W01 aún no expone un control USB independiente verificado.</string>
 
+    <string name="email_alerts">Alertas por correo</string>
+    <string name="email_alerts_note">Opcional: envía alertas de protección/desconexión al correo de la cuenta de nube iniciada. Requiere acceso HTTPS al VPS/nube y SMTP configurado en el servidor.</string>
+    <string name="email_alerts_requires_cloud">Las alertas por correo requieren iniciar sesión primero en la nube/VPS por HTTPS.</string>
+    <string name="email_alerts_enabled">Alertas por correo activadas</string>
+    <string name="email_alerts_disabled">Alertas por correo desactivadas</string>
 </resources>

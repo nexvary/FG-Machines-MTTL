@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton saveDeviceNamesButton;
     private MaterialButton forgetDeviceButton;
     private MaterialSwitch alertsSwitch;
+    private MaterialSwitch emailAlertsSwitch;
     private MaterialSwitch[] autoOffSwitches;
     private TextInputEditText[] autoOffMinutesInputs;
     private MaterialSwitch[] powerLimitSwitches;
@@ -452,6 +453,7 @@ public class MainActivity extends AppCompatActivity {
         saveDeviceNamesButton = findViewById(R.id.saveDeviceNamesButton);
         forgetDeviceButton = findViewById(R.id.forgetDeviceButton);
         alertsSwitch = findViewById(R.id.alertsSwitch);
+        emailAlertsSwitch = findViewById(R.id.emailAlertsSwitch);
         saveAutomationButton = findViewById(R.id.saveAutomationButton);
         automationSummary = findViewById(R.id.automationSummary);
         awayModeSwitch = findViewById(R.id.awayModeSwitch);
@@ -2594,14 +2596,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureAlerts() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        alertsSwitch.setChecked(prefs.getBoolean(PREF_ALERTS_ENABLED, true));
+
+        alertsSwitch.setChecked(prefs.getBoolean(PREF_ALERTS_ENABLED, false));
         alertsSwitch.setOnCheckedChangeListener((button, checked) -> {
             getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                     .putBoolean(PREF_ALERTS_ENABLED, checked)
                     .apply();
-            if (checked) requestNotificationPermissionIfNeeded();
+            if (checked) {
+                requestNotificationPermissionIfNeeded();
+            } else {
+                MttlControllerService.clearAlertNotifications(this);
+            }
         });
         if (alertsSwitch.isChecked()) requestNotificationPermissionIfNeeded();
+
+        emailAlertsSwitch.setChecked(
+                prefs.getBoolean(MttlControllerService.PREF_EMAIL_ALERTS_ENABLED, false));
+        emailAlertsSwitch.setOnCheckedChangeListener((button, checked) -> {
+            SharedPreferences current = getSharedPreferences(PREFS, MODE_PRIVATE);
+            String endpoint = current.getString(PREF_REMOTE_ENDPOINT, "");
+            String token = current.getString(PREF_REMOTE_TOKEN, "");
+            if (checked && (endpoint == null || endpoint.trim().isEmpty()
+                    || token == null || token.trim().isEmpty())) {
+                button.setChecked(false);
+                Snackbar.make(button, R.string.email_alerts_requires_cloud,
+                        Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            current.edit()
+                    .putBoolean(MttlControllerService.PREF_EMAIL_ALERTS_ENABLED, checked)
+                    .apply();
+            Snackbar.make(button,
+                    checked ? R.string.email_alerts_enabled : R.string.email_alerts_disabled,
+                    Snackbar.LENGTH_SHORT).show();
+        });
     }
 
     private void requestNotificationPermissionIfNeeded() {

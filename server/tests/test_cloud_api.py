@@ -221,3 +221,31 @@ def test_only_owner_can_grant_admin():
             headers=auth(admin["access_token"]),
         )
         assert denied.status_code == 403
+
+
+def test_email_alert_targets_authenticated_account(monkeypatch):
+    import app.main as main_module
+
+    captured = {}
+
+    def fake_deliver(recipient, subject, body):
+        captured["recipient"] = recipient
+        captured["subject"] = subject
+        captured["body"] = body
+
+    monkeypatch.setattr(main_module, "deliver_alert_email", fake_deliver)
+
+    with TestClient(app) as client:
+        account = register(client, "alerts@example.com")
+        response = client.post(
+            "/api/v1/alerts/email",
+            json={"subject": "FG Link alert", "body": "MTTL-W01 offline"},
+            headers=auth(account["access_token"]),
+        )
+        assert response.status_code == 200, response.text
+        assert response.json()["recipient"] == "alerts@example.com"
+        assert captured == {
+            "recipient": "alerts@example.com",
+            "subject": "FG Link alert",
+            "body": "MTTL-W01 offline",
+        }
