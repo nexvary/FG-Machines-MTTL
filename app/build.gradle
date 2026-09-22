@@ -18,8 +18,8 @@ android {
         applicationId 'com.fgmachines.rck'
         minSdk 26
         targetSdk 35
-        versionCode 30
-        versionName '1.6.2'
+        versionCode 31
+        versionName '1.6.3'
         manifestPlaceholders = [appLabel: 'FG Link']
     }
 
@@ -42,17 +42,17 @@ android {
         }
         sidecar {
             initWith debug
-            applicationIdSuffix '.sidecar162'
+            applicationIdSuffix '.sidecar163'
             versionNameSuffix '-sidecar'
             matchingFallbacks = ['debug']
-            manifestPlaceholders = [appLabel: 'FG Link 1.6.2 Test']
+            manifestPlaceholders = [appLabel: 'FG Link 1.6.3 Test']
         }
         sidecarArm64 {
             initWith debug
-            applicationIdSuffix '.sidecar162arm64'
+            applicationIdSuffix '.sidecar163arm64'
             versionNameSuffix '-arm64-fast'
             matchingFallbacks = ['debug']
-            manifestPlaceholders = [appLabel: 'FG Link 1.6.2 Fast']
+            manifestPlaceholders = [appLabel: 'FG Link 1.6.3 Fast']
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
