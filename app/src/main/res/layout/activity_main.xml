@@ -2436,6 +2436,22 @@
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_silver_dark"
                             android:textSize="10sp" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/emailAlertsSwitch"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/email_alerts"
+                            android:textColor="@color/fg_text" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_alerts_note"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/fg_silver_dark"
+                            android:textSize="10sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
