@@ -46,7 +46,12 @@ public final class LocalApiServer implements Closeable {
     }
 
     public synchronized void start() throws IOException {
-        if (running.get()) return;
+        if (isRunning()) return;
+        if (workers.isShutdown()) throw new IOException("Local API worker is shut down");
+        if (serverSocket != null) {
+            try { serverSocket.close(); } catch (IOException ignored) { }
+            serverSocket = null;
+        }
         ServerSocket socket = new ServerSocket(PORT);
         socket.setReuseAddress(true);
         serverSocket = socket;
@@ -54,16 +59,29 @@ public final class LocalApiServer implements Closeable {
         workers.execute(this::acceptLoop);
     }
 
+    public boolean isRunning() {
+        ServerSocket socket = serverSocket;
+        return running.get() && socket != null && socket.isBound() && !socket.isClosed();
+    }
+
     private void acceptLoop() {
         while (running.get()) {
             try {
-                Socket socket = serverSocket.accept();
+                ServerSocket listener = serverSocket;
+                if (listener == null || listener.isClosed()) break;
+                Socket socket = listener.accept();
                 socket.setSoTimeout(5000);
                 workers.execute(() -> handle(socket));
             } catch (IOException error) {
-                if (running.get()) {
-                    // Next loop iteration can recover from transient accept failures.
+                synchronized (this) {
+                    if (running.get()) {
+                        running.set(false);
+                        try { if (serverSocket != null) serverSocket.close(); }
+                        catch (IOException ignored) { }
+                        serverSocket = null;
+                    }
                 }
+                break;
             }
         }
     }
@@ -288,9 +306,10 @@ public final class LocalApiServer implements Closeable {
     }
 
     @Override public synchronized void close() {
-        if (!running.getAndSet(false)) return;
+        running.set(false);
         try { if (serverSocket != null) serverSocket.close(); }
         catch (IOException ignored) { }
+        serverSocket = null;
         workers.shutdownNow();
     }
 
