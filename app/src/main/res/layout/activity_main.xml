@@ -1558,7 +1558,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:text="@string/platform_note"
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_text_secondary"
@@ -1570,7 +1570,7 @@
                             android:maxLines="2"
                             android:ellipsize="end"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:background="@drawable/bg_status_pill"
                             android:padding="6dp"
                             android:text="@string/platform_summary_waiting"
@@ -1582,7 +1582,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:text="@string/platform_families"
                             android:textAlignment="viewStart"
                             android:textColor="@color/fg_blue_bright"
@@ -1594,7 +1594,7 @@
                             android:maxLines="2"
                             android:ellipsize="end"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:background="@drawable/bg_status_pill"
                             android:padding="6dp"
                             android:text="@string/platform_hub_status"
@@ -1605,7 +1605,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
@@ -1662,7 +1662,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
@@ -1719,7 +1719,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
@@ -1776,7 +1776,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
@@ -1837,7 +1837,7 @@
                     android:id="@+id/homeToDiagnostics"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="6dp
+                    android:layout_marginTop="6dp"
                     android:text="@string/diagnostics_home_action"
                     android:textAllCaps="false"
                     android:textColor="@color/fg_neon_magenta"
@@ -1866,7 +1866,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp
+                    android:layout_marginTop="6dp"
                     android:text="@string/device_discovery"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_text"
@@ -2021,7 +2021,7 @@
                             android:id="@+id/identifyHardwareButton"
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:text="@string/identify_hardware"
                             android:textColor="@color/fg_black"
                             app:backgroundTint="@color/fg_warning"
@@ -2031,7 +2031,7 @@
                             android:id="@+id/hardwareIdentityResult"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp
+                            android:layout_marginTop="6dp"
                             android:background="@drawable/bg_status_pill"
                             android:lineSpacingExtra="2dp"
                             android:padding="7dp"
