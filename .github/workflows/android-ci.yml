@@ -161,7 +161,11 @@ jobs:
           if-no-files-found: error
 
 
+  # Visual capture is kept as an explicit/manual diagnostic. It is intentionally
+  # not a PR release blocker because the hosted emulator can stall without KVM
+  # even when the APK build, lint and tests are healthy.
   ui-screenshot:
+    if: github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 15
