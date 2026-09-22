@@ -696,4 +696,9 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="network_doctor_no_working_path">No working endpoint was detected. No settings were changed.</string>
     <string name="network_doctor_applied">Working endpoint saved: %1$s</string>
 
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">This MTTL-W01 firmware does not expose verified independent USB switching yet.</string>
+
 </resources>
