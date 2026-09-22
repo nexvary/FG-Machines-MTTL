@@ -4631,9 +4631,9 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fillViewport="true"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
             android:visibility="gone">
 
             <LinearLayout
@@ -4649,13 +4649,13 @@
                     android:text="@string/about_title"
                     android:textAlignment="viewStart"
                     android:textColor="@color/fg_neon_violet"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/fg_surface"
                     app:cardCornerRadius="22dp"
                     app:cardElevation="3dp"
@@ -4667,11 +4667,11 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="14dp">
 
                         <ImageView
-                            android:layout_width="132dp"
-                            android:layout_height="132dp"
+                            android:layout_width="156dp"
+                            android:layout_height="156dp"
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/company_brand_name"
                             android:scaleType="fitCenter"
@@ -4694,7 +4694,7 @@
                             android:gravity="center"
                             android:text="@string/company_brand_tagline"
                             android:textColor="@color/fg_green"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -4705,7 +4705,7 @@
                             android:text="@string/about_line"
                             android:textAlignment="center"
                             android:textColor="@color/fg_green"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -4713,11 +4713,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:gravity="center"
-                            android:lineSpacingExtra="1dp"
+                            android:lineSpacingExtra="2dp"
                             android:text="@string/about_body"
                             android:textAlignment="center"
                             android:textColor="@color/fg_text"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
 
                         <TextView
@@ -4728,7 +4728,7 @@
                             android:text="@string/about_social_title"
                             android:textAlignment="center"
                             android:textColor="@color/fg_text"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -4739,44 +4739,44 @@
                             android:text="@string/about_social_note"
                             android:textAlignment="center"
                             android:textColor="@color/fg_text_secondary"
-                            android:textSize="10sp" />
+                            android:textSize="11sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/alaaMohamedFacebookButton"
                             android:layout_width="match_parent"
-                            android:layout_height="44dp"
+                            android:layout_height="48dp"
                             android:layout_marginTop="6dp"
                             android:gravity="center_vertical"
                             android:text="@string/alaa_mohamed_facebook"
                             android:textAllCaps="false"
                             android:textColor="@color/fg_text"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/fg_blue"
-                            app:cornerRadius="13dp"
-                            app:icon="@drawable/ic_person"
+                            app:cornerRadius="15dp"
+                            app:icon="@drawable/ic_facebook"
                             app:iconGravity="textStart"
                             app:iconPadding="8dp"
-                            app:iconSize="20dp"
+                            app:iconSize="22dp"
                             app:iconTint="@color/fg_text" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/fgMachinesFacebookButton"
                             android:layout_width="match_parent"
-                            android:layout_height="44dp"
+                            android:layout_height="48dp"
                             android:layout_marginTop="4dp"
                             android:gravity="center_vertical"
                             android:text="@string/fg_machines_facebook"
                             android:textAllCaps="false"
                             android:textColor="@color/fg_black"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:textStyle="bold"
                             app:backgroundTint="@color/fg_green"
-                            app:cornerRadius="13dp"
-                            app:icon="@drawable/ic_nav_company"
+                            app:cornerRadius="15dp"
+                            app:icon="@drawable/ic_facebook"
                             app:iconGravity="textStart"
                             app:iconPadding="8dp"
-                            app:iconSize="20dp"
+                            app:iconSize="22dp"
                             app:iconTint="@color/fg_black" />
 
                     </LinearLayout>
