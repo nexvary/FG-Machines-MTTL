@@ -692,4 +692,9 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="usb_2">USB 2</string>
     <string name="usb_control_not_exposed">Diese MTTL-W01-Firmware stellt noch keine verifizierte unabhängige USB-Schaltung bereit.</string>
 
+    <string name="email_alerts">E-Mail-Warnungen</string>
+    <string name="email_alerts_note">Optional: Schutz-/Offline-Warnungen an die E-Mail-Adresse des angemeldeten Cloud-Kontos senden. Erfordert HTTPS-VPS/Cloud-Anmeldung und SMTP-Konfiguration auf dem Server.</string>
+    <string name="email_alerts_requires_cloud">E-Mail-Warnungen erfordern zuerst eine HTTPS-Cloud/VPS-Anmeldung.</string>
+    <string name="email_alerts_enabled">E-Mail-Warnungen aktiviert</string>
+    <string name="email_alerts_disabled">E-Mail-Warnungen deaktiviert</string>
 </resources>
