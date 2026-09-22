@@ -18,6 +18,9 @@
     <color name="fg_silver_dark">#758794</color>
     <color name="fg_warning">#F4C15D</color>
     <color name="fg_red">#FF6B72</color>
+    <color name="fg_crimson">#D41445</color>
+    <color name="fg_neon_red">#FF2D55</color>
+    <color name="fg_neon_green">#00D889</color>
     <color name="fg_text">#F5F8FA</color>
     <color name="fg_text_secondary">#9EB0BD</color>
     <color name="fg_divider">#223745</color>

@@ -204,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView cloudStatus;
     private TextView usbPort1Status;
     private TextView usbPort2Status;
+    private MaterialButton usb1Button;
+    private MaterialButton usb2Button;
     private TextView usbDiscoveryStatus;
     private MaterialButton startUsbDiscoveryButton;
     private MaterialButton refreshUsbDiscoveryButton;
@@ -278,41 +280,71 @@ public class MainActivity extends AppCompatActivity {
         configureNavigation();
         configureCompactSettings();
 
-        // The sidecar UI gate must be able to select and prove the requested
-        // page before controller/database initialization, which can be slow on
-        // cold emulators and low-end phones.
-        boolean uiGateBuild = getPackageName().endsWith(".debug")
-                || getPackageName().endsWith(".sidecar161")
-                || getPackageName().endsWith(".sidecar161arm64");
-        if (uiGateBuild && "dashboard".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
-            uiGateActive = true;
-            showPage(0);
-            try (java.io.FileOutputStream marker =
-                         openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
-                marker.write("dashboard-page-visible".getBytes(
-                        java.nio.charset.StandardCharsets.UTF_8));
-            } catch (java.io.IOException error) {
-                android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
+        // CI-only page capture. The actual Android view hierarchy is rendered
+        // into a PNG by UiGateCapture so hosted-emulator black framebuffer
+        // frames cannot be mistaken for valid screenshots.
+        boolean uiGateBuild = UiGateCapture.isEnabled(this);
+        String uiTestPage = getIntent().getStringExtra("fg_ui_test_page");
+        if (uiGateBuild && uiTestPage != null) {
+            if ("dashboard".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(0);
+                UiGateCapture.capture(this, "dashboard");
+                return;
             }
-            android.util.Log.i("FGLinkUiGate", "dashboard-page-visible");
-            return;
-        }
-
-        if (uiGateBuild && "about".equals(getIntent().getStringExtra("fg_ui_test_page"))) {
-            uiGateActive = true;
-            showPage(4);
-            try (java.io.FileOutputStream marker =
-                         openFileOutput("fg_ui_gate_state", MODE_PRIVATE)) {
-                marker.write("about-page-visible".getBytes(
-                        java.nio.charset.StandardCharsets.UTF_8));
-            } catch (java.io.IOException error) {
-                android.util.Log.e("FGLinkUiGate", "Could not write UI gate marker", error);
+            if ("setup".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(1);
+                UiGateCapture.capture(this, "setup");
+                return;
             }
-            android.util.Log.i("FGLinkUiGate", "about-page-visible");
-            // UI screenshot gate only needs the rendered About page. Avoid
-            // starting controller/database/network initialization here so the
-            // emulator cannot ANR or lose foreground before capture.
-            return;
+            if ("scan".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(2);
+                UiGateCapture.capture(this, "scan");
+                return;
+            }
+            if ("settings".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(3);
+                UiGateCapture.capture(this, "settings");
+                return;
+            }
+            if ("about".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(4);
+                UiGateCapture.capture(this, "about");
+                return;
+            }
+            if ("subscriber".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(5);
+                UiGateCapture.capture(this, "subscriber");
+                return;
+            }
+            if ("remote_ac".equals(uiTestPage) || "remote_fan".equals(uiTestPage)) {
+                uiGateActive = true;
+                Intent intent = new Intent(this, RemoteActivity.class);
+                boolean fan = "remote_fan".equals(uiTestPage);
+                intent.putExtra("fg_ui_remote_category", fan ? "fan" : "ac");
+                intent.putExtra("fg_ui_capture_key", fan ? "remote-fan" : "remote-ac");
+                startActivity(intent);
+                return;
+            }
+            if ("diagnostics".equals(uiTestPage)) {
+                uiGateActive = true;
+                Intent intent = new Intent(this, DiagnosticsActivity.class);
+                intent.putExtra("fg_ui_capture_key", "diagnostics");
+                startActivity(intent);
+                return;
+            }
+            if ("network_doctor".equals(uiTestPage)) {
+                uiGateActive = true;
+                Intent intent = new Intent(this, NetworkDoctorActivity.class);
+                intent.putExtra("fg_ui_capture_key", "network-doctor");
+                startActivity(intent);
+                return;
+            }
         }
 
         provisioner = new MttlProvisioner(this);
@@ -489,6 +521,8 @@ public class MainActivity extends AppCompatActivity {
         cloudStatus = findViewById(R.id.cloudStatus);
         usbPort1Status = findViewById(R.id.usbPort1Status);
         usbPort2Status = findViewById(R.id.usbPort2Status);
+        usb1Button = findViewById(R.id.usb1Button);
+        usb2Button = findViewById(R.id.usb2Button);
         usbDiscoveryStatus = findViewById(R.id.usbDiscoveryStatus);
         startUsbDiscoveryButton = findViewById(R.id.startUsbDiscoveryButton);
         refreshUsbDiscoveryButton = findViewById(R.id.refreshUsbDiscoveryButton);
@@ -600,6 +634,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.homeToScan).setOnClickListener(v -> showPage(2));
         findViewById(R.id.homeToRemote).setOnClickListener(v ->
                 startActivity(new Intent(this, RemoteActivity.class)));
+        findViewById(R.id.networkDoctorButton).setOnClickListener(v ->
+                startActivity(new Intent(this, NetworkDoctorActivity.class)));
         findViewById(R.id.homeToDiagnostics).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnosticsActivity.class);
             if (activeMac != null && !activeMac.trim().isEmpty()) {
@@ -669,17 +705,29 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < pages.length; i++) {
             boolean selected = i == page;
             pages[i].setVisibility(selected ? View.VISIBLE : View.GONE);
-            int tint = getColor(selected ? R.color.fg_blue_bright : R.color.fg_silver);
+            int tint = navAccentColor(i);
             navButtons[i].setTextColor(tint);
             navButtons[i].setIconTint(ColorStateList.valueOf(tint));
             navButtons[i].setBackgroundTintList(ColorStateList.valueOf(
                     getColor(selected ? R.color.fg_blue_dim : android.R.color.transparent)));
-            navButtons[i].setAlpha(selected ? 1f : 0.78f);
+            navButtons[i].setAlpha(selected ? 1f : 0.72f);
             navButtons[i].animate()
                     .scaleX(selected ? 1.02f : 0.98f)
                     .scaleY(selected ? 1.02f : 0.98f)
                     .setDuration(140)
                     .start();
+        }
+    }
+
+    private int navAccentColor(int index) {
+        switch (index) {
+            case 0: return getColor(R.color.fg_neon_cyan);
+            case 1: return getColor(R.color.fg_neon_orange);
+            case 2: return getColor(R.color.fg_neon_violet);
+            case 3: return getColor(R.color.fg_neon_magenta);
+            case 4: return getColor(R.color.fg_green);
+            case 5: return getColor(R.color.fg_neon_lime);
+            default: return getColor(R.color.fg_silver);
         }
     }
 
@@ -3019,6 +3067,14 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
         }
+
+        // MTTL-W01 exposes four verified relay channels. The two physical USB
+        // ports are surfaced in the strip UI, but FG Link deliberately does not
+        // fabricate channel 5/6 commands until a verified USB command exists.
+        View.OnClickListener usbInfo = v -> Snackbar.make(
+                v, R.string.usb_control_not_exposed, Snackbar.LENGTH_LONG).show();
+        if (usb1Button != null) usb1Button.setOnClickListener(usbInfo);
+        if (usb2Button != null) usb2Button.setOnClickListener(usbInfo);
     }
 
     private void updateOutletCardState(int index, boolean on) {

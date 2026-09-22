@@ -2,7 +2,7 @@
 
 Android local controller and interoperability project for the LG U+ / TCL / TONLY **MTTL-W01 family** of smart power strips.
 
-## Current Android baseline — 1.6.1
+## Current Android baseline — 1.6.3
 
 - FG Machines black / electric-blue / neon-green / metallic-silver visual identity.
 - Arabic, English, Turkish, Spanish and German with persistent in-app language selection.
@@ -27,6 +27,8 @@ Android local controller and interoperability project for the LG U+ / TCL / TONL
 - 1.5.0 Free Remote Access adds two zero-subscription remote paths: ZeroTier directly on the controller phone, or a ZeroTier router gateway. Router Gateway can expose only TCP 18086 on the router's ZeroTier address and destination-NAT it to the controller phone, avoiding a paid/custom ZeroTier Managed Route. Both paths keep MTTL control local on TCP 10086.
 - 1.6.0 adopts the customer-facing **FG Link** launcher name and **FG Machines Link** in-app identity, uses the supplied FG Machines company artwork in the launcher/About experience, and fixes the Home Assistant share-token button so localized labels are not clipped.
 - 1.6.1 expands the IR replacement-remote library for verified AC protocol families and fan profiles, keeps unverified Fresh fan models on confirmation-based Smart Scan, stabilizes the real-device UI screenshot release gate, and hardens Router Gateway setup with an active TCP 18086 health probe.
+- 1.6.2 adds **Network Doctor**, a one-tap field diagnostic screen for Wi-Fi/4G/VPN state, detected ZeroTier/LAN addresses, FG Link TCP 18086 health checks, local MTTL TCP 10086 status, KT708 gateway reachability, direct controller reachability and automatic selection of a confirmed working remote endpoint. The report can be copied for support without requiring browser, ping or RouterOS command sequences.
+- 1.6.3 compacts the Home, Settings, Smart Home and Developer pages, highlights Network Doctor in crimson, adds a balanced six-tile strip view with two visible USB ports, changes relay states to neon green/on and neon red/off, and gives every bottom-navigation destination its own accent color. USB tiles are intentionally non-destructive until an independent USB command is verified for MTTL-W01.
 - Driver-based smart-home platform foundation separates device protocols from the UI: MTTL-W01 is the first verified driver, while relays, sensors, IR/AC, energy monitors, room controllers, gateways and smart panels now have protocol-neutral model/registry slots without falsely claiming hardware support.
 - Free remote profiles deliberately accept only private/VPN HTTP endpoints. Public Internet HTTP is rejected; no port-forwarding is required.
 - Device Share Codes prefer the configured free remote endpoint, so a client can import one code and use the same authenticated device scope over ZeroTier.

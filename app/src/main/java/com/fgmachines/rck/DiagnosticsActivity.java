@@ -140,6 +140,9 @@ public final class DiagnosticsActivity extends AppCompatActivity {
         captureDisplayButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_DISPLAY));
         captureLabelButton.setOnClickListener(v -> startDiagnosticCapture(CAPTURE_MODE_LABEL));
         refreshElectricalButton.setOnClickListener(v -> refreshLiveElectricalContext());
+
+        String captureKey = getIntent().getStringExtra("fg_ui_capture_key");
+        if (captureKey != null) UiGateCapture.capture(this, captureKey);
     }
 
     private void applySystemBarInsets() {

@@ -676,4 +676,29 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="remote_fan_sleep">Sleep</string>
     <string name="ac_remote_command_sent">IR command sent · %1$s</string>
     <string name="ac_remote_send_failed">IR command failed: %1$s</string>
+
+    <string name="network_doctor_open">Network Doctor</string>
+    <string name="network_doctor_title">Network Doctor</string>
+    <string name="network_doctor_subtitle">One-tap diagnostics for 4G/Wi-Fi, ZeroTier, KT708, FG Link API and the local MTTL controller. Run this before changing router settings.</string>
+    <string name="network_doctor_back">Back</string>
+    <string name="network_doctor_targets">Diagnostic targets</string>
+    <string name="network_doctor_gateway_hint">KT708 ZeroTier IP</string>
+    <string name="network_doctor_controller_zt_hint">Controller ZeroTier IP</string>
+    <string name="network_doctor_controller_lan_hint">Controller LAN IP</string>
+    <string name="network_doctor_run">Run complete diagnostics</string>
+    <string name="network_doctor_ready">Ready. One button will test the full path.</string>
+    <string name="network_doctor_running">Running network diagnostics…</string>
+    <string name="network_doctor_report_empty">No report yet.</string>
+    <string name="network_doctor_apply_best">Use working path automatically</string>
+    <string name="network_doctor_copy">Copy diagnostic report</string>
+    <string name="network_doctor_note">The doctor does not change RouterOS, ZeroTier Central or public Internet settings. It only tests local/private paths and can save a confirmed working FG Link endpoint.</string>
+    <string name="network_doctor_copied">Diagnostic report copied.</string>
+    <string name="network_doctor_no_working_path">No working endpoint was detected. No settings were changed.</string>
+    <string name="network_doctor_applied">Working endpoint saved: %1$s</string>
+
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">This MTTL-W01 firmware does not expose verified independent USB switching yet.</string>
+
 </resources>

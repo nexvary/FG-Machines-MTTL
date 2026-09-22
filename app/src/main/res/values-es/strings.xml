@@ -667,4 +667,29 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="remote_swing">Oscilación</string>
     <string name="remote_temp_default">24°C</string>
     <string name="remote_temp_value">%1$d°C</string>
+
+    <string name="network_doctor_open">Doctor de red</string>
+    <string name="network_doctor_title">Doctor de red</string>
+    <string name="network_doctor_subtitle">Diagnóstico con un toque para 4G/Wi-Fi, ZeroTier, KT708, API de FG Link y controlador MTTL local. Ejecútalo antes de cambiar el router.</string>
+    <string name="network_doctor_back">Atrás</string>
+    <string name="network_doctor_targets">Objetivos de diagnóstico</string>
+    <string name="network_doctor_gateway_hint">IP ZeroTier de KT708</string>
+    <string name="network_doctor_controller_zt_hint">IP ZeroTier del controlador</string>
+    <string name="network_doctor_controller_lan_hint">IP LAN del controlador</string>
+    <string name="network_doctor_run">Ejecutar diagnóstico completo</string>
+    <string name="network_doctor_ready">Listo. Un botón probará toda la ruta.</string>
+    <string name="network_doctor_running">Ejecutando diagnóstico de red…</string>
+    <string name="network_doctor_report_empty">Aún no hay informe.</string>
+    <string name="network_doctor_apply_best">Usar automáticamente la ruta que funciona</string>
+    <string name="network_doctor_copy">Copiar informe de diagnóstico</string>
+    <string name="network_doctor_note">El Doctor de red no cambia RouterOS, ZeroTier Central ni la configuración pública de Internet. Solo prueba rutas locales/privadas y puede guardar un endpoint FG Link confirmado.</string>
+    <string name="network_doctor_copied">Informe de diagnóstico copiado.</string>
+    <string name="network_doctor_no_working_path">No se detectó ningún endpoint funcional. No se cambió ninguna configuración.</string>
+    <string name="network_doctor_applied">Endpoint funcional guardado: %1$s</string>
+
+
+    <string name="usb_1">USB 1</string>
+    <string name="usb_2">USB 2</string>
+    <string name="usb_control_not_exposed">Este firmware MTTL-W01 aún no expone un control USB independiente verificado.</string>
+
 </resources>

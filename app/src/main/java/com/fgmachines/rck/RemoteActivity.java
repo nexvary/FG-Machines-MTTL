@@ -123,8 +123,12 @@ public final class RemoteActivity extends AppCompatActivity {
         findViewById(R.id.remoteFanTimerButton).setOnClickListener(v -> sendFanCode("timer"));
         findViewById(R.id.remoteFanSleepButton).setOnClickListener(v -> sendFanCode("sleep"));
 
-        setCategory(Category.AC);
+        String uiCategory = getIntent().getStringExtra("fg_ui_remote_category");
+        setCategory("fan".equals(uiCategory) ? Category.FAN : Category.AC);
         updateTemp();
+
+        String captureKey = getIntent().getStringExtra("fg_ui_capture_key");
+        if (captureKey != null) UiGateCapture.capture(this, captureKey);
     }
 
     private void applySystemBarInsets() {

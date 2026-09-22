@@ -48,6 +48,10 @@
         </receiver>
 
         <activity
+            android:name=".NetworkDoctorActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".DiagnosticsActivity"
             android:exported="false" />
 
