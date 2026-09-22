@@ -692,4 +692,9 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="usb_2">USB 2</string>
     <string name="usb_control_not_exposed">Bu MTTL-W01 firmware sürümünde bağımsız USB anahtarlama henüz doğrulanmış değildir.</string>
 
+    <string name="email_alerts">E-posta uyarıları</string>
+    <string name="email_alerts_note">İsteğe bağlı: koruma/çevrimdışı uyarılarını oturum açılan bulut hesabının e-posta adresine gönderir. HTTPS VPS/bulut girişi ve sunucuda SMTP yapılandırması gerekir.</string>
+    <string name="email_alerts_requires_cloud">E-posta uyarıları için önce HTTPS bulut/VPS hesabında oturum açın.</string>
+    <string name="email_alerts_enabled">E-posta uyarıları etkin</string>
+    <string name="email_alerts_disabled">E-posta uyarıları devre dışı</string>
 </resources>
