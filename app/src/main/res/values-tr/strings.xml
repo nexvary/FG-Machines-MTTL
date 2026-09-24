@@ -697,4 +697,13 @@ Aşırı yük: %6$s · Aşırı ısınma: %7$s · Olay: %8$s</string>
     <string name="email_alerts_requires_cloud">E-posta uyarıları için önce HTTPS bulut/VPS hesabında oturum açın.</string>
     <string name="email_alerts_enabled">E-posta uyarıları etkin</string>
     <string name="email_alerts_disabled">E-posta uyarıları devre dışı</string>
+
+    <string name="nav_devices">Cihazlar</string>
+    <string name="devices_page_title">Cihazlarım</string>
+    <string name="devices_page_note">Bir cihazı seçmek ve dört çıkışlı kontrol sayfasını açmak için dokunun. Burada en fazla 10 kayıtlı cihaz gösterilir.</string>
+    <string name="devices_page_empty">Henüz kayıtlı cihaz yok. Bir cihaz FG Machines Link'e bağlandığında otomatik olarak burada görünür.</string>
+    <string name="devices_page_summary">%2$d cihazdan %1$d gösteriliyor · %3$d çevrimiçi</string>
+    <string name="devices_unnamed_device">MTTL-W01 cihazı</string>
+    <string name="devices_room_format">Oda · %1$s</string>
+    <string name="devices_mac_format">MAC · %1$s</string>
 </resources>
