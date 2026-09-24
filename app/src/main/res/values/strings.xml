@@ -706,4 +706,13 @@ Overload: %6$s · Overheat: %7$s · Event: %8$s</string>
     <string name="email_alerts_requires_cloud">Email alerts require a signed-in HTTPS cloud/VPS account first.</string>
     <string name="email_alerts_enabled">Email alerts enabled</string>
     <string name="email_alerts_disabled">Email alerts disabled</string>
+
+    <string name="nav_devices">Devices</string>
+    <string name="devices_page_title">My devices</string>
+    <string name="devices_page_note">Tap a device to select it and open its four-outlet control page. Up to 10 registered devices are shown here.</string>
+    <string name="devices_page_empty">No registered devices yet. A device appears here automatically after it connects to FG Machines Link.</string>
+    <string name="devices_page_summary">Showing %1$d of %2$d devices · %3$d online</string>
+    <string name="devices_unnamed_device">MTTL-W01 device</string>
+    <string name="devices_room_format">Room · %1$s</string>
+    <string name="devices_mac_format">MAC · %1$s</string>
 </resources>

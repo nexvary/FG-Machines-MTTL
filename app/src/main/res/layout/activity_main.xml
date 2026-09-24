@@ -2047,6 +2047,64 @@
         </ScrollView>
 
 
+
+        <ScrollView
+            android:id="@+id/pageDevices"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/devices_page_title"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_blue_bright"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/devices_page_note"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_text_secondary"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/devicesPageSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_status_pill"
+                    android:padding="10dp"
+                    android:text="@string/devices_page_empty"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/fg_silver"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/devicesGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </ScrollView>
+
         <ScrollView
             android:id="@+id/pageSubscriber"
             android:layout_width="match_parent"
@@ -4880,6 +4938,26 @@
                 app:iconSize="22dp"
                 app:iconTint="@color/fg_silver" />
                         <com.google.android.material.button.MaterialButton
+                android:id="@+id/navDevices"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/nav_devices"
+                android:textAllCaps="false"
+                android:maxLines="2"
+                android:textColor="@color/fg_silver"
+                android:textSize="9sp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_platform_devices"
+                app:iconGravity="textTop"
+                app:iconPadding="2dp"
+                app:iconSize="22dp"
+                app:iconTint="@color/fg_silver" />
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/navSubscriber"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"

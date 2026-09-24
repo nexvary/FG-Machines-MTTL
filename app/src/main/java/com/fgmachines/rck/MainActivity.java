@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -151,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView fleetStatus;
     private TextView fleetOverview;
     private TextView fleetDevicesList;
+    private TextView devicesPageSummary;
+    private LinearLayout devicesGrid;
     private MaterialButton emergencyRoomOffButton;
     private MaterialButton emergencyAllOffButton;
     private HistorySparklineView historySparkline;
@@ -323,6 +327,12 @@ public class MainActivity extends AppCompatActivity {
                 UiGateCapture.capture(this, "subscriber");
                 return;
             }
+            if ("devices".equals(uiTestPage)) {
+                uiGateActive = true;
+                showPage(6);
+                UiGateCapture.capture(this, "devices");
+                return;
+            }
             if ("remote_ac".equals(uiTestPage) || "remote_fan".equals(uiTestPage)) {
                 uiGateActive = true;
                 Intent intent = new Intent(this, RemoteActivity.class);
@@ -469,6 +479,8 @@ public class MainActivity extends AppCompatActivity {
         fleetStatus = findViewById(R.id.fleetStatus);
         fleetOverview = findViewById(R.id.fleetOverview);
         fleetDevicesList = findViewById(R.id.fleetDevicesList);
+        devicesPageSummary = findViewById(R.id.devicesPageSummary);
+        devicesGrid = findViewById(R.id.devicesGrid);
         emergencyRoomOffButton = findViewById(R.id.emergencyRoomOffButton);
         emergencyAllOffButton = findViewById(R.id.emergencyAllOffButton);
         historySparkline = findViewById(R.id.historySparkline);
@@ -596,18 +608,20 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.outletCard1), findViewById(R.id.outletCard2),
                 findViewById(R.id.outletCard3), findViewById(R.id.outletCard4)
         };
-        // Keep the historical indices 0..4 stable so existing deep links and
-        // UI-gate tests continue to target the same pages. Subscriber is appended
-        // as page 5 even though its navigation button is visually placed earlier.
+        // Keep the historical indices 0..5 stable so existing deep links and
+        // UI-gate tests continue to target the same pages. Devices is page 6
+        // even though its navigation button is visually placed before Subscriber.
         pages = new View[]{
                 findViewById(R.id.pageHome), findViewById(R.id.pageSetup),
                 findViewById(R.id.pageScan), findViewById(R.id.pageSettings),
-                findViewById(R.id.pageAbout), findViewById(R.id.pageSubscriber)
+                findViewById(R.id.pageAbout), findViewById(R.id.pageSubscriber),
+                findViewById(R.id.pageDevices)
         };
         navButtons = new MaterialButton[]{
                 findViewById(R.id.navHome), findViewById(R.id.navSetup),
                 findViewById(R.id.navScan), findViewById(R.id.navSettings),
-                findViewById(R.id.navAbout), findViewById(R.id.navSubscriber)
+                findViewById(R.id.navAbout), findViewById(R.id.navSubscriber),
+                findViewById(R.id.navDevices)
         };
     }
 
@@ -653,8 +667,7 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.platformDevicesButton).setOnClickListener(v -> {
             hubStatus.setText(R.string.platform_devices_status);
-            showPage(0);
-            scrollToSection(R.id.pageHome, R.id.fleetCard);
+            showPage(6);
         });
         findViewById(R.id.platformRoomsButton).setOnClickListener(v -> {
             hubStatus.setText(R.string.platform_rooms_status);
@@ -729,6 +742,7 @@ public class MainActivity extends AppCompatActivity {
             case 3: return getColor(R.color.fg_neon_magenta);
             case 4: return getColor(R.color.fg_green);
             case 5: return getColor(R.color.fg_neon_lime);
+            case 6: return getColor(R.color.fg_blue_bright);
             default: return getColor(R.color.fg_silver);
         }
     }
@@ -1492,8 +1506,131 @@ public class MainActivity extends AppCompatActivity {
         }
         fleetRoomSpinner.setSelection(roomIndex, false);
         refreshFleetDeviceSpinner();
+        refreshDeviceCards();
         refreshPlatformSummary();
         updateApiEndpoint();
+    }
+
+    private void refreshDeviceCards() {
+        if (devicesGrid == null || devicesPageSummary == null || fleetStore == null) return;
+
+        List<FleetStore.DeviceRecord> records = fleetStore.list();
+        int total = records.size();
+        int online = 0;
+        for (FleetStore.DeviceRecord record : records) {
+            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
+            if (live != null && live.connected) online++;
+        }
+
+        int shown = Math.min(10, total);
+        devicesPageSummary.setText(total == 0
+                ? getString(R.string.devices_page_empty)
+                : getString(R.string.devices_page_summary, shown, total, online));
+
+        devicesGrid.removeAllViews();
+        if (shown == 0) return;
+
+        LinearLayout row = null;
+        for (int i = 0; i < shown; i++) {
+            if (i % 2 == 0) {
+                row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                if (i > 0) rowParams.topMargin = dp(8);
+                devicesGrid.addView(row, rowParams);
+            }
+
+            FleetStore.DeviceRecord record = records.get(i);
+            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
+            boolean connected = live != null && live.connected;
+
+            MaterialCardView card = new MaterialCardView(this);
+            card.setCardBackgroundColor(getColor(connected ? R.color.fg_card_on : R.color.fg_card_off));
+            card.setStrokeColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
+            card.setStrokeWidth(dp(isActive(record.mac) ? 2 : 1));
+            card.setRadius(dp(18));
+            card.setCardElevation(dp(2));
+            card.setClickable(true);
+            card.setFocusable(true);
+            card.setMinimumHeight(dp(126));
+
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            if (i % 2 == 0) cardParams.setMarginEnd(dp(4));
+            else cardParams.setMarginStart(dp(4));
+
+            LinearLayout body = new LinearLayout(this);
+            body.setOrientation(LinearLayout.VERTICAL);
+            body.setPadding(dp(12), dp(11), dp(12), dp(11));
+
+            TextView name = new TextView(this);
+            name.setText(record.name == null || record.name.trim().isEmpty()
+                    ? R.string.devices_unnamed_device : 0);
+            if (record.name != null && !record.name.trim().isEmpty()) {
+                name.setText(record.name.trim());
+            }
+            name.setTextColor(getColor(R.color.fg_text));
+            name.setTextSize(15);
+            name.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            name.setTypeface(name.getTypeface(), android.graphics.Typeface.BOLD);
+            body.addView(name, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            TextView room = new TextView(this);
+            String roomName = record.room == null || record.room.trim().isEmpty()
+                    ? getString(R.string.room_unassigned) : record.room.trim();
+            room.setText(getString(R.string.devices_room_format, roomName));
+            room.setTextColor(getColor(R.color.fg_text_secondary));
+            room.setTextSize(11);
+            room.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            roomParams.topMargin = dp(4);
+            body.addView(room, roomParams);
+
+            TextView status = new TextView(this);
+            status.setText(connected ? R.string.fleet_online : R.string.fleet_offline);
+            status.setTextColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
+            status.setTextSize(12);
+            status.setTypeface(status.getTypeface(), android.graphics.Typeface.BOLD);
+            status.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            statusParams.topMargin = dp(7);
+            body.addView(status, statusParams);
+
+            TextView mac = new TextView(this);
+            mac.setText(getString(R.string.devices_mac_format, record.mac));
+            mac.setTextColor(getColor(R.color.fg_silver_dark));
+            mac.setTextSize(9);
+            mac.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            LinearLayout.LayoutParams macParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            macParams.topMargin = dp(4);
+            body.addView(mac, macParams);
+
+            card.addView(body);
+            final String deviceMac = record.mac;
+            card.setOnClickListener(v -> {
+                selectFleetDevice(deviceMac);
+                showPage(5);
+            });
+            row.addView(card, cardParams);
+
+            if (i == shown - 1 && shown % 2 != 0) {
+                View spacer = new View(this);
+                LinearLayout.LayoutParams spacerParams = new LinearLayout.LayoutParams(
+                        0, 1, 1f);
+                spacerParams.setMarginStart(dp(4));
+                row.addView(spacer, spacerParams);
+            }
+        }
     }
 
     private void refreshPlatformSummary() {
@@ -1673,6 +1810,7 @@ public class MainActivity extends AppCompatActivity {
         refreshScenes();
         refreshHistory();
         refreshRuntimeSummary();
+        refreshDeviceCards();
     }
 
     private void migrateLegacyLabelsIfNeeded(String mac) {
@@ -3355,6 +3493,10 @@ public class MainActivity extends AppCompatActivity {
         scanButton.setEnabled(!busy);
         probeButton.setEnabled(!busy);
         languageSpinner.setEnabled(!busy);
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
     private static String textOf(TextInputEditText input) {

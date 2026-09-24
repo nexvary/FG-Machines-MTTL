@@ -697,4 +697,13 @@ Leistung %3$.1f W · Energie %4$.3f kWh · Temperatur %5$d°C
     <string name="email_alerts_requires_cloud">E-Mail-Warnungen erfordern zuerst eine HTTPS-Cloud/VPS-Anmeldung.</string>
     <string name="email_alerts_enabled">E-Mail-Warnungen aktiviert</string>
     <string name="email_alerts_disabled">E-Mail-Warnungen deaktiviert</string>
+
+    <string name="nav_devices">Geräte</string>
+    <string name="devices_page_title">Meine Geräte</string>
+    <string name="devices_page_note">Tippen Sie auf ein Gerät, um es auszuwählen und die Steuerseite für vier Ausgänge zu öffnen. Hier werden bis zu 10 registrierte Geräte angezeigt.</string>
+    <string name="devices_page_empty">Noch keine registrierten Geräte. Ein Gerät erscheint hier automatisch, sobald es sich mit FG Machines Link verbindet.</string>
+    <string name="devices_page_summary">%1$d von %2$d Geräten angezeigt · %3$d online</string>
+    <string name="devices_unnamed_device">MTTL-W01-Gerät</string>
+    <string name="devices_room_format">Raum · %1$s</string>
+    <string name="devices_mac_format">MAC · %1$s</string>
 </resources>

@@ -697,4 +697,13 @@ Sobrecarga: %6$s · Sobretemperatura: %7$s · Evento: %8$s</string>
     <string name="email_alerts_requires_cloud">Las alertas por correo requieren iniciar sesión primero en la nube/VPS por HTTPS.</string>
     <string name="email_alerts_enabled">Alertas por correo activadas</string>
     <string name="email_alerts_disabled">Alertas por correo desactivadas</string>
+
+    <string name="nav_devices">Dispositivos</string>
+    <string name="devices_page_title">Mis dispositivos</string>
+    <string name="devices_page_note">Toca un dispositivo para seleccionarlo y abrir su página de control de cuatro salidas. Aquí se muestran hasta 10 dispositivos registrados.</string>
+    <string name="devices_page_empty">Aún no hay dispositivos registrados. Un dispositivo aparecerá aquí automáticamente cuando se conecte a FG Machines Link.</string>
+    <string name="devices_page_summary">Mostrando %1$d de %2$d dispositivos · %3$d en línea</string>
+    <string name="devices_unnamed_device">Dispositivo MTTL-W01</string>
+    <string name="devices_room_format">Habitación · %1$s</string>
+    <string name="devices_mac_format">MAC · %1$s</string>
 </resources>
