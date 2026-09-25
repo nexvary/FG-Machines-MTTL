@@ -1700,7 +1700,7 @@ public class MainActivity extends AppCompatActivity {
             statusView.setTextSize(9.5f);
             statusView.setTypeface(statusView.getTypeface(), android.graphics.Typeface.BOLD);
             statusView.setMaxLines(1);
-            statusView.setPadding(dp(4), 0, 0, 0);
+            statusView.setPaddingRelative(dp(4), 0, 0, 0);
             metaRow.addView(statusView);
             body.addView(metaRow);
 
