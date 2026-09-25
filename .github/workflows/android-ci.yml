@@ -70,6 +70,19 @@ jobs:
           grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
           grep -q '@drawable/ic_fg_logo' app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
 
+      - name: Verify Devices page is hard-wired to equal 2-column rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'private LinearLayout devicesGrid;' app/src/main/java/com/fgmachines/rck/MainActivity.java
+          grep -q 'row.setWeightSum(2f);' app/src/main/java/com/fgmachines/rck/MainActivity.java
+          grep -q 'LinearLayout.LayoutParams.WRAP_CONTENT, 1f' app/src/main/java/com/fgmachines/rck/MainActivity.java
+          grep -q 'android:id="@+id/devicesGrid"' app/src/main/res/layout/activity_main.xml
+          if grep -B2 -A8 'android:id="@+id/devicesGrid"' app/src/main/res/layout/activity_main.xml | grep -q '<GridLayout'; then
+            echo "Devices page must not use GridLayout; it regressed the 2x5 phone layout."
+            exit 1
+          fi
+
       - name: Verify side-by-side package identity
         shell: bash
         run: |
@@ -79,7 +92,7 @@ jobs:
           APK="app/build/outputs/apk/sidecar/app-sidecar.apk"
           "$AAPT" dump badging "$APK" | tee /tmp/sidecar-badging.txt
           grep -q "package: name='com.fgmachines.rck.sidecar163'" /tmp/sidecar-badging.txt
-          grep -q "application-label:'FG Link 1.6.3 Test'" /tmp/sidecar-badging.txt
+          grep -q "application-label:'FG Link 1.6.4 Test'" /tmp/sidecar-badging.txt
 
       - name: Verify ARM64 fast-install package
         shell: bash
@@ -91,7 +104,7 @@ jobs:
           test -n "$APK"
           "$AAPT" dump badging "$APK" | tee /tmp/arm64-badging.txt
           grep -q "package: name='com.fgmachines.rck.sidecar163arm64'" /tmp/arm64-badging.txt
-          grep -q "application-label:'FG Link 1.6.3 Fast'" /tmp/arm64-badging.txt
+          grep -q "application-label:'FG Link 1.6.4 Fast'" /tmp/arm64-badging.txt
           if unzip -l "$APK" | grep -E 'lib/(x86|x86_64|armeabi-v7a)/'; then
             echo "Unexpected non-ARM64 native library found."
             exit 1
@@ -142,21 +155,21 @@ jobs:
       - name: Upload isolated debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Link-1.6.3-debug
+          name: FG-Link-1.6.4-debug
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 
-      - name: Upload side-by-side 1.6.3 APK
+      - name: Upload side-by-side 1.6.4 APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Link-1.6.3-side-by-side
+          name: FG-Link-1.6.4-side-by-side
           path: app/build/outputs/apk/sidecar/app-sidecar.apk
           if-no-files-found: error
 
       - name: Upload ARM64 fast-install APK
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Link-1.6.3-ARM64-Fast
+          name: FG-Link-1.6.4-ARM64-Fast
           path: app/build/outputs/apk/sidecarArm64/*.apk
           if-no-files-found: error
 
@@ -176,13 +189,13 @@ jobs:
       - name: Download isolated debug APK
         uses: actions/download-artifact@v4
         with:
-          name: FG-Link-1.6.3-debug
+          name: FG-Link-1.6.4-debug
           path: apk-debug
 
       - name: Download side-by-side APK
         uses: actions/download-artifact@v4
         with:
-          name: FG-Link-1.6.3-side-by-side
+          name: FG-Link-1.6.4-side-by-side
           path: apk-sidecar
 
       - name: Capture and verify dashboard + About branding
@@ -197,8 +210,8 @@ jobs:
       - name: Upload real UI screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: FG-Link-1.6.3-ui-screenshots
-          path: FG-Link-1.6.3-*.png
+          name: FG-Link-1.6.4-ui-screenshots
+          path: FG-Link-1.6.4-*.png
           if-no-files-found: error
 
 
