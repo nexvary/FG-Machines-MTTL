@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     private SceneStore sceneStore;
     private SmartHomePlatform smartHomePlatform;
     private TextView platformSummary;
-    private GridLayout devicesGrid;
+    private LinearLayout devicesGrid;
     private TextView devicesPageSummary;
     private final List<FleetStore.DeviceRecord> visibleFleetDevices = new ArrayList<>();
     private final List<AccessControlStore.AccessEntry> visibleAccessEntries = new ArrayList<>();
@@ -1627,101 +1626,119 @@ public class MainActivity extends AppCompatActivity {
         int shown = Math.min(10, records.size());
         int online = 0;
 
-        for (int i = 0; i < shown; i++) {
-            FleetStore.DeviceRecord record = records.get(i);
-            ControllerHub.DeviceState live = controllerHub == null ? null : controllerHub.state(record.mac);
-            boolean connected = live != null && live.connected;
-            if (connected) online++;
+        // Build explicit horizontal rows instead of relying on GridLayout sizing.
+        // Every row always owns two equal-weight slots, so a single/odd card can
+        // never expand to full width on OEM Android layouts.
+        for (int rowStart = 0; rowStart < shown; rowStart += 2) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setWeightSum(2f);
+            row.setBaselineAligned(false);
+            row.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            MaterialCardView card = new MaterialCardView(this);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.rowSpec = GridLayout.spec(i / 2);
-            params.columnSpec = GridLayout.spec(i % 2);
-            int margin = dp(3);
-            int gridWidth = devicesGrid.getWidth();
-            if (gridWidth <= 0) {
-                // pageDevices has 9dp horizontal padding on each side. Using a
-                // deterministic fallback keeps a single registered device at
-                // half-width instead of stretching across the whole screen.
-                gridWidth = getResources().getDisplayMetrics().widthPixels - dp(18);
+            for (int column = 0; column < 2; column++) {
+                int index = rowStart + column;
+                int margin = dp(3);
+
+                if (index >= shown) {
+                    View spacer = new View(this);
+                    LinearLayout.LayoutParams spacerParams = new LinearLayout.LayoutParams(
+                            0, dp(1), 1f);
+                    spacerParams.setMargins(margin, 0, margin, 0);
+                    row.addView(spacer, spacerParams);
+                    continue;
+                }
+
+                FleetStore.DeviceRecord record = records.get(index);
+                ControllerHub.DeviceState live = controllerHub == null
+                        ? null : controllerHub.state(record.mac);
+                boolean connected = live != null && live.connected;
+                if (connected) online++;
+
+                MaterialCardView card = new MaterialCardView(this);
+                LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                cardParams.setMargins(margin, margin, margin, margin);
+                card.setLayoutParams(cardParams);
+                card.setMinimumHeight(dp(68));
+                card.setRadius(dp(13));
+                card.setCardElevation(dp(1));
+                card.setCardBackgroundColor(getColor(connected
+                        ? R.color.fg_surface_2 : R.color.fg_surface));
+                card.setStrokeWidth(dp(activeMac != null
+                        && record.mac.equalsIgnoreCase(activeMac) ? 3 : 2));
+                card.setStrokeColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
+                card.setClickable(true);
+                card.setFocusable(true);
+
+                LinearLayout body = new LinearLayout(this);
+                body.setOrientation(LinearLayout.VERTICAL);
+                body.setPadding(dp(8), dp(6), dp(8), dp(6));
+
+                String displayName = record.name == null || record.name.trim().isEmpty()
+                        ? ModelCatalog.PRIMARY_MODEL : record.name.trim();
+                String room = record.room == null || record.room.trim().isEmpty()
+                        ? getString(R.string.room_unassigned) : record.room.trim();
+
+                TextView nameView = new TextView(this);
+                nameView.setText(displayName);
+                nameView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                nameView.setTextColor(getColor(R.color.fg_text));
+                nameView.setTextSize(12f);
+                nameView.setTypeface(nameView.getTypeface(), android.graphics.Typeface.BOLD);
+                nameView.setMaxLines(1);
+                nameView.setEllipsize(TextUtils.TruncateAt.END);
+                body.addView(nameView);
+
+                LinearLayout metaRow = new LinearLayout(this);
+                metaRow.setOrientation(LinearLayout.HORIZONTAL);
+                metaRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+                metaRow.setPadding(0, dp(2), 0, 0);
+
+                TextView roomView = new TextView(this);
+                roomView.setText(room);
+                roomView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                roomView.setTextColor(getColor(R.color.fg_text_secondary));
+                roomView.setTextSize(9f);
+                roomView.setMaxLines(1);
+                roomView.setEllipsize(TextUtils.TruncateAt.END);
+                metaRow.addView(roomView, new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+                TextView statusView = new TextView(this);
+                statusView.setText(connected ? R.string.fleet_online : R.string.fleet_offline);
+                statusView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                statusView.setTextColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
+                statusView.setTextSize(9f);
+                statusView.setTypeface(statusView.getTypeface(), android.graphics.Typeface.BOLD);
+                statusView.setMaxLines(1);
+                statusView.setPaddingRelative(dp(3), 0, 0, 0);
+                metaRow.addView(statusView);
+                body.addView(metaRow);
+
+                TextView macView = new TextView(this);
+                macView.setText(getString(R.string.device_mac_format, record.mac));
+                macView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                macView.setTextColor(getColor(R.color.fg_silver_dark));
+                macView.setTextSize(7.5f);
+                macView.setMaxLines(1);
+                macView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+                macView.setPadding(0, dp(2), 0, 0);
+                body.addView(macView);
+
+                card.setContentDescription(displayName + ", " + room + ", "
+                        + getString(connected ? R.string.fleet_online : R.string.fleet_offline));
+                card.addView(body);
+                card.setOnClickListener(v -> {
+                    selectFleetDevice(record.mac);
+                    showPage(5);
+                });
+                row.addView(card);
             }
-            params.width = Math.max(dp(132), (gridWidth - (margin * 4)) / 2);
-            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            params.setMargins(margin, margin, margin, margin);
-            card.setLayoutParams(params);
-            card.setRadius(dp(14));
-            card.setCardElevation(dp(1));
-            card.setCardBackgroundColor(getColor(connected
-                    ? R.color.fg_surface_2 : R.color.fg_surface));
-            card.setStrokeWidth(dp(activeMac != null
-                    && record.mac.equalsIgnoreCase(activeMac) ? 3 : 2));
-            card.setStrokeColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
-            card.setClickable(true);
-            card.setFocusable(true);
 
-            LinearLayout body = new LinearLayout(this);
-            body.setOrientation(LinearLayout.VERTICAL);
-            body.setPadding(dp(8), dp(7), dp(8), dp(7));
-
-            String displayName = record.name == null || record.name.trim().isEmpty()
-                    ? ModelCatalog.PRIMARY_MODEL : record.name.trim();
-            String room = record.room == null || record.room.trim().isEmpty()
-                    ? getString(R.string.room_unassigned) : record.room.trim();
-
-            TextView nameView = new TextView(this);
-            nameView.setText(displayName);
-            nameView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-            nameView.setTextColor(getColor(R.color.fg_text));
-            nameView.setTextSize(12.5f);
-            nameView.setTypeface(nameView.getTypeface(), android.graphics.Typeface.BOLD);
-            nameView.setMaxLines(1);
-            nameView.setEllipsize(TextUtils.TruncateAt.END);
-            body.addView(nameView);
-
-            LinearLayout metaRow = new LinearLayout(this);
-            metaRow.setOrientation(LinearLayout.HORIZONTAL);
-            metaRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-            metaRow.setPadding(0, dp(3), 0, 0);
-
-            TextView roomView = new TextView(this);
-            roomView.setText(room);
-            roomView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-            roomView.setTextColor(getColor(R.color.fg_text_secondary));
-            roomView.setTextSize(9.5f);
-            roomView.setMaxLines(1);
-            roomView.setEllipsize(TextUtils.TruncateAt.END);
-            metaRow.addView(roomView, new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-            TextView statusView = new TextView(this);
-            statusView.setText(connected ? R.string.fleet_online : R.string.fleet_offline);
-            statusView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-            statusView.setTextColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
-            statusView.setTextSize(9.5f);
-            statusView.setTypeface(statusView.getTypeface(), android.graphics.Typeface.BOLD);
-            statusView.setMaxLines(1);
-            statusView.setPaddingRelative(dp(4), 0, 0, 0);
-            metaRow.addView(statusView);
-            body.addView(metaRow);
-
-            TextView macView = new TextView(this);
-            macView.setText(getString(R.string.device_mac_format, record.mac));
-            macView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-            macView.setTextColor(getColor(R.color.fg_silver_dark));
-            macView.setTextSize(8);
-            macView.setMaxLines(1);
-            macView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
-            macView.setPadding(0, dp(3), 0, 0);
-            body.addView(macView);
-
-            card.setContentDescription(displayName + ", " + room + ", "
-                    + getString(connected ? R.string.fleet_online : R.string.fleet_offline));
-            card.addView(body);
-            card.setOnClickListener(v -> {
-                selectFleetDevice(record.mac);
-                showPage(5);
-            });
-            devicesGrid.addView(card);
+            devicesGrid.addView(row);
         }
 
         if (devicesPageSummary != null) {
@@ -1736,7 +1753,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private int dp(int value) {
+        private int dp(int value) {
         return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
