@@ -1636,14 +1636,21 @@ public class MainActivity extends AppCompatActivity {
             MaterialCardView card = new MaterialCardView(this);
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.rowSpec = GridLayout.spec(i / 2);
-            params.columnSpec = GridLayout.spec(i % 2, 1f);
-            params.width = 0;
+            params.columnSpec = GridLayout.spec(i % 2);
+            int margin = dp(3);
+            int gridWidth = devicesGrid.getWidth();
+            if (gridWidth <= 0) {
+                // pageDevices has 9dp horizontal padding on each side. Using a
+                // deterministic fallback keeps a single registered device at
+                // half-width instead of stretching across the whole screen.
+                gridWidth = getResources().getDisplayMetrics().widthPixels - dp(18);
+            }
+            params.width = Math.max(dp(132), (gridWidth - (margin * 4)) / 2);
             params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            int margin = dp(4);
             params.setMargins(margin, margin, margin, margin);
             card.setLayoutParams(params);
-            card.setRadius(dp(18));
-            card.setCardElevation(dp(2));
+            card.setRadius(dp(14));
+            card.setCardElevation(dp(1));
             card.setCardBackgroundColor(getColor(connected
                     ? R.color.fg_surface_2 : R.color.fg_surface));
             card.setStrokeWidth(dp(activeMac != null
@@ -1654,7 +1661,7 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout body = new LinearLayout(this);
             body.setOrientation(LinearLayout.VERTICAL);
-            body.setPadding(dp(11), dp(10), dp(11), dp(10));
+            body.setPadding(dp(8), dp(7), dp(8), dp(7));
 
             String displayName = record.name == null || record.name.trim().isEmpty()
                     ? ModelCatalog.PRIMARY_MODEL : record.name.trim();
@@ -1665,35 +1672,46 @@ public class MainActivity extends AppCompatActivity {
             nameView.setText(displayName);
             nameView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             nameView.setTextColor(getColor(R.color.fg_text));
-            nameView.setTextSize(14);
+            nameView.setTextSize(12.5f);
             nameView.setTypeface(nameView.getTypeface(), android.graphics.Typeface.BOLD);
-            nameView.setMaxLines(2);
+            nameView.setMaxLines(1);
             nameView.setEllipsize(TextUtils.TruncateAt.END);
             body.addView(nameView);
+
+            LinearLayout metaRow = new LinearLayout(this);
+            metaRow.setOrientation(LinearLayout.HORIZONTAL);
+            metaRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            metaRow.setPadding(0, dp(3), 0, 0);
 
             TextView roomView = new TextView(this);
             roomView.setText(room);
             roomView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             roomView.setTextColor(getColor(R.color.fg_text_secondary));
-            roomView.setTextSize(11);
-            roomView.setPadding(0, dp(4), 0, 0);
-            body.addView(roomView);
+            roomView.setTextSize(9.5f);
+            roomView.setMaxLines(1);
+            roomView.setEllipsize(TextUtils.TruncateAt.END);
+            metaRow.addView(roomView, new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
             TextView statusView = new TextView(this);
             statusView.setText(connected ? R.string.fleet_online : R.string.fleet_offline);
-            statusView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            statusView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
             statusView.setTextColor(getColor(connected ? R.color.fg_green : R.color.fg_red));
-            statusView.setTextSize(11);
+            statusView.setTextSize(9.5f);
             statusView.setTypeface(statusView.getTypeface(), android.graphics.Typeface.BOLD);
-            statusView.setPadding(0, dp(7), 0, 0);
-            body.addView(statusView);
+            statusView.setMaxLines(1);
+            statusView.setPadding(dp(4), 0, 0, 0);
+            metaRow.addView(statusView);
+            body.addView(metaRow);
 
             TextView macView = new TextView(this);
             macView.setText(getString(R.string.device_mac_format, record.mac));
             macView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             macView.setTextColor(getColor(R.color.fg_silver_dark));
-            macView.setTextSize(9);
-            macView.setPadding(0, dp(5), 0, 0);
+            macView.setTextSize(8);
+            macView.setMaxLines(1);
+            macView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
+            macView.setPadding(0, dp(3), 0, 0);
             body.addView(macView);
 
             card.setContentDescription(displayName + ", " + room + ", "
